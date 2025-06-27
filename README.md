@@ -1,6 +1,6 @@
 ## This is Kaixiang Chen's homepage
 
-Now it has been **UNDER CONSTRUCTION!**
+Now this homepage is **UNDER CONSTRUCTION!**
 
 ## Mini Linktree
 
