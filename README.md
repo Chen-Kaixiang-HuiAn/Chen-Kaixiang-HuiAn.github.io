@@ -2,14 +2,15 @@
 
 ## Mini Linktree
 
-Google Scholar: https://scholar.google.com/citations?user=-LOLA6AAAAAJ
+Google Scholar - Kaixiang Chen: https://scholar.google.com/citations?user=-LOLA6AAAAAJ
 
-GitHub: https://github.com/Excursion-ConsHein
+GitHub @Excursion-ConsHein: https://github.com/Excursion-ConsHein
 
-ORCID: https://orcid.org/0009-0004-7118-545X
+ORCID - Kaixiang Chen: https://orcid.org/0009-0004-7118-545X
 
-Bilibili: https://space.bilibili.com/383180487
+Bilibili @远行_ConsHein: https://space.bilibili.com/383180487
 
-YouTube: https://www.youtube.com/@Excursion_ConsHein
+YouTube @Excursion_ConsHein: https://www.youtube.com/@Excursion_ConsHein
 
-Zhihu: https://www.zhihu.com/people/1-95-3-44-44
+Zhihu @远行ConsHein: https://www.zhihu.com/people/1-95-3-44-44
+
