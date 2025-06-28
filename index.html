@@ -9,11 +9,14 @@
             font-weight: bold;
             font-size: 24px;
         }
-        nav a { 
-          margin: 0 10px; 
-          cursor: pointer; 
-          text-decoration: underline; 
-          color: blue; 
+        a {
+          color: #add8e6;
+        }
+        nav a {
+          margin: 0 10px;
+          cursor: pointer;
+          text-decoration: underline;
+          color: #add8e6;
         }
         section { 
           display: none; 
@@ -22,10 +25,46 @@
           display: block; 
           margin-top: 20px; 
         }
-        html {
-          position: relative;
-          background-color: rgb(129, 207, 255);
+        #publication p, #publication h3 {
+          font-family: 'Microsoft YaHei', sans-serif;
+          margin-bottom: 0.5em;
         }
+        .paper {
+          border: 1px solid #000;
+          padding: 10px;
+        }
+        #abstract {
+          margin-top: 10px;
+          font-size: 14px;
+        }
+        .abs-link, .pdf-link {
+          display: inline-block;
+          padding: 5px 15px;
+          margin: 5px;
+          background-color: white;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          text-decoration: none;
+          color: #333;
+          text-align: center;
+          font-size: 14px;
+        }
+        .paper {
+          border: 1px solid transparent;
+          padding: 10px;
+          background-color: transparent;
+        }
+        .year-label {
+          text-align: right;
+          font-size: 24px;
+          font-weight: lighter;
+          color: #cccccc;
+        }
+        html {
+            position: relative;
+            background-color: #000033;
+            color: white;
+          }
         html::before {
           content: '';
           position: fixed;
@@ -44,7 +83,7 @@
   <nav>
     <a onclick="showPage('home')">Home</a>
     <a onclick="showPage('about')">About K. Chen</a>
-    <a onclick="showPage('research')">Research</a>
+    <a onclick="showPage('publication')">Publication</a>
     <a onclick="showPage('contact')">Contact</a>
   </nav>
 
@@ -57,16 +96,30 @@
   
   <section id="about">
     <h1>Mini Linktree</h1>
-    <p>Google Scholar - Kaixiang Chen: <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">https://scholar.google.com/citations?user=-LOLA6AAAAAJ</a></p>
-    <p>GitHub @Excursion-ConsHein: <a href="https://github.com/Excursion-ConsHein" target="_blank">https://github.com/Excursion-ConsHein</a></p>
-    <p>ORCID - Kaixiang Chen: <a href="https://orcid.org/0009-0004-7118-545X" target="_blank">https://orcid.org/0009-0004-7118-545X</a></p>
-    <p>Bilibili @远行_ConsHein: <a href="https://space.bilibili.com/383180487" target="_blank">https://space.bilibili.com/383180487</a></p>
-    <p>YouTube @Excursion_ConsHein: <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank">https://www.youtube.com/@Excursion_ConsHein</a></p>
-    <p>Zhihu @远行ConsHein: <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank">https://www.zhihu.com/people/1-95-3-44-44</a></p>
+    <p>Google Scholar - <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">Kaixiang Chen</a></p>
+    <p>GitHub - <a href="https://github.com/Excursion-ConsHein" target="_blank">@Excursion-ConsHein</a></p>
+    <p>ORCID - <a href="https://orcid.org/0009-0004-7118-545X" target="_blank">Kaixiang Chen</a></p>
+    <p>Bilibili - <a href="https://space.bilibili.com/383180487" target="_blank">@远行_ConsHein</a></p>
+    <p>YouTube - <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank">@Excursion_ConsHein</a></p>
+    <p>Zhihu - <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank">@远行ConsHein</a></p>
   </section>
     
-  <section id="research">
-    <p>My research page is gradually being improved.</p>
+  <section id="publication">
+    <hr style="border: 2px solid #cccccc;">
+    <div class="year-label">2023</div>
+    <div class="paper">
+      <h3>Controller design for transition flight of rotor-driven VTOL fixed-wing UAV based on PID</h3>
+        <p><span style="text-decoration: underline;">Kaixiang Chen</span></p>
+        <p><strong>Conference Paper</strong> <em>Proceedings of the 2023 International Conference on Mechatronics and Smart Systems (CONF-MSS), 2023</em></p>
+          <p>
+            <a href="javascript:void(0);" onclick="toggleAbstract(this)" class="abs-link">ABS</a>
+            <a href="https://dx.doi.org/10.54254/2755-2721/9/20230018" target="_blank" class="pdf-link">PDF</a>
+          </p>
+        </div>
+        <div id="abstract" style="border: 1px dashed white; padding: 10px; margin-top: 10px; display: none;">
+            <p>The field of drones has received a lot of attention in recent years and is developing well. In the process of resource circulation in cities, UAVs play an increasingly important role, such as logistics, monitoring, emergency rescue, etc. However, traditional rotary-wing UAVs and fixed-wing UAVs can be limited in some conditions, such as load, cruising speed and take-off area. Based on the above reasons, this paper designs a rotor-driven VTOL fixed-wing UAV, which combines the vertical take-off and landing of rotor and the fast cruise of fixed-wing UAV and other characteristics. And based on this UAV, for the transition process from hovering state to cruising state, a PID controller is used to control the cruising speed, and then the flight altitude is controlled by a series-level PID controller. The final results show that the cruise speed can be stabilized at about 50km/h within 3 seconds by adjusting the PID parameters without considering the motor speed saturation. In addition, while ensuring the cruise speed reaches convergence quickly, the PID parameters of the acceleration loop, velocity loop and altitude loop can be adjusted separately to control the altitude error of the UAV within 5cm. This study provides a reference for researchers to study the control of rotor-driven UAVs in the transition process.</p>
+          </div>
+    </div>
   </section>
 
   <section id="contact">
@@ -77,6 +130,15 @@
     function showPage(pageId) {
       document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
+    }
+
+    function toggleAbstract(button) {
+      const abstract = document.getElementById('abstract');
+      if (abstract.style.display === 'none') {
+        abstract.style.display = 'block';
+      } else {
+        abstract.style.display = 'none';
+      }
     }
   </script>
 
