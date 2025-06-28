@@ -12,12 +12,30 @@
         a {
           color: #add8e6;
         }
-        nav a {
-          margin: 0 10px;
-          cursor: pointer;
-          text-decoration: underline;
-          color: #add8e6;
+        nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px;
+          background-color: rgba(0, 0, 51, 0.8);
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
+        nav a {
+          text-decoration: none;
+          color: #add8e6;
+          border-radius: 4px;
+          transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+          background-color: #000066;
+        }
+        nav a.active {
+          font-weight: bold;
+          color: #fff;
+          background-color: #0066cc;
+        }
+
         section { 
           display: none; 
         }
@@ -81,10 +99,10 @@
 </head>
 <body>
   <nav>
-    <a onclick="showPage('home')">Home</a>
-    <a onclick="showPage('about')">About K. Chen</a>
-    <a onclick="showPage('publication')">Publication</a>
-    <a onclick="showPage('contact')">Contact</a>
+    <a onclick="showPage('home')" id="nav-home">Home</a>
+    <a onclick="showPage('about')" id="nav-about">About K. Chen</a>
+    <a onclick="showPage('publication')" id="nav-publication">Publication</a>
+    <a onclick="showPage('contact')" id="nav-contact">Contact</a>
   </nav>
 
   <section id="home" class="active">
@@ -130,6 +148,18 @@
     function showPage(pageId) {
       document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
+      
+      // 更新导航栏高亮状态
+      document.querySelectorAll('nav a').forEach(navLink => {
+        navLink.classList.remove('active');
+      });
+      document.querySelectorAll('#mySidebar a:not(.closebtn)').forEach(navLink => {
+        navLink.classList.remove('active');
+      });
+      const activeNavLink = document.getElementById(`nav-${pageId}`);
+      if (activeNavLink) {
+        activeNavLink.classList.add('active');
+      }
     }
 
     function toggleAbstract(button) {
