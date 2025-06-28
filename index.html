@@ -22,6 +22,21 @@
           display: block; 
           margin-top: 20px; 
         }
+        html {
+          position: relative;
+          background-color: rgb(129, 207, 255);
+        }
+        html::before {
+          content: '';
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: white;
+          opacity: 0.3;
+          z-index: -1;
+        }
     </style>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 </head>
@@ -34,8 +49,7 @@
   </nav>
 
   <section id="home" class="active">
-    <img src="excursion-conshein.png" alt="Excursion-ConsHein" width="256" height="256">
-  
+    <img src="excursion-conshein.png" alt="excursion-conshein">
     <p>This is <strong>Kaixiang Chen</strong>'s homepage.</p>
     <p>Now this homepage is <strong class="bold-large-text">UNDER CONSTRUCTION!</strong></p>
 
