@@ -9,20 +9,62 @@
             font-weight: bold;
             font-size: 24px;
         }
+        nav a { 
+          margin: 0 10px; 
+          cursor: pointer; 
+          text-decoration: underline; 
+          color: blue; 
+        }
+        section { 
+          display: none; 
+        }
+        section.active { 
+          display: block; 
+          margin-top: 20px; 
+        }
     </style>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <img src="excursion-conshein.png" alt="Excursion-ConsHein" width="256" height="256">
-  <p>This is <strong>Kaixiang Chen</strong>'s homepage.</p>
-  <p>Now this homepage is <strong class="bold-large-text">UNDER CONSTRUCTION!</strong></p>
-  <p>For more information, please contact me via my <a href="mailto:conshein_yuanxing@outlook.com" title="conshein_yuanxing@outlook.com">email</a>.</p>
-  <h1>Mini Linktree</h1>
-  <p>Google Scholar - Kaixiang Chen: <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">https://scholar.google.com/citations?user=-LOLA6AAAAAJ</a></p>
-  <p>GitHub @Excursion-ConsHein: <a href="https://github.com/Excursion-ConsHein" target="_blank">https://github.com/Excursion-ConsHein</a></p>
-  <p>ORCID - Kaixiang Chen: <a href="https://orcid.org/0009-0004-7118-545X" target="_blank">https://orcid.org/0009-0004-7118-545X</a></p>
-  <p>Bilibili @远行_ConsHein: <a href="https://space.bilibili.com/383180487" target="_blank">https://space.bilibili.com/383180487</a></p>
-  <p>YouTube @Excursion_ConsHein: <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank">https://www.youtube.com/@Excursion_ConsHein</a></p>
-  <p>Zhihu @远行ConsHein: <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank">https://www.zhihu.com/people/1-95-3-44-44</a></p>
+  <nav>
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('about')">About K. Chen</a>
+    <a onclick="showPage('research')">Research</a>
+    <a onclick="showPage('contact')">Contact</a>
+  </nav>
+
+  <section id="home" class="active">
+    <img src="excursion-conshein.png" alt="Excursion-ConsHein" width="256" height="256">
+  
+    <p>This is <strong>Kaixiang Chen</strong>'s homepage.</p>
+    <p>Now this homepage is <strong class="bold-large-text">UNDER CONSTRUCTION!</strong></p>
+
+  </section>
+  
+  <section id="about">
+    <h1>Mini Linktree</h1>
+    <p>Google Scholar - Kaixiang Chen: <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">https://scholar.google.com/citations?user=-LOLA6AAAAAJ</a></p>
+    <p>GitHub @Excursion-ConsHein: <a href="https://github.com/Excursion-ConsHein" target="_blank">https://github.com/Excursion-ConsHein</a></p>
+    <p>ORCID - Kaixiang Chen: <a href="https://orcid.org/0009-0004-7118-545X" target="_blank">https://orcid.org/0009-0004-7118-545X</a></p>
+    <p>Bilibili @远行_ConsHein: <a href="https://space.bilibili.com/383180487" target="_blank">https://space.bilibili.com/383180487</a></p>
+    <p>YouTube @Excursion_ConsHein: <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank">https://www.youtube.com/@Excursion_ConsHein</a></p>
+    <p>Zhihu @远行ConsHein: <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank">https://www.zhihu.com/people/1-95-3-44-44</a></p>
+  </section>
+    
+  <section id="research">
+    <p>My research page is gradually being improved.</p>
+  </section>
+
+  <section id="contact">
+    <p>For more information, please contact me via my <a href="mailto:conshein_yuanxing@outlook.com" title="conshein_yuanxing@outlook.com">email</a>.</p>
+  </section>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+  </script>
+
 </body>
 </html>
