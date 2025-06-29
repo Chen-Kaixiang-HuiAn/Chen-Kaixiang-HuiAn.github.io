@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width">
   <title>UNDER CONSTRUCTION!</title>
   <style>
+
         .bold-large-text {
             font-weight: bold;
             font-size: 24px;
@@ -15,16 +16,27 @@
         nav {
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: flex-end;
           padding: 10px;
           background-color: rgba(0, 0, 51, 0.8);
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .nav-icon {
+          width: calc(100% - 40px);
+          height: calc(100% - 40px);
+          max-width: 40px;
+          max-height: 40px;
+          border-radius: 50%;
+          margin-left: 16px;
+          cursor: pointer;
         }
         nav a {
           text-decoration: none;
           color: #add8e6;
           border-radius: 4px;
           transition: all 0.3s ease;
+          cursor: pointer;
+          border: 1px solid transparent;
         }
 
         nav a:hover {
@@ -34,6 +46,7 @@
           font-weight: bold;
           color: #fff;
           background-color: #0066cc;
+          border: 1px solid #0066cc;
         }
 
         section { 
@@ -43,9 +56,17 @@
           display: block; 
           margin-top: 20px; 
         }
-        #publication p, #publication h3 {
+        #publications p, #publications h3 {
           font-family: 'Microsoft YaHei', sans-serif;
           margin-bottom: 0.5em;
+        }
+        #publication-header p:last-of-type {
+          margin-bottom: calc(3 * 1.5em);
+        }
+        #publication-header {
+          border: 1px solid transparent;
+          padding: 10px;
+          background-color: transparent;
         }
         .paper {
           border: 1px solid #000;
@@ -55,7 +76,7 @@
           margin-top: 10px;
           font-size: 14px;
         }
-        .abs-link, .pdf-link {
+        .abs-link, .pdf-link, .bib-link, .video-link, .code-link {
           display: inline-block;
           padding: 5px 15px;
           margin: 5px;
@@ -76,7 +97,7 @@
           text-align: right;
           font-size: 24px;
           font-weight: lighter;
-          color: #cccccc;
+          color: #ff9900;
         }
         html {
             position: relative;
@@ -94,15 +115,20 @@
           opacity: 0.3;
           z-index: -1;
         }
+        #hr-year-wrapper {
+          border: 1px solid transparent;
+          padding: 10px;
+          background-color: transparent;
+        }
     </style>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
   <nav>
-    <a onclick="showPage('home')" id="nav-home">Home</a>
-    <a onclick="showPage('about')" id="nav-about">About K. Chen</a>
-    <a onclick="showPage('publication')" id="nav-publication">Publication</a>
-    <a onclick="showPage('contact')" id="nav-contact">Contact</a>
+    <a onclick="showPage('about')" id="nav-about" style="margin-right: 4ch;">About K. Chen</a>
+    <a onclick="showPage('publications')" id="nav-publications" style="margin-right: 4ch;">Publications</a>
+    <a onclick="showPage('contact')" id="nav-contact" style="margin-right: 4ch;">Contact</a>
+    <img src="excursion-conshein.png" alt="excursion-conshein" class="nav-icon" onclick="showPage('home')" id="nav-icon">
   </nav>
 
   <section id="home" class="active">
@@ -122,22 +148,70 @@
     <p>Zhihu - <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank">@远行ConsHein</a></p>
   </section>
     
-  <section id="publication">
-    <hr style="border: 2px solid #cccccc;">
-    <div class="year-label">2023</div>
-    <div class="paper">
-      <h3>Controller design for transition flight of rotor-driven VTOL fixed-wing UAV based on PID</h3>
-        <p><span style="text-decoration: underline;">Kaixiang Chen</span></p>
-        <p><strong>Conference Paper</strong> <em>Proceedings of the 2023 International Conference on Mechatronics and Smart Systems (CONF-MSS), 2023</em></p>
+  <section id="publications">
+    <div id="publication-header">
+      <h1>Publications</h1>
+      <p>It is my pleasure that you can enjoy reading my publications!</p>
+    </div>
+    <div id="year-container"></div>
+    <div id="paper-container"></div>
+    
+    <script>
+    function createYearSeparator(year) {
+      const container = document.getElementById('year-container');
+      const yearDiv = document.createElement('div');
+      yearDiv.innerHTML = `
+      <div id="hr-year-wrapper">
+        <hr style="border: 2px solid #ff9900;">
+        <div class="year-label">${year}</div>
+      </div>`;
+      container.appendChild(yearDiv);
+    }
+
+    function createPaper(paperData) {
+      const container = document.getElementById('paper-container');
+      const paperDiv = document.createElement('div');
+      paperDiv.innerHTML = `
+      <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px;">
+        <img src="${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto;">
+        <div class="paper">
+          <h3>${paperData.title}</h3>
+          <p><span style="text-decoration: underline;">${paperData.author}</span></p>
+          <p><strong>${paperData.type}</strong> <em>${paperData.conference}</em></p>
           <p>
-            <a href="javascript:void(0);" onclick="toggleAbstract(this)" class="abs-link">ABS</a>
-            <a href="https://dx.doi.org/10.54254/2755-2721/9/20230018" target="_blank" class="pdf-link">PDF</a>
+            <a href="javascript:void(0);" onclick="toggleAbstract(this, '${paperData.id}')" class="abs-link">ABS</a>
+            <a href="javascript:void(0);" onclick="toggleBibtex(this, '${paperData.id}')" class="bib-link">BIB</a>
+            <a href="${paperData.pdfLink}" target="_blank" class="pdf-link">PDF</a>
+            ${paperData.videoLink ? `<a href="${paperData.videoLink}" target="_blank" class="video-link">VIDEO</a>` : ''}
+            ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
           </p>
         </div>
-        <div id="abstract" style="border: 1px dashed white; padding: 10px; margin-top: 10px; display: none;">
-            <p>The field of drones has received a lot of attention in recent years and is developing well. In the process of resource circulation in cities, UAVs play an increasingly important role, such as logistics, monitoring, emergency rescue, etc. However, traditional rotary-wing UAVs and fixed-wing UAVs can be limited in some conditions, such as load, cruising speed and take-off area. Based on the above reasons, this paper designs a rotor-driven VTOL fixed-wing UAV, which combines the vertical take-off and landing of rotor and the fast cruise of fixed-wing UAV and other characteristics. And based on this UAV, for the transition process from hovering state to cruising state, a PID controller is used to control the cruising speed, and then the flight altitude is controlled by a series-level PID controller. The final results show that the cruise speed can be stabilized at about 50km/h within 3 seconds by adjusting the PID parameters without considering the motor speed saturation. In addition, while ensuring the cruise speed reaches convergence quickly, the PID parameters of the acceleration loop, velocity loop and altitude loop can be adjusted separately to control the altitude error of the UAV within 5cm. This study provides a reference for researchers to study the control of rotor-driven UAVs in the transition process.</p>
-          </div>
-    </div>
+      </div>
+      <div id="abstract-${paperData.id}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+        <p>${paperData.abstract}</p>
+      </div>
+      <div id="bibtex-${paperData.id}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+        <pre>${paperData.bibtex}</pre>
+      </div>`;
+      container.appendChild(paperDiv);
+    }
+    
+    // Example usage
+    createYearSeparator(2023);
+    createPaper({
+      id: '1',
+      title: 'Controller design for transition flight of rotor-driven VTOL fixed-wing UAV based on PID',
+      author: 'Kaixiang Chen',
+      type: 'Conference Paper',
+      conference: 'Proceedings of the 2023 International Conference on Mechatronics and Smart Systems (CONF-MSS), 2023',
+      image: '2023-paper-1.png',
+      abstract: 'The field of drones has received a lot of attention in recent years and is developing well. In the process of resource circulation in cities, UAVs play an increasingly important role, such as logistics, monitoring, emergency rescue, etc. However, traditional rotary-wing UAVs and fixed-wing UAVs can be limited in some conditions, such as load, cruising speed and take-off area. Based on the above reasons, this paper designs a rotor-driven VTOL fixed-wing UAV, which combines the vertical take-off and landing of rotor and the fast cruise of fixed-wing UAV and other characteristics. And based on this UAV, for the transition process from hovering state to cruising state, a PID controller is used to control the cruising speed, and then the flight altitude is controlled by a series-level PID controller. The final results show that the cruise speed can be stabilized at about 50km/h within 3 seconds by adjusting the PID parameters without considering the motor speed saturation. In addition, while ensuring the cruise speed reaches convergence quickly, the PID parameters of the acceleration loop, velocity loop and altitude loop can be adjusted separately to control the altitude error of the UAV within 5cm. This study provides a reference for researchers to study the control of rotor-driven UAVs in the transition process.',
+      bibtex: '@inproceedings{chen2023controller, \n   title={Controller design for transition flight of rotor-driven VTOL fixed-wing UAV based on PID}, \n   author={Chen, K}, \n   booktitle={Proceedings of the 2023 International Conference on Mechatronics and Smart Systems}, \n   volume={9}, \n   pages={15--21}, \n   year={2023} \n }',
+      pdfLink: 'https://dx.doi.org/10.54254/2755-2721/9/20230018',
+      videoLink: '',
+      codeLink: ''
+    });
+    </script>
   </section>
 
   <section id="contact">
@@ -156,19 +230,24 @@
       document.querySelectorAll('#mySidebar a:not(.closebtn)').forEach(navLink => {
         navLink.classList.remove('active');
       });
-      const activeNavLink = document.getElementById(`nav-${pageId}`);
+      const activeNavLink = pageId === 'publication' ? document.getElementById('nav-publications') : document.getElementById(`nav-${pageId}`);
       if (activeNavLink) {
         activeNavLink.classList.add('active');
       }
     }
 
-    function toggleAbstract(button) {
-      const abstract = document.getElementById('abstract');
-      if (abstract.style.display === 'none') {
-        abstract.style.display = 'block';
-      } else {
-        abstract.style.display = 'none';
-      }
+    function toggleAbstract(button, id) {
+      const abstract = document.getElementById(`abstract-${id}`);
+      const bibtex = document.getElementById(`bibtex-${id}`);
+      bibtex.style.display = 'none';
+      abstract.style.display = abstract.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggleBibtex(button, id) {
+      const abstract = document.getElementById(`abstract-${id}`);
+      const bibtex = document.getElementById(`bibtex-${id}`);
+      abstract.style.display = 'none';
+      bibtex.style.display = bibtex.style.display === 'none' ? 'block' : 'none';
     }
   </script>
 
