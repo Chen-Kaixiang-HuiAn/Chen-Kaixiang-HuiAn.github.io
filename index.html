@@ -36,7 +36,7 @@
           border-radius: 4px;
           transition: all 0.3s ease;
           cursor: pointer;
-          border: 1px solid transparent;
+          border: none;
         }
 
         nav a:hover {
@@ -102,6 +102,48 @@
           font-weight: bold;
           color: #ff9900;
         }
+        .education-container {
+          border: 1px solid transparent; /* 大边框 */
+          padding: 10px;
+          margin-top: 20px;
+        }
+        .education-item {
+          display: flex;
+          align-items: center;
+        }
+        .education-logo-wrapper {
+          display: flex;
+          align-items: center; /* 高度居中 */
+          justify-content: center;
+          width: 120px;
+          height: 120px;
+          margin-right: 10px;
+        }
+
+        .education-logo {
+          width: 100px;
+          height: 100px;
+        }
+        .education-info {
+          border: 1px solid transparent;
+          padding-left: 10px;
+          flex: 1;
+        }
+        .institution {
+          font-size: large;
+          font-weight: bold;
+        }
+        .degree {
+          font-size: small;
+          font-weight: bold;
+        }
+        .major {
+          margin-left: 10px;
+          font-style: italic;
+        }
+        .time {
+          font-size: smaller;
+        }
         html {
             position: relative;
             background-color: #000033;
@@ -147,51 +189,51 @@
     <img src="excursion-conshein.png" alt="excursion-conshein" class="nav-icon" onclick="showPage('home')" id="nav-icon">
   </nav>
 
+
   <section id="home" class="active">
     <img src="excursion-conshein.png" alt="excursion-conshein">
     <p>This is <strong>Kaixiang Chen</strong>'s homepage.</p>
-    <p>Now this homepage is <strong<p class="bold-large-text">IN BETA!</p>
-            <p>Please don't hesitate to offer your advice, so that this homepage can be better improved!</p>   <h2 style="text-align: center;">Version Update Log <span id="current-version" style="font-size: 16px; font-weight: normal;"></span></h2>
-    <table id="version-table">
-      <tr>
-        <th>History Version</th>
-        <th>Update Content</th>
-      </tr>
-    </table>
+    <p>Now this homepage is <strong style="font-size: 24px;">UNDER CONSTRUCTION!</strong></p>
+            <p>Please don't hesitate to offer your advice, so that this homepage can be better improved!</p>
+    </section>
+    
+  <section id="about">
+    <!-- 教育和职业经历范式 -->
+    <div id="experience-header" style="border: 1px solid transparent; padding: 10px; background-color: transparent;">
+      <h1 style="font-size: 36px;">Experience</h1>
+      <p style="margin-bottom: calc(3 * 1.5em);">My long career journey, is not just an excursion.</p>
+    </div>
+    <div id="education-experience"></div>
 
     <script>
-      // 定义当前版本号和更新日志
-      const currentVersion = 'BETA 1.0';
-      const updateLogs = [
-        {
-          version: 'BETA 1.0',
-          content: 'Create Excursion ConsHein homepage'
-        }
-      ];
+    function createEducationExperience(logoSrc, institution, degree, major, time) {
+      const container = document.getElementById('education-experience');
+      const div = document.createElement('div');
+      div.className = 'education-container';
+      div.innerHTML = `
+      <div class="education-item">
+        <div class="education-logo-wrapper">
+          <img src="${logoSrc}" alt="Institution Logo" class="education-logo">
+        </div>
+        <div class="education-info">
+          <p class="institution">${institution}</p>
+          <p>
+            <span class="degree">${degree}</span>
+            <span class="major">${major}</span>
+          </p>
+          <p class="time">${time}</p>
+          <p></p>
+        </div>
+      </div>`;
+      container.appendChild(div);
+    }
 
-      // 更新当前版本号显示
-      document.getElementById('current-version').textContent = `(Current Version: ${currentVersion})`;
-
-      // 渲染版本更新表格
-      const table = document.getElementById('version-table');
-      updateLogs.forEach(log => {
-        const row = table.insertRow(-1);
-        const versionCell = row.insertCell(0);
-        const contentCell = row.insertCell(1);
-        versionCell.textContent = log.version;
-        contentCell.textContent = log.content;
-      });
+    // 初始化教育经历
+        createEducationExperience('CQEIE_icon.png', 'Chongqing Elite Institute of Engineering (affiliated with CQU)', 'Intra-school Exchange Study', 'Intelligent Manufacturing, National Elite Institute of Engineering (NEIE)', '2022.9 - 2023.6');
+        createEducationExperience('CQU_icon.png', 'Chongqing University (CQU)', 'Bachelor of Engineering', 'Mechatronics, College of Mechanical and Vehicle Engineering (MVE)', '2019.9 - 2023.6');
     </script>
-  </section>
-  
-  <section id="about">
-    <h1>Mini Linktree</h1>
-    <p>Google Scholar - <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">Kaixiang Chen</a></p>
-    <p>GitHub - <a href="https://github.com/Excursion-ConsHein" target="_blank">@Excursion-ConsHein</a></p>
-    <p>ORCID - <a href="https://orcid.org/0009-0004-7118-545X" target="_blank">Kaixiang Chen</a></p>
-    <p>Bilibili - <a href="https://space.bilibili.com/383180487" target="_blank">@远行_ConsHein</a></p>
-    <p>YouTube - <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank">@Excursion_ConsHein</a></p>
-    <p>Zhihu - <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank">@远行ConsHein</a></p>
+
+    
   </section>
     
   <section id="publications">
@@ -258,6 +300,18 @@
       codeLink: 'https://github.com/Excursion-ConsHein/VTOL-control-by-PID'
     });
     </script>
+  </section>
+
+  <section id="contact">
+    <h1>Mini Linktree</h1>
+    <p>Google Scholar - <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">Kaixiang Chen</a></p>
+    <p>GitHub - <a href="https://github.com/Excursion-ConsHein" target="_blank">@Excursion-ConsHein</a></p>
+    <p>ORCID - <a href="https://orcid.org/0009-0004-7118-545X" target="_blank">Kaixiang Chen</a></p>
+    <p>Bilibili - <a href="https://space.bilibili.com/383180487" target="_blank">@远行_ConsHein</a></p>
+    <p>YouTube - <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank">@Excursion_ConsHein</a></p>
+    <p>Zhihu - <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank">@远行ConsHein</a></p>
+
+    <p>For more information, please contact me via my <a href="mailto:conshein_yuanxing@outlook.com" title="conshein_yuanxing@outlook.com">email</a>.</p>
   </section>
 
   <script>
