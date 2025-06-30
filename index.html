@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>UNDER CONSTRUCTION!</title>
+  <title>Excursion ConsHein BETA</title>
   <style>
 
         .bold-large-text {
@@ -123,6 +123,19 @@
           padding: 10px;
           background-color: transparent;
         }
+        table {
+          border-collapse: collapse;
+          width: 80%;
+          margin: 0 auto;
+        }
+        table, th, td {
+          border: 1px solid white;
+          text-align: center;
+        }
+        th {
+          background-color: rgba(0, 0, 51, 0.8);
+          font-weight: bold;
+        }
     </style>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 </head>
@@ -137,8 +150,38 @@
   <section id="home" class="active">
     <img src="excursion-conshein.png" alt="excursion-conshein">
     <p>This is <strong>Kaixiang Chen</strong>'s homepage.</p>
-    <p>Now this homepage is <strong class="bold-large-text">UNDER CONSTRUCTION!</strong></p>
+    <p>Now this homepage is <strong<p class="bold-large-text">IN BETA!</p>
+            <p>Please don't hesitate to offer your advice, so that this homepage can be better improved!</p>   <h2 style="text-align: center;">Version Update Log <span id="current-version" style="font-size: 16px; font-weight: normal;"></span></h2>
+    <table id="version-table">
+      <tr>
+        <th>History Version</th>
+        <th>Update Content</th>
+      </tr>
+    </table>
 
+    <script>
+      // 定义当前版本号和更新日志
+      const currentVersion = 'BETA 1.0';
+      const updateLogs = [
+        {
+          version: 'BETA 1.0',
+          content: 'Create Excursion ConsHein homepage'
+        }
+      ];
+
+      // 更新当前版本号显示
+      document.getElementById('current-version').textContent = `(Current Version: ${currentVersion})`;
+
+      // 渲染版本更新表格
+      const table = document.getElementById('version-table');
+      updateLogs.forEach(log => {
+        const row = table.insertRow(-1);
+        const versionCell = row.insertCell(0);
+        const contentCell = row.insertCell(1);
+        versionCell.textContent = log.version;
+        contentCell.textContent = log.content;
+      });
+    </script>
   </section>
   
   <section id="about">
