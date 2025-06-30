@@ -39,6 +39,20 @@
           background-color: rgba(0, 0, 51, 0.8);
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
+        
+        @media (max-width: 768px) {
+          nav {
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+          nav a {
+            margin: 5px;
+          }
+          .year-label {
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+          }
+        }
         .nav-icon {
           width: calc(100% - 40px);
           height: calc(100% - 40px);
