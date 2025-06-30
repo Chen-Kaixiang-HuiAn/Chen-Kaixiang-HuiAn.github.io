@@ -3,9 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Excursion ConsHein BETA</title>
   <style>
 
+        .page-container {
+          display: flex;
+        }
+        .left-sidebar {
+          width: 33.33%;
+          padding: 10px;
+        }
+        .main-content {
+          width: 49.34%;
+          padding: 10px;
+        }
+        .right-margin {
+          width: 17.33%;
+          padding: 10px;
+        }
         .bold-large-text {
             font-weight: bold;
             font-size: 24px;
@@ -130,12 +148,13 @@
           flex: 1;
         }
         .institution {
-          font-size: large;
+          font-size: x-large;
           font-weight: bold;
         }
         .degree {
-          font-size: small;
+          font-size: inherit;
           font-weight: bold;
+          color: #00FF7F;
         }
         .major {
           margin-left: 10px;
@@ -190,18 +209,31 @@
   </nav>
 
 
-  <section id="home" class="active">
-    <img src="excursion-conshein.png" alt="excursion-conshein">
+  <div class="page-container">
+    <div class="left-sidebar">
+      <img src="excursion-conshein.png" alt="excursion-conshein" style="display: block; margin-left: auto; margin-right: auto; margin-top: 80px; max-width: 100%; height: auto;">
+      <div style="margin-top: 20px; text-align: center;">
+        <h1>Kaixiang Chen</h1>
+        <p>Google Scholar - <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">Kaixiang Chen</a></p>
+        <p>GitHub - <a href="https://github.com/Excursion-ConsHein" target="_blank">@Excursion-ConsHein</a></p>
+        <p>ORCID - <a href="https://orcid.org/0009-0004-7118-545X" target="_blank">Kaixiang Chen</a></p>
+        <p>Bilibili - <a href="https://space.bilibili.com/383180487" target="_blank">@远行_ConsHein</a></p>
+        <p>YouTube - <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank">@Excursion_ConsHein</a></p>
+        <p>Zhihu - <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank">@远行ConsHein</a></p>
+      </div>
+    </div>
+    <div class="main-content">
+      <section id="home" class="active">
+        <div class="right-margin"><!-- 右侧独立区域，可按需添加内容 --></div>
     <p>This is <strong>Kaixiang Chen</strong>'s homepage.</p>
     <p>Now this homepage is <strong style="font-size: 24px;">UNDER CONSTRUCTION!</strong></p>
             <p>Please don't hesitate to offer your advice, so that this homepage can be better improved!</p>
     </section>
-    
-  <section id="about">
+      <section id="about">
     <!-- 教育和职业经历范式 -->
     <div id="experience-header" style="border: 1px solid transparent; padding: 10px; background-color: transparent;">
       <h1 style="font-size: 36px;">Experience</h1>
-      <p style="margin-bottom: calc(3 * 1.5em);">My long career journey, is not just an excursion.</p>
+      <p style="margin-bottom: calc(3 * 1.5em);">Hope my career journey will be more than just an excursion!</p>
     </div>
     <div id="education-experience"></div>
 
@@ -229,14 +261,13 @@
     }
 
     // 初始化教育经历
-        createEducationExperience('CQEIE_icon.png', 'Chongqing Elite Institute of Engineering (affiliated with CQU)', 'Intra-school Exchange Study', 'Intelligent Manufacturing, National Elite Institute of Engineering (NEIE)', '2022.9 - 2023.6');
+        createEducationExperience('CQEIE_icon.png', 'Chongqing Elite Institute of Engineering', 'Intra-school Exchange Study', 'Intelligent Manufacturing, National Elite Institute of Engineering (NEIE) —— affiliated with CQU', '2022.9 - 2023.6');
         createEducationExperience('CQU_icon.png', 'Chongqing University (CQU)', 'Bachelor of Engineering', 'Mechatronics, College of Mechanical and Vehicle Engineering (MVE)', '2019.9 - 2023.6');
     </script>
 
     
   </section>
-    
-  <section id="publications">
+      <section id="publications">
     <div id="publication-header">
       <h1>Publications</h1>
       <p>It is my pleasure that you can enjoy reading my publications!</p>
@@ -265,7 +296,7 @@
         <div class="paper">
           <h3>${paperData.title}</h3>
           <p><span style="text-decoration: underline;">${paperData.author}</span></p>
-          <p><strong>${paperData.type}</strong> <em>${paperData.conference}</em></p>
+          <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.publication}</em></p>
           <p>
             <a href="javascript:void(0);" onclick="toggleAbstract(this, '${paperData.id}')" class="abs-link">ABS</a>
             <a href="javascript:void(0);" onclick="toggleBibtex(this, '${paperData.id}')" class="bib-link">BIB</a>
@@ -291,7 +322,7 @@
       title: 'Controller design for transition flight of rotor-driven VTOL fixed-wing UAV based on PID',
       author: 'Kaixiang Chen',
       type: 'Conference Paper',
-      conference: 'Proceedings of the 2023 International Conference on Mechatronics and Smart Systems (CONF-MSS), 2023',
+      publication: 'Proceedings of the 2023 International Conference on Mechatronics and Smart Systems (CONF-MSS), 2023',
       image: '2023-paper-1.png',
       abstract: 'The field of drones has received a lot of attention in recent years and is developing well. In the process of resource circulation in cities, UAVs play an increasingly important role, such as logistics, monitoring, emergency rescue, etc. However, traditional rotary-wing UAVs and fixed-wing UAVs can be limited in some conditions, such as load, cruising speed and take-off area. Based on the above reasons, this paper designs a rotor-driven VTOL fixed-wing UAV, which combines the vertical take-off and landing of rotor and the fast cruise of fixed-wing UAV and other characteristics. And based on this UAV, for the transition process from hovering state to cruising state, a PID controller is used to control the cruising speed, and then the flight altitude is controlled by a series-level PID controller. The final results show that the cruise speed can be stabilized at about 50km/h within 3 seconds by adjusting the PID parameters without considering the motor speed saturation. In addition, while ensuring the cruise speed reaches convergence quickly, the PID parameters of the acceleration loop, velocity loop and altitude loop can be adjusted separately to control the altitude error of the UAV within 5cm. This study provides a reference for researchers to study the control of rotor-driven UAVs in the transition process.',
       bibtex: '@inproceedings{chen2023controller, \n   title={Controller design for transition flight of rotor-driven VTOL fixed-wing UAV based on PID}, \n   author={Chen, K}, \n   booktitle={Proceedings of the 2023 International Conference on Mechatronics and Smart Systems}, \n   volume={9}, \n   pages={15--21}, \n   year={2023} \n }',
@@ -301,18 +332,11 @@
     });
     </script>
   </section>
-
-  <section id="contact">
-    <h1>Mini Linktree</h1>
-    <p>Google Scholar - <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">Kaixiang Chen</a></p>
-    <p>GitHub - <a href="https://github.com/Excursion-ConsHein" target="_blank">@Excursion-ConsHein</a></p>
-    <p>ORCID - <a href="https://orcid.org/0009-0004-7118-545X" target="_blank">Kaixiang Chen</a></p>
-    <p>Bilibili - <a href="https://space.bilibili.com/383180487" target="_blank">@远行_ConsHein</a></p>
-    <p>YouTube - <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank">@Excursion_ConsHein</a></p>
-    <p>Zhihu - <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank">@远行ConsHein</a></p>
-
-    <p>For more information, please contact me via my <a href="mailto:conshein_yuanxing@outlook.com" title="conshein_yuanxing@outlook.com">email</a>.</p>
+      <section id="contact">
+        <p>For more information, please contact me via my <a href="mailto:conshein_yuanxing@outlook.com" title="conshein_yuanxing@outlook.com">email</a>.</p>
   </section>
+    </div>
+  </div>
 
   <script>
     function showPage(pageId) {
