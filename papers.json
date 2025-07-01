@@ -1,0 +1,18 @@
+{
+    "year": [2023],
+    "paper": [
+        {
+            "id": "1",
+            "title": "Controller design for transition flight of rotor-driven VTOL fixed-wing UAV based on PID",
+            "author": "Kaixiang Chen",
+            "type": "Conference Paper",
+            "publication": "Proceedings of the 2023 International Conference on Mechatronics and Smart Systems (CONF-MSS), 2023",
+            "image": "2023-paper-1.png",
+            "abstract": "The field of drones has received a lot of attention in recent years and is developing well. In the process of resource circulation in cities, UAVs play an increasingly important role, such as logistics, monitoring, emergency rescue, etc. However, traditional rotary-wing UAVs and fixed-wing UAVs can be limited in some conditions, such as load, cruising speed and take-off area. Based on the above reasons, this paper designs a rotor-driven VTOL fixed-wing UAV, which combines the vertical take-off and landing of rotor and the fast cruise of fixed-wing UAV and other characteristics. And based on this UAV, for the transition process from hovering state to cruising state, a PID controller is used to control the cruising speed, and then the flight altitude is controlled by a series-level PID controller. The final results show that the cruise speed can be stabilized at about 50km/h within 3 seconds by adjusting the PID parameters without considering the motor speed saturation. In addition, while ensuring the cruise speed reaches convergence quickly, the PID parameters of the acceleration loop, velocity loop and altitude loop can be adjusted separately to control the altitude error of the UAV within 5cm. This study provides a reference for researchers to study the control of rotor-driven UAVs in the transition process.",
+            "bibtex": "@inproceedings{chen2023controller, \n   title={Controller design for transition flight of rotor-driven VTOL fixed-wing UAV based on PID}, \n   author={Chen, K}, \n   booktitle={Proceedings of the 2023 International Conference on Mechatronics and Smart Systems}, \n   volume={9}, \n   pages={15--21}, \n   year={2023} \n }",
+            "pdfLink": "https://dx.doi.org/10.54254/2755-2721/9/20230018",
+            "videoLink": "",
+            "codeLink": "https://github.com/Excursion-ConsHein/VTOL-control-by-PID"
+        }
+    ]
+}
