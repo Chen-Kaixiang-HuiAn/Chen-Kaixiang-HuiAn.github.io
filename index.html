@@ -52,6 +52,27 @@
             width: calc(100% - 20px);
             box-sizing: border-box;
           }
+          .education-item {
+            flex-direction: column;
+          }
+          .education-logo-wrapper {
+            margin-right: 0;
+            margin-bottom: 10px;
+          }
+          #publications #paper-container > div {
+            flex-direction: column;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0;
+          }
+          #publications #paper-container > div > div[style*="display: flex; align-items: center;"] {
+            flex-direction: column;
+          }
+          #publications #paper-container img {
+            margin-bottom: 10px;
+            max-width: 100%;
+            height: auto;
+          }
         }
         .nav-icon {
           width: calc(100% - 40px);
@@ -81,12 +102,12 @@
           border: 1px solid #0066cc;
         }
 
-        section { 
-          display: none; 
+        section {
+          display: none;
         }
-        section.active { 
-          display: block; 
-          margin-top: 20px; 
+        section.active {
+          display: block;
+          margin-top: 20px;
         }
         #publications p, #publications h3 {
           font-family: 'Microsoft YaHei', sans-serif;
@@ -104,8 +125,9 @@
           background-color: transparent;
         }
         .paper {
-          border: 1px solid #000;
+          border: 1px solid transparent;
           padding: 10px;
+          background-color: transparent;
         }
         #abstract {
           margin-top: 10px;
@@ -122,11 +144,6 @@
           color: #333;
           text-align: center;
           font-size: 14px;
-        }
-        .paper {
-          border: 1px solid transparent;
-          padding: 10px;
-          background-color: transparent;
         }
         .year-label {
           text-align: right;
@@ -198,13 +215,18 @@
           padding: 10px;
           background-color: transparent;
         }
+        #publications #paper-container {
+          border: 1px solid transparent;
+          padding: 10px;
+          background-color: transparent;
+        }
         table {
           border-collapse: collapse;
           width: 80%;
           margin: 0 auto;
         }
         table, th, td {
-          border: 1px solid white;
+          border: 1px solid transparent;
           text-align: center;
         }
         th {
