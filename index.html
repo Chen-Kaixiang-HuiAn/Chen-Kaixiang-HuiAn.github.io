@@ -41,6 +41,22 @@
         }
         
         @media (max-width: 768px) {
+          .page-container::after {
+            content: '';
+            display: block;
+            width: 100%;
+            border-bottom: 1px solid white;
+            margin: 10px 0;
+          }
+          .left-sidebar {
+            border-bottom: 2px solid white;
+          }
+          .left-sidebar, .main-content {
+            border-right: none;
+          }
+          .right-margin {
+            border-right: none;
+          }
           nav {
             flex-wrap: wrap;
             justify-content: center;
@@ -294,9 +310,12 @@
     </section>
       <section id="about">
     <!-- 教育和职业经历范式 -->
-    <div id="experience-header" style="border: 1px solid transparent; padding: 10px; background-color: transparent;">
-      <h1 style="font-size: 36px;">Experience</h1>
-      <p style="margin-bottom: calc(3 * 1.5em);">Hope my career journey will be more than just an excursion!</p>
+    <div id="publication-header">
+      <h1>Experience</h1>
+      <p>Hope my career journey will be more than just an excursion!</p>
+    </div>
+    <div id="hr-year-wrapper">
+      <hr style="border: 2px solid #ff9900;">
     </div>
     <div id="education-experience"></div>
 
