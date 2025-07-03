@@ -1,4 +1,4 @@
-[![Excusion_ConsHein](excursion-conshein.png "Excusion_ConsHein")](https://excursion-conshein.github.io/)
+[![Excusion_ConsHein](./excursion_conshein_references/excursion-conshein.png "Excusion_ConsHein")](https://excursion-conshein.github.io/)
 
 ## This is Kaixiang Chen's homepage
 
