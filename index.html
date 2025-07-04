@@ -237,7 +237,7 @@
           left: 0;
           right: 0;
           bottom: 0;
-          background-image: url('excursion_conshein_references/BG.png');
+          background-image: url('images/homepage/BG.png');
           background-size: cover;
           background-repeat: no-repeat;
           background-position: center;
@@ -275,20 +275,20 @@
           box-sizing: border-box;
         }
     </style>
-  <link rel="shortcut icon" type="image/x-icon" href="excursion_conshein_references/favicon.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="images/homepage/favicon.ico">
 </head>
 <body>
   <nav>
     <a onclick="showPage('about')" id="nav-about" style="margin-right: 4ch;">About K. Chen</a>
     <a onclick="showPage('publications')" id="nav-publications" style="margin-right: 4ch;">Publications</a>
     <a onclick="showPage('contact')" id="nav-contact" style="margin-right: 4ch;">Contact</a>
-    <img src="excursion_conshein_references/excursion-conshein.png" alt="excursion-conshein" class="nav-icon" onclick="showPage('home')" id="nav-icon">
+    <img src="images/homepage/excursion-conshein.png" alt="excursion-conshein" class="nav-icon" onclick="showPage('home')" id="nav-icon">
   </nav>
 
 
   <div class="page-container">
     <div class="left-sidebar">
-      <img src="excursion_conshein_references/excursion-conshein.png" alt="excursion-conshein" style="display: block; margin-left: auto; margin-right: auto; margin-top: 80px; max-width: 100%; height: auto;">
+      <img src="images/homepage/excursion-conshein.png" alt="excursion-conshein" style="display: block; margin-left: auto; margin-right: auto; margin-top: 80px; max-width: 100%; height: auto;">
       <div style="margin-top: 20px; text-align: center;">
         <h1>Kaixiang Chen</h1>
         <p>Google Scholar - <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">Kaixiang Chen</a></p>
@@ -331,7 +331,7 @@
       div.innerHTML = `
       <div class="education-item">
         <div class="education-logo-wrapper">
-          <img src="experience_img_references/${experienceData.logoSrc}" alt="Institution Logo" class="education-logo">
+          <img src="images/experience/${experienceData.logoSrc}" alt="Institution Logo" class="education-logo">
         </div>
         <div class="education-info">
           <p class="institution">${experienceData.institution}</p>
@@ -378,12 +378,12 @@
       container.appendChild(yearDiv);
     }
 
-    function createPaper(paperData) {
+    function createPaper(paperData, year) {
       const container = document.getElementById('paper-container');
       const paperDiv = document.createElement('div');
       paperDiv.innerHTML = `
       <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px;">
-        <img src="paper_img_references/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto;">
+        <img src="images/publication/${year}/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto;">
         <div class="paper">
           <h3>${paperData.title}</h3>
           <p><span style="text-decoration: underline;">${paperData.author}</span></p>
@@ -418,7 +418,9 @@
           createYearSeparator(year);
         });
         data.paper.forEach(paper => {
-          createPaper(paper);
+          data.year.forEach(year => {
+            createPaper(paper, year);
+          });
         });
       });
     </script>
