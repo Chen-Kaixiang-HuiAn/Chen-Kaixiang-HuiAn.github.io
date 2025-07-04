@@ -1,16 +1,16 @@
 [
-    {
-        "logoSrc": "CQEIE_icon.png",
-        "institution": "Chongqing Elite Institute of Engineering (CQ-EIE)",
-        "degree": "Intra-school Exchange",
-        "major": "Intelligent Manufacturing, National Elite Institute of Engineering (NEIE) —— affiliated with CQU",
-        "time": "2022.9 - 2023.6"
-    },
-    {
-        "logoSrc": "CQU_icon.png",
-        "institution": "Chongqing University (CQU)",
-        "degree": "Bachelor of Engineering",
-        "major": "Mechatronics, College of Mechanical and Vehicle Engineering (MVE)",
-        "time": "2019.9 - 2023.6"
-    }
+  {
+    "logoSrc": "CQEIE_icon.png",
+    "institution": "Chongqing Elite Institute of Engineering (CQ-EIE)",
+    "degree": "Intra-school Exchange",
+    "major": "Intelligent Manufacturing, National Elite Institute of Engineering (NEIE) —— affiliated with CQU",
+    "time": "2022.9 - 2023.6"
+  },
+  {
+    "logoSrc": "CQU_icon.png",
+    "institution": "Chongqing University (CQU)",
+    "degree": "Bachelor of Engineering",
+    "major": "Mechatronics, College of Mechanical and Vehicle Engineering (MVE)",
+    "time": "2019.9 - 2023.6"
+  }
 ]

@@ -389,22 +389,22 @@
           <p><span style="text-decoration: underline;">${paperData.author}</span></p>
           <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.publication}</em></p>
           <p>
-            ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleAward(this, '${paperData.id}')" class="abs-link">AWARD</a>` : ''}
-            <a href="javascript:void(0);" onclick="toggleAbstract(this, '${paperData.id}')" class="abs-link">ABS</a>
-            <a href="javascript:void(0);" onclick="toggleBibtex(this, '${paperData.id}')" class="bib-link">BIB</a>
+            ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleAward(this, '${paperData.title.replace(/'/g, '\'')}')" class="abs-link">AWARD</a>` : ''}
+            <a href="javascript:void(0);" onclick="toggleAbstract(this, '${paperData.title.replace(/'/g, '\'')}')" class="abs-link">ABS</a>
+            <a href="javascript:void(0);" onclick="toggleBibtex(this, '${paperData.title.replace(/'/g, '\'')}')" class="bib-link">BIB</a>
             <a href="${paperData.pdfLink}" target="_blank" class="pdf-link">PDF</a>
             ${paperData.videoLink ? `<a href="${paperData.videoLink}" target="_blank" class="video-link">VIDEO</a>` : ''}
             ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
           </p>
         </div>
       </div>
-      <div id="abstract-${paperData.id}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+      <div id="abstract-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
         <p>${paperData.abstract}</p>
       </div>
-      <div id="award-${paperData.id}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+      <div id="award-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
         <p>${paperData.award}</p>
       </div>
-      <div id="bibtex-${paperData.id}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+      <div id="bibtex-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
         <pre>${paperData.bibtex}</pre>
       </div>`;
       container.appendChild(paperDiv);
@@ -450,27 +450,27 @@
     }
 
     function toggleAbstract(button, id) {
-      const abstract = document.getElementById(`abstract-${id}`);
-      const bibtex = document.getElementById(`bibtex-${id}`);
-      const award = document.getElementById(`award-${id}`);
+      const abstract = document.getElementById(`abstract-${id.replace(/'/g, '\'')}`);
+      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, '\'')}`);
+      const award = document.getElementById(`award-${id.replace(/'/g, '\'')}`);
       bibtex.style.display = 'none';
       award.style.display = 'none';
       abstract.style.display = abstract.style.display === 'none' ? 'block' : 'none';
     }
 
     function toggleAward(button, id) {
-      const abstract = document.getElementById(`abstract-${id}`);
-      const bibtex = document.getElementById(`bibtex-${id}`);
-      const award = document.getElementById(`award-${id}`);
+      const abstract = document.getElementById(`abstract-${id.replace(/'/g, '\'')}`);
+      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, '\'')}`);
+      const award = document.getElementById(`award-${id.replace(/'/g, '\'')}`);
       abstract.style.display = 'none';
       bibtex.style.display = 'none';
       award.style.display = award.style.display === 'none' ? 'block' : 'none';
     }
 
     function toggleBibtex(button, id) {
-      const abstract = document.getElementById(`abstract-${id}`);
-      const bibtex = document.getElementById(`bibtex-${id}`);
-      const award = document.getElementById(`award-${id}`);
+      const abstract = document.getElementById(`abstract-${id.replace(/'/g, '\'')}`);
+      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, '\'')}`);
+      const award = document.getElementById(`award-${id.replace(/'/g, '\'')}`);
       abstract.style.display = 'none';
       award.style.display = 'none';
       bibtex.style.display = bibtex.style.display === 'none' ? 'block' : 'none';
