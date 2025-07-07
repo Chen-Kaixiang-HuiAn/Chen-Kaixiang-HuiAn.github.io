@@ -363,23 +363,20 @@
       <h1>Publications</h1>
       <p>It is my pleasure that you can enjoy reading my publications!</p>
     </div>
-    <div id="year-container"></div>
     <div id="paper-container"></div>
     
     <script>
     function createYearSeparator(year) {
-      const container = document.getElementById('year-container');
       const yearDiv = document.createElement('div');
       yearDiv.innerHTML = `
       <div id="hr-year-wrapper">
         <hr style="border: 2px solid #ff9900;">
         <div class="year-label">${year}</div>
       </div>`;
-      container.appendChild(yearDiv);
+      return yearDiv;
     }
 
     function createPaper(paperData, year) {
-      const container = document.getElementById('paper-container');
       const paperDiv = document.createElement('div');
       paperDiv.innerHTML = `
       <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px;">
@@ -407,20 +404,26 @@
       <div id="bibtex-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
         <pre>${paperData.bibtex}</pre>
       </div>`;
-      container.appendChild(paperDiv);
+      return paperDiv;
     }
 
     // 从 JSON 文件加载论文数据
     fetch('configs/papers.json')
       .then(response => response.json())
       .then(data => {
-        data.year.forEach(year => {
-          createYearSeparator(year);
-        });
-        data.paper.forEach(paper => {
-          data.year.forEach(year => {
-            createPaper(paper, year);
+        // 按年份顺序遍历，确保和 JSON 文件一致
+        const sortedYears = Object.keys(data).sort((a, b) => b - a);
+        const paperContainer = document.getElementById('paper-container');
+        sortedYears.forEach(year => {
+          const yearBlock = document.createElement('div');
+          yearBlock.appendChild(createYearSeparator(year));
+          const yearPaperContainer = document.createElement('div');
+          yearPaperContainer.id = `papers-${year}`;
+          data[year].forEach(paper => {
+            yearPaperContainer.appendChild(createPaper(paper, year));
           });
+          yearBlock.appendChild(yearPaperContainer);
+          paperContainer.appendChild(yearBlock);
         });
       });
     </script>
