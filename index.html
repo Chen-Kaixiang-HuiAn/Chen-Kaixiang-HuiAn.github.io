@@ -81,7 +81,7 @@
             box-sizing: border-box;
             padding: 0;
           }
-          #publications #paper-container > div > div[style*="display: flex; align-items: center;"] {
+          #publications #paper-container > div div[style*="display: flex; align-items: center;"] {
             flex-direction: column;
           }
           #publications #paper-container img {
@@ -378,11 +378,11 @@
       return yearDiv;
     }
 
-    function createPaper(paperData, year) {
+    function createPaper(paperData) {
       const paperDiv = document.createElement('div');
       paperDiv.innerHTML = `
       <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px;">
-        <img src="images/publication/${year}/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto;">
+        <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto;">
         <div class="paper">
           <h3>${paperData.title}</h3>
           <p><span style="text-decoration: underline;">${paperData.author}</span></p>
