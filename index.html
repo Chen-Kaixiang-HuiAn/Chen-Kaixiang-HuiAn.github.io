@@ -9,28 +9,35 @@
   <title>Excursion ConsHein BETA</title>
   <style>
 
+        /* Define the layout of the page as a flex container */
         .page-container {
           display: flex;
         }
+        /* Define the style of the left sidebar */
         .left-sidebar {
           width: 33.33%;
           padding: 10px;
         }
+        /* Define the style of the main content area */
         .main-content {
           width: 56.67%;
           padding: 10px;
         }
+        /* Define the style of the right margin */
         .right-margin {
           width: 10%;
           padding: 10px;
         }
+        /* Define the style of bold and large text */
         .bold-large-text {
             font-weight: bold;
             font-size: 24px;
         }
+        /* Define the color of links */
         a {
           color: #add8e6;
         }
+        /* Define the style of the navigation bar */
         nav {
           display: flex;
           align-items: center;
@@ -40,7 +47,9 @@
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
+        /* Define responsive styles for screens with a maximum width of 768px */
         @media (max-width: 768px) {
+          /* Add a bottom border after the page container */
           .page-container::after {
             content: '';
             display: block;
@@ -48,78 +57,97 @@
             border-bottom: 1px solid white;
             margin: 10px 0;
           }
+          /* Add a bottom border to the left sidebar */
           .left-sidebar {
             border-bottom: 2px solid white;
           }
+          /* Remove the right border of the left sidebar and main content */
           .left-sidebar, .main-content {
             border-right: none;
           }
+          /* Remove the right border of the right margin */
           .right-margin {
             border-right: none;
           }
+          /* Make the navigation bar items wrap and center them */
           nav {
             flex-wrap: wrap;
             justify-content: center;
           }
+          /* Adjust the margin and font size of navigation bar links */
           nav a {
             margin: max(2px, calc((100% - 400px) / 10));
             font-size: max(12px, calc(1vw + 8px));
           }
+          /* Adjust the maximum width and height of the navigation icon */
           .nav-icon {
             max-width: max(30px, calc(3vw + 12px));
             max-height: max(30px, calc(3vw + 12px));
           }
+          /* Set the width of the year label to 100% minus 20px */
           .year-label {
             width: calc(100% - 20px);
             box-sizing: border-box;
           }
+          /* Change the layout of education items to a column */
           .education-item {
             flex-direction: column;
           }
+          /* Adjust the margin of the education logo wrapper */
           .education-logo-wrapper {
             margin-right: 0;
             margin-bottom: 10px;
           }
+          /* Change the layout of publication paper containers to a column */
           #publications #paper-container > div {
             flex-direction: column;
             width: 100%;
             box-sizing: border-box;
             padding: 0;
           }
+          /* Change the layout of inner flex containers in publication paper containers to a column */
           #publications #paper-container > div div[style*="display: flex; align-items: center;"] {
             flex-direction: column;
           }
+          /* Adjust the margin and size of images in publication paper containers */
           #publications #paper-container img {
             margin-bottom: 10px;
             max-width: 100%;
             height: auto;
           }
+          /* Set the width and height of the homepage image to 40% */
           img[src="images/homepage/excursion-conshein.png"] {
             width: 40% !important;
             height: 40% !important;
           }
           
+          /* Adjust the size of images in the left sidebar's specific container */
           .left-sidebar div[style*="text-align: center; background-color: rgba(255, 255, 200, 0.3);"] img {
             width: max(20px, calc(3vw)) !important;
             height: max(20px, calc(3vw)) !important;
           }
           
+          /* Change the layout of the page container to a column */
           .page-container {
             flex-direction: column;
           }
+          /* Set the width of the left sidebar to 100% */
           .left-sidebar {
             width: 100%;
             box-sizing: border-box;
           }
+          /* Set the width of the main content area to 100% */
           .main-content {
             width: 100%;
             box-sizing: border-box;
           }
+          /* Set the width of the right margin to 100% */
           .right-margin {
             width: 100%;
             box-sizing: border-box;
           }
         }
+        /* Define the style of the navigation icon */
         .nav-icon {
           width: calc(100% - 40px);
           height: calc(100% - 40px);
@@ -129,6 +157,7 @@
           margin-left: 16px;
           cursor: pointer;
         }
+        /* Define the style of navigation bar links */
         nav a {
           text-decoration: none;
           color: #add8e6;
@@ -138,9 +167,11 @@
           border: none;
         }
 
+        /* Define the hover style of navigation bar links */
         nav a:hover {
           background-color: #000066;
         }
+        /* Define the active style of navigation bar links */
         nav a.active {
           font-weight: bold;
           color: #fff;
@@ -148,37 +179,46 @@
           border: 1px solid #9400d3;
         }
 
+        /* Hide all sections by default */
         section {
           display: none;
         }
+        /* Show the active section */
         section.active {
           display: block;
           margin-top: 20px;
         }
+        /* Define the font family and bottom margin of paragraphs and headings in the publications section */
         #publications p, #publications h3 {
           font-family: 'Microsoft YaHei', sans-serif;
           margin-bottom: 0.5em;
         }
+        /* Define the bottom margin of the last paragraph in the publication header */
         #publication-header p:last-of-type {
           margin-bottom: calc(3 * 1.5em);
         }
+        /* Define the font size of the heading in the publication header */
         #publication-header h1 {
           font-size: 36px;
         }
+        /* Define the style of the publication header */
         #publication-header {
           border: 1px solid transparent;
           padding: 10px;
           background-color: transparent;
         }
+        /* Define the style of paper elements */
         .paper {
           border: 1px solid transparent;
           padding: 10px;
           background-color: transparent;
         }
+        /* Define the style of the abstract section */
         #abstract {
           margin-top: 10px;
           font-size: 14px;
         }
+        /* Define the style of links for abstract, PDF, BibTeX, video, and code */
         .abs-link, .pdf-link, .bib-link, .video-link, .code-link {
           display: inline-block;
           padding: 5px 15px;
@@ -191,60 +231,72 @@
           text-align: center;
           font-size: 14px;
         }
+        /* Define the style of the year label */
         .year-label {
           text-align: right;
           font-size: 32px;
           font-weight: bold;
           color: #ff9900;
         }
+        /* Define the style of the education container */
         .education-container {
-          border: 1px solid transparent; /* 大边框 */
+          border: 1px solid transparent; /* Large border */
           padding: 10px;
           margin-top: 20px;
         }
+        /* Define the style of education items */
         .education-item {
           display: flex;
           align-items: center;
         }
+        /* Define the style of the education logo wrapper */
         .education-logo-wrapper {
           display: flex;
-          align-items: center; /* 高度居中 */
+          align-items: center; /* Vertically centered */
           justify-content: center;
           width: 120px;
           height: 120px;
           margin-right: 10px;
         }
 
+        /* Define the style of the education logo */
         .education-logo {
           width: 100px;
           height: 100px;
         }
+        /* Define the style of the education information section */
         .education-info {
           border: 1px solid transparent;
           padding-left: 10px;
           flex: 1;
         }
+        /* Define the style of the institution name */
         .institution {
           font-size: x-large;
           font-weight: bold;
         }
+        /* Define the style of the degree information */
         .degree {
           font-size: inherit;
           font-weight: bold;
           color: #00FF7F;
         }
+        /* Define the style of the major information */
         .major {
           margin-left: 10px;
           font-style: italic;
         }
+        /* Define the style of the time information */
         .time {
           font-size: smaller;
         }
+        /* Define the basic style of the HTML page */
         html {
             position: relative;
             background-color: #000033;
             color: white;
           }
+        /* Add a background image to the HTML page with opacity */
         html::before {
           content: '';
           position: fixed;
@@ -259,29 +311,35 @@
           opacity: 0.3;
           z-index: -1;
         }
+        /* Define the style of the year wrapper with horizontal rule */
         #hr-year-wrapper {
           border: 1px solid transparent;
           padding: 10px;
           background-color: transparent;
         }
+        /* Define the style of the paper container in the publications section */
         #publications #paper-container {
           border: 1px solid transparent;
           padding: 10px;
           background-color: transparent;
         }
+        /* Define the basic style of the table */
         table {
           border-collapse: collapse;
           width: 80%;
           margin: 0 auto;
         }
+        /* Define the style of table, table headers, and table cells */
         table, th, td {
           border: 1px solid transparent;
           text-align: center;
         }
+        /* Define the style of table headers */
         th {
           background-color: rgba(0, 0, 51, 0.8);
           font-weight: bold;
         }
+        /* Define the style of preformatted text in BibTeX sections */
         #publications [id^="bibtex-"] pre {
           white-space: pre-wrap;
           word-wrap: break-word;
@@ -308,6 +366,7 @@
         <h1>Kaixiang Chen</h1>
         <p style="font-size: 18px; font-style: italic">For the gap between academic and industrial.</p>
         <br></br>
+        <!-- Container for social media and contact icons -->
         <div style="text-align: center; background-color: rgba(255, 255, 200, 0.3); padding: 15px; border-radius: 10px;">
           <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank"><img src="images/homepage/Google scholar.png" alt="Google Scholar" style="width: 30px; height: 30px; margin-right: 15px;"></a>
           <a href="https://github.com/Excursion-ConsHein" target="_blank"><img src="images/homepage/github.png" alt="GitHub" style="width: 30px; height: 30px; margin-right: 15px;"></a>
@@ -322,7 +381,7 @@
     <div class="main-content">
       <section id="home" class="active">
         <div class="right-margin">
-          <!-- 右侧独立区域，可按需添加内容 -->
+          <!-- Right independent area, add content as needed -->
         </div>
         <p>This is <strong>Kaixiang Chen</strong>'s homepage.</p>
         <br></br>
@@ -333,7 +392,7 @@
     </section>
     
       <section id="about">
-    <!-- 教育和职业经历范式 -->
+    <!-- Education and career experience paradigm -->
     <div id="publication-header">
       <h1>Experience</h1>
       <p>Hope my career journey will be more than just an excursion!</p>
@@ -344,8 +403,11 @@
     <div id="education-experience"></div>
 
     <script>
+    // Function to create education experience elements based on the provided data
     function createEducationExperience(experienceData) {
+      // Get the education experience container element
       const container = document.getElementById('education-experience');
+      // Create a new div element for the education container
       const div = document.createElement('div');
       div.className = 'education-container';
       div.innerHTML = `
@@ -363,13 +425,15 @@
           <p></p>
         </div>
       </div>`;
+      // Append the new education container to the main container
       container.appendChild(div);
     }
 
-    // 从 JSON 文件加载教育经历数据
+    // Load education experience data from JSON file
     fetch('configs/experiences.json')
       .then(response => response.json())
       .then(data => {
+        // Iterate through each education experience and create corresponding elements
         data.forEach(experience => {
           createEducationExperience(experience);
         });
@@ -379,14 +443,18 @@
     
   </section>
       <section id="publications">
+    <!-- Header section for the publications -->
     <div id="publication-header">
       <h1>Publications</h1>
       <p>It is my pleasure that you can enjoy reading my publications!</p>
     </div>
+    <!-- Container for displaying papers -->
     <div id="paper-container"></div>
     
     <script>
+    // Function to create a year separator element
     function createYearSeparator(year) {
+      // Create a new div element for the year separator
       const yearDiv = document.createElement('div');
       yearDiv.innerHTML = `
       <div id="hr-year-wrapper">
@@ -396,7 +464,9 @@
       return yearDiv;
     }
 
+    // Function to create a paper element based on paper data
     function createPaper(paperData) {
+      // Create a new div element for the paper
       const paperDiv = document.createElement('div');
       paperDiv.innerHTML = `
       <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px;">
@@ -427,20 +497,23 @@
       return paperDiv;
     }
 
-    // 从 JSON 文件加载论文数据
+    // Load paper data from JSON file
     fetch('configs/papers.json')
       .then(response => response.json())
       .then(data => {
-        // 按年份顺序遍历，确保和 JSON 文件一致
+        // Traverse in chronological order to ensure consistency with the JSON file
         const sortedYears = Object.keys(data).sort((a, b) => b - a);
+        // Get the paper container element
         const paperContainer = document.getElementById('paper-container');
         sortedYears.forEach(year => {
+          // Create a new div element for the year block
           const yearBlock = document.createElement('div');
           yearBlock.appendChild(createYearSeparator(year));
           const yearPaperContainer = document.createElement('div');
           yearPaperContainer.id = `papers-${year}`;
+          // Iterate through each paper in the current year and append it to the container
           data[year].forEach(paper => {
-            yearPaperContainer.appendChild(createPaper(paper, year));
+            yearPaperContainer.appendChild(createPaper(paper));
           });
           yearBlock.appendChild(yearPaperContainer);
           paperContainer.appendChild(yearBlock);
@@ -456,11 +529,19 @@
   </div>
 
   <script>
+    // Function to show a specific page and update the UI accordingly
     function showPage(pageId) {
+      // Remove the 'active' class from all sections
       document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      // Add the 'active' class to the target section
       document.getElementById(pageId).classList.add('active');
       
-      // 更新导航栏高亮状态
+      // Hide all dashed boxes
+      document.querySelectorAll('[id^="abstract-"]').forEach(item => item.style.display = 'none');
+      document.querySelectorAll('[id^="bibtex-"]').forEach(item => item.style.display = 'none');
+      document.querySelectorAll('[id^="award-"]').forEach(item => item.style.display = 'none');
+      
+      // Update navigation bar highlight status
       document.querySelectorAll('nav a').forEach(navLink => {
         navLink.classList.remove('active');
       });
@@ -473,31 +554,52 @@
       }
     }
 
+    // Function to toggle the display of an abstract and hide other related elements
     function toggleAbstract(button, id) {
-      const abstract = document.getElementById(`abstract-${id.replace(/'/g, '\'')}`);
-      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, '\'')}`);
-      const award = document.getElementById(`award-${id.replace(/'/g, '\'')}`);
+      // Get the abstract, BibTeX, and award elements
+      const abstract = document.getElementById(`abstract-${id.replace(/'/g, "'")}`);
+      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
+      const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
+      // Hide BibTeX and award elements
       bibtex.style.display = 'none';
       award.style.display = 'none';
+      // Toggle the display of the abstract element
       abstract.style.display = abstract.style.display === 'none' ? 'block' : 'none';
+      if (abstract.style.display === 'block') {
+        // Scroll to the abstract element smoothly
+        abstract.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
+    // Function to toggle the display of an award and hide other related elements
     function toggleAward(button, id) {
-      const abstract = document.getElementById(`abstract-${id.replace(/'/g, '\'')}`);
-      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, '\'')}`);
-      const award = document.getElementById(`award-${id.replace(/'/g, '\'')}`);
+      // Get the abstract, BibTeX, and award elements
+      const abstract = document.getElementById(`abstract-${id.replace(/'/g, "'")}`);
+      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
+      const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
+      // Hide abstract and BibTeX elements
       abstract.style.display = 'none';
       bibtex.style.display = 'none';
+      // Toggle the display of the award element
       award.style.display = award.style.display === 'none' ? 'block' : 'none';
+      if (award.style.display === 'block') {
+        // Scroll to the award element smoothly
+        award.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
+    // Function to toggle the display of BibTeX and hide other related elements
     function toggleBibtex(button, id) {
-      const abstract = document.getElementById(`abstract-${id.replace(/'/g, '\'')}`);
-      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, '\'')}`);
-      const award = document.getElementById(`award-${id.replace(/'/g, '\'')}`);
+      // Get the abstract, BibTeX, and award elements
+      const abstract = document.getElementById(`abstract-${id.replace(/'/g, "'")}`);
+      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
+      const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
       abstract.style.display = 'none';
       award.style.display = 'none';
       bibtex.style.display = bibtex.style.display === 'none' ? 'block' : 'none';
+      if (bibtex.style.display === 'block') {
+        bibtex.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   </script>
 
