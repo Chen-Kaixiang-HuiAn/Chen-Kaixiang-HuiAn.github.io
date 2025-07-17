@@ -353,7 +353,7 @@
 </head>
 <body>
   <nav>
-    <a onclick="showPage('about')" id="nav-about" style="margin-right: 4ch;">About K. Chen</a>
+    <a onclick="showPage('experiences')" id="nav-experiences" style="margin-right: 4ch;">Experiences</a>
     <a onclick="showPage('publications')" id="nav-publications" style="margin-right: 4ch;">Publications</a>
     <a onclick="showPage('cv')" id="nav-cv" style="margin-right: 4ch;">CV</a>
     <img src="images/homepage/excursion-conshein.png" alt="excursion-conshein" class="nav-icon" onclick="showPage('home')" id="nav-icon">
@@ -392,10 +392,10 @@
         <p>Please don't hesitate to offer your advice, so that this homepage can be better improved!</p>
     </section>
     
-      <section id="about">
+      <section id="experiences">
     <!-- Education and career experience paradigm -->
     <div id="publication-header">
-      <h1>Experience</h1>
+      <h1>Experiences</h1>
       <p>Hope my career journey will be more than just an excursion!</p>
     </div>
     <div id="hr-year-wrapper">
@@ -549,7 +549,7 @@
       document.querySelectorAll('#mySidebar a:not(.closebtn)').forEach(navLink => {
         navLink.classList.remove('active');
       });
-      const activeNavLink = pageId === 'publication' ? document.getElementById('nav-publications') : document.getElementById(`nav-${pageId}`);
+      const activeNavLink = pageId === 'publications' ? document.getElementById('nav-publications') : document.getElementById(`nav-${pageId}`);
       if (activeNavLink) {
         activeNavLink.classList.add('active');
       }
