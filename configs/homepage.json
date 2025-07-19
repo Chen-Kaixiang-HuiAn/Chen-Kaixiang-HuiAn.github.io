@@ -1,26 +1,39 @@
 {
     "news": [
         {
-            
+            "time": "2023-09-25",
+            "content": "My first paper on UAV control was published in Applied and Computational Engineering Vol.9. <br> Before that, this paper had been accepted by <a href='https://2023.confmss.org/' target='_blank'>CONF-MSS 2023</a>. <br> This simple work made me have some perspective and knowledge on research."
+        },
+        {
+            "time": "2023-06-28",
+            "content": "I received my bachelor's degree in Mechatronics Engineering from <a href='https://mve.cqu.edu.cn/' target='_blank'>College of Mechanical and Vehicle Engineering (MVE)</a>, Chongqing University."
+        },
+        {
+            "time": "2023-06-09",
+            "content": "I got my intra-school exchange certificate from <a href='https://eie.cqu.edu.cn/' target='_blank'>National Elite Institute of Engineering (NEIE)</a>, Chongqing University</a>. <br> Besides, my graduation thesis <strong>Optimization of Laser Cutting Process Parameters Based on Vision Inspection</strong> was awarded as the outstanding undergraduate graduation design (thesis) of NEIE."
+
         }
     ],
     "honor": [
         {
             "time": "2023",
-            "content": "Outstanding Undergraduate Graduation Design (Thesis), National Elite Institute of Engineering (NEIE), Chongqing University"
+            "award": "Outstanding Undergraduate Graduation Design (Thesis)",
+            "unit": "National Elite Institute of Engineering (NEIE), Chongqing University"
         },
         {
             "time": "2023",
-            "content": "First-class Graduation Scholarship, National Elite Institute of Engineering (NEIE), Chongqing University"
+            "award": "First-class Graduation Scholarship",
+            "unit": "National Elite Institute of Engineering (NEIE), Chongqing University"
         },
         {
             "time": "2022",
-            "content": "Second-class Entrance Scholarship, National Elite Institute of Engineering (NEIE), Chongqing University"
+            "award": "Second-class Entrance Scholarship",
+            "unit": "National Elite Institute of Engineering (NEIE), Chongqing University"
         },
         {
             "time": "2022",
-            "content": "Third-class Scholarship, College of Mechanical and Vehicle Engineering (MVE), Chongqing University"
+            "award": "Third-class Scholarship",
+            "unit": "College of Mechanical and Vehicle Engineering (MVE), Chongqing University"
         }
-    ],
-    "intro": "I'm Kaixiang Chen (Chinese name: 陈恺翔), a current storekeeper in my hometown, Hui'an, Fujian, China."
+    ]
 }
