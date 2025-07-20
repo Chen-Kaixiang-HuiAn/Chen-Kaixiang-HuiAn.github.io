@@ -127,12 +127,22 @@
           padding: 0;
           margin-bottom: 0 !important;
         }
+          /* Change the layout of selected papers containers to a column */
+          #selected-papers-content > div {
+            flex-direction: column;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0;
+            margin-bottom: 20px !important;
+          }
           /* Change the layout of inner flex containers in publication paper containers to a column */
-          #publications #paper-container > div div[style*="display: flex; align-items: center;"] {
+          #publications #paper-container > div div[style*="display: flex; align-items: center;"],
+          #selected-papers-content > div div[style*="display: flex; align-items: center;"] {
             flex-direction: column;
           }
-          /* Adjust the margin and size of images in publication paper containers */
-          #publications #paper-container img {
+          /* Adjust the margin and size of images in publication and selected papers containers */
+          #publications #paper-container img,
+          #selected-papers-content img {
             margin-bottom: 10px;
             max-width: 100%;
             height: auto;
@@ -443,7 +453,7 @@
         
         
         <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">News</h1>
-       <div class="section-box" style="max-height: 250px; overflow-y: auto; margin-top: 10px;">
+       <div class="section-box" style="max-height: 240px; overflow-y: auto; margin-top: 10px;">
          <div id="news-content" style="padding: 10px;"></div>
        </div>
        
