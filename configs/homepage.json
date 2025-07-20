@@ -2,7 +2,7 @@
     "news": [
         {
             "time": "2023-09-25",
-            "content": "My first paper on UAV control was published in Applied and Computational Engineering Vol.9. <br> Before that, this paper had been accepted by <a href='https://2023.confmss.org/' target='_blank'>CONF-MSS 2023</a>. <br> This simple work made me have some perspective and knowledge on research."
+            "content": "My first paper on UAV control was published in <span style='font-style: italic'>Applied and Computational Engineering Vol.9</span>. Before that, this paper had been accepted by <a href='https://2023.confmss.org/' target='_blank'>CONF-MSS 2023</a>. <br> This simple work made me have some perspective and knowledge on research."
         },
         {
             "time": "2023-06-28",
