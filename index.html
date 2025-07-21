@@ -435,7 +435,7 @@
           <a href="https://space.bilibili.com/383180487" target="_blank"><img src="images/homepage/bilibili.png" alt="Bilibili" style="width: 30px; height: 30px; margin-right: 15px;"></a>
           <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank"><img src="images/homepage/youtube.png" alt="YouTube" style="width: 30px; height: 30px; margin-right: 15px;"></a>
           <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank"><img src="images/homepage/zhihu.png" alt="Zhihu" style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="mailto:conshein_yuanxing@outlook.com"><img src="images/homepage/email.png" width="30" height="30" style="margin-right: 15px;"></a>
+          <a href="mailto:conshein_yuanxing@outlook.com"><img src="images/homepage/email.png" width="30px" height="30px" style="margin-right: 15px;"></a>
         </div>
       </div>
     </div>
@@ -448,10 +448,8 @@
         
         <div class="section-box">
           <p id="intro-content"></p>
-        </div>
-        
-        
-        
+        </div>     
+
         <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">News</h1>
        <div class="section-box" style="max-height: 240px; overflow-y: auto; margin-top: 10px;">
          <div id="news-content" style="padding: 10px;"></div>
@@ -461,9 +459,7 @@
        <div class="section-box" style="margin-top: 10px; border: none;">
          <div id="selected-papers-content" style="padding: 10px;"></div>
        </div>
-        
-        
-        
+               
         <script>
           // Load and display homepage content
           fetch('configs/homepage.json')
@@ -475,8 +471,6 @@
                 .then(text => {
                   document.getElementById('intro-content').innerHTML = text.replace(/\n/g, '<br>');
                 });
-              
-              
               
               // Display news with formatted date
               const newsContainer = document.getElementById('news-content');
@@ -569,7 +563,7 @@
     </section>
     
   <section id="experiences">
-    <!-- Education and career experience paradigm -->
+    <!-- Education and career experience model -->
     <div id="publication-header">
       <h1>Experiences</h1>
       <p>Hope my career journey will be more than just an excursion!</p>
@@ -657,12 +651,12 @@
           <p><span style="text-decoration: underline;">${paperData.author}</span></p>
           <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.publication}</em></p>
           <p>
-            ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleAward(this, '${paperData.title.replace(/'/g, '\'')}')" class="abs-link">AWARD</a>` : ''}
-            <a href="javascript:void(0);" onclick="toggleAbstract(this, '${paperData.title.replace(/'/g, '\'')}')" class="abs-link">ABS</a>
-            <a href="javascript:void(0);" onclick="toggleKeywords(this, '${paperData.title.replace(/'/g, '\'')}')" class="key-link">KEY</a>
-            <a href="javascript:void(0);" onclick="toggleBibtex(this, '${paperData.title.replace(/'/g, '\'')}')" class="bib-link">BIB</a>
+            ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'award')" class="abs-link">AWARD</a>` : ''}
+            <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'abstract')" class="abs-link">ABS</a>
+            <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'keywords')" class="key-link">KEY</a>
+            <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'bibtex')" class="bib-link">BIB</a>
             <a href="${paperData.webLink}" target="_blank" class="web-link">LINK</a>
-            <a href="javascript:void(0);" onclick="toggleVideo(this, '${paperData.title.replace(/'/g, '\'')}')" class="video-link">VIDEO</a>
+            ${paperData.videoLink ? `<a href="javascript:void(0);" onclick="toggleVideo(this, '${paperData.title.replace(/'/g, '\'')}')" class="video-link">VIDEO</a>` : ''}
             ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
           </p>
         </div>
@@ -777,148 +771,43 @@
           }
     }
 
-    // Function to toggle the display of an abstract and hide other related elements
-    function toggleAbstract(button, id) {
-      // Get the abstract, BibTeX, award and keywords elements
-      const abstract = document.getElementById(`abstract-${id.replace(/'/g, "'")}`);
-      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
-      const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
-      const keywords = document.getElementById(`keywords-${id.replace(/'/g, "'")}`);
-      const video = document.getElementById(`video-${id.replace(/'/g, "'")}`);
-      // Hide BibTeX, award and keywords elements
-      bibtex.style.display = 'none';
-      award.style.display = 'none';
-      keywords.style.display = 'none';
-      video.style.display = 'none';
-      // Toggle the display of the abstract element
-      abstract.style.display = abstract.style.display === 'none' ? 'block' : 'none';
-      
-      // Check if abstract bottom is below viewport
-      if (abstract.style.display === 'block') {
-        const abstractRect = abstract.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        if (abstractRect.bottom > viewportHeight) {
-          // Scroll to align abstract bottom with viewport bottom smoothly
-           window.scrollTo({
-             top: window.scrollY + (abstractRect.bottom - viewportHeight),
-             behavior: 'smooth'
-           });
+    // Generic toggle function to switch the display state of a specified element and hide other related elements
+    function toggleContent(button, id, targetType) {
+      const elementMap = {
+        'abstract': document.getElementById(`abstract-${id.replace(/'/g, "'")}`),
+        'bibtex': document.getElementById(`bibtex-${id.replace(/'/g, "'")}`),
+        'award': document.getElementById(`award-${id.replace(/'/g, "'")}`),
+        'keywords': document.getElementById(`keywords-${id.replace(/'/g, "'")}`),
+        'video': document.getElementById(`video-${id.replace(/'/g, "'")}`)
+      };
+    
+      // 获取目标元素
+      const targetElement = elementMap[targetType];
+      if (targetElement) {
+        // Toggle the display state of the target element
+        const newDisplay = targetElement.style.display === 'none' ? 'block' : 'none';
+        targetElement.style.display = newDisplay;
+
+        // If the target element will be displayed, hide other elements
+        if (newDisplay === 'block') {
+          Object.values(elementMap).forEach(element => {
+            if (element && element !== targetElement) {
+              element.style.display = 'none';
+            }
+          });
         }
-      }
-    }
 
-    // Function to toggle the display of an award and hide other related elements
-    function toggleAward(button, id) {
-      // Get the abstract, BibTeX, and award elements
-      const abstract = document.getElementById(`abstract-${id.replace(/'/g, "'")}`);
-      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
-      const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
-      const video = document.getElementById(`video-${id.replace(/'/g, "'")}`);
-      const keywords = document.getElementById(`keywords-${id.replace(/'/g, "'")}`);
-      // Hide abstract and BibTeX elements
-      abstract.style.display = 'none';
-      bibtex.style.display = 'none';
-      video.style.display = 'none';
-      keywords.style.display = 'none';
-      // Toggle the display of the award element
-      award.style.display = award.style.display === 'none' ? 'block' : 'none';
-      
-      // Check if award bottom is below viewport
-      if (award.style.display === 'block') {
-        const awardRect = award.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        if (awardRect.bottom > viewportHeight) {
-          // Scroll to align award bottom with viewport bottom smoothly
-           window.scrollTo({
-             top: window.scrollY + (awardRect.bottom - viewportHeight),
-             behavior: 'smooth'
-           });
-        }
-      }
-    }
-
-    // Function to toggle the display of keywords and hide other related elements
-    function toggleKeywords(button, id) {
-      // Get the abstract, BibTeX, award and keywords elements
-      const abstract = document.getElementById(`abstract-${id.replace(/'/g, "'")}`);
-      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
-      const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
-      const keywords = document.getElementById(`keywords-${id.replace(/'/g, "'")}`);
-      const video = document.getElementById(`video-${id.replace(/'/g, "'")}`);
-      // Hide all other elements
-      abstract.style.display = 'none';
-      bibtex.style.display = 'none';
-      award.style.display = 'none';
-      video.style.display = 'none';
-      // Toggle keywords display
-      keywords.style.display = keywords.style.display === 'none' ? 'block' : 'none';
-      
-      // Check if keywords bottom is below viewport
-      if (keywords.style.display === 'block') {
-        const keywordsRect = keywords.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        if (keywordsRect.bottom > viewportHeight) {
-          // Scroll to align keywords bottom with viewport bottom smoothly
-           window.scrollTo({
-             top: window.scrollY + (keywordsRect.bottom - viewportHeight),
-             behavior: 'smooth'
-           });
-        }
-      }
-    }
-
-    // Function to toggle the display of BibTeX and hide other related elements
-    function toggleBibtex(button, id) {
-      // Get the abstract, BibTeX, and award elements
-      const abstract = document.getElementById(`abstract-${id.replace(/'/g, "'")}`);
-      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
-      const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
-      const keywords = document.getElementById(`keywords-${id.replace(/'/g, "'")}`);
-      const video = document.getElementById(`video-${id.replace(/'/g, "'")}`);
-      abstract.style.display = 'none';
-      award.style.display = 'none';
-      keywords.style.display = 'none';
-      video.style.display = 'none';
-      bibtex.style.display = bibtex.style.display === 'none' ? 'block' : 'none';
-      
-      // Check if bibtex bottom is below viewport
-      if (bibtex.style.display === 'block') {
-        const bibtexRect = bibtex.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        if (bibtexRect.bottom > viewportHeight) {
-          // Scroll to align bibtex bottom with viewport bottom smoothly
-           window.scrollTo({
-             top: window.scrollY + (bibtexRect.bottom - viewportHeight),
-             behavior: 'smooth'
-           });
-        }
-      }
-    }
-
-    function toggleVideo(button, id) {
-      // Get the abstract, BibTeX, award and keywords elements
-      const abstract = document.getElementById(`abstract-${id.replace(/'/g, "'")}`);
-      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
-      const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
-      const keywords = document.getElementById(`keywords-${id.replace(/'/g, "'")}`);
-      const video = document.getElementById(`video-${id.replace(/'/g, "'")}`);
-
-      // Hide all other elements
-      abstract.style.display = 'none';
-      bibtex.style.display = 'none';
-      award.style.display = 'none';
-      keywords.style.display = 'none';
-      video.style.display = video.style.display === 'none' ? 'block' : 'none'; 
-
-      if (video.style.display === 'block') {
-        const videoRect = video.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        if (videoRect.bottom > viewportHeight) {
-          // Scroll to align video bottom with viewport bottom smoothly
-           window.scrollTo({
-             top: window.scrollY + (videoRect.bottom - viewportHeight),
-             behavior: 'smooth'
-           });
+        // Check if the bottom of the target element exceeds the viewport
+        if (newDisplay === 'block') {
+          const targetRect = targetElement.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          if (targetRect.bottom > viewportHeight) {
+            // 滚动以使目标元素底部与视口底部对齐
+            window.scrollTo({
+              top: window.scrollY + (targetRect.bottom - viewportHeight),
+              behavior: 'smooth'
+            });
+          }
         }
       }
     }
