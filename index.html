@@ -568,7 +568,7 @@
         </script>
     </section>
     
-      <section id="experiences">
+  <section id="experiences">
     <!-- Education and career experience paradigm -->
     <div id="publication-header">
       <h1>Experiences</h1>
@@ -621,10 +621,9 @@
         });
       });
     </script>
-
-    
   </section>
-      <section id="publications">
+
+  <section id="publications">
     <!-- Header section for the publications -->
     <div id="publication-header">
       <h1>Publications</h1>
@@ -663,7 +662,7 @@
             <a href="javascript:void(0);" onclick="toggleKeywords(this, '${paperData.title.replace(/'/g, '\'')}')" class="key-link">KEY</a>
             <a href="javascript:void(0);" onclick="toggleBibtex(this, '${paperData.title.replace(/'/g, '\'')}')" class="bib-link">BIB</a>
             <a href="${paperData.webLink}" target="_blank" class="web-link">LINK</a>
-            ${paperData.videoLink ? `<a href="${paperData.videoLink}" target="_blank" class="video-link">VIDEO</a>` : ''}
+            <a href="javascript:void(0);" onclick="toggleVideo(this, '${paperData.title.replace(/'/g, '\'')}')" class="video-link">VIDEO</a>
             ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
           </p>
         </div>
@@ -681,6 +680,9 @@
       </div>
       <div id="bibtex-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
         <pre>${paperData.bibtex}</pre>
+      </div>
+      <div id="video-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+        <iframe src="${paperData.videoLink}" style="width: 100%; aspect-ratio: 16/9;"></iframe>
       </div>`;
       return paperDiv;
     }
@@ -709,7 +711,8 @@
       });
     </script>
   </section>
-      <section id="cv">
+
+  <section id="cv">
         <p>Now my curriculum vitae has not been uploaded yet.</p>
         <p>Please <strong style="font-size: 24px;">stay tuned!</strong></p>
   </section>
@@ -731,7 +734,9 @@
       document.querySelectorAll('[id^="abstract-"]').forEach(item => item.style.display = 'none');
       document.querySelectorAll('[id^="bibtex-"]').forEach(item => item.style.display = 'none');
       document.querySelectorAll('[id^="award-"]').forEach(item => item.style.display = 'none');
-      
+      document.querySelectorAll('[id^="keywords-"]').forEach(item => item.style.display = 'none');
+      document.querySelectorAll('[id^="video-"]').forEach(item => item.style.display = 'none');
+
       // Update navigation bar highlight status
       document.querySelectorAll('nav a').forEach(navLink => {
         navLink.classList.remove('active');
@@ -779,10 +784,12 @@
       const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
       const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
       const keywords = document.getElementById(`keywords-${id.replace(/'/g, "'")}`);
+      const video = document.getElementById(`video-${id.replace(/'/g, "'")}`);
       // Hide BibTeX, award and keywords elements
       bibtex.style.display = 'none';
       award.style.display = 'none';
       keywords.style.display = 'none';
+      video.style.display = 'none';
       // Toggle the display of the abstract element
       abstract.style.display = abstract.style.display === 'none' ? 'block' : 'none';
       
@@ -806,9 +813,13 @@
       const abstract = document.getElementById(`abstract-${id.replace(/'/g, "'")}`);
       const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
       const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
+      const video = document.getElementById(`video-${id.replace(/'/g, "'")}`);
+      const keywords = document.getElementById(`keywords-${id.replace(/'/g, "'")}`);
       // Hide abstract and BibTeX elements
       abstract.style.display = 'none';
       bibtex.style.display = 'none';
+      video.style.display = 'none';
+      keywords.style.display = 'none';
       // Toggle the display of the award element
       award.style.display = award.style.display === 'none' ? 'block' : 'none';
       
@@ -833,12 +844,12 @@
       const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
       const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
       const keywords = document.getElementById(`keywords-${id.replace(/'/g, "'")}`);
-      
+      const video = document.getElementById(`video-${id.replace(/'/g, "'")}`);
       // Hide all other elements
       abstract.style.display = 'none';
       bibtex.style.display = 'none';
       award.style.display = 'none';
-      
+      video.style.display = 'none';
       // Toggle keywords display
       keywords.style.display = keywords.style.display === 'none' ? 'block' : 'none';
       
@@ -863,9 +874,11 @@
       const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
       const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
       const keywords = document.getElementById(`keywords-${id.replace(/'/g, "'")}`);
+      const video = document.getElementById(`video-${id.replace(/'/g, "'")}`);
       abstract.style.display = 'none';
       award.style.display = 'none';
       keywords.style.display = 'none';
+      video.style.display = 'none';
       bibtex.style.display = bibtex.style.display === 'none' ? 'block' : 'none';
       
       // Check if bibtex bottom is below viewport
@@ -881,6 +894,35 @@
         }
       }
     }
+
+    function toggleVideo(button, id) {
+      // Get the abstract, BibTeX, award and keywords elements
+      const abstract = document.getElementById(`abstract-${id.replace(/'/g, "'")}`);
+      const bibtex = document.getElementById(`bibtex-${id.replace(/'/g, "'")}`);
+      const award = document.getElementById(`award-${id.replace(/'/g, "'")}`);
+      const keywords = document.getElementById(`keywords-${id.replace(/'/g, "'")}`);
+      const video = document.getElementById(`video-${id.replace(/'/g, "'")}`);
+
+      // Hide all other elements
+      abstract.style.display = 'none';
+      bibtex.style.display = 'none';
+      award.style.display = 'none';
+      keywords.style.display = 'none';
+      video.style.display = video.style.display === 'none' ? 'block' : 'none'; 
+
+      if (video.style.display === 'block') {
+        const videoRect = video.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        if (videoRect.bottom > viewportHeight) {
+          // Scroll to align video bottom with viewport bottom smoothly
+           window.scrollTo({
+             top: window.scrollY + (videoRect.bottom - viewportHeight),
+             behavior: 'smooth'
+           });
+        }
+      }
+    }
+
   </script>
 
 </body>
