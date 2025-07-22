@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html>
+
+<!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
+
+<!-- Last Change: 2025-07-20 -->
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
@@ -8,514 +13,598 @@
   <meta http-equiv="Expires" content="0">
   <title>Excursion ConsHein BETA</title>
   <style>
+    /* Define page layout as flex container */
+    .page-container {
+      display: flex;
+      padding-top: 60px;
+      /* Compensate for fixed navbar height */
+    }
 
-        /* Define the layout of the page as a flex container */
-        .page-container {
-          display: flex;
-          padding-top: 60px; /* Compensate for fixed navbar height */
-        }
-        /* Define the style of the left sidebar */
-        .left-sidebar {
-          width: 33.33%;
-          padding: 10px;
-          position: fixed;
-          height: 100vh;
-          overflow-y: auto;
-        }
-        /* Define the style of the main content area */
-        .main-content {
-          width: 58.67%;
-          padding: 10px;
-          margin-left: 35.33%;
-        }
-        /* Define the style of the right margin */
-        .right-margin {
-          width: 8%;
-          padding: 10px;
-          margin-left: 92%;
-          position: fixed;
-          height: 100vh;
-        }
-        /* Define the style of bold and large text */
-        .bold-large-text {
-            font-weight: bold;
-            font-size: 24px;
-        }
-        /* Define the color of links */
-        a {
-          color: #add8e6;
-        }
-        /* Define the style of the navigation bar */
-        nav {
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          padding: 10px;
-          background-color: rgba(0, 0, 51, 0.8);
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          z-index: 1000;
-        }
-        
-        /* Define responsive styles for screens with a maximum width of 768px */
-        @media (max-width: 768px) {
-          #home h1 {
-            font-size: 30px !important;
-          }
-          /* Add a bottom border after the page container */
-          .page-container::after {
-            content: '';
-            display: block;
-            width: 100%;
-            border-bottom: 1px solid white;
-            margin: 10px 0;
-          }
-          /* Add a bottom border to the left sidebar */
-          .left-sidebar {
-            border-bottom: 2px solid white;
-            position: static;
-            height: auto;
-          }
-          /* Remove the right border of the left sidebar and main content */
-          .left-sidebar, .main-content {
-            border-right: none;
-          }
-          /* Remove the right border of the right margin */
-          .right-margin {
-            border-right: none;
-            position: static;
-            height: auto;
-            margin-left: 0;
-          }
-          /* Make the navigation bar items wrap and center them */
-          nav {
-            flex-wrap: wrap;
-            justify-content: center;
-          }
-          /* Adjust the margin and font size of navigation bar links */
-          nav a {
-            margin: 2px;
-            font-size: 13px;
-          }
-          /* Adjust the maximum width and height of the navigation icon */
-          .nav-icon {
-            max-width: 30px;
-            max-height: 30px;
-          }
-          /* Set the width of the year label to 100% minus 20px */
-          .year-label {
-            width: calc(100% - 20px);
-            box-sizing: border-box;
-          }
-          /* Change the layout of education items to a column */
-          .education-item {
-            flex-direction: column;
-          }
-          /* Adjust the margin of the education logo wrapper */
-          .education-logo-wrapper {
-            margin-right: 0;
-            margin-bottom: 10px;
-          }
-          /* Change the layout of publication paper containers to a column */
-          #publications #paper-container > div {
-          flex-direction: column;
-          width: 100%;
-          box-sizing: border-box;
-          padding: 0;
-          margin-bottom: 0 !important;
-        }
-          /* Change the layout of selected papers containers to a column */
-          #selected-papers-content > div {
-            flex-direction: column;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 0;
-            margin-bottom: 20px !important;
-          }
-          /* Change the layout of inner flex containers in publication paper containers to a column */
-          #publications #paper-container > div div[style*="display: flex; align-items: center;"],
-          #selected-papers-content > div div[style*="display: flex; align-items: center;"] {
-            flex-direction: column;
-          }
-          /* Adjust the margin and size of images in publication and selected papers containers */
-          #publications #paper-container img,
-          #selected-papers-content img {
-            margin-bottom: 10px;
-            max-width: 100%;
-            height: auto;
-          }
-          /* Set the width and height of the homepage image to 40% */
-          img[src="images/homepage/excursion-conshein.png"] {
-            width: 40% !important;
-            height: 40% !important;
-          }
-          
-          /* Adjust the size of images in the left sidebar's specific container */
-          .left-sidebar div[style*="text-align: center; background-color: rgba(255, 255, 200, 0.3);"] img {
-            width: 20px !important;
-            height: 20px !important;
-            margin-right: 8px !important;
-          }
-          
-          /* Change the layout of the page container to a column */
-          .page-container {
-            flex-direction: column;
-            padding-top: 0;
-          }
-          /* Set the width of the left sidebar to 100% */
-          .left-sidebar {
-            width: 100%;
-            box-sizing: border-box;
-          }
-          /* Set the width of the main content area to 100% */
-          .main-content {
-            width: 100%;
-            box-sizing: border-box;
-            margin-left: 0;
-          }
-          /* Set the width of the right margin to 100% */
-          .right-margin {
-            width: 100%;
-            box-sizing: border-box;
-          }
-          /* Adjust social media container for mobile */
-          .left-sidebar div[style*="text-align: center; background: linear-gradient"] {
-            width: 90% !important;
-            padding: 10px !important;
-            margin: 0 auto !important;
-          }
-        }
-        /* Define the style of the navigation icon */
-        .nav-icon {
-          width: calc(100% - 40px);
-          height: calc(100% - 40px);
-          max-width: 40px;
-          max-height: 40px;
-          border-radius: 50%;
-          margin-left: 16px;
-          cursor: pointer;
-        }
-        /* Define the style of navigation bar links */
-        nav a {
-          text-decoration: none;
-          color: #add8e6;
-          border-radius: 4px;
-          transition: all 0.3s ease;
-          cursor: pointer;
-          border: none;
-        }
+    /* Define left sidebar style */
+    .left-sidebar {
+      width: 33.33%;
+      padding: 10px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
 
-        /* Define the hover style of navigation bar links */
-        nav a:hover {
-          background-color: #000066;
-        }
-        /* Define the active style of navigation bar links */
-        nav a.active {
-          font-weight: bold;
-          color: #fff;
-          background-color: #9400d3;
-          border: 1px solid #9400d3;
-        }
+    /* Define main content area style */
+    .main-content {
+      width: 58.67%;
+      padding: 10px;
+      margin-left: 35.33%;
+    }
 
-        /* Hide all sections by default */
-        section {
-          display: none;
-        }
-        /* Show the active section */
-        section.active {
-          display: block;
-          margin-top: 20px;
-        }
-        /* Define the font family and bottom margin of paragraphs and headings in the publications section */
-        #publications p, #publications h3 {
-          font-family: 'Microsoft YaHei', sans-serif;
-          margin-bottom: 0.5em;
-        }
-        /* Define the bottom margin of the last paragraph in the publication header */
-        #publication-header p:last-of-type {
-          margin-bottom: calc(3 * 1.5em);
-        }
-        /* Define the font size of the heading in the publication header */
-        #publication-header h1 {
-          font-size: 36px;
-        }
-        /* Define the style of the publication header */
-        #publication-header {
-          border: 1px solid transparent;
-          padding: 10px;
-          background-color: transparent;
-        }
-        /* Define the style of paper elements */
-        .paper {
-          border: none;
-          padding: 10px;
-          background-color: transparent;
-          margin-bottom: 0 !important;
-        }
-        /* Define the style of the abstract section */
-        #abstract {
-          margin-top: 10px;
-          font-size: 14px;
-        }
-        /* Define the style of links for abstract, PDF, BibTeX, video, and code */
-        .abs-link, .web-link, .bib-link, .video-link, .code-link, .key-link {
-          display: inline-block;
-          padding: 5px 15px;
-          margin: 5px;
-          background-color: white;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          text-decoration: none;
-          color: #333;
-          text-align: center;
-          font-size: 14px;
-        }
-        /* Define the style of the year label */
-        .year-label {
-          text-align: right;
-          font-size: 32px;
-          font-weight: bold;
-          color: #ff9900;
-        }
-        /* Define the style of the education container */
-        .education-container {
-          border: 1px solid transparent; /* Large border */
-          padding: 10px;
-          margin-top: 20px;
-        }
-        /* Define the style of education items */
-        .education-item {
-          display: flex;
-          
-        /* Define the style for section boxes */
-        .section-box {
-          border: 1px solid #add8e6;
-          border-radius: 8px;
-          padding: 15px;
-          margin-bottom: 20px;
-          background-color: rgba(0, 0, 51, 0.1);
-        }
-        
-        /* Style for section titles */
-        .section-title {
-          font-size: 20px;
-          font-weight: bold;
-          margin-bottom: 10px;
-          color: #add8e6;
-          border-bottom: 1px solid #add8e6;
-          padding-bottom: 5px;
-        }
-          align-items: center;
-        }
-        /* Define the style of the education logo wrapper */
-        .education-logo-wrapper {
-          display: flex;
-          align-items: center; /* Vertically centered */
-          justify-content: center;
-          width: 120px;
-          height: 120px;
-          margin-right: 10px;
-        }
+    /* Define right margin style */
+    .right-margin {
+      width: 8%;
+      padding: 10px;
+      margin-left: 92%;
+      position: fixed;
+      height: 100vh;
+    }
 
-        /* Define the style of the education logo */
-        .education-logo {
-          width: 100px;
-          height: 100px;
-        }
-        /* Define the style of the education information section */
-        .education-info {
-          border: 1px solid transparent;
-          padding-left: 10px;
-          flex: 1;
-        }
-        /* Define the style of the institution name */
-        .institution {
-          font-size: x-large;
-          font-weight: bold;
-        }
-        /* Define the style of the degree information */
-        .degree {
-          font-size: inherit;
-          font-weight: bold;
-          color: #00FF7F;
-        }
-        /* Define the style of the major information */
-        .major {
-          margin-left: 10px;
-          font-style: italic;
-        }
-        /* Define the style of the time information */
-        .time {
-          font-size: smaller;
-        }
-        /* Define the basic style of the HTML page */
-        html {
-            position: relative;
-            background-color: #000033;
-            color: white;
-          }
-        /* Add a background image to the HTML page with opacity */
-        html::before {
-          content: '';
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-image: url('images/homepage/BG.png');
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: center;
-          opacity: 0.3;
-          z-index: -1;
-        }
-        /* Define the style of the year wrapper with horizontal rule */
-        #hr-year-wrapper {
-          border: 1px solid transparent;
-          padding: 10px;
-          background-color: transparent;
-        }
-        /* Define the style of the paper container in the publications section */
-        #publications #paper-container {
-          border: 1px solid transparent;
-          padding: 10px;
-          background-color: transparent;
-        }
-        /* Define the basic style of the table */
-        table {
-          border-collapse: collapse;
-          width: 80%;
-          margin: 0 auto;
-        }
-        /* Define the style of table, table headers, and table cells */
-        table, th, td {
-          border: 1px solid transparent;
-          text-align: center;
-        }
-        /* Define the style of table headers */
-        th {
-          background-color: rgba(0, 0, 51, 0.8);
-          font-weight: bold;
-        }
-        /* Define the style of preformatted text in BibTeX sections */
-        #publications [id^="bibtex-"] pre {
-          white-space: pre-wrap;
-          word-wrap: break-word;
-          width: 100%;
-          overflow-wrap: break-word;
-          box-sizing: border-box;
-        }
-    </style>
+    /* Define bold and large text style */
+    .bold-large-text {
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    /* Define link color */
+    a {
+      color: #add8e6;
+    }
+
+    /* Define navigation bar style */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 10px;
+      background-color: rgba(0, 0, 51, 0.8);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    /* Define responsive styles for screens with a maximum width of 768px */
+    @media (max-width: 768px) {
+      #home h1 {
+        font-size: 30px !important;
+      }
+
+      /* Add a bottom border after the page container */
+      .page-container::after {
+        content: '';
+        display: block;
+        width: 100%;
+        border-bottom: 1px solid white;
+        margin: 10px 0;
+      }
+
+      /* Add a bottom border to the left sidebar */
+      .left-sidebar {
+        border-bottom: 2px solid white;
+        position: static;
+        height: auto;
+      }
+
+      /* Remove the right border of the left sidebar and main content */
+      .left-sidebar,
+      .main-content {
+        border-right: none;
+      }
+
+      /* Remove the right border of the right margin */
+      .right-margin {
+        border-right: none;
+        position: static;
+        height: auto;
+        margin-left: 0;
+      }
+
+      /* Make the navigation bar items wrap and center them */
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      /* Adjust the margin and font size of navigation bar links */
+      nav a {
+        margin: 2px;
+        font-size: 13px;
+      }
+
+      /* Adjust the maximum width and height of the navigation icon */
+      .nav-icon {
+        max-width: 30px;
+        max-height: 30px;
+      }
+
+      /* Set the width of the year label to 100% minus 20px */
+      .year-label {
+        width: calc(100% - 20px);
+        box-sizing: border-box;
+      }
+
+      /* Change the layout of education items to a column */
+      .education-item {
+        flex-direction: column;
+      }
+
+      /* Adjust the margin of the education logo wrapper */
+      .education-logo-wrapper {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      /* Change the layout of publication paper containers to a column */
+      #publications #paper-container>div {
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        margin-bottom: 0 !important;
+      }
+
+      /* Change the layout of selected papers containers to a column */
+      #selected-papers-content>div {
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        margin-bottom: 20px !important;
+      }
+
+      /* Change the layout of inner flex containers in publication paper containers to a column */
+      #publications #paper-container>div div[style*="display: flex; align-items: center;"],
+      #selected-papers-content>div div[style*="display: flex; align-items: center;"] {
+        flex-direction: column;
+      }
+
+      /* Adjust the margin and size of images in publication and selected papers containers */
+      #publications #paper-container img,
+      #selected-papers-content img {
+        margin-bottom: 10px;
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Set the width and height of the homepage image to 40% */
+      img[src="images/homepage/excursion-conshein.png"] {
+        width: 40% !important;
+        height: 40% !important;
+      }
+
+      /* Adjust the size of images in the left sidebar's specific container */
+      .left-sidebar div[style*="text-align: center; background-color: rgba(255, 255, 200, 0.3);"] img {
+        width: 20px !important;
+        height: 20px !important;
+        margin-right: 8px !important;
+      }
+
+      /* Change the layout of the page container to a column */
+      .page-container {
+        flex-direction: column;
+        padding-top: 0;
+      }
+
+      /* Set the width of the left sidebar to 100% */
+      .left-sidebar {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Set the width of the main content area to 100% */
+      .main-content {
+        width: 100%;
+        box-sizing: border-box;
+        margin-left: 0;
+      }
+
+      /* Set the width of the right margin to 100% */
+      .right-margin {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Adjust social media container for mobile */
+      .left-sidebar div[style*="text-align: center; background: linear-gradient"] {
+        width: 90% !important;
+        padding: 10px !important;
+        margin: 0 auto !important;
+      }
+    }
+
+    /* Define the style of the navigation icon */
+    .nav-icon {
+      width: calc(100% - 40px);
+      height: calc(100% - 40px);
+      max-width: 40px;
+      max-height: 40px;
+      border-radius: 50%;
+      margin-left: 16px;
+      cursor: pointer;
+    }
+
+    /* Define the style of navigation bar links */
+    nav a {
+      text-decoration: none;
+      color: #add8e6;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    /* Define navigation bar link hover style */
+    nav a:hover {
+      background-color: #000066;
+    }
+
+    /* Define navigation bar active link style */
+    nav a.active {
+      font-weight: bold;
+      color: #fff;
+      background-color: #9400d3;
+      border: 1px solid #9400d3;
+    }
+
+    /* Hide all sections by default */
+    section {
+      display: none;
+    }
+
+    /* Show active section */
+    section.active {
+      display: block;
+      margin-top: 20px;
+    }
+
+    /* Define font family and bottom margin for publications section text */
+    #publications p,
+    #publications h3 {
+      font-family: 'Microsoft YaHei', sans-serif;
+      margin-bottom: 0.5em;
+    }
+
+    /* Define bottom margin for last paragraph in publication header */
+    #publication-header p:last-of-type {
+      margin-bottom: calc(3 * 1.5em);
+    }
+
+    /* Define heading font size for publication header */
+    #publication-header h1 {
+      font-size: 36px;
+    }
+
+    /* Define publication header style */
+    #publication-header {
+      border: 1px solid transparent;
+      padding: 10px;
+      background-color: transparent;
+    }
+
+    /* Define paper element style */
+    .paper {
+      border: none;
+      padding: 10px;
+      background-color: transparent;
+      margin-bottom: 0 !important;
+    }
+
+    /* Define abstract section style */
+    #abstract {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    /* Define style for content links (abstract, PDF, BibTeX, video, code) */
+    .abs-link,
+    .web-link,
+    .bib-link,
+    .video-link,
+    .code-link,
+    .key-link {
+      display: inline-block;
+      padding: 5px 15px;
+      margin: 5px;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-decoration: none;
+      color: #333;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* Define year label style */
+    .year-label {
+      text-align: right;
+      font-size: 32px;
+      font-weight: bold;
+      color: #ff9900;
+    }
+
+    /* Define education container style */
+    .education-container {
+      border: 1px solid transparent;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    /* Define the style of education items */
+    .education-item {
+      display: flex;
+
+      /* Define the style for section boxes */
+      .section-box {
+        border: 1px solid #add8e6;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: rgba(0, 0, 51, 0.1);
+      }
+
+      /* Style for section titles */
+      .section-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #add8e6;
+        border-bottom: 1px solid #add8e6;
+        padding-bottom: 5px;
+      }
+
+      align-items: center;
+    }
+
+    /* Define the style of the education logo wrapper */
+    .education-logo-wrapper {
+      display: flex;
+      align-items: center;
+      /* Vertically centered */
+      justify-content: center;
+      width: 120px;
+      height: 120px;
+      margin-right: 10px;
+    }
+
+    /* Define the style of the education logo */
+    .education-logo {
+      width: 100px;
+      height: 100px;
+    }
+
+    /* Define the style of the education information section */
+    .education-info {
+      border: 1px solid transparent;
+      padding-left: 10px;
+      flex: 1;
+    }
+
+    /* Define the style of the institution name */
+    .institution {
+      font-size: x-large;
+      font-weight: bold;
+    }
+
+    /* Define the style of the degree information */
+    .degree {
+      font-size: inherit;
+      font-weight: bold;
+      color: #00FF7F;
+    }
+
+    /* Define the style of the major information */
+    .major {
+      margin-left: 10px;
+      font-style: italic;
+    }
+
+    /* Define the style of the time information */
+    .time {
+      font-size: smaller;
+    }
+
+    /* Define basic HTML page style */
+    html {
+      position: relative;
+      background-color: #000033;
+      color: white;
+    }
+
+    /* Add background image with opacity to HTML page */
+    html::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('images/homepage/BG.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    /* Define year wrapper with horizontal rule style */
+    #hr-year-wrapper {
+      border: 1px solid transparent;
+      padding: 10px;
+      background-color: transparent;
+    }
+
+    /* Define paper container style in publications section */
+    #publications #paper-container {
+      border: 1px solid transparent;
+      padding: 10px;
+      background-color: transparent;
+    }
+
+    /* Define basic table style */
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    /* Define style for table, headers, and cells */
+    table,
+    th,
+    td {
+      border: 1px solid transparent;
+      text-align: center;
+    }
+
+    /* Define table header style */
+    th {
+      background-color: rgba(0, 0, 51, 0.8);
+    }
+
+    font-weight: bold;
+    }
+
+    /* Define preformatted text style for BibTeX sections */
+    #publications [id^="bibtex-"] pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      width: 100%;
+      overflow-wrap: break-word;
+      box-sizing: border-box;
+    }
+  </style>
   <link rel="shortcut icon" type="image/x-icon" href="images/homepage/favicon.ico">
 </head>
+
 <body>
   <nav>
     <a onclick="showPage('experiences')" id="nav-experiences" style="margin-right: 4ch;">Experiences</a>
     <a onclick="showPage('publications')" id="nav-publications" style="margin-right: 4ch;">Publications</a>
     <a onclick="showPage('cv')" id="nav-cv" style="margin-right: 4ch;">CV</a>
-    <img src="images/homepage/excursion-conshein.png" alt="excursion-conshein" class="nav-icon" onclick="showPage('home')" id="nav-icon">
+    <img src="images/homepage/excursion-conshein.png" alt="excursion-conshein" class="nav-icon"
+      onclick="showPage('home')" id="nav-icon">
   </nav>
 
 
   <div class="page-container">
     <div class="left-sidebar">
-      <img src="images/homepage/excursion-conshein.png" alt="excursion-conshein" style="display: block; margin-left: auto; margin-right: auto; margin-top: 80px; max-width: 100%; height: auto;">
+      <img src="images/homepage/excursion-conshein.png" alt="excursion-conshein"
+        style="display: block; margin-left: auto; margin-right: auto; margin-top: 80px; max-width: 100%; height: auto;">
       <div style="margin-top: 20px; text-align: center;">
         <h1>Kaixiang Chen</h1>
         <p style="font-size: 18px; font-style: italic">For the gap between academic and industrial.</p>
         <br></br>
         <!-- Container for social media and contact icons -->
-        <div style="text-align: center; background: linear-gradient(90deg, #fffacd, #b0e0e6); padding: 15px; border-radius: 10px; width: 75%; margin: 0 auto;">
-          <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank"><img src="images/homepage/Google scholar.png" alt="Google Scholar" style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="https://github.com/Excursion-ConsHein" target="_blank"><img src="images/homepage/github.png" alt="GitHub" style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="https://orcid.org/0009-0004-7118-545X" target="_blank"><img src="images/homepage/orcid.png" alt="ORCID" style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="https://space.bilibili.com/383180487" target="_blank"><img src="images/homepage/bilibili.png" alt="Bilibili" style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank"><img src="images/homepage/youtube.png" alt="YouTube" style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank"><img src="images/homepage/zhihu.png" alt="Zhihu" style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="mailto:conshein_yuanxing@outlook.com"><img src="images/homepage/email.png" width="30px" height="30px" style="margin-right: 15px;"></a>
+        <div
+          style="text-align: center; background: linear-gradient(90deg, #fffacd, #b0e0e6); padding: 15px; border-radius: 10px; width: 75%; margin: 0 auto;">
+          <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank"><img
+              src="images/homepage/Google scholar.png" alt="Google Scholar"
+              style="width: 30px; height: 30px; margin-right: 15px;"></a>
+          <a href="https://github.com/Excursion-ConsHein" target="_blank"><img src="images/homepage/github.png"
+              alt="GitHub" style="width: 30px; height: 30px; margin-right: 15px;"></a>
+          <a href="https://orcid.org/0009-0004-7118-545X" target="_blank"><img src="images/homepage/orcid.png"
+              alt="ORCID" style="width: 30px; height: 30px; margin-right: 15px;"></a>
+          <a href="https://space.bilibili.com/383180487" target="_blank"><img src="images/homepage/bilibili.png"
+              alt="Bilibili" style="width: 30px; height: 30px; margin-right: 15px;"></a>
+          <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank"><img src="images/homepage/youtube.png"
+              alt="YouTube" style="width: 30px; height: 30px; margin-right: 15px;"></a>
+          <a href="https://www.zhihu.com/people/1-95-3-44-44" target="_blank"><img src="images/homepage/zhihu.png"
+              alt="Zhihu" style="width: 30px; height: 30px; margin-right: 15px;"></a>
+          <a href="mailto:conshein_yuanxing@outlook.com"><img src="images/homepage/email.png" width="30px" height="30px"
+              style="margin-right: 15px;"></a>
         </div>
       </div>
     </div>
     <div class="main-content">
       <section id="home" class="active">
-      <h1 style="text-align: center; font-size: 2.5em; margin-bottom: 30px; color: #a8d8ea;">Welcome to Kaixiang Chen's Homepage!</h1>
+        <h1 style="text-align: center; font-size: 2.5em; margin-bottom: 30px; color: #a8d8ea;">Welcome to Kaixiang
+          Chen's Homepage!</h1>
         <div class="right-margin">
           <!-- Right independent area, add content as needed -->
         </div>
-        
+
         <div class="section-box">
           <p id="intro-content"></p>
-        </div>     
+        </div>
 
         <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">News</h1>
-       <div class="section-box" style="max-height: 400px; overflow-y: auto; margin-top: 10px;">
-         <div id="news-content" style="padding: 10px;"></div>
-       </div>
-       
-       <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Selected Publications</h1>
-       <div class="section-box" style="margin-top: 10px; border: none;">
-         <div id="selected-papers-content" style="padding: 10px;"></div>
-       </div>
-               
+        <div class="section-box" style="max-height: 400px; overflow-y: auto; margin-top: 10px;">
+          <div id="news-content" style="padding: 10px;"></div>
+        </div>
+
+        <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Selected Publications</h1>
+        <div class="section-box" style="margin-top: 10px; border: none;">
+          <div id="selected-papers-content" style="padding: 10px;"></div>
+        </div>
+
         <script>
           // Load and display homepage content
           fetch('configs/homepage.json')
             .then(response => response.json())
             .then(data => {
-              // Display intro from intro.txt
+              // Display introduction from intro.txt
               fetch('configs/intro.txt')
                 .then(response => response.text())
                 .then(text => {
                   document.getElementById('intro-content').innerHTML = text.replace(/\n/g, '<br>');
                 });
-              
+
               // Display news with formatted date
               const newsContainer = document.getElementById('news-content');
               data.news.forEach(item => {
                 const newsItem = document.createElement('div');
                 newsItem.className = 'news-item';
                 newsItem.style.marginBottom = '40px';
-                
+                newsItem.style.display = 'flex';
+                newsItem.style.alignItems = 'flex-start';
+                newsItem.style.gap = '20px';
+
                 // Format date (e.g. 2025-07-19 -> Jul 19, 2025)
                 const dateParts = item.time.split('-');
-                const date = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
-                const formattedDate = date.toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'short', 
-                  day: 'numeric' 
+                const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
                 }).replace(/\b(\w{3})\b/, '$1.');
-                
+
                 const timeElement = document.createElement('div');
                 timeElement.className = 'news-time';
                 timeElement.innerHTML = `<strong>${formattedDate}</strong>`;
-                timeElement.style.marginBottom = '10px';
+                timeElement.style.marginBottom = '0';
+                timeElement.style.minWidth = '120px';
+                timeElement.style.textAlign = 'left';
                 timeElement.style.color = '#e0e0e0';
 
                 const contentElement = document.createElement('div');
                 contentElement.innerHTML = item.content;
                 contentElement.style.color = '#c0f8ca';
-                
+                contentElement.style.textAlign = 'left';
+                contentElement.style.flexGrow = '1';
+
                 newsItem.appendChild(timeElement);
                 newsItem.appendChild(contentElement);
                 newsContainer.appendChild(newsItem);
               });
-              
 
-              
               // Display selected papers
-              if(data.selected_papers) {
+              if (data.selected_papers) {
                 const papersContainer = document.getElementById('selected-papers-content');
-                
+
                 // First load papers data
                 fetch('configs/papers.json')
                   .then(response => response.json())
                   .then(papersData => {
                     data.selected_papers.forEach(paperTitle => {
                       let foundPaper = null;
-                      
+
                       // Search through all years for matching paper
                       for (const year in papersData) {
                         if (Array.isArray(papersData[year])) {
@@ -523,7 +612,7 @@
                           if (foundPaper) break;
                         }
                       }
-                      
+
                       if (foundPaper) {
                         const paperItem = document.createElement('div');
                         paperItem.innerHTML = `
@@ -549,44 +638,45 @@
                     });
                   });
               };
-              
+
               // Display honors
               const honorList = document.getElementById('honor-content');
               data.honor.forEach(item => {
                 const div = document.createElement('div');
                 div.style.marginBottom = '20px';
-                div.innerHTML = `<div style="display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div><div style="margin-left: 20px;"><em>${item.unit}</em>, ${item.time}</div>`;
+                div.innerHTML =
+                  `<div style="display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div><div style="margin-left: 20px;"><em>${item.unit}</em>, ${item.time}</div>`;
                 honorList.appendChild(div);
               });
             });
         </script>
-    </section>
-    
-  <section id="experiences">
-    <!-- Education and career experience model -->
-    <div id="publication-header">
-      <h1>Experiences</h1>
-      <p>Hope my career journey will be more than just an excursion!</p>
-    </div>
-    <div id="hr-year-wrapper">
-      <hr style="border: 2px solid #ff9900;">
-    </div>
-    <div id="education-experience"></div>
-    <hr style="border: 1px solid #add8e6; margin-bottom: 10px;">
-    <div class="section-box">
-      <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Honors and Awards</h1>
-      <div id="honor-content" style="padding-left: 20px;"></div>
-    </div>
+      </section>
 
-    <script>
-    // Function to create education experience elements based on the provided data
-    function createEducationExperience(experienceData) {
-      // Get the education experience container element
-      const container = document.getElementById('education-experience');
-      // Create a new div element for the education container
-      const div = document.createElement('div');
-      div.className = 'education-container';
-      div.innerHTML = `
+      <section id="experiences">
+        <!-- Education and career experience model -->
+        <div id="publication-header">
+          <h1>Experiences</h1>
+          <p>Hope my career journey will be more than just an excursion!</p>
+        </div>
+        <div id="hr-year-wrapper">
+          <hr style="border: 2px solid #ff9900;">
+        </div>
+        <div id="education-experience"></div>
+        <hr style="border: 1px solid #add8e6; margin-bottom: 10px;">
+        <div class="section-box">
+          <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Honors and Awards</h1>
+          <div id="honor-content" style="padding-left: 20px;"></div>
+        </div>
+
+        <script>
+          // Function to create education experience elements based on provided data
+          function createEducationExperience(experienceData) {
+            // Get education experience container element
+            const container = document.getElementById('education-experience');
+            // Create new div element for education container
+            const div = document.createElement('div');
+            div.className = 'education-container';
+            div.innerHTML = `
       <div class="education-item">
         <div class="education-logo-wrapper">
           <img src="images/experience/${experienceData.logoSrc}" alt="Institution Logo" class="education-logo">
@@ -601,49 +691,49 @@
           <p></p>
         </div>
       </div>`;
-      // Append the new education container to the main container
-      container.appendChild(div);
-    }
+            // Append the new education container to the main container
+            container.appendChild(div);
+          }
 
-    // Load education experience data from JSON file
-    fetch('configs/experiences.json')
-      .then(response => response.json())
-      .then(data => {
-        // Iterate through each education experience and create corresponding elements
-        data.forEach(experience => {
-          createEducationExperience(experience);
-        });
-      });
-    </script>
-  </section>
+          // Load education experience data from JSON file
+          fetch('configs/experiences.json')
+            .then(response => response.json())
+            .then(data => {
+              // Iterate through each education experience and create corresponding elements
+              data.forEach(experience => {
+                createEducationExperience(experience);
+              });
+            });
+        </script>
+      </section>
 
-  <section id="publications">
-    <!-- Header section for the publications -->
-    <div id="publication-header">
-      <h1>Publications</h1>
-      <p>It is my pleasure that you can enjoy reading my publications!</p>
-    </div>
-    <!-- Container for displaying papers -->
-    <div id="paper-container"></div>
-    
-    <script>
-    // Function to create a year separator element
-    function createYearSeparator(year) {
-      // Create a new div element for the year separator
-      const yearDiv = document.createElement('div');
-      yearDiv.innerHTML = `
+      <section id="publications">
+        <!-- Header section for the publications -->
+        <div id="publication-header">
+          <h1>Publications</h1>
+          <p>It is my pleasure that you can enjoy reading my publications!</p>
+        </div>
+        <!-- Container for displaying papers -->
+        <div id="paper-container"></div>
+
+        <script>
+          // Function to create year separator element
+          function createYearSeparator(year) {
+            // Create new div element for year separator
+            const yearDiv = document.createElement('div');
+            yearDiv.innerHTML = `
       <div id="hr-year-wrapper">
         <hr style="border: 2px solid #ff9900;">
         <div class="year-label">${year}</div>
       </div>`;
-      return yearDiv;
-    }
+            return yearDiv;
+          }
 
-    // Function to create a paper element based on paper data
-    function createPaper(paperData) {
-      // Create a new div element for the paper
-      const paperDiv = document.createElement('div');
-      paperDiv.innerHTML = `
+          // Function to create paper element based on paper data
+          function createPaper(paperData) {
+            // Create new div element for paper
+            const paperDiv = document.createElement('div');
+            paperDiv.innerHTML = `
       <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px; position: relative;">
         <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto;">
         <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 20px; padding: 15px;">
@@ -656,7 +746,7 @@
             <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'keywords')" class="key-link">KEY</a>
             <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'bibtex')" class="bib-link">BIB</a>
             <a href="${paperData.webLink}" target="_blank" class="web-link">LINK</a>
-            ${paperData.videoLink ? `<a href="javascript:void(0);" onclick="toggleVideo(this, '${paperData.title.replace(/'/g, '\'')}')" class="video-link">VIDEO</a>` : ''}
+            ${paperData.videoLink ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, '\'')}', 'video')" class="video-link">VIDEO</a>` : ''}
             ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
           </p>
         </div>
@@ -676,40 +766,40 @@
         <pre>${paperData.bibtex}</pre>
       </div>
       <div id="video-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
-        <iframe src="${paperData.videoLink}" style="width: 100%; aspect-ratio: 16/9;"></iframe>
+        <iframe src="${paperData.videoLink}" data-original-src="${paperData.videoLink}" style="width: 100%; aspect-ratio: 16/9;"></iframe>
       </div>`;
-      return paperDiv;
-    }
+            return paperDiv;
+          }
 
-    // Load paper data from JSON file
-    fetch('configs/papers.json')
-      .then(response => response.json())
-      .then(data => {
-        // Traverse in chronological order to ensure consistency with the JSON file
-        const sortedYears = Object.keys(data).sort((a, b) => b - a);
-        // Get the paper container element
-        const paperContainer = document.getElementById('paper-container');
-        sortedYears.forEach(year => {
-          // Create a new div element for the year block
-          const yearBlock = document.createElement('div');
-          yearBlock.appendChild(createYearSeparator(year));
-          const yearPaperContainer = document.createElement('div');
-          yearPaperContainer.id = `papers-${year}`;
-          // Iterate through each paper in the current year and append it to the container
-          data[year].forEach(paper => {
-            yearPaperContainer.appendChild(createPaper(paper));
-          });
-          yearBlock.appendChild(yearPaperContainer);
-          paperContainer.appendChild(yearBlock);
-        });
-      });
-    </script>
-  </section>
+          // Load paper data from JSON file
+          fetch('configs/papers.json')
+            .then(response => response.json())
+            .then(data => {
+              // Traverse in chronological order to ensure consistency with the JSON file
+              const sortedYears = Object.keys(data).sort((a, b) => b - a);
+              // Get the paper container element
+              const paperContainer = document.getElementById('paper-container');
+              sortedYears.forEach(year => {
+                // Create a new div element for the year block
+                const yearBlock = document.createElement('div');
+                yearBlock.appendChild(createYearSeparator(year));
+                const yearPaperContainer = document.createElement('div');
+                yearPaperContainer.id = `papers-${year}`;
+                // Iterate through each paper in the current year and append it to the container
+                data[year].forEach(paper => {
+                  yearPaperContainer.appendChild(createPaper(paper));
+                });
+                yearBlock.appendChild(yearPaperContainer);
+                paperContainer.appendChild(yearBlock);
+              });
+            });
+        </script>
+      </section>
 
-  <section id="cv">
+      <section id="cv">
         <p>Now my curriculum vitae has not been uploaded yet.</p>
         <p>Please <strong style="font-size: 24px;">stay tuned!</strong></p>
-  </section>
+      </section>
     </div>
   </div>
 
@@ -720,16 +810,23 @@
       document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
       // Add the 'active' class to the target section
       document.getElementById(pageId).classList.add('active');
-      
+
       // Scroll to top after switching section
       window.scrollTo(0, 0);
-      
+
       // Hide all dashed boxes
       document.querySelectorAll('[id^="abstract-"]').forEach(item => item.style.display = 'none');
       document.querySelectorAll('[id^="bibtex-"]').forEach(item => item.style.display = 'none');
       document.querySelectorAll('[id^="award-"]').forEach(item => item.style.display = 'none');
       document.querySelectorAll('[id^="keywords-"]').forEach(item => item.style.display = 'none');
-      document.querySelectorAll('[id^="video-"]').forEach(item => item.style.display = 'none');
+      document.querySelectorAll('[id^="video-"]').forEach(item => {
+        item.style.display = 'none';
+        // Stop video playback
+        const iframe = item.querySelector('iframe');
+        if (iframe) {
+          iframe.src = '';
+        }
+      });
 
       // Update navigation bar highlight status
       document.querySelectorAll('nav a').forEach(navLink => {
@@ -738,37 +835,38 @@
       document.querySelectorAll('#mySidebar a:not(.closebtn)').forEach(navLink => {
         navLink.classList.remove('active');
       });
-      const activeNavLink = pageId === 'publications' ? document.getElementById('nav-publications') : document.getElementById(`nav-${pageId}`);
+      const activeNavLink = pageId === 'publications' ? document.getElementById('nav-publications') : document
+        .getElementById(`nav-${pageId}`);
       if (activeNavLink) {
         activeNavLink.classList.add('active');
       }
-      
+
       // Scroll to target element at center of viewport if specified
-          if (targetId) {
-            const element = document.getElementById(targetId);
-            if (element) {
-              // Wait for the publications section to be fully rendered
+      if (targetId) {
+        const element = document.getElementById(targetId);
+        if (element) {
+          // Wait for the publications section to be fully rendered
+          setTimeout(() => {
+            const elementRect = element.getBoundingClientRect();
+            const absoluteElementTop = elementRect.top + window.pageYOffset;
+            const middle = absoluteElementTop - (window.innerHeight / 2) + elementRect.height / 2;
+            window.scrollTo({
+              top: middle,
+              behavior: 'smooth'
+            });
+
+            // Highlight paper container with flash effect
+            const paperContainer = element.closest('.paper');
+            if (paperContainer) {
+              paperContainer.style.transition = 'background-color 0.5s ease';
+              paperContainer.style.backgroundColor = 'rgba(255, 165, 0, 0.3)';
               setTimeout(() => {
-                const elementRect = element.getBoundingClientRect();
-                const absoluteElementTop = elementRect.top + window.pageYOffset;
-                const middle = absoluteElementTop - (window.innerHeight / 2) + elementRect.height / 2;
-                window.scrollTo({
-                  top: middle,
-                  behavior: 'smooth'
-                });
-                
-                // Highlight the paper container with a flash effect
-                const paperContainer = element.closest('.paper');
-                if (paperContainer) {
-                  paperContainer.style.transition = 'background-color 0.5s ease';
-                  paperContainer.style.backgroundColor = 'rgba(255, 165, 0, 0.3)';
-                  setTimeout(() => {
-                    paperContainer.style.backgroundColor = '';
-                  }, 1000);
-                }
-              }, 100);
+                paperContainer.style.backgroundColor = '';
+              }, 1000);
             }
-          }
+          }, 100);
+        }
+      }
     }
 
     // Generic toggle function to switch the display state of a specified element and hide other related elements
@@ -780,19 +878,48 @@
         'keywords': document.getElementById(`keywords-${id.replace(/'/g, "'")}`),
         'video': document.getElementById(`video-${id.replace(/'/g, "'")}`)
       };
-    
-      // 获取目标元素
+
+      // Get target element
       const targetElement = elementMap[targetType];
       if (targetElement) {
         // Toggle the display state of the target element
         const newDisplay = targetElement.style.display === 'none' ? 'block' : 'none';
         targetElement.style.display = newDisplay;
 
+        // Handle video iframe loading and stopping
+        if (targetType === 'video') {
+          const iframe = targetElement.querySelector('iframe');
+          if (iframe) {
+            if (newDisplay === 'none') {
+              // Stop video when hiding
+              iframe.src = '';
+            } else {
+              // Pause all other videos before loading current video
+              document.querySelectorAll('[id^="video-"] iframe').forEach(otherIframe => {
+                if (otherIframe !== iframe) {
+                  otherIframe.src = '';
+                }
+              });
+              const originalSrc = iframe.dataset.originalSrc;
+              if (originalSrc) {
+                iframe.src = originalSrc;
+              }
+            }
+          }
+        }
+
         // If the target element will be displayed, hide other elements
         if (newDisplay === 'block') {
           Object.values(elementMap).forEach(element => {
             if (element && element !== targetElement) {
               element.style.display = 'none';
+              // If it's a video block, stop playback
+              if (element.id.startsWith('video-')) {
+                const iframe = element.querySelector('iframe');
+                if (iframe) {
+                  iframe.src = '';
+                }
+              }
             }
           });
         }
@@ -802,7 +929,7 @@
           const targetRect = targetElement.getBoundingClientRect();
           const viewportHeight = window.innerHeight;
           if (targetRect.bottom > viewportHeight) {
-            // 滚动以使目标元素底部与视口底部对齐
+            // Scroll to align target element bottom with viewport bottom
             window.scrollTo({
               top: window.scrollY + (targetRect.bottom - viewportHeight),
               behavior: 'smooth'
@@ -811,8 +938,12 @@
         }
       }
     }
-
   </script>
 
 </body>
+
+<!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
+
+<!-- Last Change: 2025-07-20 -->
+
 </html>
