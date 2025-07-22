@@ -1,5 +1,5 @@
 My name is Kaixiang Chen (Chinese name: 陈恺翔). Currently, I am a storekeeper in my hometown, Hui'an, Fujian, China. Before that, I received the B.Eng. Degree in Chongqing University (CQU) in China. 
 
-I am interested in multi-agent, especially air-ground collaboration. My work aims to develop multi-agent systems that can cooperate with each other in a safe and efficient way.
+I am interested in multi-robot, especially air-ground collaboration. My work aims to develop multi-agent systems that can cooperate with each other in a safe and efficient way.
 
 In my spare time, I am a big fan of badminton. During my undergraduate, I joined the badminton association in CQU, called Xiangyu Badminton Association. Even off campus, I still keep up my badminton habit.
