@@ -3,7 +3,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-07-20 -->
+<!-- Last Change: 2025-07-23 -->
 
 <head>
   <meta charset="utf-8">
@@ -544,19 +544,19 @@
 
         <script>
           // Load and display homepage content
-          fetch('configs/homepage.json')
-            .then(response => response.json())
-            .then(data => {
-              // Display introduction from intro.txt
-              fetch('configs/intro.txt')
-                .then(response => response.text())
-                .then(text => {
-                  document.getElementById('intro-content').innerHTML = text.replace(/\n/g, '<br>');
-                });
+          // Load introduction text
+          fetch('configs/intro.txt')
+            .then(response => response.text())
+            .then(text => {
+              document.getElementById('intro-content').innerHTML = text.replace(/\n/g, '<br>');
+            });
 
-              // Display news with formatted date
+          // Load and display news from news.json
+          fetch('configs/news.json')
+            .then(response => response.json())
+            .then(newsData => {
               const newsContainer = document.getElementById('news-content');
-              data.news.forEach(item => {
+              newsData.forEach(item => {
                 const newsItem = document.createElement('div');
                 newsItem.className = 'news-item';
                 newsItem.style.marginBottom = '40px';
@@ -591,61 +591,49 @@
                 newsItem.appendChild(contentElement);
                 newsContainer.appendChild(newsItem);
               });
+            });
 
-              // Display selected papers
-              if (data.selected_papers) {
-                const papersContainer = document.getElementById('selected-papers-content');
-
-                // First load papers data
-                fetch('configs/papers.json')
-                  .then(response => response.json())
-                  .then(papersData => {
-                    data.selected_papers.forEach(paperTitle => {
-                      let foundPaper = null;
-
-                      // Search through all years for matching paper
-                      for (const year in papersData) {
-                        if (Array.isArray(papersData[year])) {
-                          foundPaper = papersData[year].find(p => p.title === paperTitle);
-                          if (foundPaper) break;
-                        }
-                      }
-
-                      if (foundPaper) {
-                        const paperItem = document.createElement('div');
-                        paperItem.innerHTML = `
-                        <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 0;">
-                          <img src="images/publication/${foundPaper.image}" alt="${foundPaper.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto;">
-                          <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 0; padding: 15px;">
-                            <h3>${foundPaper.title}</h3>
-                            <p><span style="text-decoration: underline;">${foundPaper.author}</span></p>
-                            <p><strong style="color: #00FF7F;">${foundPaper.type}</strong> <em>${foundPaper.publication}</em></p>
-                            <div style="text-align: right; margin-top: 10px;">
-                              <a href="#${foundPaper.title.replace(/[^a-zA-Z0-9]/g, '-')}" onclick="showPage('publications', '${foundPaper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" style="display: inline-block; background-color: #ff9900; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">Jump→</a>
-                            </div>
-                          </div>
-
-                        </div>`;
-                        papersContainer.appendChild(paperItem);
-                      } else {
-                        const notFoundItem = document.createElement('div');
-                        notFoundItem.textContent = `Loading paper info for: ${paper.title}...`;
-                        notFoundItem.style.color = '#e0e0e0';
-                        papersContainer.appendChild(notFoundItem);
-                      }
-                    });
-                  });
-              };
-
-              // Display honors
+          // Load and display honors from honors.json
+          fetch('configs/honors.json')
+            .then(response => response.json())
+            .then(honorsData => {
               const honorList = document.getElementById('honor-content');
-              data.honor.forEach(item => {
+              honorsData.forEach(item => {
                 const div = document.createElement('div');
                 div.style.marginBottom = '20px';
                 div.innerHTML =
                   `<div style="display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div><div style="margin-left: 20px;"><em>${item.unit}</em>, ${item.time}</div>`;
                 honorList.appendChild(div);
               });
+            });
+
+          // Load and display selected papers from papers.json using 'selected' boolean
+          fetch('configs/papers.json')
+            .then(response => response.json())
+            .then(papersData => {
+              const papersContainer = document.getElementById('selected-papers-content');
+              for (const year in papersData) {
+                if (Array.isArray(papersData[year])) {
+                  papersData[year].forEach(paper => {
+                    if (paper.selectedPaper) {
+                      const paperItem = document.createElement('div');
+                      paperItem.innerHTML = `
+                      <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 0;">
+                        <img src="images/publication/${paper.image}" alt="${paper.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto;">
+                        <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 0; padding: 15px;">
+                          <h3>${paper.title}</h3>
+                          <p><span style="text-decoration: underline;">${paper.author}</span></p>
+                          <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.publication}</em></p>
+                          <div style="text-align: right; margin-top: 10px;">
+                            <a href="#${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" style="display: inline-block; background-color: #ff9900; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">Jump→</a>
+                          </div>
+                        </div>
+                      </div>`;
+                      papersContainer.appendChild(paperItem);
+                    }
+                  });
+                }
+              }
             });
         </script>
       </section>
@@ -942,6 +930,6 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-07-20 -->
+<!-- Last Change: 2025-07-23 -->
 
 </html>

@@ -10,7 +10,8 @@
             "keywords": "PID, rotor-driven VTOL fixed-wing UAV, transition process, cruise speed control, altitude control",
             "bibtex": "@inproceedings{chen2023controller, \n   title={Controller design for transition flight of rotor-driven VTOL fixed-wing UAV based on PID}, \n   author={Chen, K}, \n   booktitle={Proceedings of the 2023 International Conference on Mechatronics and Smart Systems}, \n   volume={9}, \n   pages={15--21}, \n   year={2023} \n }",
             "webLink": "https://dx.doi.org/10.54254/2755-2721/9/20230018",
-            "codeLink": "https://github.com/Excursion-ConsHein/VTOL-control-by-PID"
+            "codeLink": "https://github.com/Excursion-ConsHein/VTOL-control-by-PID",
+            "selectedPaper": true
         }
     ]
 }
