@@ -13,6 +13,65 @@
   <meta http-equiv="Expires" content="0">
   <title>Excursion ConsHein BETA</title>
   <style>
+/* Modal Styles */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  padding-top: 50px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+.modal-content {
+  margin: 0; /* Reset margin */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  max-width: 90%;
+  max-height: 80vh;
+}
+
+.modal-caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 700px){
+  .modal-content {
+    width: 100%;
+  }
+}
+
     /* Define page layout as flex container */
     .page-container {
       display: flex;
@@ -326,7 +385,7 @@
     .year-label {
       text-align: right;
       font-size: 32px;
-      font-weight: bold;
+      font-weight: light;
       color: #ff9900;
     }
 
@@ -434,17 +493,10 @@
       z-index: -1;
     }
 
-    /* Define year wrapper with horizontal rule style */
-    #hr-year-wrapper {
-      border: 1px solid transparent;
-      padding: 10px;
-      background-color: transparent;
-    }
-
     /* Define paper container style in publications section */
     #publications #paper-container {
       border: 1px solid transparent;
-      padding: 10px;
+      padding: 10px 0;
       background-color: transparent;
     }
 
@@ -500,7 +552,7 @@
       <div style="margin-top: 20px; text-align: center;">
         <h1>Kaixiang Chen</h1>
         <p style="font-size: 18px; font-style: italic">For the gap between academic and industrial.</p>
-        <br></br>
+        <br>
         <!-- Container for social media and contact icons -->
         <div
           style="text-align: center; background: linear-gradient(90deg, #fffacd, #b0e0e6); padding: 15px; border-radius: 10px; width: 75%; margin: 0 auto;">
@@ -531,13 +583,13 @@
         <div class="section-box">
           <p id="intro-content"></p>
         </div>
-
-        <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">News</h1>
-        <div class="section-box" style="max-height: 400px; overflow-y: auto; margin-top: 10px;">
+        <hr style="border: 1px solid #add8e6; margin-bottom: 10px;">
+        <h1 class="section-title" style="margin-top: 20px; font-size: 28px;">News</h1>
+        <div class="section-box" style="max-height: 250px; overflow-y: auto; margin-top: 10px;">
           <div id="news-content" style="padding: 10px; word-wrap: break-word; white-space: pre-wrap;"></div>
         </div>
-
-        <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Selected Publications</h1>
+        <hr style="border: 1px solid #add8e6; margin-bottom: 10px;">
+        <h1 class="section-title" style="margin-top: 20px; font-size: 28px;">Selected Publications</h1>
         <div class="section-box" style="margin-top: 10px; border: none;">
           <div id="selected-papers-content" style="padding: 10px;"></div>
         </div>
@@ -619,7 +671,7 @@
                       const paperItem = document.createElement('div');
                       paperItem.innerHTML = `
                       <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 0;">
-                        <img src="images/publication/${paper.image}" alt="${paper.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto;">
+                        <img src="images/publication/${paper.image}" alt="${paper.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paper.image}')">
                         <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 0; padding: 15px;">
                           <h3>${paper.title}</h3>
                           <p><span style="text-decoration: underline;">${paper.author}</span></p>
@@ -635,7 +687,26 @@
                 }
               }
             });
-        </script>
+        function openModal(imageUrl) {
+  const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImage');
+  modal.style.display = 'block';
+  modalImg.src = imageUrl;
+}
+
+function closeModal() {
+  const modal = document.getElementById('imageModal');
+  modal.style.display = 'none';
+}
+
+// Close modal when clicking outside the image
+window.onclick = function(event) {
+  const modal = document.getElementById('imageModal');
+  if (event.target == modal) {
+    closeModal();
+  }
+}
+</script>
       </section>
 
       <section id="experiences">
@@ -644,11 +715,9 @@
           <h1>Experiences</h1>
           <p>Hope my career journey will be more than just an excursion!</p>
         </div>
-        <div id="hr-year-wrapper">
-          <hr style="border: 2px solid #ff9900;">
-        </div>
+        <hr style="border: 1px solid #ade6b0;">
         <div id="education-experience"></div>
-        <hr style="border: 1px solid #add8e6; margin-bottom: 10px;">
+        <hr style="border: 1px solid #ade6b0;">
         <div class="section-box">
           <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Honors and Awards</h1>
           <div id="honor-content" style="padding-left: 20px;"></div>
@@ -665,7 +734,7 @@
             div.innerHTML = `
       <div class="education-item">
         <div class="education-logo-wrapper">
-          <img src="images/experience/${experienceData.logoSrc}" alt="Institution Logo" class="education-logo">
+          <a href="${experienceData.link}" target="_blank"><img src="images/experience/${experienceData.logoSrc}" alt="Institution Logo" class="education-logo"></a>
         </div>
         <div class="education-info">
           <p class="institution">${experienceData.institution}</p>
@@ -708,10 +777,10 @@
             // Create new div element for year separator
             const yearDiv = document.createElement('div');
             yearDiv.innerHTML = `
-      <div id="hr-year-wrapper">
-        <hr style="border: 2px solid #ff9900;">
+
+        <hr style="border: 1px solid #ff9900;">
         <div class="year-label">${year}</div>
-      </div>`;
+`;
             return yearDiv;
           }
 
@@ -721,7 +790,7 @@
             const paperDiv = document.createElement('div');
             paperDiv.innerHTML = `
       <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px; position: relative;">
-        <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto;">
+        <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paperData.image}')">
         <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 20px; padding: 15px;">
           <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paperData.title}</h3>
           <p><span style="text-decoration: underline;">${paperData.author}</span></p>
@@ -925,6 +994,13 @@
       }
     }
   </script>
+
+<!-- Image Modal -->
+<div id="imageModal" class="modal">
+  <span class="close-btn" onclick="closeModal()">&times;</span>
+  <img class="modal-content" id="modalImage">
+  <div class="modal-caption"></div>
+</div>
 
 </body>
 
