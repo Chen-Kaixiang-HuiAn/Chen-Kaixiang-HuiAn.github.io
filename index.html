@@ -3,7 +3,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-07-23 -->
+<!-- Last Change: 2025-07-25 -->
 
 <head>
   <meta charset="utf-8">
@@ -869,6 +869,13 @@ window.onclick = function(event) {
       // Scroll to top after switching section
       window.scrollTo(0, 0);
 
+      // Reset news section scroll when showing home section
+      if (pageId === 'home') {
+        // Precisely target news section scroll container (immediately after News title)
+        const newsContainer = document.querySelector('#home .section-title + .section-box');
+        if (newsContainer) newsContainer.scrollTop = 0;
+      }
+
       // Hide all dashed boxes
       document.querySelectorAll('[id^="abstract-"]').forEach(item => item.style.display = 'none');
       document.querySelectorAll('[id^="bibtex-"]').forEach(item => item.style.display = 'none');
@@ -1006,6 +1013,6 @@ window.onclick = function(event) {
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-07-23 -->
+<!-- Last Change: 2025-07-25 -->
 
 </html>
