@@ -2,4 +2,4 @@
 
 ## This is Kaixiang Chen's homepage
 
-Now this homepage is **UNDER CONSTRUCTION!**
+Now this homepage is **IN TRIAL OPERATION!**
