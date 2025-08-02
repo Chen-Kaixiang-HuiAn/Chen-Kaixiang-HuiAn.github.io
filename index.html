@@ -3,7 +3,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-02 -->
+<!-- Last Change: 2025-08-03 -->
 
 <head>
   <meta charset="utf-8">
@@ -599,7 +599,7 @@
         </div>
         <hr style="border: 1px solid #add8e6">
         <h1 class="section-title" style="margin-top: 20px; font-size: 28px;">News</h1>
-        <div class="section-box" style="max-height: 250px; overflow-y: auto; margin-top: 10px;">
+        <div class="section-box" style="max-height: 350px; overflow-y: auto; margin-top: 10px;">
           <div id="news-content" style="padding: 10px; word-wrap: break-word; white-space: pre-wrap;"></div>
         </div>
         <hr style="border: 1px solid #add8e6">
@@ -636,7 +636,7 @@
                 const formattedDate = date.toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'short',
-                  day: 'numeric'
+                  day: '2-digit'
                 }).replace(/\b(\w{3})\b/, '$1.');
 
                 const timeElement = document.createElement('div');
@@ -668,7 +668,9 @@
                 const div = document.createElement('div');
                 div.style.marginBottom = '20px';
                 div.innerHTML =
-                  `<div style="display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div><div style="margin-left: 20px;"><em>${item.unit}</em>, ${item.time}</div>`;
+                  `<div style="font-size: 18px; display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div>
+                  <div style="margin-left: 20px;"><em>${item.unit}</em>, ${item.time}</div>`;
+
                 honorList.appendChild(div);
               });
             });
@@ -726,7 +728,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-02 -->
+<!-- Last Change: 2025-08-03 -->
 
       <section id="experiences">
         <!-- Education and career experience model -->
@@ -737,6 +739,8 @@
         <hr style="border: 1px solid #ade6b0;">
         <div id="education-experience"></div>
         <hr style="border: 1px solid #ade6b0;">
+
+        <!-- Honors and Awards -->
         <div class="section-box">
           <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Honors and Awards</h1>
           <div id="honor-content" style="padding-left: 20px;"></div>
@@ -790,6 +794,8 @@
         <!-- Container for displaying papers -->
         <div id="paper-container"></div>
         <hr style="border: 1px solid #ff9900;">
+
+        <!-- Patents information-->
         <div class="section-box">
           <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Patents</h1>
           <div id="patent-content" style="padding-left: 20px;"></div>
@@ -802,9 +808,9 @@
                   const div = document.createElement('div');
                   div.style.marginBottom = '20px';
                   div.innerHTML =
-                    `<div style="display: flex; align-items: baseline; color: #f086cc;">• <strong>${item.title}</strong></div>
+                    `<div style="font-size: 18px; display: flex; align-items: baseline; color:rgb(0, 255, 255);">• <strong>${item.title}</strong></div>
                     <div style="margin-left: 20px;"><span>${item.authors.replace(/Kaixiang Chen/g, '<span style="text-decoration: underline;">Kaixiang Chen</span>')}</span>.
-                    <div><em>${item.type}, ${item.number}</em>, ${item.date}</div>
+                    <div><em>${item.type}</em>, <a href="${item.link}" target="_blank">${item.number}</a>, ${item.date}</div>
                     </div>`;
                   patentList.appendChild(div);
                 });
@@ -1051,6 +1057,6 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-02 -->
+<!-- Last Change: 2025-08-03 -->
 
 </html>
