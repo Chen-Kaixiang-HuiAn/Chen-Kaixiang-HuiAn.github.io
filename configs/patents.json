@@ -1,6 +1,7 @@
 {
     "patents": [
         {
+            "type": "Utility Model Patent",
             "title": "A garbage sorting device with FPGA and ARM",
             "authors": "Dasong Zhuang, Zhijian Lin, Zheyuan Xu, Lingrui Ren, Kaixiang Chen, Zhe Lin",
             "number": "CN216661188U",

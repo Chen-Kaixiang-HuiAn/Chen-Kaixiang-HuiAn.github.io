@@ -802,7 +802,10 @@
                   const div = document.createElement('div');
                   div.style.marginBottom = '20px';
                   div.innerHTML =
-                    `<div style="display: flex; align-items: baseline; color: #f086cc;">• <strong>${item.title}</strong></div><div style="margin-left: 20px;"><span>${item.authors.replace(/Kaixiang Chen/g, '<span style="text-decoration: underline;">Kaixiang Chen</span>')}</span>, <em>${item.number}</em>, ${item.date}</div>`;
+                    `<div style="display: flex; align-items: baseline; color: #f086cc;">• <strong>${item.title}</strong></div>
+                    <div style="margin-left: 20px;"><span>${item.authors.replace(/Kaixiang Chen/g, '<span style="text-decoration: underline;">Kaixiang Chen</span>')}</span>.
+                    <div><em>${item.type}, ${item.number}</em>, ${item.date}</div>
+                    </div>`;
                   patentList.appendChild(div);
                 });
               });
