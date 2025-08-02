@@ -7,6 +7,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -674,8 +675,8 @@
                         <img src="images/publication/${paper.image}" alt="${paper.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paper.image}')">
                         <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 0; padding: 15px;">
                           <h3>${paper.title}</h3>
-                          <p><span style="text-decoration: underline;">${paper.author}</span></p>
-                          <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.publication}</em></p>
+                          <p>${paper.author.replace(/Kaixiang Chen/g, '<span style="text-decoration: underline;">Kaixiang Chen</span>')}</p>
+                          <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.publication}</em>, ${year}</p>
                           <div style="text-align: right; margin-top: 10px;">
                             <a href="#${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" style="display: inline-block; background-color: #ff9900; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">Jump→</a>
                           </div>
@@ -770,8 +771,25 @@ window.onclick = function(event) {
         </div>
         <!-- Container for displaying papers -->
         <div id="paper-container"></div>
-
+        <hr style="border: 1px solid #ff9900;">
+        <div class="section-box">
+          <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Patents</h1>
+          <div id="patent-content" style="padding-left: 20px;"></div>
         <script>
+
+          fetch('configs/patents.json')
+            .then(response => response.json())
+            .then(PatentData => {
+              const patentList = document.getElementById('patent-content');
+              PatentData['patents'].forEach(item => {
+                const div = document.createElement('div');
+                div.style.marginBottom = '20px';
+                div.innerHTML =
+                  `<div style="display: flex; align-items: baseline; color: #f086cc;">• <strong>${item.title}</strong></div><div style="margin-left: 20px;"><span>${item.authors.replace(/Kaixiang Chen/g, '<span style="text-decoration: underline;">Kaixiang Chen</span>')}</span>, <em>${item.number}</em>, ${item.date}</div>`;
+                patentList.appendChild(div);
+              });
+            });
+          
           // Function to create year separator element
           function createYearSeparator(year) {
             // Create new div element for year separator
@@ -785,7 +803,7 @@ window.onclick = function(event) {
           }
 
           // Function to create paper element based on paper data
-          function createPaper(paperData) {
+          function createPaper(year, paperData) {
             // Create new div element for paper
             const paperDiv = document.createElement('div');
             paperDiv.innerHTML = `
@@ -793,8 +811,8 @@ window.onclick = function(event) {
         <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paperData.image}')">
         <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 20px; padding: 15px;">
           <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paperData.title}</h3>
-          <p><span style="text-decoration: underline;">${paperData.author}</span></p>
-          <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.publication}</em></p>
+          <p>${paperData.author.replace(/Kaixiang Chen/g, '<span style="text-decoration: underline;">Kaixiang Chen</span>')}</p>
+          <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.publication}</em>, ${year}</p>
           <p>
             ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'award')" class="abs-link">AWARD</a>` : ''}
             <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'abstract')" class="abs-link">ABS</a>
@@ -842,7 +860,7 @@ window.onclick = function(event) {
                 yearPaperContainer.id = `papers-${year}`;
                 // Iterate through each paper in the current year and append it to the container
                 data[year].forEach(paper => {
-                  yearPaperContainer.appendChild(createPaper(paper));
+                  yearPaperContainer.appendChild(createPaper(year, paper));
                 });
                 yearBlock.appendChild(yearPaperContainer);
                 paperContainer.appendChild(yearBlock);
