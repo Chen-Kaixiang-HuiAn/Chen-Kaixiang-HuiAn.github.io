@@ -3,7 +3,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-03 -->
+<!-- Last Change: 2025-08-15 -->
 
 <head>
   <meta charset="utf-8">
@@ -287,6 +287,14 @@
         padding: 10px !important;
         margin: 0 auto !important;
       }
+
+      /* Adjust cv pdf size for mobile */
+      #cv object {
+        width: 400px !important;
+        height: 400px !important;
+
+      }
+
     }
 
     /* Define the style of the navigation icon */
@@ -374,7 +382,7 @@
 
     /* Define style for content links (abstract, PDF, BibTeX, video, code) */
     .abs-link,
-    .web-link,
+    .paper-link,
     .bib-link,
     .video-link,
     .code-link,
@@ -603,7 +611,7 @@
           <div id="news-content" style="padding: 10px; word-wrap: break-word; white-space: pre-wrap;"></div>
         </div>
         <hr style="border: 1px solid #add8e6">
-        <h1 class="section-title" style="margin-top: 20px; font-size: 28px;">Selected Publications</h1>
+        <h1 class="section-title" style="margin-top: 20px; font-size: 28px;">Research Highlights</h1>
         <div class="section-box" style="margin-top: 10px; border: none;">
           <div id="selected-papers-content" style="padding: 10px;"></div>
         </div>
@@ -690,8 +698,9 @@
                         <img src="images/publication/${paper.image}" alt="${paper.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paper.image}')">
                         <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 0; padding: 15px;">
                           <h3>${paper.title}</h3>
-                          <p>${paper.author.replace(/Kaixiang Chen/g, '<span style="text-decoration: underline;">Kaixiang Chen</span>')}</p>
-                          <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.publication}</em>, ${year}</p>
+                          <p>${paper.author.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
+                          <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.conference || paper.journal}</em>, ${year}</p>
+
                           <div style="text-align: right; margin-top: 10px;">
                             <a href="#${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" style="display: inline-block; background-color: #ff9900; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">Jump→</a>
                           </div>
@@ -728,7 +737,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-03 -->
+<!-- Last Change: 2025-08-15 -->
 
       <section id="experiences">
         <!-- Education and career experience model -->
@@ -812,7 +821,7 @@
                   div.style.marginBottom = '20px';
                   div.innerHTML =
                     `<div style="font-size: 18px; display: flex; align-items: baseline; color:rgb(0, 255, 255);">• <strong>${item.title}</strong></div>
-                    <div style="margin-left: 20px;"><span>${item.authors.replace(/Kaixiang Chen/g, '<span style="text-decoration: underline;">Kaixiang Chen</span>')}</span>.
+                    <div style="margin-left: 20px;"><span>${item.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</span>.
                     <div><em>${item.type}</em>, <a href="${item.link}" target="_blank">${item.number}</a>, ${item.date}</div>
                     </div>`;
                   patentList.appendChild(div);
@@ -840,16 +849,18 @@
         <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paperData.image}')">
         <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 20px; padding: 15px;">
           <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paperData.title}</h3>
-          <p>${paperData.author.replace(/Kaixiang Chen/g, '<span style="text-decoration: underline;">Kaixiang Chen</span>')}</p>
-          <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.publication}</em>, ${year}</p>
+          <p>${paperData.author.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
+          <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.conference || paperData.journal}</em>, ${year}</p>
           <p>
             ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'award')" class="abs-link">AWARD</a>` : ''}
             <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'abstract')" class="abs-link">ABS</a>
             <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'keywords')" class="key-link">KEY</a>
             <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'bibtex')" class="bib-link">BIB</a>
-            <a href="${paperData.webLink}" target="_blank" class="web-link">LINK</a>
+            <a href="${paperData.paperLink}" target="_blank" class="paper-link">PAPER</a>
             ${paperData.videoLink ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, '\'')}', 'video')" class="video-link">VIDEO</a>` : ''}
             ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
+            ${paperData.siteLink ? `<a href="${paperData.siteLink}" target="_blank" class="site-link">SITE</a>` : ''}
+
           </p>
         </div>
       </div>
@@ -899,8 +910,12 @@
       </section>
 
       <section id="cv">
-        <p>Now my curriculum vitae has not been uploaded yet.</p>
-        <p>Please <strong style="font-size: 24px;">stay tuned!</strong></p>
+        <object data="./configs/test.pdf" type="application/pdf" width="800px" height="750px">
+        <p>
+          Your browser does not support PDF files.
+          <a href="./configs/test.pdf">Download the file instead</a>
+        </p>
+        </object>
       </section>
     </div>
   </div>
@@ -1060,6 +1075,6 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-03 -->
+<!-- Last Change: 2025-08-15 -->
 
 </html>
