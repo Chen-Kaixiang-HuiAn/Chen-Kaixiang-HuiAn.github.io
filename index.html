@@ -761,12 +761,15 @@
         </div>
         <div class="education-info">
           <p class="institution">${experienceData.institution}</p>
-          <p>
-            <span class="degree">${experienceData.degree}</span>
-            <span class="major">${experienceData.major}</span>
-          </p>
-          <p class="time">${experienceData.time}</p>
-          <p></p>
+          <div class="details">
+            ${experienceData.details.map(detail => `
+            <p>
+              <span class="degree">${detail.degree}</span>
+              <span class="major">${detail.major}</span>
+            </p>
+            <p class="time">${detail.time}</p>
+            `).join('')}
+          </div>
         </div>
       </div>`;
             // Append the new education container to the main container
