@@ -909,7 +909,9 @@
       </section>
 
       <section id="cv">
-        <object data="./configs/test.pdf" type="application/pdf" width="800px" height="750px">
+        <script>
+          document.write('<object data="./configs/test.pdf?t=' + new Date().getTime() + '" type="application/pdf" width="800px" height="750px">');
+        </script>
         <p>
           Your browser does not support PDF files.
           <a href="./configs/test.pdf">Download the file instead</a>
