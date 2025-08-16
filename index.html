@@ -3,7 +3,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-15 -->
+<!-- Last Change: 2025-08-16 -->
 
 <head>
   <meta charset="utf-8">
@@ -700,9 +700,8 @@
                           <h3>${paper.title}</h3>
                           <p>${paper.author.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
                           <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.conference || paper.journal}</em>, ${year}</p>
-
                           <div style="text-align: right; margin-top: 10px;">
-                            <a href="#${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" style="display: inline-block; background-color: #ff9900; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">Jump→</a>
+                            <a href="javascript:void(0);" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" style="display: inline-block; background-color: #ff9900; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">Jump→</a>
                           </div>
                         </div>
                       </div>`;
@@ -737,7 +736,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-15 -->
+<!-- Last Change: 2025-08-16 -->
 
       <section id="experiences">
         <!-- Education and career experience model -->
@@ -1075,6 +1074,10 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-15 -->
+<!-- Last Change: 2025-08-16 -->
+
+<footer style="text-align: center; padding: 30px 20px; background-color: transparent font-family: 'Microsoft YaHei', sans-serif;">
+  <p style="margin: 0; font-size: 16px;">&copy; 2025 Excursion ConsHein. All rights reserved.</p>
+</footer>
 
 </html>
