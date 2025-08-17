@@ -150,16 +150,6 @@
       border-top: 2px solid #999999;
     }
 
-    /* Define the style of the news time */
-    .news-time {
-      font-size: 16px;
-    }
-
-    /* Define the style of the news item */
-    .news-item {
-        gap: 30px;
-    }
-
     /* Define responsive styles for screens with a maximum width of 768px */
     @media (max-width: 768px), (max-height: 667px) {
       #home h1 {
@@ -180,11 +170,6 @@
         border-bottom: 2px solid white;
         position: static;
         height: auto;
-      }
-
-      /* Add line break in footer on small screens */
-      .footer-break {
-        display: block;
       }
 
       /* Remove the right border of the left sidebar and main content */
@@ -246,6 +231,43 @@
       }
 
       /* Change the layout of selected papers containers to a column */
+
+        /* News item style */
+        .news-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 30px;
+          margin-bottom: 40px;
+        }
+
+        /* News time style */
+        .news-time {
+          min-width: 120px;
+          text-align: left;
+        }
+
+        /* News content style */
+        .news-content {
+          flex-grow: 1;
+        }
+
+        /* Change news layout to vertical on small screens */
+        @media (max-width: 768px) {
+          .news-item {
+            flex-direction: column;
+            gap: 10px;
+          }
+
+          .news-time {
+            min-width: auto;
+            margin-bottom: 5px;
+          }
+
+          /* Add line break in footer on small screens */
+          .footer-break {
+            display: block;
+          }
+        }
       #selected-papers-content>div {
         flex-direction: column;
         width: 100%;
@@ -322,16 +344,6 @@
       /* Delete the top border of the footer for mobile */
       footer {
         border-top: none;
-      }
-
-      /* Define the style of the news time for mobile */
-      .news-time {
-        font-size: 14px;
-      }
-
-      /* Define the style of the news item for mobile */
-      .news-item {
-        gap: 5px;
       }
     }
 
@@ -644,12 +656,12 @@
           <p id="intro-content"></p>
         </div>
         <hr style="border: 1px solid #add8e6">
-        <h1 class="section-title" style="margin-top: 20px; font-size: 28px;">News</h1>
+        <h1 class="section-title" style="margin-top: 20px; font-size: 28px; text-decoration: underline;">News</h1>
         <div class="section-box" style="max-height: 350px; overflow-y: auto; margin-top: 10px;">
           <div id="news-content" style="padding: 10px; word-wrap: break-word; white-space: pre-wrap;"></div>
         </div>
         <hr style="border: 1px solid #add8e6">
-        <h1 class="section-title" style="margin-top: 20px; font-size: 28px;">Research Highlights</h1>
+        <h1 class="section-title" style="margin-top: 20px; font-size: 28px; text-decoration: underline;">Research Highlights</h1>
         <div class="section-box" style="margin-top: 10px; border: none;">
           <div id="selected-papers-content" style="padding: 10px;"></div>
         </div>
@@ -676,6 +688,7 @@
                 newsItem.style.marginBottom = '40px';
                 newsItem.style.display = 'flex';
                 newsItem.style.alignItems = 'flex-start';
+                newsItem.style.gap = '30px';
 
                 // Format date (e.g. 2025-07-19 -> Jul 19, 2025)
                 const dateParts = item.time.split('-');
@@ -694,6 +707,7 @@
                 timeElement.style.minWidth = '120px';
                 timeElement.style.textAlign = 'left';
                 timeElement.style.color = '#e0e0e0';
+                timeElement.style.fontSize = '16px';
 
                 const contentElement = document.createElement('div');
                 contentElement.innerHTML = item.content;
@@ -790,7 +804,7 @@
 
         <!-- Honors and Awards -->
         <div class="section-box">
-          <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Honors and Awards</h1>
+          <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Honors and Awards</h1>
           <div id="honor-content" style="padding-left: 20px;"></div>
         </div>
 
@@ -850,7 +864,7 @@
 
         <!-- Patents information-->
         <div class="section-box">
-          <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Patents</h1>
+          <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Patents</h1>
           <div id="patent-content" style="padding-left: 20px;"></div>
         </div>
 
