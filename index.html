@@ -635,6 +635,8 @@
           <div id="selected-papers-content" style="padding: 10px;"></div>
         </div>
 
+        <br><br>
+
         <script>
           // Load and display homepage content
           // Load introduction text
@@ -773,6 +775,8 @@
           <div id="honor-content" style="padding-left: 20px;"></div>
         </div>
 
+        <br><br>
+
         <script>
           // Function to create education experience elements based on provided data
           function createEducationExperience(experienceData) {
@@ -829,7 +833,11 @@
         <div class="section-box">
           <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Patents</h1>
           <div id="patent-content" style="padding-left: 20px;"></div>
-          <script>
+        </div>
+
+        <br><br>
+        
+        <script>
             fetch('configs/patents.json')
               .then(response => response.json())
               .then(PatentData => {
@@ -928,14 +936,33 @@
       </section>
 
       <section id="cv">
+        <style>
+          .download-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 15px;
+          }
+          .download-btn:hover {
+            background-color: #45a049;
+          }
+        </style>
+        <button class="download-btn" onclick="window.open('./configs/test.pdf', '_blank')">Download this PDF</button>
         <script>
           document.write('<object data="./configs/test.pdf?t=' + new Date().getTime() + '" type="application/pdf" width="800px" height="750px">');
         </script>
         <p>
           Your browser does not support PDF files.
-          <a href="./configs/test.pdf">Download the file instead</a>
+          <button class="download-btn" onclick="window.open('./configs/test.pdf', '_blank')">Download this PDF</button>
         </p>
         </object>
+
+        <br><br>
+
       </section>
     </div>
   </div>
