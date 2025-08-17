@@ -150,6 +150,16 @@
       border-top: 2px solid #999999;
     }
 
+    /* Define the style of the news time */
+    .news-time {
+      font-size: 16px;
+    }
+
+    /* Define the style of the news item */
+    .news-item {
+        gap: 30px;
+    }
+
     /* Define responsive styles for screens with a maximum width of 768px */
     @media (max-width: 768px), (max-height: 667px) {
       #home h1 {
@@ -314,6 +324,15 @@
         border-top: none;
       }
 
+      /* Define the style of the news time for mobile */
+      .news-time {
+        font-size: 14px;
+      }
+
+      /* Define the style of the news item for mobile */
+      .news-item {
+        gap: 5px;
+      }
     }
 
     /* Define the style of the navigation icon */
@@ -657,7 +676,6 @@
                 newsItem.style.marginBottom = '40px';
                 newsItem.style.display = 'flex';
                 newsItem.style.alignItems = 'flex-start';
-                newsItem.style.gap = '20px';
 
                 // Format date (e.g. 2025-07-19 -> Jul 19, 2025)
                 const dateParts = item.time.split('-');
@@ -670,6 +688,7 @@
 
                 const timeElement = document.createElement('div');
                 timeElement.className = 'news-time';
+                // Font size is now controlled by CSS media queries
                 timeElement.innerHTML = `<strong>${formattedDate}</strong>`;
                 timeElement.style.marginBottom = '0';
                 timeElement.style.minWidth = '120px';
