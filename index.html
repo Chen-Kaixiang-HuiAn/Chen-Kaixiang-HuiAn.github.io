@@ -140,6 +140,16 @@
       z-index: 1000;
     }
 
+    /* Define the style of the footer */
+    footer {
+      text-align: center; 
+      padding: 30px 20px; 
+      background-color: transparent; 
+      font-family: 'Microsoft YaHei', 
+      sans-serif; 
+      border-top: 2px solid #999999;
+    }
+
     /* Define responsive styles for screens with a maximum width of 768px */
     @media (max-width: 768px), (max-height: 667px) {
       #home h1 {
@@ -151,7 +161,7 @@
         content: '';
         display: block;
         width: 100%;
-        border-bottom: 1px solid white;
+        border-bottom: 2px solid #999999;
         margin: 10px 0;
       }
 
@@ -297,7 +307,11 @@
       #cv object {
         width: 400px !important;
         height: 400px !important;
+      }
 
+      /* Delete the top border of the footer for mobile */
+      footer {
+        border-top: none;
       }
 
     }
@@ -544,7 +558,6 @@
     }
 
     font-weight: bold;
-    }
 
     /* Define preformatted text style for BibTeX sections */
     #publications [id^="bibtex-"] pre {
@@ -554,6 +567,7 @@
       overflow-wrap: break-word;
       box-sizing: border-box;
     }
+
   </style>
   <link rel="shortcut icon" type="image/x-icon" href="images/homepage/favicon/favicon.ico">
 </head>
@@ -1083,8 +1097,8 @@
 
 <!-- Last Change: 2025-08-17 -->
 
-<footer style="text-align: center; padding: 30px 20px; background-color: transparent; font-family: 'Microsoft YaHei', sans-serif;">
-  <p style="margin: 0; font-size: 16px;">&copy; 2025 Excursion ConsHein.<span class="footer-break"> </span>All rights reserved.</p>
+<footer>
+  <p style="margin: 0; font-size: 16px;">&copy; 2025 Kaixiang Chen.<span class="footer-break"> </span>Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll.</a></p>
 </footer>
 
 </html>
