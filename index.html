@@ -719,22 +719,6 @@
               });
             });
 
-          // Load and display honors from honors.json
-          fetch('configs/honors.json')
-            .then(response => response.json())
-            .then(honorsData => {
-              const honorList = document.getElementById('honor-content');
-              honorsData.forEach(item => {
-                const div = document.createElement('div');
-                div.style.marginBottom = '20px';
-                div.innerHTML =
-                  `<div style="font-size: 18px; display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div>
-                  <div style="margin-left: 20px;"><em>${item.unit}</em>, ${item.time}</div>`;
-
-                honorList.appendChild(div);
-              });
-            });
-
           // Load and display selected papers from papers.json using 'selected' boolean
           fetch('configs/papers.json')
             .then(response => response.json())
@@ -817,23 +801,23 @@
             const div = document.createElement('div');
             div.className = 'education-container';
             div.innerHTML = `
-      <div class="education-item">
-        <div class="education-logo-wrapper">
-          <a href="${experienceData.link}" target="_blank"><img src="images/experience/${experienceData.logoSrc}" alt="Institution Logo" class="education-logo"></a>
-        </div>
-        <div class="education-info">
-          <p class="institution">${experienceData.institution}</p>
-          <div class="details">
-            ${experienceData.details.map(detail => `
-            <p>
-              <span class="degree">${detail.degree}</span>
-              <span class="major">${detail.major}</span>
-            </p>
-            <p class="time">${detail.time}</p>
-            `).join('')}
-          </div>
-        </div>
-      </div>`;
+              <div class="education-item">
+                <div class="education-logo-wrapper">
+                  <a href="${experienceData.link}" target="_blank"><img src="images/experience/${experienceData.logoSrc}" alt="Institution Logo" class="education-logo"></a>
+                </div>
+                <div class="education-info">
+                  <p class="institution">${experienceData.school}</p>
+                  <div class="details">
+                    ${experienceData.details.map(detail => `
+                    <p>
+                      <span class="degree">${detail.degree}</span>
+                      <span class="major">${detail.major}</span>, ${detail.college}
+                    </p>
+                    <p class="time">${detail.time}</p>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>`;
             // Append the new education container to the main container
             container.appendChild(div);
           }
@@ -845,6 +829,22 @@
               // Iterate through each education experience and create corresponding elements
               data.forEach(experience => {
                 createEducationExperience(experience);
+              });
+            });
+
+            // Load and display honors from honors.json
+          fetch('configs/honors.json')
+            .then(response => response.json())
+            .then(honorsData => {
+              const honorList = document.getElementById('honor-content');
+              honorsData.forEach(item => {
+                const div = document.createElement('div');
+                div.style.marginBottom = '20px';
+                div.innerHTML =
+                  `<div style="font-size: 18px; display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div>
+                  <div style="margin-left: 20px;">${item.unit}, ${item.time}</div>`;
+
+                honorList.appendChild(div);
               });
             });
         </script>
