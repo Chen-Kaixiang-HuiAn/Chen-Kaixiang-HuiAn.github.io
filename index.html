@@ -145,6 +145,12 @@
       z-index: 1000;
     }
 
+    /* Set the style of the links in the left sidebar */
+      .left-sidebar a {
+        color: #ffffff;
+        text-decoration: none;
+      }
+
     /* Define the style of the footer */
     footer {
       text-align: center; 
@@ -331,13 +337,6 @@
       .right-margin {
         width: 100%;
         box-sizing: border-box;
-      }
-
-      /* Adjust social media container for mobile */
-      .left-sidebar div[style*="text-align: center; background: linear-gradient"] {
-        width: 90% !important;
-        padding: 10px !important;
-        margin: 0 auto !important;
       }
 
       /* Adjust cv pdf size for mobile */
@@ -619,34 +618,42 @@
   <div class="page-container">
     <div class="left-sidebar">
       <img src="images/homepage/photo/saki.jpg" alt="photo"
-        style="display: block; margin-left: auto; margin-right: auto; margin-top: 80px; max-width: 200px; height: auto;">
-      <div style="margin-top: 20px; text-align: center;">
-        <h1>Kaixiang Chen</h1>
-        <p style="font-size: 18px; font-style: italic">For the gap between academic and industrial.</p>
-        <br>
-        <!-- Container for social media and contact icons -->
-        <div
-          style="text-align: center; background: linear-gradient(90deg, #fffacd, #b0e0e6); padding: 15px; border-radius: 10px; width: 75%; margin: 0 auto;">
-          <a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank"><img
-              src="images/homepage/social platform icon/Google scholar.png" alt="Google Scholar"
-              style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="https://github.com/Excursion-ConsHein" target="_blank"><img
-              src="images/homepage/social platform icon/github.png" alt="GitHub"
-              style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="https://orcid.org/0009-0004-7118-545X" target="_blank"><img
-              src="images/homepage/social platform icon/orcid.png" alt="ORCID"
-              style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="https://space.bilibili.com/383180487" target="_blank"><img
-              src="images/homepage/social platform icon/bilibili.png" alt="Bilibili"
-              style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="https://www.youtube.com/@Excursion_ConsHein" target="_blank"><img
-              src="images/homepage/social platform icon/youtube.png" alt="YouTube"
-              style="width: 30px; height: 30px; margin-right: 15px;"></a>
-          <a href="mailto:conshein_yuanxing@outlook.com"><img src="images/homepage/social platform icon/email.png"
-              alt="Email" style="width: 30px; height: 30px; margin-right: 15px;"></a>
-        </div>
+        style="display: block; margin-left: auto; margin-right: auto; margin-top: 15%; max-width: 25vh; height: auto; border-radius: 50%; overflow: hidden;">
+      <div style="text-align: center;">
+        <p style="font-size: 30px; font-weight: bold;">Kaixiang Chen</p>
       </div>
-    </div>
+      <div style="margin-left: calc(50% - 110px); ">
+        <img src="images/homepage/info icon/location.png" alt="location"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p> Hui'an, Fujian, China</p>
+        <img src="images/homepage/info icon/school.png" alt="school"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p> Chongqing University</p>
+        <img src="images/homepage/info icon/google scholar.png" alt="google scholar"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p><a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">Google Scholar</a></p>
+        <img src="images/homepage/info icon/github.png" alt="github"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p><a href="https://github.com/Excursion-ConsHein" target="_blank"> Github</a></p>
+        <img src="images/homepage/info icon/email.png" alt="email"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p><a href="mailto:conshein_yuanxing@outlook.com"> Email</a></p>
+        <img src="images/homepage/info icon/time.png" alt="time"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p id="current-time"></p>
+        <script>
+          function updateTime() {
+            const now = new Date();
+            const utc8Time = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+            const hours = utc8Time.getUTCHours().toString().padStart(2, '0');
+            const minutes = utc8Time.getUTCMinutes().toString().padStart(2, '0');
+            document.getElementById('current-time').innerText = `${hours}:${minutes} (UTC +08:00)`;
+          }
+          updateTime();
+          setInterval(updateTime, 60000);
+        </script>
+      </div>
+      </div>
     <div class="main-content">
       <section id="home" class="active">
         <h1 style="text-align: center; font-size: 2.5em; margin-bottom: 30px; color: #a8d8ea;">Welcome to Kaixiang
