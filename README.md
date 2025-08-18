@@ -1,5 +1,7 @@
-[![Excusion_ConsHein](./images/homepage/homekey/excursion-conshein.png "Excusion_ConsHein")](https://excursion-conshein.github.io/)
-
 ## This is Kaixiang Chen's homepage
 
-Now this homepage is **IN TRIAL OPERATION!**
+Now this homepage is **RUNNING!**
+
+I am pretty delighted to receive more advice! 
+
+Email: Conshein_Yuanxing@outlook.com
