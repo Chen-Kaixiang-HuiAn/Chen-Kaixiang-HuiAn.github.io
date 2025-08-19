@@ -14,8 +14,11 @@ This is a personal homepage template based on HTML and JavaScript, with the foll
 
 Note that this homepage supports both horizontal and vertical screen adaptation (computer, mobile), as shown below:
 - Computer (horizontal screen)
+
 ![Computer Version](./images/preview/preview_computer.gif)
+
 - Mobile (vertical screen)
+
 ![Mobile Version](./images/preview/preview_phone.gif)
 
 ## 2. Getting Started
@@ -188,17 +191,21 @@ Replace your personal photo with the `images/homepage/photo/photo.png` file.
 ### Background and Icons
 
 You can replace `images/homepage/background/BG.png` to change the background image, and replace `images/homepage/favicon/favicon.ico` to change the website icon to customize your homepage style.
+
 ![photo_and_BG](./images/preview/photo_BG.png)
+
 ![favicon](./images/preview/favicon.png)
 
 ### Homepage Button Images
 
 You can replace `images/homepage/homekey/homekey.png` to customize the appearance of the home button.
+
 ![homekey](./images/preview/homekey.png)
 
 ### Information Icons
 
 You can replace the images in the `images/homepage/info icon/` directory to customize the information icons.
+
 ![info_icon](./images/preview/info_icon.png)
 
 ## 5. Preview and Deployment
