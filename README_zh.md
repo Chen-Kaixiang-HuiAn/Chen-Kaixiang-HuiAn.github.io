@@ -55,6 +55,7 @@
     │   ├── homekey/       # 主页按钮图片
     │   ├── info icon/     # 信息图标
     │   └── photo/         # 个人照片
+    ├── preview/           # readme中的配图
     └── publication/       # 出版物相关图片
 ```
 

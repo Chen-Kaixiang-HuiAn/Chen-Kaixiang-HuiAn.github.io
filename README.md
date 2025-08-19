@@ -55,6 +55,7 @@ The project directory structure is as follows:
     │   ├── homekey/       # Homepage button images
     │   ├── info icon/     # Information icons
     │   └── photo/         # Personal photos
+    ├── preview/           # Images used in the README.md file
     └── publication/       # Publication-related images
 ```
 
