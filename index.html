@@ -846,7 +846,7 @@
                         <img src="images/publication/${paper.image}" alt="${paper.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paper.image}')">
                         <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 0; padding: 15px;">
                           <h3>${paper.title}</h3>
-                          <p>${paper.author.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
+                          <p>${paper.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
                           <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.conference || paper.journal}</em>, ${year}</p>
                           <div style="text-align: right; margin-top: 10px;">
                             <a href="javascript:void(0);" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" style="display: inline-block; background-color: #ff9900; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">Jump→</a>
@@ -1018,7 +1018,7 @@
         <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paperData.image}')">
         <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 20px; padding: 15px;">
           <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paperData.title}</h3>
-          <p>${paperData.author.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
+          <p>${paperData.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
           <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.conference || paperData.journal}</em>, ${year}</p>
           <p>
             ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'award')" class="abs-link">AWARD</a>` : ''}
