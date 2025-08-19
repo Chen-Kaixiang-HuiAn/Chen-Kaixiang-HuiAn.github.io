@@ -12,12 +12,12 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Kaixiang Chen's Homepage</title>
   <script>
     window.onload = function() {
       localStorage.clear();
     };
   </script>
+
   <style>
     /* Modal Styles */
     .modal {
@@ -616,55 +616,148 @@
     <a onclick="showPage('experiences')" id="nav-experiences" style="margin-right: 4ch;">Experiences</a>
     <a onclick="showPage('publications')" id="nav-publications" style="margin-right: 4ch;">Publications</a>
     <a onclick="showPage('cv')" id="nav-cv" style="margin-right: 4ch;">CV</a>
-    <img src="images/homepage/homekey/excursion-conshein.png" alt="excursion-conshein" class="nav-icon"
+    <img src="images/homepage/homekey/homekey.png" alt="excursion-conshein" class="nav-icon"
       onclick="showPage('home')" id="nav-icon">
   </nav>
 
 
   <div class="page-container">
     <div class="left-sidebar">
-      <img src="images/homepage/photo/saki.jpg" alt="photo"
+      <img src="images/homepage/photo/photo.png" alt="photo"
         style="display: block; margin-left: auto; margin-right: auto; margin-top: 15%; max-width: 25vh; height: auto; border-radius: 50%; overflow: hidden;">
       <div style="text-align: center;">
-        <p style="font-size: 30px; font-weight: bold;">Kaixiang Chen</p>
+        <p id="name" style="font-size: 30px; font-weight: bold;"></p>
       </div>
       <div style="margin-left: calc(50% - 110px); ">
         <img src="images/homepage/info icon/location.png" alt="location"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p style="font-weight: lighter;"> Hui'an, Fujian, China</p>
+        <p id="address" style="font-weight: lighter;"></p>
         <img src="images/homepage/info icon/school.png" alt="school"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p style="font-weight: lighter;"> Chongqing University</p>
+        <p id="institution" style="font-weight: lighter;"></p>
         <img src="images/homepage/info icon/google scholar.png" alt="google scholar"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p style="font-weight: lighter;"><a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">Google Scholar</a></p>
+        <p id="googlescholar" style="font-weight: lighter;"></p>
         <img src="images/homepage/info icon/github.png" alt="github"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p style="font-weight: lighter;"><a href="https://github.com/Excursion-ConsHein" target="_blank"> Github</a></p>
+        <p id="github" style="font-weight: lighter;"></p>
         <img src="images/homepage/info icon/email.png" alt="email"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p style="font-weight: lighter;"><a href="mailto:conshein_yuanxing@outlook.com"> Email</a></p>
+        <p id="email" style="font-weight: lighter;"></p>
         <img src="images/homepage/info icon/time.png" alt="time"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
         <p id="current-time"> </p>
         <script>
+          // Initial setting to UTC+8 in case info.json fails to load
+          let utcOffsetHours = 8;
+          let utcOffsetText = 'UTC+8';
+
+          // Format UTC offset to (UTC ±HH:00) style
+          function formatUtcOffset(offset) {
+            // Ensure offset is a string
+            offset = String(offset);
+            
+            // Check if UTC is already included
+            if (offset.toUpperCase().includes('UTC')) {
+              // Extract sign and hours
+              const offsetMatch = offset.match(/([+-])(\d+)/);
+              if (offsetMatch) {
+                const sign = offsetMatch[1];
+                const hours = parseInt(offsetMatch[2]).toString().padStart(2, '0');
+                return `(UTC ${sign}${hours}:00)`;
+              }
+            } else {
+              // Handle pure number or sign+number format
+              const offsetMatch = offset.match(/^([+-]?)(\d+)$/);
+              if (offsetMatch) {
+                let sign = offsetMatch[1] || '+'; // If no sign, default to +
+                const hours = parseInt(offsetMatch[2]).toString().padStart(2, '0');
+                return `(UTC ${sign}${hours}:00)`;
+              }
+            }
+            // Default format
+            return `(UTC ${offset})`;
+          }
+
           function updateTime() {
             const now = new Date();
-            const utc8Time = new Date(now.getTime() + (8 * 60 * 60 * 1000));
-            const hours = utc8Time.getUTCHours().toString().padStart(2, '0');
-            const minutes = utc8Time.getUTCMinutes().toString().padStart(2, '0');
-            const utcOffset = '<span style="font-weight: lighter">(UTC +08:00)</span>';
+            const offsetTime = new Date(now.getTime() + (utcOffsetHours * 60 * 60 * 1000));
+            const hours = offsetTime.getUTCHours().toString().padStart(2, '0');
+            const minutes = offsetTime.getUTCMinutes().toString().padStart(2, '0');
+            const formattedOffset = formatUtcOffset(utcOffsetText);
+            const utcOffset = `<span style="font-weight: lighter">${formattedOffset}</span>`;
             document.getElementById('current-time').innerHTML = `${hours}:${minutes} ${utcOffset}`;
           }
+
+          // Execute after DOM is fully loaded
+          document.addEventListener('DOMContentLoaded', function() {
+            fetch('./configs/info.json')
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Failed to fetch info.json');
+                }
+                return response.json();
+              })
+              .then(data => {
+                // Update UTC offset
+                utcOffsetText = data.UTC;
+                // Extract hours for calculation
+                const offsetMatch = data.UTC.match(/([+-]\d+)/);
+                if (offsetMatch) {
+                  utcOffsetHours = parseInt(offsetMatch[1]);
+                }
+                // Update time immediately
+                updateTime();
+              })
+              .catch(error => {
+                console.error('Error loading UTC info:', error);
+              });
+          });
+
+          // Initial update and set timer
           updateTime();
           setInterval(updateTime, 1000);
         </script>
       </div>
       </div>
+
+      <script>
+        // Execute after DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+          fetch('./configs/info.json')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to fetch info.json');
+              }
+              return response.json();
+            })
+            .then(data => {
+              document.getElementById('name').textContent = data.name;
+              document.getElementById('address').textContent = data.address;
+              document.getElementById('institution').textContent = data.institution;
+              
+              // Add href attributes to links
+              const googleScholar = document.getElementById('googlescholar');
+              googleScholar.innerHTML = `<a href="${data.googlescholar}" target="_blank">Google Scholar</a>`;
+              
+              const github = document.getElementById('github');
+              github.innerHTML = `<a href="${data.github}" target="_blank">Github</a>`;
+              
+              const email = document.getElementById('email');
+              email.innerHTML = `<a href="mailto:${data.email}">Email</a>`;
+              
+              // Update page title
+              document.title = data.name + "'s Homepage";
+              document.getElementById('home-title').textContent = "Welcome to " + data.name + "'s Homepage!";
+            })
+            .catch(error => {
+              console.error('Error loading info:', error);
+            });
+        });
+      </script>
     <div class="main-content">
       <section id="home" class="active">
-        <h1 style="text-align: center; font-size: 2.5em; margin-bottom: 30px; color: #a8d8ea;">Welcome to Kaixiang
-          Chen's Homepage!</h1>
+        <h1 id="home-title" style="text-align: center; font-size: 2.5em; margin-bottom: 30px; color: #a8d8ea;">Welcome to </h1>
         <div class="right-margin">
           <!-- Right independent area, add content as needed -->
         </div>
@@ -1001,9 +1094,9 @@
             background-color: #45a049;
           }
         </style>
-        <button class="download-btn" onclick="window.open('./configs/test.pdf', '_blank')">Download this PDF</button>
+        <button class="download-btn" onclick="window.open('./configs/cv.pdf', '_blank')">Download this PDF</button>
         <script>
-          document.write('<object data="./configs/test.pdf?t=' + new Date().getTime() + '" type="application/pdf" width="100%" height="800px">');
+          document.write('<object data="./configs/cv.pdf?t=' + new Date().getTime() + '" type="application/pdf" width="100%" height="800px">');
         </script>
         <p>
           Your browser does not support PDF files.
