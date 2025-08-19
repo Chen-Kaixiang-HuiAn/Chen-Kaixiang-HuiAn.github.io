@@ -243,6 +243,11 @@
 
 ![info_icon](./images/preview/preview_info_icon.png)  
 
+### 清理资源
+
+你可以删除 `images/preview` 文件夹，以及清空两个 README.md 文件，减少提交时的文件大小，防止推送阻塞。
+
+
 ## 5. 预览和部署
 
 ### 本地预览

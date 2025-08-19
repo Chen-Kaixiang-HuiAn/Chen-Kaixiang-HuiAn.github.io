@@ -243,6 +243,10 @@ You can replace the images in the `images/homepage/info icon/` directory to cust
 
  ![Information Icons](./images/preview/preview_info_icon.png)  
 
+### Clean Up Resources
+
+You can delete the `images/preview` folder and clear the two README.md files to reduce the file size when committing, preventing push blocking.
+
 ## 5. Preview and Deployment
 
 ### Local Preview
