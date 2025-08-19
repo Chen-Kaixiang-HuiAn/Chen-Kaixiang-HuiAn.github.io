@@ -631,32 +631,33 @@
       <div style="margin-left: calc(50% - 110px); ">
         <img src="images/homepage/info icon/location.png" alt="location"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p> Hui'an, Fujian, China</p>
+        <p style="font-weight: lighter;"> Hui'an, Fujian, China</p>
         <img src="images/homepage/info icon/school.png" alt="school"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p> Chongqing University</p>
+        <p style="font-weight: lighter;"> Chongqing University</p>
         <img src="images/homepage/info icon/google scholar.png" alt="google scholar"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p><a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">Google Scholar</a></p>
+        <p style="font-weight: lighter;"><a href="https://scholar.google.com/citations?user=-LOLA6AAAAAJ" target="_blank">Google Scholar</a></p>
         <img src="images/homepage/info icon/github.png" alt="github"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p><a href="https://github.com/Excursion-ConsHein" target="_blank"> Github</a></p>
+        <p style="font-weight: lighter;"><a href="https://github.com/Excursion-ConsHein" target="_blank"> Github</a></p>
         <img src="images/homepage/info icon/email.png" alt="email"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p><a href="mailto:conshein_yuanxing@outlook.com"> Email</a></p>
+        <p style="font-weight: lighter;"><a href="mailto:conshein_yuanxing@outlook.com"> Email</a></p>
         <img src="images/homepage/info icon/time.png" alt="time"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p id="current-time"></p>
+        <p id="current-time"> </p>
         <script>
           function updateTime() {
             const now = new Date();
             const utc8Time = new Date(now.getTime() + (8 * 60 * 60 * 1000));
             const hours = utc8Time.getUTCHours().toString().padStart(2, '0');
             const minutes = utc8Time.getUTCMinutes().toString().padStart(2, '0');
-            document.getElementById('current-time').innerText = `${hours}:${minutes} (UTC +08:00)`;
+            const utcOffset = '<span style="font-weight: lighter">(UTC +08:00)</span>';
+            document.getElementById('current-time').innerHTML = `${hours}:${minutes} ${utcOffset}`;
           }
           updateTime();
-          setInterval(updateTime, 60000);
+          setInterval(updateTime, 1000);
         </script>
       </div>
       </div>
