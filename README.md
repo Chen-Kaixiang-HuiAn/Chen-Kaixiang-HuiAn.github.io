@@ -14,11 +14,11 @@ This is a personal homepage template based on HTML and JavaScript, with the foll
 
 Note that this homepage supports both horizontal and vertical screen adaptation (computer, mobile), as shown below:
 - Computer (horizontal screen)
-- 
+
 ![Computer Version](./images/preview/preview_computer.gif)
 
 - Mobile (vertical screen)
-- 
+
 ![Mobile Version](./images/preview/preview_phone.gif)
 
 ## 2. Getting Started
