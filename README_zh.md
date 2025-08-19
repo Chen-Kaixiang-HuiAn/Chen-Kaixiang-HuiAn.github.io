@@ -14,8 +14,11 @@
 
 注意，本主页支持横竖屏双端适配（电脑、手机），效果如下：
 - 电脑端（横屏）
+- 
 ![电脑端](./images/preview/preview_computer.gif)
+
 - 手机端（竖屏）
+- 
 ![手机端](./images/preview/preview_phone.gif)
 
 ## 2. 如何开始
@@ -188,17 +191,21 @@
 ### 背景和图标
 
 你可以替换 `images/homepage/background/BG.png`更换背景图片，替换`images/homepage/favicon/favicon.ico`更换网站图标，自定义你的主页风格。
+
 ![photo_and_BG](./images/preview/photo_BG.png)
+
 ![favicon](./images/preview/favicon.png)
 
 ### 主页按钮图片
 
 你可以替换 `images/homepage/homekey/homekey.png` ，自定义home键按钮的外观。
+
 ![homekey](./images/preview/homekey.png)
 
 ### 信息图标
 
 你可以替换 `images/homepage/info icon/` 目录下的图片，自定义信息图标。
+
 ![info_icon](./images/preview/info_icon.png)
 
 ## 5. 预览和部署
