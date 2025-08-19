@@ -15,11 +15,11 @@ This is a personal homepage template based on HTML and JavaScript, with the foll
 Note that this homepage supports both horizontal and vertical screen adaptation (computer, mobile), as shown below:
 - Computer (horizontal screen)
 
-![Computer Version](./images/preview/preview_computer.gif)
+ ![Computer Version](./images/preview/preview_computer.gif)
 
 - Mobile (vertical screen)
 
-![Mobile Version](./images/preview/preview_phone.gif)
+ ![Mobile Version](./images/preview/preview_phone.gif)
 
 ## 2. Getting Started
 
@@ -29,8 +29,15 @@ Note that this homepage supports both horizontal and vertical screen adaptation 
 2. Click the "Fork" button in the upper right corner to copy the repository to your GitHub account
 3. Clone the forked repository to your local machine:
    ```bash
-   git clone https://github.com/your-username/your-repo-name.github.io.git
+   git clone https://github.com/{your-username}/{your-repo-name}.github.io.git
    ```
+   Where {your-username} is your GitHub username and {your-repo-name} is the name of your forked repository.
+   
+   For example, if your username is ConsHein and your repo name is Excursion-ConsHein.github.io, you should run:
+   ```bash
+   git clone https://github.com/ConsHein/Excursion-ConsHein.github.io.git
+   ```
+   This will clone the repository into a directory named `Excursion-ConsHein.github.io` on your local machine.
 
 ### Step 2: Directory Structure
 
@@ -39,29 +46,29 @@ The project directory structure is as follows:
 ├── README.md              # Project documentation (this tutorial)
 ├── index.html             # Main HTML file
 ├── configs/               # Configuration files
-│   ├── cv.pdf             # Curriculum vitae PDF
+│   ├── cv.pdf             # Resume PDF
 │   ├── experiences.json   # Work and education experiences
 │   ├── honors.json        # Honors and awards
-│   ├── info.json          # Personal basic information
+│   ├── info.json          # Basic personal information
 │   ├── intro.txt          # Introduction text
-│   ├── news.json          # Latest news and updates
+│   ├── news.json          # Latest news
 │   ├── papers.json        # Published papers
 │   └── patents.json       # Patents
 └── images/                # Image files
-    ├── experience/        # Experience-related images
+    ├── experience/        # Experience related images
     ├── homepage/          # Homepage images
     │   ├── background/    # Background images
-    │   ├── favicon/       # Website favicon
+    │   ├── favicon/       # Website icons
     │   ├── homekey/       # Homepage button images
     │   ├── info icon/     # Information icons
     │   └── photo/         # Personal photos
-    ├── preview/           # Images used in the README.md file
-    └── publication/       # Publication-related images
+    ├── preview/           # Images for readme
+    └── publication/       # Publication related images
 ```
 
 ## 3. Customize Your Information
 
-### Modify Personal Basic Information
+### Modify Basic Personal Information
 
 Edit the `configs/info.json` file to add your personal information:
 ```json
@@ -76,6 +83,9 @@ Edit the `configs/info.json` file to add your personal information:
 }
 ```
 
+ ![Basic Personal Information](./images/preview/preview_info.png)
+
+
 ### Add Experiences
 
 Edit the `configs/experiences.json` file to add your work and education experiences:
@@ -89,7 +99,7 @@ Edit the `configs/experiences.json` file to add your work and education experien
                 "degree": "Degree",
                 "major": "Major",
                 "college": "College",
-                "time": "Time Period"
+                "time": "Time"
             },
             // If you have multiple experiences in the same organization, you can continue adding here...
         ],
@@ -99,7 +109,12 @@ Edit the `configs/experiences.json` file to add your work and education experien
 ]
 ```
 
+ ![Experiences](./images/preview/preview_experiences.png)
+
+
 ### Add Honors and Awards
+
+If you don't have any honors or awards, you can leave the document empty or delete it, and the corresponding section will be hidden.
 
 Edit the `configs/honors.json` file:
 ```json
@@ -107,11 +122,14 @@ Edit the `configs/honors.json` file:
     {
         "time": "Award Year",
         "award": "Award Name",
-        "unit": "Granting Unit"
+        "unit": "Awarding Unit"
     },
-    // If you have more honors and awards, you can continue adding here...
+    // If you have multiple honors and awards, you can continue adding here...
 ]
 ```
+
+ ![Honors and Awards](./images/preview/preview_honors.png)
+
 
 ### Add Papers
 
@@ -126,22 +144,30 @@ Edit the `configs/papers.json` file:
       "conference": "Conference Name",
       // The above is an example for conference papers, for journal papers, use "journal": "Journal Name",
       "image": "Paper image, stored in images/publication/ directory",
-      "award": "Awards received by the paper, can be deleted if none",
+      "award": "Awards received by the paper, if none, you can delete this line",
       "abstract": "Paper Abstract",
       "keyword": "Paper Keywords",
       "bibtex": "Paper BibTeX Citation",
       "paperLink": "Paper Link",
-      "videoLink": "Embedded Video Link, can be deleted if none",
-      "codeLink": "Code Repository Link, can be deleted if none",
-      "siteLink": "Project Website Link, can be deleted if none"
+      "videoLink": "Embedded Video Link, if none, you can delete this line",
+      "codeLink": "Code Repository Link, if none, you can delete this line",
+      "siteLink": "Custom Project Page Link, if none, you can delete this line",
+      "selectedPaper": true
+      // If you want to feature this paper in the Research Highlights section on the homepage, set selectedPaper to true, otherwise set to false
     },
-    // If there are other papers in this year, you can continue adding here...
+    // If you have other papers in this year, you can continue adding here...
   ],
-  // If there are papers in other years, you can continue adding here...
+  // If you have papers in other years, you can continue adding here...
 }
 ```
 
+ ![Papers](./images/preview/preview_papers.gif)
+
+ ![Highlights](./images/preview/preview_highlights.gif)
+
 ### Add Patents
+
+If you don't have any patents, you can leave the document empty or delete it, and the corresponding section will be hidden.
 
 Edit the `configs/patents.json` file:
 ```json
@@ -155,10 +181,12 @@ Edit the `configs/patents.json` file:
         "date": "Authorization Date",
         "link": "Patent Link"
     },
-    // If there are more patents, you can continue adding here...
+    // If you have more patents, you can continue adding here...
   ]
 }
 ```
+
+ ![Patents](./images/preview/preview_patents.png)
 
 ### Add Latest News
 
@@ -170,51 +198,57 @@ Edit the `configs/news.json` file:
         "time": "News Time, e.g. 2023-01-01",
         "content": "News Content"
     },
-    // If there are more news items, you can continue adding here...
+    // If you have more news, you can continue adding here...
   ]
 }
 ```
+
+ ![Latest News](./images/preview/preview_news.png)
 
 ### Add Resume
 
 Rename your resume PDF file to `cv.pdf` and replace the `configs/cv.pdf` file.
 
+ ![Resume](./images/preview/preview_cv.png)
+
 ### Add Personal Introduction
 
 Edit the `configs/intro.txt` file to add your personal introduction text.
 
+ ![Personal Introduction](./images/preview/preview_intro.png)
+
 ## 4. Add Images
 
-### Personal Photos
+### Personal Photo
 
 Replace your personal photo with the `images/homepage/photo/photo.png` file.
 
 ### Background and Icons
 
-You can replace `images/homepage/background/BG.png` to change the background image, and replace `images/homepage/favicon/favicon.ico` to change the website icon to customize your homepage style.
+You can replace `images/homepage/background/BG.png` to change the background image, replace `images/homepage/favicon/favicon.ico` to change the website icon, and customize your homepage style.
 
-![photo_and_BG](./images/preview/photo_BG.png)
+ ![Photo and Background](./images/preview/preview_photo_BG.png)
 
-![favicon](./images/preview/favicon.png)
+![Favicon](./images/preview/preview_favicon.png)
 
-### Homepage Button Images
+### Homepage Button Image
 
 You can replace `images/homepage/homekey/homekey.png` to customize the appearance of the home button.
 
-![homekey](./images/preview/homekey.png)
+ ![Homekey](./images/preview/preview_homekey.png)
 
 ### Information Icons
 
 You can replace the images in the `images/homepage/info icon/` directory to customize the information icons.
 
-![info_icon](./images/preview/info_icon.png)
+ ![Information Icons](./images/preview/preview_info_icon.png)  
 
 ## 5. Preview and Deployment
 
 ### Local Preview
 
 1. Open the `index.html` file on your local computer to preview your personal homepage
-2. For a more advanced preview, you can use a local server, such as Python's simple HTTP server:
+2. For more advanced preview, you can use a local server, such as Python's simple HTTP server:
    ```bash
    cd your-repo-directory
    python -m http.server

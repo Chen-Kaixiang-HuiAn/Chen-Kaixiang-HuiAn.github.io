@@ -29,8 +29,15 @@
 2. 点击右上角的 "Fork" 按钮，将仓库复制到你的 GitHub 账户
 3. 将 fork 后的仓库克隆到本地：
    ```bash
-   git clone https://github.com/你的用户名/你的仓库名.github.io.git
+   git clone https://github.com/{你的用户名}/{你的仓库名}.github.io.git
    ```
+   其中，{你的用户名} 是你的 GitHub 用户名，{你的仓库名} 是你 fork 后的仓库名。
+   
+   例如，我的用户名是 ConsHein，仓库名是 Excursion-ConsHein.github.io，那么我应该执行：
+   ```bash
+   git clone https://github.com/ConsHein/Excursion-ConsHein.github.io.git
+   ```
+   这将把仓库克隆到本地的 `Excursion-ConsHein.github.io` 目录中。
 
 ### 步骤 2: 目录结构
 
@@ -76,6 +83,9 @@
 }
 ```
 
+![个人基本信息](./images/preview/preview_info.png)
+
+
 ### 添加经历
 
 编辑 `configs/experiences.json` 文件，添加你的工作和教育经历：
@@ -99,7 +109,12 @@
 ]
 ```
 
+![经历](./images/preview/preview_experiences.png)
+
+
 ### 添加荣誉和奖项
+
+如果没有荣誉和奖项相关的信息，那就将文档空置，或者删除文档，对应的栏目将会隐藏。
 
 编辑 `configs/honors.json` 文件：
 ```json
@@ -112,6 +127,9 @@
     // 如果你具有多项荣誉和奖项，可以在此继续添加...
 ]
 ```
+
+![荣誉和奖项](./images/preview/preview_honors.png)
+
 
 ### 添加论文
 
@@ -133,7 +151,9 @@
       "paperLink": "论文链接",
       "videoLink": "嵌入的视频链接，如果无，则可以删除此行",
       "codeLink": "代码仓库链接，如果无，则可以删除此行",
-      "siteLink": "项目网站链接，如果无，则可以删除此行"
+      "siteLink": "定制的项目浏览页链接，如果无，则可以删除此行",
+      "selectedPaper": true
+      // 如果想将这篇论文放在首页home的Research Highlights中，就将selectedPaper设置为true，否则设置为false
     },
     // 如果本年有其他论文，可以在此继续添加...
   ],
@@ -141,7 +161,13 @@
 }
 ```
 
+![论文](./images/preview/preview_papers.gif)
+
+![高亮](./images/preview/preview_highlights.gif)
+
 ### 添加专利
+
+如果没有专利相关的信息，那就将文档空置，或者删除文档，对应的栏目将会隐藏。
 
 编辑 `configs/patents.json` 文件：
 ```json
@@ -160,6 +186,8 @@
 }
 ```
 
+![专利](./images/preview/preview_patents.png)
+
 ### 添加最新动态
 
 编辑 `configs/news.json` 文件：
@@ -175,13 +203,19 @@
 }
 ```
 
+![最新动态](./images/preview/preview_news.png)
+
 ### 添加简历
 
 将你的简历 PDF 文件命名为 `cv.pdf`，替换 `configs/cv.pdf` 文件。
 
+![简历](./images/preview/preview_cv.png)
+
 ### 添加个人介绍
 
 编辑 `configs/intro.txt` 文件，添加你的个人介绍文本。
+
+![个人介绍](./images/preview/preview_intro.png)
 
 ## 4. 添加图片
 
@@ -193,21 +227,21 @@
 
 你可以替换 `images/homepage/background/BG.png`更换背景图片，替换`images/homepage/favicon/favicon.ico`更换网站图标，自定义你的主页风格。
 
-![photo_and_BG](./images/preview/photo_BG.png)
+![photo_and_BG](./images/preview/preview_photo_BG.png)
 
-![favicon](./images/preview/favicon.png)
+![favicon](./images/preview/preview_favicon.png)
 
 ### 主页按钮图片
 
 你可以替换 `images/homepage/homekey/homekey.png` ，自定义home键按钮的外观。
 
-![homekey](./images/preview/homekey.png)
+![homekey](./images/preview/preview_homekey.png)
 
 ### 信息图标
 
 你可以替换 `images/homepage/info icon/` 目录下的图片，自定义信息图标。
 
-![info_icon](./images/preview/info_icon.png)
+![info_icon](./images/preview/preview_info_icon.png)  
 
 ## 5. 预览和部署
 

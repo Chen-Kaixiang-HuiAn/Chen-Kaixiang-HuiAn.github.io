@@ -164,7 +164,7 @@
       background-color: transparent; 
       font-family: 'Microsoft YaHei', 
       sans-serif; 
-      border-top: 2px solid #999999;
+      max-height: 10vh;
     }
 
     /* Define responsive styles for screens with a maximum width of 768px */
@@ -440,12 +440,13 @@
       font-size: 14px;
     }
 
-    /* Define style for content links (abstract, PDF, BibTeX, video, code) */
+    /* Define style for content links (abstract, PDF, BibTeX, video, code, site) */
     .abs-link,
     .paper-link,
     .bib-link,
     .video-link,
     .code-link,
+    .site-link,
     .key-link {
       display: inline-block;
       padding: 5px 15px;
@@ -894,11 +895,10 @@
         </div>
         <hr style="border: 1px solid #ade6b0;">
         <div id="education-experience"></div>
-        <hr style="border: 1px solid #ade6b0;">
 
         <!-- Honors and Awards -->
+        <div id="Honors-header"></div>
         <div class="section-box">
-          <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Honors and Awards</h1>
           <div id="honor-content" style="padding-left: 20px;"></div>
         </div>
 
@@ -943,8 +943,28 @@
                 createEducationExperience(experience);
               });
             });
+          
+          // Hide Honors-header if honors.json is empty
+          fetch('configs/honors.json')
+              .then(response => response.json())
+              .then(data => {
+                  if (data.length === 0) {
+                    // If honors.json is empty, hide the section
+                    document.getElementById('Honors-header').style.display = 'none';
+                  }
+                  else {
+                    // If honors.json is not empty, display the section
+                    document.getElementById('Honors-header').style.display = 'block';
+                    const header = document.getElementById('Honors-header');
+                    header.innerHTML = `
+                    <hr style="border: 1px solid #ade6b0;"> 
+                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Honors and Awards</h1>
+                    `;
+                  }
+              })
+              .catch(error => console.error('Error loading honors.json:', error));
 
-            // Load and display honors from honors.json
+          // Load and display honors from honors.json
           fetch('configs/honors.json')
             .then(response => response.json())
             .then(honorsData => {
@@ -952,10 +972,9 @@
               honorsData.forEach(item => {
                 const div = document.createElement('div');
                 div.style.marginBottom = '20px';
-                div.innerHTML =
-                  `<div style="font-size: 18px; display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div>
+                div.innerHTML =`
+                  <div style="font-size: 18px; display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div>
                   <div style="margin-left: 20px;">${item.unit}, ${item.time}</div>`;
-
                 honorList.appendChild(div);
               });
             });
@@ -970,17 +989,37 @@
         </div>
         <!-- Container for displaying papers -->
         <div id="paper-container"></div>
-        <hr style="border: 1px solid #ff9900;">
 
         <!-- Patents information-->
+        <div id="Patents-header"></div>
         <div class="section-box">
-          <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Patents</h1>
           <div id="patent-content" style="padding-left: 20px;"></div>
         </div>
 
         <br><br>
         
         <script>
+            // Hide Patents-header if patents.json is empty
+            fetch('configs/patents.json')
+              .then(response => response.json())
+              .then(data => {
+                  if (data.length === 0) {
+                    // If patents.json is empty, hide the section
+                    document.getElementById('Patents-header').style.display = 'none';
+                  }
+                  else {
+                    // If honors.json is not empty, display the section
+                    document.getElementById('Patents-header').style.display = 'block';
+                    const header = document.getElementById('Patents-header');
+                    header.innerHTML = `
+                    <hr style="border: 1px solid #ff9900;"> 
+                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Patents</h1>
+                    `;
+                  }
+              })
+              .catch(error => console.error('Error loading patents.json:', error));
+
+            // Load and display patents from patents.json
             fetch('configs/patents.json')
               .then(response => response.json())
               .then(PatentData => {
@@ -988,8 +1027,8 @@
                 PatentData['patents'].forEach(item => {
                   const div = document.createElement('div');
                   div.style.marginBottom = '20px';
-                  div.innerHTML =
-                    `<div style="font-size: 18px; display: flex; align-items: baseline; color:rgb(0, 255, 255);">• <strong>${item.title}</strong></div>
+                  div.innerHTML = `
+                    <div style="font-size: 18px; display: flex; align-items: baseline; color:rgb(0, 255, 255);">• <strong>${item.title}</strong></div>
                     <div style="margin-left: 20px;"><span>${item.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</span>.
                     <div><em>${item.type}</em>, <a href="${item.link}" target="_blank">${item.number}</a>, ${item.date}</div>
                     </div>`;
@@ -1014,42 +1053,41 @@
               // Create new div element for paper
               const paperDiv = document.createElement('div');
               paperDiv.innerHTML = `
-      <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px; position: relative;">
-        <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paperData.image}')">
-        <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 20px; padding: 15px;">
-          <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paperData.title}</h3>
-          <p>${paperData.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
-          <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.conference || paperData.journal}</em>, ${year}</p>
-          <p>
-            ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'award')" class="abs-link">AWARD</a>` : ''}
-            <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'abstract')" class="abs-link">ABS</a>
-            <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'keywords')" class="key-link">KEY</a>
-            <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'bibtex')" class="bib-link">BIB</a>
-            <a href="${paperData.paperLink}" target="_blank" class="paper-link">PAPER</a>
-            ${paperData.videoLink ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, '\'')}', 'video')" class="video-link">VIDEO</a>` : ''}
-            ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
-            ${paperData.siteLink ? `<a href="${paperData.siteLink}" target="_blank" class="site-link">SITE</a>` : ''}
-
-          </p>
-        </div>
-      </div>
-      <div id="abstract-${paperData.title.replace(/'/g, '\'')}" style="font-size: 13px; border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
-        <p>${paperData.abstract}</p>
-      </div>
-      <div id="award-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
-        <p>${paperData.award}</p>
-      </div>
-      <div id="keywords-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
-        <ul>
-          ${paperData.keywords.split(',').map(keyword => `<li>${keyword.trim()}</li>`).join('')}
-        </ul>
-      </div>
-      <div id="bibtex-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
-        <pre style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; margin: 0; width: 100%;">${paperData.bibtex}</pre>
-      </div>
-      <div id="video-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
-        <iframe src="${paperData.videoLink}" data-original-src="${paperData.videoLink}" style="width: 100%; aspect-ratio: 16/9;"></iframe>
-      </div>`;
+                <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px; position: relative;">
+                  <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paperData.image}')">
+                  <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 20px; padding: 15px;">
+                    <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paperData.title}</h3>
+                    <p>${paperData.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
+                    <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.conference || paperData.journal}</em>, ${year}</p>
+                    <p>
+                      ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'award')" class="abs-link">AWARD</a>` : ''}
+                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'abstract')" class="abs-link">ABS</a>
+                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'keywords')" class="key-link">KEY</a>
+                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'bibtex')" class="bib-link">BIB</a>
+                      <a href="${paperData.paperLink}" target="_blank" class="paper-link">PAPER</a>
+                      ${paperData.videoLink ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, '\'')}', 'video')" class="video-link">VIDEO</a>` : ''}
+                      ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
+                      ${paperData.siteLink ? `<a href="${paperData.siteLink}" target="_blank" class="site-link">SITE</a>` : ''}
+                    </p>
+                  </div>
+                </div>
+                <div id="abstract-${paperData.title.replace(/'/g, '\'')}" style="font-size: 13px; border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                  <p>${paperData.abstract}</p>
+                </div>
+                <div id="award-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                  <p>${paperData.award}</p>
+                </div>
+                <div id="keywords-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                  <ul>
+                    ${paperData.keywords.split(',').map(keyword => `<li>${keyword.trim()}</li>`).join('')}
+                  </ul>
+                </div>
+                <div id="bibtex-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                  <pre style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; margin: 0; width: 100%;">${paperData.bibtex}</pre>
+                </div>
+                <div id="video-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                  <iframe src="${paperData.videoLink}" data-original-src="${paperData.videoLink}" style="width: 100%; aspect-ratio: 16/9;"></iframe>
+                </div>`;
               return paperDiv;
             }
 
@@ -1075,6 +1113,7 @@
                   paperContainer.appendChild(yearBlock);
                 });
               });
+            
           </script>
       </section>
 
