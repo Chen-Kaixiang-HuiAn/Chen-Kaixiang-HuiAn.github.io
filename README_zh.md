@@ -14,11 +14,11 @@
 
 注意，本主页支持横竖屏双端适配（电脑、手机），效果如下：
 - 电脑端（横屏）
-- 
+
 ![电脑端](./images/preview/preview_computer.gif)
 
 - 手机端（竖屏）
-- 
+
 ![手机端](./images/preview/preview_phone.gif)
 
 ## 2. 如何开始
