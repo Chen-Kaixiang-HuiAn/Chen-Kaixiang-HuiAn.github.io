@@ -53,7 +53,9 @@ The project directory structure is as follows:
 │   ├── intro.txt          # Introduction text
 │   ├── news.json          # Latest news
 │   ├── papers.json        # Published papers
-│   └── patents.json       # Patents
+│   ├── patents.json       # Patents
+│   ├── reviewer.json      # Reviewer experiences
+│   └── teaching.json      # Teaching experiences
 └── images/                # Image files
     ├── experience/        # Experience related images
     ├── homepage/          # Homepage images
@@ -130,6 +132,45 @@ Edit the `configs/honors.json` file:
 
  ![Honors and Awards](./images/preview/preview_honors.png)
 
+### Add Reviewer Experiences
+
+If you don't have any reviewer experiences, you can leave the document empty or delete it, and the corresponding section will be hidden.
+
+Edit the `configs/reviewer.json` file:
+```json
+[
+    {
+        "conference": "Reviewer Conference Name",
+        // If the reviewer's target is a journal, write as "journal": "Journal Name"
+        "year": "Reviewer Year"
+    },
+    // If you have multiple reviewer experiences, you can continue adding here...
+]
+```
+
+ ![Reviewer Experiences](./images/preview/preview_reviewer.png)
+
+### Add Teaching Experiences
+
+If you don't have any teaching experiences, you can leave the document empty or delete it, and the corresponding section will be hidden.
+
+Edit the `configs/teaching.json` file:
+```json
+[
+    {
+        "school": "School Name",
+        "course": "Course Name",
+        "code": "Course Code",
+        "identity": "Identity, e.g. Assistant/Instructor",
+        "season": "Season, e.g. Fall/Spring",
+        "year": "Year",
+        "link": "Course Link, if none, you can delete this line"
+    },
+    // If you have multiple teaching experiences, you can continue adding here...
+]
+```
+
+ ![Teaching Experiences](./images/preview/preview_teaching.png)
 
 ### Add Papers
 

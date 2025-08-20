@@ -53,7 +53,9 @@
 │   ├── intro.txt          # 介绍文本
 │   ├── news.json          # 最新动态
 │   ├── papers.json        # 发表的论文
-│   └── patents.json       # 专利
+│   ├── patents.json       # 专利
+│   ├── reviewer.json      # 审稿经历
+│   └── teaching.json      # 教学经历
 └── images/                # 图片文件
     ├── experience/        # 经历相关图片
     ├── homepage/          # 主页图片
@@ -129,6 +131,46 @@
 ```
 
 ![荣誉和奖项](./images/preview/preview_honors.png)
+
+### 添加教学经历
+
+如果没有教学经历相关的信息，那就将文档空置，或者删除文档，对应的栏目将会隐藏。
+
+编辑 `configs/teaching.json` 文件：
+```json
+[
+    {
+        "school": "学校名称",
+        "course": "课程名称",
+        "code": "课程代码",
+        "identity": "身份，eg. 助教/讲师",
+        "season": "学期，eg. 秋季/春季",
+        "year": "年份",
+        "link": "课程链接，如果没有链接，可以将其删除"
+    },
+    // 如果你具有多项教学经历，可以在此继续添加...
+]
+```
+
+![教学经历](./images/preview/preview_teaching.png)
+
+### 添加审稿经历
+
+如果没有审稿经历相关的信息，那就将文档空置，或者删除文档，对应的栏目将会隐藏。
+
+编辑 `configs/reviewer.json` 文件：
+```json
+[
+    {
+        "conference": "审稿会议名称",
+        // 如果审稿的目标是期刊，则写为 "journal": "审稿期刊名称"
+        "year": "审稿年份"
+    },
+    // 如果你具有多项审稿经历，可以在此继续添加...
+]
+```
+
+![审稿经历](./images/preview/preview_reviewer.png)
 
 
 ### 添加论文

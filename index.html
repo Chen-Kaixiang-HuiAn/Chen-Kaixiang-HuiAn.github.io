@@ -902,6 +902,19 @@
           <div id="honor-content" style="padding-left: 20px;"></div>
         </div>
 
+        <!-- Teaching -->
+        <div id="teaching-header"></div>
+        <div class="section-box">
+          <div id="teaching-content" style="padding-left: 20px;"></div>
+        </div>
+
+        <!-- Reviewer -->
+        <div id="reviewer-header"></div>
+        <div class="section-box">
+          <div id="reviewer-content" style="padding-left: 20px;"></div>
+        </div>
+
+
         <br><br>
 
         <script>
@@ -978,6 +991,85 @@
                 honorList.appendChild(div);
               });
             });
+
+          // Hide teaching-header if teaching.json is empty
+          fetch('configs/teaching.json')
+              .then(response => response.json())
+              .then(data => {
+                  if (data.length === 0) {
+                    // If teaching.json is empty, hide the section
+                    document.getElementById('teaching-header').style.display = 'none';
+                  }
+                  else {
+                    // If teaching.json is not empty, display the section
+                    document.getElementById('teaching-header').style.display = 'block';
+                    const header = document.getElementById('teaching-header');
+                    header.innerHTML = `
+                    <hr style="border: 1px solid #ade6b0;"> 
+                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Teaching</h1>
+                    `;
+                  }
+              })
+              .catch(error => console.error('Error loading teaching.json:', error));
+          
+          // Load and display teaching from teaching.json
+          fetch('configs/teaching.json')
+            .then(response => response.json())
+            .then(teachingData => {
+              const teachingList = document.getElementById('teaching-content');
+              teachingData.forEach(item => {
+                const div = document.createElement('div');
+                div.style.marginBottom = '20px';
+                // Check if item.link exists and is not empty
+                if (item.link && item.link.trim() !== '') {
+                  div.innerHTML = `
+                    <div style="font-size: 18px; display: flex; align-items: baseline; color: #fff00f;">• <a href="${item.link}" target="_blank" style="color: #fff00f;"><span style="font-weight: bold;">${item.code} ${item.course}</span></a>, ${item.school}</div>
+                    <div style="margin-left: 20px;">${item.identity}, ${item.season} ${item.year}</div>
+                  `;
+                } else {
+                  div.innerHTML = 
+                  `<div style="font-size: 18px; display: flex; align-items: baseline; color: #fff00f;">• <span style="font-weight: bold;">${item.code} ${item.course}</span>, ${item.school}</div>
+                    <div style="margin-left: 20px;">${item.identity}, ${item.season} ${item.year}</div>
+                  `;
+                }
+                teachingList.appendChild(div);
+              });
+            });
+
+          // Hide reviewer-header if reviewer.json is empty
+          fetch('configs/reviewer.json')
+              .then(response => response.json())
+              .then(data => {
+                  if (data.length === 0) {
+                    // If reviewer.json is empty, hide the section
+                    document.getElementById('reviewer-header').style.display = 'none';
+                  }
+                  else {
+                    // If reviewer.json is not empty, display the section
+                    document.getElementById('reviewer-header').style.display = 'block';
+                    const header = document.getElementById('reviewer-header');
+                    header.innerHTML = `
+                    <hr style="border: 1px solid #ade6b0;"> 
+                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Reviewer</h1>
+                    `;
+                  }
+              })
+              .catch(error => console.error('Error loading reviewer.json:', error));
+
+          // Load and display reviewer from reviewer.json
+          fetch('configs/reviewer.json')
+            .then(response => response.json())
+            .then(reviewerData => {
+              const reviewerList = document.getElementById('reviewer-content');
+              reviewerData.forEach(item => {
+                const div = document.createElement('div');
+                div.style.marginBottom = '20px';
+                div.innerHTML =`
+                  <div style="font-size: 18px; display: flex; align-items: baseline; color: #00ffff;">• <strong>${item.conference || item.journal}, ${item.year}</strong></div>`;
+                reviewerList.appendChild(div);
+              });
+            });
+
         </script>
       </section>
 
