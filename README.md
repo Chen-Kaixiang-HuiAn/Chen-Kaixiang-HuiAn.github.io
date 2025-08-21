@@ -4,6 +4,10 @@ English Version | [中文版](README_zh.md)
 
 This repository contains a clean personal homepage template. This tutorial will guide you on how to fork this project and add your own information to create your personal homepage.
 
+**Disclaimer: This project template is only for research and learning purposes, and is not intended for any commercial use.**
+
+**If you use this project template to create your personal homepage, you need to ensure that you comply with all relevant laws and regulations, and do not use it for any commercial activities.**
+
 ## 1. Project Introduction
 
 This is a personal homepage template based on HTML and JavaScript, with the following features:
