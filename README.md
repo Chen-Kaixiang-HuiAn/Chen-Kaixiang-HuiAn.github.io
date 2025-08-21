@@ -70,6 +70,8 @@ The project directory structure is as follows:
 
 ## 3. Customize Your Information
 
+**Note: All the following legend content is only for demonstration purposes and does not represent real information!**
+
 ### Modify Basic Personal Information
 
 Edit the `configs/info.json` file to add your personal information:
