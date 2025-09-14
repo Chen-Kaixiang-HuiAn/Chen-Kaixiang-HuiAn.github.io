@@ -32,7 +32,7 @@ Update: 2025-09-15
 
 ![CV](./images/preview2.0/interface_cv.png)
 
-- Added the Excursion ConsHein and "远行鸽" (Traveling Pigeon) logo in the top left corner
+- Added the Excursion ConsHein and "远行鸽" (Excursion Pigeon) logo in the top left corner
 
 ![logo](./images/preview2.0/topleft.png)
 
@@ -40,7 +40,7 @@ Update: 2025-09-15
 
 - The computer version offers a smoother experience with seamless page transitions
 
-- The mobile version has a dedicated page for the information sidebar, click on the Traveling Pigeon to jump to it!
+- The mobile version has a dedicated page for the information sidebar, click on the Excursion Pigeon to jump to it!
 
 **Hope you can have a good experience with Excursion ConsHein 2.0 today!**
 
