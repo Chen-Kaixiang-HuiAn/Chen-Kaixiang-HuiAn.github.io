@@ -3,7 +3,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-20 -->
+<!-- Last Change: 2025-09-15 -->
 
 <head>
   <meta charset="utf-8">
@@ -12,13 +12,104 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
+
   <script>
+    // Performance optimization: immediately define throttle and debounce functions to ensure they are available before any other scripts
+    (function() {
+      // Throttle function to limit event trigger frequency
+      function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+          const args = arguments;
+          const context = this;
+          if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+          }
+        };
+      }
+      
+      // Debounce function to delay event execution
+      function debounce(func, wait) {
+        let timeout;
+        return function() {
+          const context = this;
+          const args = arguments;
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+      }
+      
+      // Add functions to global scope
+      window.throttle = throttle;
+      window.debounce = debounce;
+    })();
+    
+    // Clear local storage when page loads
     window.onload = function() {
       localStorage.clear();
     };
   </script>
 
+  <link rel="stylesheet" href="src/all_min.css">
+  <script src="src/chart.js"></script>
+
   <style>
+    :root {
+        --primary: #2a6bc6;
+        --secondary: #1a3a7a;
+        --accent: #34cceb;
+        --dark: #0a1429;
+        --light: #f0f8ff;
+        --gray: #5a708a;
+        --green: #34cc8b;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 500;
+        
+        /* Performance optimization: reduce repaints and reflows */
+        will-change: transform;
+        backface-visibility: hidden;
+        transform: translateZ(0);
+    }
+    
+    /* Performance optimization: specify will-change property for animated elements */
+    .logo, .left-sidebar img, nav, .reveal, .paper {
+        will-change: transform, opacity;
+    }
+    
+    /* Performance optimization: reduce repaints for animated elements */
+    .left-sidebar img {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+    
+    /* Performance optimization: optimize scrolling performance */
+    body {
+      background: linear-gradient(135deg, var(--dark) 0%, #0c1d3e 100%);
+      color: var(--light);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      
+      /* Performance optimization: reduce repaints during scrolling */
+      overflow-y: overlay;
+    }
+    
+    /* Performance optimization: optimize scrolling container */
+    .left-sidebar {
+      overflow-y: overlay;
+      -webkit-overflow-scrolling: touch;
+      will-change: scroll-position;
+    }
+    
+    
+    
     /* Modal Styles */
     .modal {
       display: none;
@@ -90,24 +181,47 @@
     /* Define page layout as flex container */
     .page-container {
       display: flex;
-      padding-top: 60px;
+      padding-top: 80px;
       /* Compensate for fixed navbar height */
+      min-height: calc(100vh - 80px);
+      /* Full viewport height minus navbar */
+      position: relative;
     }
 
     /* Define left sidebar style */
     .left-sidebar {
       width: 33.33%;
-      padding: 10px;
+      padding: 10px 20px 20px 20px;
       position: fixed;
-      height: 100vh;
+      height: calc(100vh - 80px);
       overflow-y: auto;
+      background-color: transparent;
+      backdrop-filter: none;
+      border-right: none;
+      z-index: 100;
+    }
+
+    /* Ensure left sidebar reveal class doesn't affect desktop view */
+    .left-sidebar.reveal {
+      position: fixed;
+      transform: none;
+      opacity: 1;
+      transition: none;
+    }
+
+    .left-sidebar.reveal > * {
+      transform: none;
+      opacity: 1;
+      transition: none;
     }
 
     /* Define main content area style */
     .main-content {
       width: 58.67%;
-      padding: 10px;
+      padding: 20px;
       margin-left: 35.33%;
+      min-height: calc(100vh - 80px - 120px);
+      /* Viewport height minus navbar and footer */
     }
 
     /* Define right margin style */
@@ -117,134 +231,305 @@
       margin-left: 92%;
       position: fixed;
       height: 100vh;
+      display: none;
+      /* Hide right margin as it's not commonly used in modern designs */
     }
 
     /* Define bold and large text style */
     .bold-large-text {
-      font-weight: bold;
+      font-weight: 700;
       font-size: 24px;
+      color: var(--light);
     }
 
     /* Define link color */
     a {
-      color: #add8e6;
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--primary);
+      text-decoration: underline;
     }
 
     /* Define navigation bar style */
     nav {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      padding: 10px;
-      background-color: rgba(0, 0, 51, 0.8);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      justify-content: space-between;
+      padding: 1rem 5%;
+      background: rgba(10, 20, 41, 0.8);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 15px rgba(0, 30, 90, 0.4);
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    
+    /* Define logo style */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      transition: transform 0.3s ease;
+      cursor: default;
+    }
+    
+    .logo:hover {
+      transform: scale(1.05);
+    }
+    
+    .logo img {
+      height: 40px;
+      width: auto;
+      transition: transform 0.3s ease;
+    }
+    
+    .logo:hover img {
+      transform: rotate(10deg);
+    }
+
+    /* Navigation links container */
+    .nav-links-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    nav.scrolled {
+      padding: 0.7rem 5%;
+      background: rgba(10, 20, 41, 0.95);
+      box-shadow: 0 4px 20px rgba(0, 30, 90, 0.6);
     }
 
     /* Set the style of the links in the left sidebar */
-      .left-sidebar a {
-        color: #ffffff;
-        text-decoration: none;
-      }
+    .left-sidebar a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+      padding: 2px 0;
+    }
 
-      /* Set the style of the links in the left sidebar when hovered */
-      .left-sidebar a:hover {
-        color: #add8e6;
-        text-decoration: underline;
-      }
+    /* Set the style of the links in the left sidebar when hovered */
+    .left-sidebar a:hover {
+      color: var(--accent);
+      text-decoration: none;
+      transform: translateX(5px);
+    }
+
+    /* Add hover effect for sidebar icons */
+    .left-sidebar img {
+      transition: transform 0.3s ease;
+    }
+
+    .left-sidebar img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Add special hover effect for profile photo */
+    .left-sidebar img[alt="photo"] {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .left-sidebar img[alt="photo"]:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
 
     /* Define the style of the footer */
     footer {
       text-align: center; 
       padding: 30px 20px; 
-      background-color: transparent; 
-      font-family: 'Microsoft YaHei', 
-      sans-serif; 
+      background-color: rgba(10, 20, 41, 0.7);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(173, 216, 230, 0.2);
       max-height: 10vh;
+      margin-top: 40px;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: var(--primary);
+      text-decoration: underline;
     }
 
     /* Define responsive styles for screens with a maximum width of 768px */
     @media (max-width: 768px), (max-height: 667px) {
+      /* Adjust left sidebar for mobile */
+      .left-sidebar {
+        border-bottom: none;
+        position: static;
+        height: auto;
+        width: 100%;
+        padding: 100px 15px 15px 15px;
+        background-color: transparent;
+        display: none;
+      }
+
+      /* Add reveal animation for left sidebar in mobile view */
+      .left-sidebar.reveal {
+        position: relative;
+        transform: translateY(30px);
+        opacity: 0;
+        transition: all 0.8s ease;
+      }
+
+      .left-sidebar.reveal.active {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      /* Add staggered animation for children elements in left sidebar */
+      .left-sidebar.reveal > * {
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.6s ease;
+      }
+
+      .left-sidebar.reveal.active > * {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .left-sidebar.reveal.active > *:nth-child(1) { transition-delay: 0.1s; }
+      .left-sidebar.reveal.active > *:nth-child(2) { transition-delay: 0.2s; }
+      .left-sidebar.reveal.active > *:nth-child(3) { transition-delay: 0.3s; }
+      .left-sidebar.reveal.active > *:nth-child(4) { transition-delay: 0.4s; }
+      .left-sidebar.reveal.active > *:nth-child(5) { transition-delay: 0.5s; }
+      
       #home h1 {
         font-size: 30px !important;
       }
 
-      /* Add a bottom border after the page container */
-      .page-container::after {
-        content: '';
-        display: block;
-        width: 100%;
-        border-bottom: 2px solid #999999;
-        margin: 10px 0;
+      /* Adjust page container for mobile */
+      .page-container {
+        padding-top: 0;
+        min-height: 100vh;
       }
 
-      /* Add a bottom border to the left sidebar */
-      .left-sidebar {
-        border-bottom: 2px solid white;
-        position: static;
-        height: auto;
-      }
-
-      /* Remove the right border of the left sidebar and main content */
-      .left-sidebar,
+      /* Adjust main content for mobile */
       .main-content {
-        border-right: none;
-      }
-
-      /* Remove the right border of the right margin */
-      .right-margin {
-        border-right: none;
-        position: static;
-        height: auto;
+        width: 100%;
+        padding: 65px 15px 15px 15px;
         margin-left: 0;
+        min-height: auto;
       }
 
-      /* Make the navigation bar items wrap and center them */
+      /* Adjust sections for mobile */
+      section {
+        padding-top: 50px;
+      }
+
+      /* Adjust navigation bar for mobile */
       nav {
         flex-wrap: wrap;
         justify-content: center;
+        padding: 0.8rem 3%;
+        height: auto;
+        min-height: 80px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+      
+      /* Adjust logo for mobile */
+      .logo {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .logo img {
+        height: 30px;
       }
 
-      /* Adjust the margin and font size of navigation bar links */
+      /* Adjust navigation links container for mobile */
+      .nav-links-container {
+        gap: 0.5rem;
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Adjust navigation bar links for mobile */
       nav a {
-        margin: 2px;
-        font-size: 13px;
+        margin: 0;
+        font-size: 14px;
+        padding: 0.4rem 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
       }
 
       /* Adjust the maximum width and height of the navigation icon */
       .nav-icon {
         max-width: 30px;
         max-height: 30px;
+        transition: transform 0.3s ease;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
       }
 
-      /* Set the width of the year label to 100% minus 20px */
-      .year-label {
-        width: calc(100% - 20px);
-        box-sizing: border-box;
+      .nav-icon:hover {
+        transform: scale(1.1);
       }
 
       /* Change the layout of education items to a column */
       .education-item {
         flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: rgba(10, 20, 41, 0.3);
+        margin-bottom: 15px;
       }
 
       /* Adjust the margin of the education logo wrapper */
       .education-logo-wrapper {
         margin-right: 0;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        width: 100%;
+        text-align: center;
       }
 
-      /* Change the layout of publication paper containers to a column */
+      /* Change the layout of publication paper containers to a column like experience section */
       #publications #paper-container>div {
         flex-direction: column;
         width: 100%;
         box-sizing: border-box;
         padding: 0;
-        margin-bottom: 0 !important;
+        margin-bottom: 20px !important;
+        margin-top: 0 !important;
+        background-color: rgba(10, 20, 41, 0.3);
+        border-radius: 10px;
+        padding: 15px;
+        align-items: flex-start;
       }
 
       /* Change the layout of selected papers containers to a column */
@@ -255,17 +540,38 @@
           align-items: flex-start;
           gap: 30px;
           margin-bottom: 40px;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          padding: 15px;
+          border-radius: 8px;
+          background-color: rgba(10, 20, 41, 0.2);
+        }
+
+        .news-item:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
         /* News time style */
         .news-time {
           min-width: 120px;
           text-align: left;
+          font-weight: 600;
+          color: var(--accent);
+          transition: color 0.3s ease;
+        }
+
+        .news-item:hover .news-time {
+          color: var(--primary);
         }
 
         /* News content style */
         .news-content {
           flex-grow: 1;
+          transition: color 0.3s ease;
+        }
+
+        .news-item:hover .news-content {
+          color: rgba(255, 255, 255, 0.95);
         }
 
         /* Change news layout to vertical on small screens */
@@ -285,32 +591,122 @@
             display: block;
           }
         }
-      #selected-papers-content>div {
+      /* Selected papers container now directly contains flex items */
+      #selected-papers-content {
+        display: flex;
         flex-direction: column;
         width: 100%;
         box-sizing: border-box;
         padding: 0;
-        margin-bottom: 20px !important;
       }
 
-      /* Change the layout of inner flex containers in publication paper containers to a column */
-      #publications #paper-container>div div[style*="display: flex; align-items: center;"],
-      #selected-papers-content>div div[style*="display: flex; align-items: center;"] {
-        flex-direction: column;
+      #selected-papers-content > div {
+        display: flex;
+        align-items: center;
+        border: none;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem !important;
+        background-color: rgba(10, 20, 41, 0.4);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
 
-      /* Adjust the margin and size of images in publication and selected papers containers */
+      #selected-papers-content > div:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Adjust the margin and size of images in publication and selected papers containers like experience section */
       #publications #paper-container img,
       #selected-papers-content img {
-        margin-bottom: 10px;
+        margin-right: 0;
+        margin-bottom: 15px;
         max-width: 100%;
+        max-height: none;
+        width: auto;
         height: auto;
+        border-radius: 0;
+        box-shadow: none;
+        transition: none;
+        border: none;
+      }
+
+      #publications #paper-container img:hover,
+      #selected-papers-content img:hover {
+        transform: none;
+        box-shadow: none;
+        border: none;
+      }
+
+      /* Adjust the style of paper content to match experience section */
+      #publications #paper-container .paper {
+        border: none;
+        padding-left: 0;
+        flex: 1;
+      }
+
+      #publications #paper-container .paper p {
+        margin-bottom: 0.5rem;
+      }
+
+      /* Adjust the style of selected paper content to reduce container size */
+      #selected-papers-content .paper {
+        border: none;
+        padding-left: 15px;
+        flex: 1;
+      }
+
+      #selected-papers-content .paper p {
+        margin-bottom: 0.5rem;
+      }
+
+      #selected-papers-content .paper h3 {
+        margin-bottom: 0.5rem;
+        margin-top: 0;
+        font-size: 1rem;
+        color: var(--light);
+        font-weight: 600;
       }
 
       /* Set the width and height of the homepage image to 40% */
       img[src="images/homepage/excursion-conshein.png"] {
         width: 40% !important;
         height: 40% !important;
+      }
+
+      /* Change selected papers layout to vertical on small screens like publications section */
+      @media (max-width: 768px) {
+        /* Add line break in footer on small screens */
+        .footer-break {
+          display: block;
+        }
+        
+        /* Change selected papers layout to vertical (image above, text below) on small screens */
+        #selected-papers-content > div {
+          flex-direction: column;
+          width: 100%;
+          box-sizing: border-box;
+          padding: 0;
+          margin-bottom: 1.5rem !important;
+          align-items: flex-start;
+        }
+        
+        #selected-papers-content img {
+          margin-right: 0;
+          margin-bottom: 15px;
+          max-width: 100%;
+          max-height: none;
+        }
+        
+        #selected-papers-content .paper {
+          border: none;
+          padding-left: 0;
+          padding-right: 0;
+          padding-top: 0;
+          padding-bottom: 0;
+          width: 100%;
+          text-align: left;
+        }
       }
 
       /* Adjust the size of images in the left sidebar's specific container */
@@ -347,14 +743,80 @@
 
       /* Adjust cv pdf size for mobile */
       #cv object {
-        width: 400px !important;
-        height: 400px !important;
+        width: 100% !important;
+        height: 500px !important;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
 
-      /* Delete the top border of the footer for mobile */
+      /* Adjust footer style for mobile */
       footer {
         border-top: none;
+        padding: 20px 15px;
+        margin-top: 20px;
       }
+    }
+
+    /* Define responsive styles for screens with a minimum width of 769px */
+    @media (min-width: 769px) {
+      /* Adjust featured paper container for desktop */
+      .featured-paper-container {
+        flex-direction: row !important;
+        align-items: center !important;
+      }
+      
+      .featured-paper-container img {
+        margin: 0 15px 0 0 !important;
+      }
+    }
+
+    /* Define the style of title in each section */
+    #subtitle {
+        text-align: center;
+        margin-bottom: 3.5rem;
+        position: relative;
+    }
+
+    /* Define the style of Jump button */
+    .jump-btn {
+      display: inline-block;
+      background: linear-gradient(45deg, #ff9900, #ff6600);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+    }
+
+    .jump-btn:hover {
+      color: white;
+      text-decoration: none;
+    }
+
+    #subtitle h1 {
+        font-size: 2.5rem;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    #subtitle h1:after {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 4px;
+        background: var(--accent);
+        margin: 0.75rem auto 0;
+        border-radius: 2px;
+    }
+
+    #subtitle p {
+        color: rgba(255, 255, 255, 0.7);
+        max-width: 700px;
+        margin: 0 auto;
+        font-size: 1.1rem;
     }
 
     /* Define the style of the navigation icon */
@@ -366,46 +828,61 @@
       border-radius: 50%;
       margin-left: 16px;
       cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      vertical-align: middle;
+    }
+
+    .nav-icon:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(173, 216, 230, 0.5);
     }
 
     /* Define the style of navigation bar links */
     nav a {
       text-decoration: none;
-      color: #add8e6;
+      color: rgba(255, 255, 255, 0.8);
       border-radius: 4px;
       transition: all 0.3s ease;
       cursor: pointer;
       border: none;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
     }
 
     /* Define navigation bar link hover style */
     nav a:hover {
-      background-color: #000066;
+      color: var(--accent);
+      background-color: rgba(42, 107, 198, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     /* Define navigation bar active link style */
     nav a.active {
-      font-weight: bold;
-      color: #fff;
-      background-color: #9400d3;
-      border: 1px solid #9400d3;
+      font-weight: 600;
+      color: white;
+      background-color: var(--primary);
+      border: none;
     }
 
     /* Hide all sections by default */
     section {
       display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
     }
 
     /* Show active section */
     section.active {
       display: block;
+      opacity: 1;
       margin-top: 20px;
     }
 
-    /* Define font family and bottom margin for publications section text */
+    /* Define bottom margin for publications section text */
     #publications p,
     #publications h3 {
-      font-family: 'Microsoft YaHei', sans-serif;
       margin-bottom: 0.5em;
     }
 
@@ -421,7 +898,7 @@
 
     /* Define publication header style */
     #publication-header {
-      border: 1px solid transparent;
+      border: none;
       padding: 10px;
       background-color: transparent;
     }
@@ -429,9 +906,16 @@
     /* Define paper element style */
     .paper {
       border: none;
-      padding: 10px;
-      background-color: transparent;
-      margin-bottom: 0 !important;
+      border-radius: 10px;
+      padding: 1.5rem;
+      background-color: rgba(10, 20, 41, 0.4);
+      margin-bottom: 1.5rem !important;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .paper:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
 
     /* Define abstract section style */
@@ -449,28 +933,37 @@
     .site-link,
     .key-link {
       display: inline-block;
-      padding: 5px 15px;
+      padding: 6px 16px;
       margin: 5px;
-      background-color: white;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      background-color: rgba(42, 107, 198, 0.2);
+      border: none;
+      border-radius: 20px;
       text-decoration: none;
-      color: #333;
+      color: var(--light);
       text-align: center;
       font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Define year label style */
-    .year-label {
-      text-align: right;
-      font-size: 32px;
-      font-weight: light;
-      color: #ff9900;
+    .abs-link:hover,
+    .paper-link:hover,
+    .bib-link:hover,
+    .video-link:hover,
+    .code-link:hover,
+    .site-link:hover,
+    .key-link:hover {
+      background-color: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
 
     /* Define education container style */
     .education-container {
-      border: 1px solid transparent;
+      border: none;
       padding: 10px;
       margin-top: 20px;
     }
@@ -478,27 +971,46 @@
     /* Define the style of education items */
     .education-item {
       display: flex;
-
-      /* Define the style for section boxes */
-      .section-box {
-        border: 1px solid #add8e6;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 20px;
-        background-color: rgba(0, 0, 51, 0.1);
-      }
-
-      /* Style for section titles */
-      .section-title {
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: #add8e6;
-        border-bottom: 1px solid #add8e6;
-        padding-bottom: 5px;
-      }
-
       align-items: center;
+      padding: 1rem;
+      border-radius: 8px;
+      background-color: rgba(10, 20, 41, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    .education-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      background-color: rgba(42, 107, 198, 0.1);
+    }
+
+    /* Define the style for section boxes */
+    .section-box {
+      border: none;
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-bottom: 1.8rem;
+      background-color: rgba(10, 20, 41, 0.6);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .section-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Style for section titles */
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+      padding-bottom: 0.75rem;
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     /* Define the style of the education logo wrapper */
@@ -516,37 +1028,51 @@
     .education-logo {
       width: 100px;
       height: 100px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .education-logo:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
     }
 
     /* Define the style of the education information section */
     .education-info {
-      border: 1px solid transparent;
-      padding-left: 10px;
+      border: none;
+      padding-left: 15px;
       flex: 1;
+    }
+
+    .education-info p {
+      margin-bottom: 0.5rem;
     }
 
     /* Define the style of the institution name */
     .institution {
-      font-size: x-large;
-      font-weight: bold;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--light);
+      margin-bottom: 0.3rem;
     }
 
     /* Define the style of the degree information */
     .degree {
-      font-size: inherit;
-      font-weight: bold;
+      font-size: 1rem;
+      font-weight: 600;
       color: #00FF7F;
     }
 
     /* Define the style of the major information */
     .major {
-      margin-left: 10px;
+      margin-left: 8px;
       font-style: italic;
+      color: rgba(255, 255, 255, 0.8);
     }
 
     /* Define the style of the time information */
     .time {
-      font-size: smaller;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
     }
 
     /* Define basic HTML page style */
@@ -554,29 +1080,128 @@
       position: relative;
       background-color: #000033;
       color: white;
+      scroll-behavior: smooth;
+    }
+
+    /* Add scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(10, 20, 41, 0.3);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* Define body style */
+    body {
+      color: var(--light);
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-in-out forwards;
+    }
+
+    /* Fade in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Slide up animation */
+    @keyframes slideUp {
+      from { 
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Apply slide up animation to sections */
+    section {
+      animation: slideUp 0.6s ease-out forwards;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    
+    section.active {
+      opacity: 1;
+    }
+
+    /* Add scroll reveal animation */
+    .reveal {
+      position: relative;
+      transform: translateY(30px);
+      opacity: 0;
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Add staggered animation for children elements */
+    .reveal > * {
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.6s ease;
+    }
+
+    .reveal.active > * {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .reveal.active > *:nth-child(1) { transition-delay: 0.1s; }
+    .reveal.active > *:nth-child(2) { transition-delay: 0.2s; }
+    .reveal.active > *:nth-child(3) { transition-delay: 0.3s; }
+    .reveal.active > *:nth-child(4) { transition-delay: 0.4s; }
+    .reveal.active > *:nth-child(5) { transition-delay: 0.5s; }
+    
+    /* Define paragraph style */
+    p {
+      margin-bottom: 1.5rem;
+      transition: color 0.3s ease;
+    }
+    
+    /* Define heading style */
+    h1, h2, h3, h4, h5, h6 {
+      margin-bottom: 1rem;
+      line-height: 1.3;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    /* Add hover effect for headings */
+    h1:hover, h2:hover, h3:hover {
+      color: var(--accent);
     }
 
     /* Add background image with opacity to HTML page */
     html::before {
       content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: url('images/homepage/background/BG.png');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      opacity: 0.3;
-      z-index: -1;
+      
     }
 
     /* Define paper container style in publications section */
     #publications #paper-container {
-      border: 1px solid transparent;
+      border: none;
       padding: 10px 0;
       background-color: transparent;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
     }
 
     /* Define basic table style */
@@ -590,7 +1215,7 @@
     table,
     th,
     td {
-      border: 1px solid transparent;
+      border: none;
       text-align: center;
     }
 
@@ -608,34 +1233,55 @@
       box-sizing: border-box;
     }
 
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    /* Define horizontal rule style */
+    hr {
+      border: none;
+      margin: 30px 0;
+      transition: border-color 0.3s ease;
+    }
+
+    hr:hover {
+      border-color: var(--accent);
+    }
+
   </style>
   <link rel="shortcut icon" type="image/x-icon" href="images/homepage/favicon/favicon.ico">
 </head>
 
 <body>
   <nav>
-    <a onclick="showPage('experiences')" id="nav-experiences" style="margin-right: 4ch;">Experiences</a>
-    <a onclick="showPage('publications')" id="nav-publications" style="margin-right: 4ch;">Publications</a>
-    <a onclick="showPage('cv')" id="nav-cv" style="margin-right: 4ch;">CV</a>
-    <img src="images/homepage/homekey/homekey.png" alt="excursion-conshein" class="nav-icon"
-      onclick="showPage('home')" id="nav-icon">
+    <div class="logo">
+      <img src="images/homepage/favicon/favicon.ico" alt="favicon">
+      <span onclick="showSidebar()" style="cursor: pointer;">EXCURSION CONSHEIN</span>
+    </div>
+    <div class="nav-links-container">
+      <a onclick="showPage('experiences')" id="nav-experiences">Experiences</a>
+      <a onclick="showPage('publications')" id="nav-publications">Publications</a>
+      <a onclick="showPage('cv')" id="nav-cv">CV</a>
+      <img src="images/homepage/homekey/homekey.png" alt="excursion-conshein" class="nav-icon"
+        onclick="showPage('home')" id="nav-icon">
+    </div>
   </nav>
 
 
   <div class="page-container">
-    <div class="left-sidebar">
+    <div class="left-sidebar reveal">
       <img src="images/homepage/photo/photo.png" alt="photo"
-        style="display: block; margin-left: auto; margin-right: auto; margin-top: 15%; max-width: 25vh; height: auto; border-radius: 50%; overflow: hidden;">
-      <div style="text-align: center;">
+        style="display: block; margin-left: auto; margin-right: auto; margin-top: 5%; max-width: 25vh; height: auto; border-radius: 50%; overflow: hidden;">
+      <div style="text-align: center; margin-top: 20px;">
         <p id="name" style="font-size: 30px; font-weight: bold;"></p>
       </div>
       <div style="margin-left: calc(50% - 110px); ">
         <img src="images/homepage/info icon/location.png" alt="location"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p id="address" style="font-weight: lighter;"></p>
+        <p id="address" style="font-weight: 600;"></p>
         <img src="images/homepage/info icon/school.png" alt="school"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
-        <p id="institution" style="font-weight: lighter;"></p>
+        <p id="institution" style="font-weight: 600;"></p>
         <img src="images/homepage/info icon/google scholar.png" alt="google scholar"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
         <p id="googlescholar" style="font-weight: lighter;"></p>
@@ -763,21 +1409,19 @@
           <!-- Right independent area, add content as needed -->
         </div>
 
-        <div class="section-box">
+        <div class="section-box reveal">
           <p id="intro-content"></p>
         </div>
-        <hr style="border: 1px solid #add8e6">
-        <h1 class="section-title" style="margin-top: 20px; font-size: 28px; text-decoration: underline;">News</h1>
-        <div class="section-box" style="max-height: 350px; overflow-y: auto; margin-top: 10px;">
+         <h1 class="section-title reveal" style="margin-top: 20px; font-size: 28px;">News</h1>
+        <div class="section-box reveal" style="max-height: 350px; overflow-y: auto; margin-top: 10px;">
           <div id="news-content" style="padding: 10px; word-wrap: break-word; white-space: pre-wrap;"></div>
         </div>
-        <hr style="border: 1px solid #add8e6">
-        <h1 class="section-title" style="margin-top: 20px; font-size: 28px; text-decoration: underline;">Research Highlights</h1>
-        <div class="section-box" style="margin-top: 10px; border: none;">
-          <div id="selected-papers-content" style="padding: 10px;"></div>
+          <h1 class="section-title reveal" style="margin-top: 20px; font-size: 28px;">Research Highlights</h1>
+        <div class="section-box reveal" style="margin-top: 10px; border: none;">
+          <div id="selected-papers-content" style="padding: 0;"></div>
         </div>
 
-        <br><br>
+        <br>
 
         <script>
           // Load and display homepage content
@@ -841,20 +1485,24 @@
                 if (Array.isArray(papersData[year])) {
                   papersData[year].forEach(paper => {
                     if (paper.selectedPaper) {
-                      const paperItem = document.createElement('div');
-                      paperItem.innerHTML = `
-                      <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 0;">
-                        <img src="images/publication/${paper.image}" alt="${paper.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paper.image}')">
-                        <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 0; padding: 15px;">
-                          <h3>${paper.title}</h3>
-                          <p>${paper.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
-                          <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.conference || paper.journal}</em>, ${year}</p>
-                          <div style="text-align: right; margin-top: 10px;">
-                            <a href="javascript:void(0);" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" style="display: inline-block; background-color: #ff9900; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">Jump→</a>
+                      // Create new div element for paper
+                      const paperDiv = document.createElement('div');
+                      paperDiv.className = 'paper';
+                      paperDiv.style.marginBottom = '20px';
+                      paperDiv.style.marginLeft = '20px';
+                      paperDiv.innerHTML = `
+                        <div style="display: flex; flex-direction: column; border: none; padding: 10px; position: relative;" class="featured-paper-container">
+                          <img src="images/publication/${paper.image}" alt="${paper.title}" style="max-width: 150px; max-height: 150px; width: auto; height: auto; cursor: pointer; margin: 0 auto 15px auto;" onclick="openModal('images/publication/${paper.image}')">
+                          <div class="paper" style="width: 100%; border: none; padding: 15px;">
+                            <h3 id="${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paper.title}</h3>
+                            <p>${paper.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
+                            <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.conference || paper.journal}</em>, ${year}</p>
+                            <p style="text-align: right; margin-top: 10px;">
+                              <a href="javascript:void(0);" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" class="jump-btn">Jump→</a>
+                            </p>
                           </div>
-                        </div>
-                      </div>`;
-                      papersContainer.appendChild(paperItem);
+                        </div>`;
+                      papersContainer.appendChild(paperDiv);
                     }
                   });
                 }
@@ -885,33 +1533,49 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-20 -->
+<!-- Last Change: 2025-09-15 -->
 
       <section id="experiences">
         <!-- Education and career experience model -->
-        <div id="publication-header">
+        <div id="subtitle">
           <h1>Experiences</h1>
           <p>Hope my career journey will be more than just an excursion!</p>
         </div>
-        <hr style="border: 1px solid #ade6b0;">
+
+        
+
         <div id="education-experience"></div>
 
+        <!-- Institution Experiences information-->
+        <div id="institution-experiences-section">
+          <div id="Institution-Experiences-header"></div>
+          <div class="section-box">
+            <div id="institution-experiences-content" style="padding-left: 20px;"></div>
+          </div>
+        </div>
+
         <!-- Honors and Awards -->
-        <div id="Honors-header"></div>
-        <div class="section-box">
-          <div id="honor-content" style="padding-left: 20px;"></div>
+        <div id="honors-section">
+          <div id="Honors-header"></div>
+          <div class="section-box">
+            <div id="honor-content" style="padding-left: 20px;"></div>
+          </div>
         </div>
 
         <!-- Teaching -->
-        <div id="teaching-header"></div>
-        <div class="section-box">
-          <div id="teaching-content" style="padding-left: 20px;"></div>
+        <div id="teaching-section">
+          <div id="teaching-header"></div>
+          <div class="section-box">
+            <div id="teaching-content" style="padding-left: 20px;"></div>
+          </div>
         </div>
 
         <!-- Reviewer -->
-        <div id="reviewer-header"></div>
-        <div class="section-box">
-          <div id="reviewer-content" style="padding-left: 20px;"></div>
+        <div id="reviewer-section">
+          <div id="reviewer-header"></div>
+          <div class="section-box">
+            <div id="reviewer-content" style="padding-left: 20px;"></div>
+          </div>
         </div>
 
 
@@ -934,8 +1598,8 @@
                   <p class="institution">${experienceData.school}</p>
                   <div class="details">
                     ${experienceData.details.map(detail => `
-                    <p>
-                      <span class="degree">${detail.degree}</span>
+                    <p style="margin-bottom: 0.3rem;">
+                      <strong class="degree">${detail.degree}</strong>
                       <span class="major">${detail.major}</span>, ${detail.college}
                     </p>
                     <p class="time">${detail.time}</p>
@@ -951,27 +1615,58 @@
           fetch('configs/experiences.json')
             .then(response => response.json())
             .then(data => {
+              // Display Institution Experiences section title
+              const institutionExperiencesHeader = document.getElementById('Institution-Experiences-header');
+              institutionExperiencesHeader.innerHTML = `
+               <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Institution Experiences</h1>
+              `;
+              
+              // Get institution experiences content container
+              const institutionExperiencesContent = document.getElementById('institution-experiences-content');
+              
               // Iterate through each education experience and create corresponding elements
               data.forEach(experience => {
-                createEducationExperience(experience);
+                // Create a new div element for each experience
+                const div = document.createElement('div');
+                div.className = 'education-container';
+                div.style.marginBottom = '30px';
+                div.innerHTML = `
+                  <div class="education-item">
+                    <div class="education-logo-wrapper">
+                      <a href="${experience.link}" target="_blank"><img src="images/experience/${experience.logoSrc}" alt="Institution Logo" class="education-logo"></a>
+                    </div>
+                    <div class="education-info">
+                      <p class="institution">${experience.school}</p>
+                      <div class="details">
+                        ${experience.details.map(detail => `
+                        <p style="margin-bottom: 0.3rem;">
+                        <strong class="degree">${detail.degree}</strong>
+                        <span class="major">${detail.major}</span>, ${detail.college}
+                      </p>
+                        <p class="time">${detail.time}</p>
+                        `).join('')}
+                      </div>
+                    </div>
+                  </div>`;
+                
+                institutionExperiencesContent.appendChild(div);
               });
             });
           
-          // Hide Honors-header if honors.json is empty
+          // Hide entire honors section if honors.json is empty
           fetch('configs/honors.json')
               .then(response => response.json())
               .then(data => {
+                  const honorsSection = document.getElementById('honors-section');
                   if (data.length === 0) {
-                    // If honors.json is empty, hide the section
-                    document.getElementById('Honors-header').style.display = 'none';
+                    // If honors.json is empty, hide the entire section
+                    honorsSection.style.display = 'none';
                   }
                   else {
                     // If honors.json is not empty, display the section
-                    document.getElementById('Honors-header').style.display = 'block';
                     const header = document.getElementById('Honors-header');
                     header.innerHTML = `
-                    <hr style="border: 1px solid #ade6b0;"> 
-                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Honors and Awards</h1>
+                     <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Honors and Awards</h1>
                     `;
                   }
               })
@@ -982,161 +1677,250 @@
             .then(response => response.json())
             .then(honorsData => {
               const honorList = document.getElementById('honor-content');
-              honorsData.forEach(item => {
-                const div = document.createElement('div');
-                div.style.marginBottom = '20px';
-                div.innerHTML =`
-                  <div style="font-size: 18px; display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div>
-                  <div style="margin-left: 20px;">${item.unit}, ${item.time}</div>`;
-                honorList.appendChild(div);
-              });
+              if (honorsData.length > 0) {
+                honorsData.forEach(item => {
+                  const div = document.createElement('div');
+                  div.style.marginBottom = '20px';
+                  div.innerHTML =`
+                    <div style="font-size: 18px; display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div>
+                    <div style="margin-left: 20px;">${item.unit}, ${item.time}</div>`;
+                  honorList.appendChild(div);
+                });
+              }
             });
 
-          // Hide teaching-header if teaching.json is empty
+          // Hide entire teaching section if teaching.json is empty or invalid
           fetch('configs/teaching.json')
-              .then(response => response.json())
+              .then(response => {
+                // Check if response is ok and content length is greater than 0
+                if (!response.ok || response.headers.get('content-length') === '0') {
+                  throw new Error('Empty or invalid response');
+                }
+                return response.json();
+              })
               .then(data => {
-                  if (data.length === 0) {
-                    // If teaching.json is empty, hide the section
-                    document.getElementById('teaching-header').style.display = 'none';
+                  const teachingSection = document.getElementById('teaching-section');
+                  if (!data || data.length === 0) {
+                    // If teaching.json is empty, hide the entire section
+                    teachingSection.style.display = 'none';
                   }
                   else {
                     // If teaching.json is not empty, display the section
-                    document.getElementById('teaching-header').style.display = 'block';
                     const header = document.getElementById('teaching-header');
                     header.innerHTML = `
-                    <hr style="border: 1px solid #ade6b0;"> 
-                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Teaching</h1>
+                     <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Teaching</h1>
                     `;
                   }
               })
-              .catch(error => console.error('Error loading teaching.json:', error));
+              .catch(error => {
+                // If there's an error (like empty file), hide the entire section
+                console.error('Error loading teaching.json:', error);
+                const teachingSection = document.getElementById('teaching-section');
+                teachingSection.style.display = 'none';
+              });
           
           // Load and display teaching from teaching.json
           fetch('configs/teaching.json')
-            .then(response => response.json())
-            .then(teachingData => {
-              const teachingList = document.getElementById('teaching-content');
-              teachingData.forEach(item => {
-                const div = document.createElement('div');
-                div.style.marginBottom = '20px';
-                // Check if item.link exists and is not empty
-                if (item.link && item.link.trim() !== '') {
-                  div.innerHTML = `
-                    <div style="font-size: 18px; display: flex; align-items: baseline; color: #fff00f;">• <a href="${item.link}" target="_blank" style="color: #fff00f;"><span style="font-weight: bold;">${item.code} ${item.course}</span></a>, ${item.school}</div>
-                    <div style="margin-left: 20px;">${item.identity}, ${item.season} ${item.year}</div>
-                  `;
-                } else {
-                  div.innerHTML = 
-                  `<div style="font-size: 18px; display: flex; align-items: baseline; color: #fff00f;">• <span style="font-weight: bold;">${item.code} ${item.course}</span>, ${item.school}</div>
-                    <div style="margin-left: 20px;">${item.identity}, ${item.season} ${item.year}</div>
-                  `;
+              .then(response => {
+                // Check if response is ok and content length is greater than 0
+                if (!response.ok || response.headers.get('content-length') === '0') {
+                  throw new Error('Empty or invalid response');
                 }
-                teachingList.appendChild(div);
+                return response.json();
+              })
+              .then(teachingData => {
+                const teachingList = document.getElementById('teaching-content');
+                if (teachingData && teachingData.length > 0) {
+                  teachingData.forEach(item => {
+                    const div = document.createElement('div');
+                    div.style.marginBottom = '20px';
+                    // Check if item.link exists and is not empty
+                    if (item.link && item.link.trim() !== '') {
+                      div.innerHTML = `
+                        <div style="font-size: 18px; display: flex; align-items: baseline; color: #fff00f;">• <a href="${item.link}" target="_blank" style="color: #fff00f;"><span style="font-weight: bold;">${item.code} ${item.course}</span></a>, ${item.school}</div>
+                        <div style="margin-left: 20px;">${item.identity}, ${item.season} ${item.year}</div>
+                      `;
+                    } else {
+                      div.innerHTML = 
+                      `<div style="font-size: 18px; display: flex; align-items: baseline; color: #fff00f;">• <span style="font-weight: bold;">${item.code} ${item.course}</span>, ${item.school}</div>
+                        <div style="margin-left: 20px;">${item.identity}, ${item.season} ${item.year}</div>
+                      `;
+                    }
+                    teachingList.appendChild(div);
+                  });
+                }
+              })
+              .catch(error => {
+                console.error('Error loading teaching data:', error);
               });
-            });
 
-          // Hide reviewer-header if reviewer.json is empty
+          // Hide entire reviewer section if reviewer.json is empty or invalid
           fetch('configs/reviewer.json')
-              .then(response => response.json())
+              .then(response => {
+                // Check if response is ok and content length is greater than 0
+                if (!response.ok || response.headers.get('content-length') === '0') {
+                  throw new Error('Empty or invalid response');
+                }
+                return response.json();
+              })
               .then(data => {
-                  if (data.length === 0) {
-                    // If reviewer.json is empty, hide the section
-                    document.getElementById('reviewer-header').style.display = 'none';
+                  const reviewerSection = document.getElementById('reviewer-section');
+                  if (!data || data.length === 0) {
+                    // If reviewer.json is empty, hide the entire section
+                    reviewerSection.style.display = 'none';
                   }
                   else {
                     // If reviewer.json is not empty, display the section
-                    document.getElementById('reviewer-header').style.display = 'block';
                     const header = document.getElementById('reviewer-header');
                     header.innerHTML = `
-                    <hr style="border: 1px solid #ade6b0;"> 
-                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Reviewer</h1>
+                     <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Reviewer</h1>
                     `;
                   }
               })
-              .catch(error => console.error('Error loading reviewer.json:', error));
+              .catch(error => {
+                // If there's an error (like empty file), hide the entire section
+                console.error('Error loading reviewer.json:', error);
+                const reviewerSection = document.getElementById('reviewer-section');
+                reviewerSection.style.display = 'none';
+              });
 
           // Load and display reviewer from reviewer.json
           fetch('configs/reviewer.json')
-            .then(response => response.json())
-            .then(reviewerData => {
-              const reviewerList = document.getElementById('reviewer-content');
-              reviewerData.forEach(item => {
-                const div = document.createElement('div');
-                div.style.marginBottom = '20px';
-                div.innerHTML =`
-                  <div style="font-size: 18px; display: flex; align-items: baseline; color: #00ffff;">• <strong>${item.conference || item.journal}, ${item.year}</strong></div>`;
-                reviewerList.appendChild(div);
+              .then(response => {
+                // Check if response is ok and content length is greater than 0
+                if (!response.ok || response.headers.get('content-length') === '0') {
+                  throw new Error('Empty or invalid response');
+                }
+                return response.json();
+              })
+              .then(reviewerData => {
+                const reviewerList = document.getElementById('reviewer-content');
+                if (reviewerData && reviewerData.length > 0) {
+                  reviewerData.forEach(item => {
+                    const div = document.createElement('div');
+                    div.style.marginBottom = '20px';
+                    div.innerHTML =`
+                      <div style="font-size: 18px; display: flex; align-items: baseline; color: #00ffff;">• <strong>${item.conference || item.journal}, ${item.year}</strong></div>`;
+                    reviewerList.appendChild(div);
+                  });
+                }
+              })
+              .catch(error => {
+                console.error('Error loading reviewer data:', error);
               });
-            });
 
         </script>
       </section>
 
       <section id="publications">
+        <style>
+          .abstract-btn, .bibtex-btn, .award-btn, .keywords-btn, .video-btn, .paper-link, .code-link, .site-link,
+          .abs-link, .key-link, .bib-link, .video-link {
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 5px 5px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+          }
+          
+          .abstract-btn:hover, .bibtex-btn:hover, .award-btn:hover, .keywords-btn:hover, .video-btn:hover, .paper-link:hover, .code-link:hover, .site-link:hover,
+          .abs-link:hover, .key-link:hover, .bib-link:hover, .video-link:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          }
+          
+          /* Add dashed border for content blocks */
+          div[id^="abstract-"], div[id^="bibtex-"], div[id^="award-"], div[id^="keywords-"], div[id^="video-"] {
+            border: 1px dashed var(--green);
+            border-radius: 5px;
+            background-color: rgba(0, 255, 127, 0.05);
+          }
+        </style>
         <!-- Header section for the publications -->
-        <div id="publication-header">
+        <div id="subtitle">
           <h1>Publications</h1>
           <p>It is my pleasure that you can enjoy reading my publications!</p>
         </div>
-        <!-- Container for displaying papers -->
-        <div id="paper-container"></div>
+
+         
+        
+        
+
+        <!-- Academic Papers information-->
+        <div id="academic-papers-section">
+          <div id="Academic-Papers-header"></div>
+          <div class="section-box">
+            <div id="academic-papers-content" style="padding-left: 20px;"></div>
+          </div>
+        </div>
 
         <!-- Patents information-->
-        <div id="Patents-header"></div>
-        <div class="section-box">
-          <div id="patent-content" style="padding-left: 20px;"></div>
+        <div id="patents-section">
+          <div id="Patents-header"></div>
+          <div class="section-box">
+            <div id="patent-content" style="padding-left: 20px;"></div>
+          </div>
         </div>
 
         <br><br>
         
         <script>
-            // Hide Patents-header if patents.json is empty
+            // Hide entire patents section if patents.json is empty
             fetch('configs/patents.json')
               .then(response => response.json())
               .then(data => {
-                  if (data.length === 0) {
-                    // If patents.json is empty, hide the section
-                    document.getElementById('Patents-header').style.display = 'none';
+                  const patentsSection = document.getElementById('patents-section');
+                  if (data.length === 0 || !data.patents || data.patents.length === 0) {
+                    // If patents.json is empty, hide the entire section
+                    patentsSection.style.display = 'none';
                   }
                   else {
-                    // If honors.json is not empty, display the section
-                    document.getElementById('Patents-header').style.display = 'block';
+                    // If patents.json is not empty, display the section
                     const header = document.getElementById('Patents-header');
                     header.innerHTML = `
-                    <hr style="border: 1px solid #ff9900;"> 
-                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Patents</h1>
+                     <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Patents</h1>
                     `;
                   }
               })
               .catch(error => console.error('Error loading patents.json:', error));
+
+            
 
             // Load and display patents from patents.json
             fetch('configs/patents.json')
               .then(response => response.json())
               .then(PatentData => {
                 const patentList = document.getElementById('patent-content');
-                PatentData['patents'].forEach(item => {
-                  const div = document.createElement('div');
-                  div.style.marginBottom = '20px';
-                  div.innerHTML = `
-                    <div style="font-size: 18px; display: flex; align-items: baseline; color:rgb(0, 255, 255);">• <strong>${item.title}</strong></div>
-                    <div style="margin-left: 20px;"><span>${item.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</span>.
-                    <div><em>${item.type}</em>, <a href="${item.link}" target="_blank">${item.number}</a>, ${item.date}</div>
-                    </div>`;
-                  patentList.appendChild(div);
-                });
+                if (PatentData.patents && PatentData.patents.length > 0) {
+                  PatentData.patents.forEach(item => {
+                    const div = document.createElement('div');
+                    div.style.marginBottom = '20px';
+                    div.innerHTML = `
+                      <div style="font-size: 18px; display: flex; align-items: baseline; color:rgb(0, 255, 255);">• <strong>${item.title}</strong></div>
+                      <div style="margin-left: 20px;"><span>${item.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</span>.
+                      <div><em>${item.type}</em>, <a href="${item.link}" target="_blank">${item.number}</a>, ${item.date}</div>
+                      </div>`;
+                    patentList.appendChild(div);
+                  });
+                }
               });
 
             // Function to create year separator element
             function createYearSeparator(year) {
               // Create new div element for year separator
               const yearDiv = document.createElement('div');
-              yearDiv.innerHTML = `
-
-        <hr style="border: 1px solid #ff9900;">
-        <div class="year-label">${year}</div>
-`;
+              yearDiv.innerHTML = ``;
               return yearDiv;
             }
 
@@ -1144,40 +1928,52 @@
             function createPaper(year, paperData) {
               // Create new div element for paper
               const paperDiv = document.createElement('div');
+              paperDiv.className = 'paper';
+              paperDiv.style.marginBottom = '20px';
+              
+              // Determine flex direction based on screen width
+              const isMobile = window.innerWidth <= 768;
+              const flexDirection = isMobile ? 'column' : 'row';
+              const imageContainerStyle = isMobile ? 
+                'text-align: center; margin-bottom: 15px; display: flex; justify-content: center;' : 
+                'margin-right: 15px;';
+              
               paperDiv.innerHTML = `
-                <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px; position: relative;">
-                  <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paperData.image}')">
-                  <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 20px; padding: 15px;">
+                <div style="display: flex; flex-direction: ${flexDirection}; align-items: ${isMobile ? 'center' : 'center'}; border: none; padding: 10px; position: relative;">
+                  <div style="${imageContainerStyle}">
+                    <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: ${isMobile ? '150px' : '200px'}; max-height: ${isMobile ? '150px' : '200px'}; width: auto; height: auto; cursor: pointer; ${isMobile ? 'margin: 0 auto;' : ''}" onclick="openModal('images/publication/${paperData.image}')">
+                  </div>
+                  <div class="paper" style="width: 100%; border: none; padding: ${isMobile ? '0' : '15px'};">
                     <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paperData.title}</h3>
                     <p>${paperData.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
                     <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.conference || paperData.journal}</em>, ${year}</p>
-                    <p>
-                      ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'award')" class="abs-link">AWARD</a>` : ''}
-                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'abstract')" class="abs-link">ABS</a>
-                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'keywords')" class="key-link">KEY</a>
-                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'bibtex')" class="bib-link">BIB</a>
+                    <p style="text-align: left; margin-top: 10px;">
+                      ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'award')" class="award-btn">AWARD</a>` : ''}
+                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'abstract')" class="abstract-btn">ABS</a>
+                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'keywords')" class="keywords-btn">KEY</a>
+                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'bibtex')" class="bibtex-btn">BIB</a>
                       <a href="${paperData.paperLink}" target="_blank" class="paper-link">PAPER</a>
-                      ${paperData.videoLink ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, '\'')}', 'video')" class="video-link">VIDEO</a>` : ''}
+                      ${paperData.videoLink ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, '\'')}', 'video')" class="video-btn">VIDEO</a>` : ''}
                       ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
                       ${paperData.siteLink ? `<a href="${paperData.siteLink}" target="_blank" class="site-link">SITE</a>` : ''}
                     </p>
                   </div>
                 </div>
-                <div id="abstract-${paperData.title.replace(/'/g, '\'')}" style="font-size: 13px; border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                <div id="abstract-${paperData.title.replace(/'/g, '\'')}" style="font-size: 13px; padding: 10px; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
                   <p>${paperData.abstract}</p>
                 </div>
-                <div id="award-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                <div id="award-${paperData.title.replace(/'/g, '\'')}" style="padding: 10px; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
                   <p>${paperData.award}</p>
                 </div>
-                <div id="keywords-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
-                  <ul>
+                <div id="keywords-${paperData.title.replace(/'/g, '\'')}" style="padding: 10px; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
+                  <ul style="padding-left: 20px; margin: 0;">
                     ${paperData.keywords.split(',').map(keyword => `<li>${keyword.trim()}</li>`).join('')}
                   </ul>
                 </div>
-                <div id="bibtex-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
-                  <pre style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; margin: 0; width: 100%;">${paperData.bibtex}</pre>
+                <div id="bibtex-${paperData.title.replace(/'/g, '\'')}" style="padding: 10px; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
+                  <pre style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; margin: 0; width: 100%; font-family: 'Courier New', Courier, monospace; font-size: 1.1em; font-weight: 600; line-height: 1.5;">${paperData.bibtex}</pre>
                 </div>
-                <div id="video-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                <div id="video-${paperData.title.replace(/'/g, '\'')}" style="padding: 10px; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
                   <iframe src="${paperData.videoLink}" data-original-src="${paperData.videoLink}" style="width: 100%; aspect-ratio: 16/9;"></iframe>
                 </div>`;
               return paperDiv;
@@ -1187,22 +1983,31 @@
             fetch('configs/papers.json')
               .then(response => response.json())
               .then(data => {
+                // Display Academic Papers section title
+                const academicPapersHeader = document.getElementById('Academic-Papers-header');
+                academicPapersHeader.innerHTML = `
+                 <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Academic Papers</h1>
+                `;
+                
+                // Get academic papers content container
+                const academicPapersContent = document.getElementById('academic-papers-content');
+                
                 // Traverse in chronological order to ensure consistency with the JSON file
                 const sortedYears = Object.keys(data).sort((a, b) => b - a);
-                // Get the paper container element
-                const paperContainer = document.getElementById('paper-container');
+                
                 sortedYears.forEach(year => {
-                  // Create a new div element for the year block
-                  const yearBlock = document.createElement('div');
-                  yearBlock.appendChild(createYearSeparator(year));
-                  const yearPaperContainer = document.createElement('div');
-                  yearPaperContainer.id = `papers-${year}`;
-                  // Iterate through each paper in the current year and append it to the container
+                  // Create a year separator
+                  const yearDiv = document.createElement('div');
+                  yearDiv.style.marginBottom = '10px';
+                  yearDiv.style.textAlign = 'right';
+                  yearDiv.innerHTML = `<strong style="color: #00ffff; font-size: 28px;">${year}</strong>`;
+                  academicPapersContent.appendChild(yearDiv);
+                  
+                  // Iterate through each paper in the current year
                   data[year].forEach(paper => {
-                    yearPaperContainer.appendChild(createPaper(year, paper));
+                    const paperElement = createPaper(year, paper);
+                    academicPapersContent.appendChild(paperElement);
                   });
-                  yearBlock.appendChild(yearPaperContainer);
-                  paperContainer.appendChild(yearBlock);
                 });
               });
             
@@ -1210,22 +2015,47 @@
       </section>
 
       <section id="cv">
+        <!-- Header section for the CV -->
+        <div id="subtitle">
+          <h1>Curriculum Vitae</h1>
+          <p>Looking forward to your appreciation!</p>
+        </div>
+        
         <style>
           .download-btn {
-            background-color: #4CAF50;
+            background-color: var(--primary);
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 4px;
+            border-radius: 30px;
             cursor: pointer;
             font-size: 16px;
-            margin-bottom: 15px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
           }
+          
+          .download-btn:before {
+            content: '↓';
+            margin-right: 8px;
+            font-size: 18px;
+          }
+          
           .download-btn:hover {
-            background-color: #45a049;
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+          }
+          
+          .download-btn.pulse {
+            animation: pulse 2s infinite;
           }
         </style>
-        <button class="download-btn" onclick="window.open('./configs/cv.pdf', '_blank')">Download this PDF</button>
+        <button class="download-btn pulse" onclick="window.open('./configs/cv.pdf', '_blank')">Download this PDF</button>
         <script>
           document.write('<object data="./configs/cv.pdf?t=' + new Date().getTime() + '" type="application/pdf" width="100%" height="800px">');
         </script>
@@ -1241,147 +2071,388 @@
   </div>
 
   <script>
-    // Function to show a specific page and update the UI accordingly
+    // Performance optimization: use throttle function to limit scroll event trigger frequency
+    window.addEventListener('scroll', throttle(function() {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    }, 100)); // Execute at most once every 100ms
+
+    // Performance optimization: use throttle function to limit scroll animation trigger frequency
+    function revealOnScroll() {
+      const reveals = document.querySelectorAll('.reveal');
+      
+      reveals.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', throttle(revealOnScroll, 200)); // Execute at most once every 200ms
+    
+    // Initial check and mobile device handling
+    document.addEventListener('DOMContentLoaded', function() {
+      revealOnScroll();
+      
+      // Check if in mobile view, show sidebar by default
+      if (window.innerWidth <= 768 || window.innerHeight <= 667) {
+        // Hide all sections
+        document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+        
+        // Hide main content
+        document.querySelector('.main-content').style.display = 'none';
+        
+        // Show left sidebar
+        const leftSidebar = document.querySelector('.left-sidebar');
+        leftSidebar.style.display = 'block';
+        
+        // Force reflow to ensure animation works
+        void leftSidebar.offsetWidth;
+        
+        // Add active class to show animation
+        setTimeout(() => {
+          leftSidebar.classList.add('active');
+        }, 100);
+      }
+      
+      // Performance optimization: add lazy loading for images
+      const images = document.querySelectorAll('img');
+      images.forEach(img => {
+        if (!img.hasAttribute('loading')) {
+          img.setAttribute('loading', 'lazy');
+        }
+      });
+    });
+
+    // Function to show sidebar in mobile view
+    function showSidebar() {
+      // Check if we're in mobile view
+      if (window.innerWidth <= 768 || window.innerHeight <= 667) {
+        // Hide all sections
+        document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+        
+        // Hide main content
+        document.querySelector('.main-content').style.display = 'none';
+        
+        // Show left sidebar
+        const leftSidebar = document.querySelector('.left-sidebar');
+        leftSidebar.style.display = 'block';
+        
+        // Force a reflow to ensure the animation works
+        void leftSidebar.offsetWidth;
+        
+        // Add active class for reveal animation
+        leftSidebar.classList.add('active');
+        
+        // Update navigation bar highlight status
+        document.querySelectorAll('nav a').forEach(navLink => {
+          navLink.classList.remove('active');
+        });
+        
+        // Scroll to top
+        window.scrollTo(0, 0);
+      }
+    }
+
+    // Performance optimization: cache DOM query results
+    const cachedElements = {
+      sections: null,
+      navLinks: null,
+      sidebarLinks: null,
+      dashedBoxes: null,
+      mainContent: null,
+      leftSidebar: null
+    };
+    
+    // Get cached DOM elements
+    function getCachedElements() {
+      if (!cachedElements.sections) {
+        cachedElements.sections = document.querySelectorAll('section');
+        cachedElements.navLinks = document.querySelectorAll('nav a');
+        cachedElements.sidebarLinks = document.querySelectorAll('#mySidebar a:not(.closebtn)');
+        cachedElements.dashedBoxes = document.querySelectorAll('[id^="abstract-"], [id^="bibtex-"], [id^="award-"], [id^="keywords-"], [id^="video-"]');
+        cachedElements.mainContent = document.querySelector('.main-content');
+        cachedElements.leftSidebar = document.querySelector('.left-sidebar');
+      }
+      return cachedElements;
+    }
+
+    // Performance optimization: use debounce function to handle page switching
     function showPage(pageId, targetId) {
-      // Remove the 'active' class from all sections
-      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
-      // Add the 'active' class to the target section
-      document.getElementById(pageId).classList.add('active');
-
-      // Scroll to top after switching section
-      window.scrollTo(0, 0);
-
-      // Reset news section scroll when showing home section
-      if (pageId === 'home') {
-        // Precisely target news section scroll container (immediately after News title)
-        const newsContainer = document.querySelector('#home .section-title + .section-box');
-        if (newsContainer) newsContainer.scrollTop = 0;
+      // Use debounce function to reduce performance consumption during frequent switching
+      if (window.showPageTimeout) {
+        clearTimeout(window.showPageTimeout);
       }
-
-      // Hide all dashed boxes
-      document.querySelectorAll('[id^="abstract-"]').forEach(item => item.style.display = 'none');
-      document.querySelectorAll('[id^="bibtex-"]').forEach(item => item.style.display = 'none');
-      document.querySelectorAll('[id^="award-"]').forEach(item => item.style.display = 'none');
-      document.querySelectorAll('[id^="keywords-"]').forEach(item => item.style.display = 'none');
-      document.querySelectorAll('[id^="video-"]').forEach(item => {
-        item.style.display = 'none';
-        // Stop video playback
-        const iframe = item.querySelector('iframe');
-        if (iframe) {
-          iframe.src = '';
+      
+      window.showPageTimeout = setTimeout(() => {
+        const elements = getCachedElements();
+        
+        // Remove 'active' class from all sections
+        elements.sections.forEach(sec => sec.classList.remove('active'));
+        // Add 'active' class to target section
+        const targetSection = document.getElementById(pageId);
+        if (targetSection) {
+          targetSection.classList.add('active');
         }
-      });
 
-      // Update navigation bar highlight status
-      document.querySelectorAll('nav a').forEach(navLink => {
-        navLink.classList.remove('active');
-      });
-      document.querySelectorAll('#mySidebar a:not(.closebtn)').forEach(navLink => {
-        navLink.classList.remove('active');
-      });
-      const activeNavLink = pageId === 'publications' ? document.getElementById('nav-publications') : document
-        .getElementById(`nav-${pageId}`);
-      if (activeNavLink) {
-        activeNavLink.classList.add('active');
-      }
-
-      // Scroll to target element at center of viewport if specified
-      if (targetId) {
-        const element = document.getElementById(targetId);
-        if (element) {
-          // Wait for the publications section to be fully rendered
-          setTimeout(() => {
-            const elementRect = element.getBoundingClientRect();
-            const absoluteElementTop = elementRect.top + window.pageYOffset;
-            const middle = absoluteElementTop - (window.innerHeight / 2) + elementRect.height / 2;
-            window.scrollTo({
-              top: middle,
-              behavior: 'smooth'
-            });
-
-            // Highlight paper container with flash effect
-            const paperContainer = element.closest('.paper');
-            if (paperContainer) {
-              paperContainer.style.transition = 'background-color 0.5s ease';
-              paperContainer.style.backgroundColor = 'rgba(255, 165, 0, 0.3)';
-              setTimeout(() => {
-                paperContainer.style.backgroundColor = '';
-              }, 1000);
-            }
-          }, 100);
+        // In mobile view, hide left sidebar and show main content
+        if (window.innerWidth <= 768 || window.innerHeight <= 667) {
+          elements.leftSidebar.style.display = 'none';
+          elements.leftSidebar.classList.remove('active');
+          elements.mainContent.style.display = 'block';
         }
-      }
-    }
 
-    // Generic toggle function to switch the display state of a specified element and hide other related elements
-    function toggleContent(button, id, targetType) {
-      const elementMap = {
-        'abstract': document.getElementById(`abstract-${id.replace(/'/g, "'")}`),
-        'bibtex': document.getElementById(`bibtex-${id.replace(/'/g, "'")}`),
-        'award': document.getElementById(`award-${id.replace(/'/g, "'")}`),
-        'keywords': document.getElementById(`keywords-${id.replace(/'/g, "'")}`),
-        'video': document.getElementById(`video-${id.replace(/'/g, "'")}`)
-      };
+        // Scroll to top after switching sections
+        window.scrollTo(0, 0);
 
-      // Get target element
-      const targetElement = elementMap[targetType];
-      if (targetElement) {
-        // Toggle the display state of the target element
-        const newDisplay = targetElement.style.display === 'none' ? 'block' : 'none';
-        targetElement.style.display = newDisplay;
+        // Reset news section scroll
+        if (pageId === 'home') {
+          const newsContainer = document.querySelector('#home .section-title + .section-box');
+          if (newsContainer) newsContainer.scrollTop = 0;
+        }
 
-        // Handle video iframe loading and stopping
-        if (targetType === 'video') {
-          const iframe = targetElement.querySelector('iframe');
+        // Hide all dashed boxes
+        elements.dashedBoxes.forEach(item => {
+          item.style.display = 'none';
+          // Stop video playback
+          const iframe = item.querySelector('iframe');
           if (iframe) {
-            if (newDisplay === 'none') {
-              // Stop video when hiding
-              iframe.src = '';
-            } else {
-              // Pause all other videos before loading current video
-              document.querySelectorAll('[id^="video-"] iframe').forEach(otherIframe => {
-                if (otherIframe !== iframe) {
-                  otherIframe.src = '';
-                }
+            iframe.src = '';
+          }
+        });
+
+        // Update navigation bar highlight status
+        elements.navLinks.forEach(navLink => {
+          navLink.classList.remove('active');
+        });
+        elements.sidebarLinks.forEach(navLink => {
+          navLink.classList.remove('active');
+        });
+        
+        const activeNavLink = pageId === 'publications' 
+          ? document.getElementById('nav-publications') 
+          : document.getElementById(`nav-${pageId}`);
+        if (activeNavLink) {
+          activeNavLink.classList.add('active');
+        }
+
+        // Scroll to specified target element
+        if (targetId) {
+          const element = document.getElementById(targetId);
+          if (element) {
+            // Wait for publications section to fully render
+            setTimeout(() => {
+              const elementRect = element.getBoundingClientRect();
+              const absoluteElementTop = elementRect.top + window.pageYOffset;
+              const middle = absoluteElementTop - (window.innerHeight / 2) + elementRect.height / 2;
+              window.scrollTo({
+                top: middle,
+                behavior: 'smooth'
               });
-              const originalSrc = iframe.dataset.originalSrc;
-              if (originalSrc) {
-                iframe.src = originalSrc;
+
+              // Highlight paper container
+              const paperContainer = element.closest('.paper');
+              if (paperContainer) {
+                paperContainer.style.transition = 'background-color 0.5s ease';
+                paperContainer.style.backgroundColor = 'rgba(255, 165, 0, 0.3)';
+                setTimeout(() => {
+                  paperContainer.style.backgroundColor = '';
+                }, 1000);
+              }
+            }, 100);
+          }
+        }
+      }, 50); // 50ms debounce delay
+    }
+
+    // Performance optimization: optimize content switching function to reduce DOM operations
+    function toggleContent(button, id, targetType) {
+      // Use debounce function to reduce performance consumption during frequent switching
+      if (window.toggleContentTimeout) {
+        clearTimeout(window.toggleContentTimeout);
+      }
+      
+      window.toggleContentTimeout = setTimeout(() => {
+        // Use cached elements to reduce DOM queries
+        const elements = getCachedElements();
+        
+        // Build element ID mapping
+        const elementMap = {
+          'abstract': document.getElementById(`abstract-${id.replace(/'/g, "'")}`),
+          'bibtex': document.getElementById(`bibtex-${id.replace(/'/g, "'")}`),
+          'award': document.getElementById(`award-${id.replace(/'/g, "'")}`),
+          'keywords': document.getElementById(`keywords-${id.replace(/'/g, "'")}`),
+          'video': document.getElementById(`video-${id.replace(/'/g, "'")}`)
+        };
+
+        // Get target element
+        const targetElement = elementMap[targetType];
+        if (targetElement) {
+          // Toggle display state of target element
+          const newDisplay = targetElement.style.display === 'none' ? 'block' : 'none';
+          targetElement.style.display = newDisplay;
+
+          // Handle video iframe loading and stopping
+          if (targetType === 'video') {
+            const iframe = targetElement.querySelector('iframe');
+            if (iframe) {
+              if (newDisplay === 'none') {
+                // Stop video when hiding
+                iframe.src = '';
+              } else {
+                // Pause all other videos before showing
+                elements.dashedBoxes.forEach(element => {
+                  if (element.id.startsWith('video-') && element !== targetElement) {
+                    const otherIframe = element.querySelector('iframe');
+                    if (otherIframe) {
+                      otherIframe.src = '';
+                    }
+                  }
+                });
+                
+                // Load current video
+                const originalSrc = iframe.dataset.originalSrc;
+                if (originalSrc) {
+                  iframe.src = originalSrc;
+                }
               }
             }
           }
-        }
 
-        // If the target element will be displayed, hide other elements
-        if (newDisplay === 'block') {
-          Object.values(elementMap).forEach(element => {
-            if (element && element !== targetElement) {
-              element.style.display = 'none';
-              // If it's a video block, stop playback
-              if (element.id.startsWith('video-')) {
-                const iframe = element.querySelector('iframe');
-                if (iframe) {
-                  iframe.src = '';
+          // If target element will be displayed, hide other elements
+          if (newDisplay === 'block') {
+            Object.values(elementMap).forEach(element => {
+              if (element && element !== targetElement) {
+                element.style.display = 'none';
+                // If it's a video block, stop playback
+                if (element.id.startsWith('video-')) {
+                  const iframe = element.querySelector('iframe');
+                  if (iframe) {
+                    iframe.src = '';
+                  }
                 }
               }
-            }
-          });
-        }
+            });
+          }
 
-        // Check if the bottom of the target element exceeds the viewport
-        if (newDisplay === 'block') {
-          const targetRect = targetElement.getBoundingClientRect();
-          const viewportHeight = window.innerHeight;
-          if (targetRect.bottom > viewportHeight) {
-            // Scroll to align target element bottom with viewport bottom
-            window.scrollTo({
-              top: window.scrollY + (targetRect.bottom - viewportHeight),
-              behavior: 'smooth'
+          // Check if target element bottom exceeds viewport
+          if (newDisplay === 'block') {
+            // Use requestAnimationFrame to optimize scrolling performance
+            requestAnimationFrame(() => {
+              const targetRect = targetElement.getBoundingClientRect();
+              const viewportHeight = window.innerHeight;
+              if (targetRect.bottom > viewportHeight) {
+                // Scroll to align target element bottom with viewport bottom
+                window.scrollTo({
+                  top: window.scrollY + (targetRect.bottom - viewportHeight),
+                  behavior: 'smooth'
+                });
+              }
             });
           }
         }
-      }
+      }, 50); // 50ms debounce delay
     }
+  </script>
+
+  <!-- Performance optimization: resource management and monitoring -->
+  <script>
+    // Resource management on page visibility change
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        // When page is hidden, pause all videos and animations
+        document.querySelectorAll('[id^="video-"] iframe').forEach(iframe => {
+          const src = iframe.src;
+          iframe.src = '';
+          iframe.dataset.originalSrc = src; // Save original source for restoration
+        });
+        
+        // Pause CSS animations
+        document.querySelectorAll('*').forEach(element => {
+          const computedStyle = window.getComputedStyle(element);
+          if (computedStyle.animationName !== 'none') {
+            element.style.animationPlayState = 'paused';
+            element.dataset.wasAnimationPaused = 'true';
+          }
+        });
+      } else {
+        // When page is visible, restore necessary videos and animations
+        const visibleVideos = document.querySelectorAll('[id^="video-"][style*="display: block"] iframe');
+        visibleVideos.forEach(iframe => {
+          const originalSrc = iframe.dataset.originalSrc;
+          if (originalSrc) {
+            iframe.src = originalSrc;
+          }
+        });
+        
+        // Restore CSS animations
+        document.querySelectorAll('[data-was-animation-paused="true"]').forEach(element => {
+          element.style.animationPlayState = 'running';
+          delete element.dataset.wasAnimationPaused;
+        });
+      }
+    });
+
+    // Memory usage monitoring and resource cleanup
+    let lastActivityTime = Date.now();
+    let inactivityTimer;
+    
+    // Reset activity timer
+    function resetActivityTimer() {
+      lastActivityTime = Date.now();
+      clearTimeout(inactivityTimer);
+      
+      // Set inactivity timeout (5 minutes)
+      inactivityTimer = setTimeout(() => {
+        // Execute resource cleanup
+        performResourceCleanup();
+      }, 300000); // 5 minutes
+    }
+    
+    // Monitor user activity
+    ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'].forEach(eventType => {
+      document.addEventListener(eventType, resetActivityTimer, true);
+    });
+    
+    // Resource cleanup function
+    function performResourceCleanup() {
+      // Clean up unused video iframes
+      document.querySelectorAll('[id^="video-"][style*="display: none"] iframe').forEach(iframe => {
+        iframe.src = '';
+      });
+      
+      // Trigger garbage collection (non-standard API, only works in supported browsers)
+      if (window.gc) {
+        window.gc();
+      }
+      
+      console.log('Resource cleanup completed');
+    }
+    
+    // Clean up resources when page unloads
+    window.addEventListener('beforeunload', function() {
+      // Clean up all video resources
+      document.querySelectorAll('[id^="video-"] iframe').forEach(iframe => {
+        iframe.src = '';
+      });
+      
+      // Clean up event listeners
+      ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'].forEach(eventType => {
+        document.removeEventListener(eventType, resetActivityTimer, true);
+      });
+      
+      clearTimeout(inactivityTimer);
+    });
+    
+    // Initialize activity timer
+    resetActivityTimer();
   </script>
 
   <!-- Image Modal -->
@@ -1395,7 +2466,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-08-20 -->
+<!-- Last Change: 2025-09-15 -->
 
 <footer>
   <p style="margin: 0; font-size: 16px;">&copy; 2025 Excursion ConsHein.<span class="footer-break"> </span>Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll.</a></p>

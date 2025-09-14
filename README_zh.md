@@ -8,6 +8,46 @@
 
 **如果您使用本项目模板创建个人主页，您需要确保遵守相关法律法规，不得用于任何商业活动。**
 
+---
+
+Update: 2025-09-15
+
+**Excursion ConsHein 2.0 版本正式上线！**
+
+**接下来展示本次 Homepage 2.0 的更新大盘点！**
+
+- 更加酷炫的UI，以及更加清晰好用的功能！
+
+![Excursion ConsHein 2.0](./images/preview2.0/interface.png)
+
+- Experiences 部分焕新升级，将原本的院校经历归为 Institution Experiences，而非直属 Experiences
+
+![Exp](./images/preview2.0/interface_exp.png)
+
+- Publications 部分也同样升级，将原本的论文部分归为 Academic Papers，而非直属 Publications
+
+![Pub](./images/preview2.0/interface_pub.png)
+
+- CV 部分也进行了标题与小字的添加
+
+![CV](./images/preview2.0/interface_cv.png)
+
+- 左上角增设 Excursion ConsHein 以及“远行鸽”的logo
+
+![logo](./images/preview2.0/topleft.png)
+
+**双端体感设计更加贴近感官反应！**
+
+- 电脑端的体验更为流畅，页面切换相当丝滑
+
+- 移动端为信息边栏单独设置页面，点击远行鸽即可跳转！
+
+**Excursion ConsHein 2.0 版本，等你体验！**
+
+旧版本的个人主页模板已存放在 `src/index_origin.html` 中。
+
+---
+
 ## 1. 项目介绍
 
 本项目是一个基于 HTML 和 JavaScript 的个人主页模板，具有以下特点：

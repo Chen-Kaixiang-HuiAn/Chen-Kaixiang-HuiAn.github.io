@@ -8,6 +8,46 @@ This repository contains a clean personal homepage template. This tutorial will 
 
 **If you use this project template to create your personal homepage, you need to ensure that you comply with all relevant laws and regulations, and do not use it for any commercial activities.**
 
+---
+
+Update: 2025-09-15
+
+**Excursion ConsHein 2.0 is officially launched!**
+
+**Here's a summary of all the updates in Homepage 2.0!**
+
+- More stunning UI and clearer, more user-friendly features!
+
+![Excursion ConsHein 2.0](./images/preview2.0/interface.png)
+
+- The Experiences section has been revamped, categorizing the original institutional experiences as Institution Experiences, rather than direct Experiences
+
+![Exp](./images/preview2.0/interface_exp.png)
+
+- The Publications section has also been upgraded, categorizing the original papers as Academic Papers, rather than direct Publications
+
+![Pub](./images/preview2.0/interface_pub.png)
+
+- The CV section has also been enhanced with titles and subtitles
+
+![CV](./images/preview2.0/interface_cv.png)
+
+- Added the Excursion ConsHein and "远行鸽" (Traveling Pigeon) logo in the top left corner
+
+![logo](./images/preview2.0/topleft.png)
+
+**Dual-platform design for a more sensory-responsive experience!**
+
+- The computer version offers a smoother experience with seamless page transitions
+
+- The mobile version has a dedicated page for the information sidebar, click on the Traveling Pigeon to jump to it!
+
+**Hope you can have a good experience with Excursion ConsHein 2.0 today!**
+
+The old version of the personal homepage template is stored in `src/index_origin.html`.
+
+---
+
 ## 1. Project Introduction
 
 This is a personal homepage template based on HTML and JavaScript, with the following features:
@@ -138,24 +178,6 @@ Edit the `configs/honors.json` file:
 
  ![Honors and Awards](./images/preview/preview_honors.png)
 
-### Add Reviewer Experiences
-
-If you don't have any reviewer experiences, you can leave the document empty or delete it, and the corresponding section will be hidden.
-
-Edit the `configs/reviewer.json` file:
-```json
-[
-    {
-        "conference": "Reviewer Conference Name",
-        // If the reviewer's target is a journal, write as "journal": "Journal Name"
-        "year": "Reviewer Year"
-    },
-    // If you have multiple reviewer experiences, you can continue adding here...
-]
-```
-
- ![Reviewer Experiences](./images/preview/preview_reviewer.png)
-
 ### Add Teaching Experiences
 
 If you don't have any teaching experiences, you can leave the document empty or delete it, and the corresponding section will be hidden.
@@ -177,6 +199,24 @@ Edit the `configs/teaching.json` file:
 ```
 
  ![Teaching Experiences](./images/preview/preview_teaching.png)
+
+### Add Reviewer Experiences
+
+If you don't have any reviewer experiences, you can leave the document empty or delete it, and the corresponding section will be hidden.
+
+Edit the `configs/reviewer.json` file:
+```json
+[
+    {
+        "conference": "Reviewer Conference Name",
+        // If the reviewer's target is a journal, write as "journal": "Journal Name"
+        "year": "Reviewer Year"
+    },
+    // If you have multiple reviewer experiences, you can continue adding here...
+]
+```
+
+ ![Reviewer Experiences](./images/preview/preview_reviewer.png)
 
 ### Add Papers
 

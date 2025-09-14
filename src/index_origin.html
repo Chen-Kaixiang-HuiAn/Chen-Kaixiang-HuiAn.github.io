@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
+
+<!-- Last Change: 2025-08-20 -->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <script>
+    window.onload = function() {
+      localStorage.clear();
+    };
+  </script>
+
+  <style>
+    /* Modal Styles */
+    .modal {
+      display: none;
+      /* Hidden by default */
+      position: fixed;
+      /* Stay in place */
+      z-index: 1000;
+      /* Sit on top */
+      padding-top: 50px;
+      /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* Full width */
+      height: 100%;
+      /* Full height */
+      overflow: auto;
+      /* Enable scroll if needed */
+      background-color: rgba(0, 0, 0, 0.9);
+      /* Black w/ opacity */
+    }
+
+    .modal-content {
+      margin: 0;
+      /* Reset margin */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: block;
+      max-width: 90%;
+      max-height: 80vh;
+    }
+
+    .modal-caption {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+      text-align: center;
+      color: #ccc;
+      padding: 10px 0;
+      height: 150px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    @media only screen and (max-width: 700px) {
+      .modal-content {
+        width: 100%;
+      }
+    }
+
+    /* Define page layout as flex container */
+    .page-container {
+      display: flex;
+      padding-top: 60px;
+      /* Compensate for fixed navbar height */
+    }
+
+    /* Define left sidebar style */
+    .left-sidebar {
+      width: 33.33%;
+      padding: 10px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    /* Define main content area style */
+    .main-content {
+      width: 58.67%;
+      padding: 10px;
+      margin-left: 35.33%;
+    }
+
+    /* Define right margin style */
+    .right-margin {
+      width: 8%;
+      padding: 10px;
+      margin-left: 92%;
+      position: fixed;
+      height: 100vh;
+    }
+
+    /* Define bold and large text style */
+    .bold-large-text {
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    /* Define link color */
+    a {
+      color: #add8e6;
+    }
+
+    /* Define navigation bar style */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 10px;
+      background-color: rgba(0, 0, 51, 0.8);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    /* Set the style of the links in the left sidebar */
+      .left-sidebar a {
+        color: #ffffff;
+        text-decoration: none;
+      }
+
+      /* Set the style of the links in the left sidebar when hovered */
+      .left-sidebar a:hover {
+        color: #add8e6;
+        text-decoration: underline;
+      }
+
+    /* Define the style of the footer */
+    footer {
+      text-align: center; 
+      padding: 30px 20px; 
+      background-color: transparent; 
+      font-family: 'Microsoft YaHei', 
+      sans-serif; 
+      max-height: 10vh;
+    }
+
+    /* Define responsive styles for screens with a maximum width of 768px */
+    @media (max-width: 768px), (max-height: 667px) {
+      #home h1 {
+        font-size: 30px !important;
+      }
+
+      /* Add a bottom border after the page container */
+      .page-container::after {
+        content: '';
+        display: block;
+        width: 100%;
+        border-bottom: 2px solid #999999;
+        margin: 10px 0;
+      }
+
+      /* Add a bottom border to the left sidebar */
+      .left-sidebar {
+        border-bottom: 2px solid white;
+        position: static;
+        height: auto;
+      }
+
+      /* Remove the right border of the left sidebar and main content */
+      .left-sidebar,
+      .main-content {
+        border-right: none;
+      }
+
+      /* Remove the right border of the right margin */
+      .right-margin {
+        border-right: none;
+        position: static;
+        height: auto;
+        margin-left: 0;
+      }
+
+      /* Make the navigation bar items wrap and center them */
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      /* Adjust the margin and font size of navigation bar links */
+      nav a {
+        margin: 2px;
+        font-size: 13px;
+      }
+
+      /* Adjust the maximum width and height of the navigation icon */
+      .nav-icon {
+        max-width: 30px;
+        max-height: 30px;
+      }
+
+      /* Set the width of the year label to 100% minus 20px */
+      .year-label {
+        width: calc(100% - 20px);
+        box-sizing: border-box;
+      }
+
+      /* Change the layout of education items to a column */
+      .education-item {
+        flex-direction: column;
+      }
+
+      /* Adjust the margin of the education logo wrapper */
+      .education-logo-wrapper {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      /* Change the layout of publication paper containers to a column */
+      #publications #paper-container>div {
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        margin-bottom: 0 !important;
+      }
+
+      /* Change the layout of selected papers containers to a column */
+
+        /* News item style */
+        .news-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 30px;
+          margin-bottom: 40px;
+        }
+
+        /* News time style */
+        .news-time {
+          min-width: 120px;
+          text-align: left;
+        }
+
+        /* News content style */
+        .news-content {
+          flex-grow: 1;
+        }
+
+        /* Change news layout to vertical on small screens */
+        @media (max-width: 768px) {
+          .news-item {
+            flex-direction: column;
+            gap: 10px;
+          }
+
+          .news-time {
+            min-width: auto;
+            margin-bottom: 5px;
+          }
+
+          /* Add line break in footer on small screens */
+          .footer-break {
+            display: block;
+          }
+        }
+      #selected-papers-content>div {
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        margin-bottom: 20px !important;
+      }
+
+      /* Change the layout of inner flex containers in publication paper containers to a column */
+      #publications #paper-container>div div[style*="display: flex; align-items: center;"],
+      #selected-papers-content>div div[style*="display: flex; align-items: center;"] {
+        flex-direction: column;
+      }
+
+      /* Adjust the margin and size of images in publication and selected papers containers */
+      #publications #paper-container img,
+      #selected-papers-content img {
+        margin-bottom: 10px;
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Set the width and height of the homepage image to 40% */
+      img[src="images/homepage/excursion-conshein.png"] {
+        width: 40% !important;
+        height: 40% !important;
+      }
+
+      /* Adjust the size of images in the left sidebar's specific container */
+      .left-sidebar div[style*="text-align: center; background-color: rgba(255, 255, 200, 0.3);"] img {
+        width: 20px !important;
+        height: 20px !important;
+        margin-right: 8px !important;
+      }
+
+      /* Change the layout of the page container to a column */
+      .page-container {
+        flex-direction: column;
+        padding-top: 0;
+      }
+
+      /* Set the width of the left sidebar to 100% */
+      .left-sidebar {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Set the width of the main content area to 100% */
+      .main-content {
+        width: 100%;
+        box-sizing: border-box;
+        margin-left: 0;
+      }
+
+      /* Set the width of the right margin to 100% */
+      .right-margin {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Adjust cv pdf size for mobile */
+      #cv object {
+        width: 400px !important;
+        height: 400px !important;
+      }
+
+      /* Delete the top border of the footer for mobile */
+      footer {
+        border-top: none;
+      }
+    }
+
+    /* Define the style of the navigation icon */
+    .nav-icon {
+      width: calc(100% - 40px);
+      height: calc(100% - 40px);
+      max-width: 40px;
+      max-height: 40px;
+      border-radius: 50%;
+      margin-left: 16px;
+      cursor: pointer;
+    }
+
+    /* Define the style of navigation bar links */
+    nav a {
+      text-decoration: none;
+      color: #add8e6;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    /* Define navigation bar link hover style */
+    nav a:hover {
+      background-color: #000066;
+    }
+
+    /* Define navigation bar active link style */
+    nav a.active {
+      font-weight: bold;
+      color: #fff;
+      background-color: #9400d3;
+      border: 1px solid #9400d3;
+    }
+
+    /* Hide all sections by default */
+    section {
+      display: none;
+    }
+
+    /* Show active section */
+    section.active {
+      display: block;
+      margin-top: 20px;
+    }
+
+    /* Define font family and bottom margin for publications section text */
+    #publications p,
+    #publications h3 {
+      font-family: 'Microsoft YaHei', sans-serif;
+      margin-bottom: 0.5em;
+    }
+
+    /* Define bottom margin for last paragraph in publication header */
+    #publication-header p:last-of-type {
+      margin-bottom: calc(3 * 1.5em);
+    }
+
+    /* Define heading font size for publication header */
+    #publication-header h1 {
+      font-size: 36px;
+    }
+
+    /* Define publication header style */
+    #publication-header {
+      border: 1px solid transparent;
+      padding: 10px;
+      background-color: transparent;
+    }
+
+    /* Define paper element style */
+    .paper {
+      border: none;
+      padding: 10px;
+      background-color: transparent;
+      margin-bottom: 0 !important;
+    }
+
+    /* Define abstract section style */
+    #abstract {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    /* Define style for content links (abstract, PDF, BibTeX, video, code, site) */
+    .abs-link,
+    .paper-link,
+    .bib-link,
+    .video-link,
+    .code-link,
+    .site-link,
+    .key-link {
+      display: inline-block;
+      padding: 5px 15px;
+      margin: 5px;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-decoration: none;
+      color: #333;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* Define year label style */
+    .year-label {
+      text-align: right;
+      font-size: 32px;
+      font-weight: light;
+      color: #ff9900;
+    }
+
+    /* Define education container style */
+    .education-container {
+      border: 1px solid transparent;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    /* Define the style of education items */
+    .education-item {
+      display: flex;
+
+      /* Define the style for section boxes */
+      .section-box {
+        border: 1px solid #add8e6;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: rgba(0, 0, 51, 0.1);
+      }
+
+      /* Style for section titles */
+      .section-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #add8e6;
+        border-bottom: 1px solid #add8e6;
+        padding-bottom: 5px;
+      }
+
+      align-items: center;
+    }
+
+    /* Define the style of the education logo wrapper */
+    .education-logo-wrapper {
+      display: flex;
+      align-items: center;
+      /* Vertically centered */
+      justify-content: center;
+      width: 120px;
+      height: 120px;
+      margin-right: 10px;
+    }
+
+    /* Define the style of the education logo */
+    .education-logo {
+      width: 100px;
+      height: 100px;
+    }
+
+    /* Define the style of the education information section */
+    .education-info {
+      border: 1px solid transparent;
+      padding-left: 10px;
+      flex: 1;
+    }
+
+    /* Define the style of the institution name */
+    .institution {
+      font-size: x-large;
+      font-weight: bold;
+    }
+
+    /* Define the style of the degree information */
+    .degree {
+      font-size: inherit;
+      font-weight: bold;
+      color: #00FF7F;
+    }
+
+    /* Define the style of the major information */
+    .major {
+      margin-left: 10px;
+      font-style: italic;
+    }
+
+    /* Define the style of the time information */
+    .time {
+      font-size: smaller;
+    }
+
+    /* Define basic HTML page style */
+    html {
+      position: relative;
+      background-color: #000033;
+      color: white;
+    }
+
+    /* Add background image with opacity to HTML page */
+    html::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('images/homepage/background/BG.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    /* Define paper container style in publications section */
+    #publications #paper-container {
+      border: 1px solid transparent;
+      padding: 10px 0;
+      background-color: transparent;
+    }
+
+    /* Define basic table style */
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    /* Define style for table, headers, and cells */
+    table,
+    th,
+    td {
+      border: 1px solid transparent;
+      text-align: center;
+    }
+
+    /* Define table header style */
+    th {
+      background-color: rgba(0, 0, 51, 0.8);
+    }
+
+    /* Define preformatted text style for BibTeX sections */
+    #publications [id^="bibtex-"] pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      width: 100%;
+      overflow-wrap: break-word;
+      box-sizing: border-box;
+    }
+
+  </style>
+  <link rel="shortcut icon" type="image/x-icon" href="images/homepage/favicon/favicon.ico">
+</head>
+
+<body>
+  <nav>
+    <a onclick="showPage('experiences')" id="nav-experiences" style="margin-right: 4ch;">Experiences</a>
+    <a onclick="showPage('publications')" id="nav-publications" style="margin-right: 4ch;">Publications</a>
+    <a onclick="showPage('cv')" id="nav-cv" style="margin-right: 4ch;">CV</a>
+    <img src="images/homepage/homekey/homekey.png" alt="excursion-conshein" class="nav-icon"
+      onclick="showPage('home')" id="nav-icon">
+  </nav>
+
+
+  <div class="page-container">
+    <div class="left-sidebar">
+      <img src="images/homepage/photo/photo.png" alt="photo"
+        style="display: block; margin-left: auto; margin-right: auto; margin-top: 15%; max-width: 25vh; height: auto; border-radius: 50%; overflow: hidden;">
+      <div style="text-align: center;">
+        <p id="name" style="font-size: 30px; font-weight: bold;"></p>
+      </div>
+      <div style="margin-left: calc(50% - 110px); ">
+        <img src="images/homepage/info icon/location.png" alt="location"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p id="address" style="font-weight: lighter;"></p>
+        <img src="images/homepage/info icon/school.png" alt="school"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p id="institution" style="font-weight: lighter;"></p>
+        <img src="images/homepage/info icon/google scholar.png" alt="google scholar"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p id="googlescholar" style="font-weight: lighter;"></p>
+        <img src="images/homepage/info icon/github.png" alt="github"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p id="github" style="font-weight: lighter;"></p>
+        <img src="images/homepage/info icon/email.png" alt="email"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p id="email" style="font-weight: lighter;"></p>
+        <img src="images/homepage/info icon/time.png" alt="time"
+        style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
+        <p id="current-time"> </p>
+        <script>
+          // Initial setting to UTC+8 in case info.json fails to load
+          let utcOffsetHours = 8;
+          let utcOffsetText = 'UTC+8';
+
+          // Format UTC offset to (UTC ±HH:00) style
+          function formatUtcOffset(offset) {
+            // Ensure offset is a string
+            offset = String(offset);
+            
+            // Check if UTC is already included
+            if (offset.toUpperCase().includes('UTC')) {
+              // Extract sign and hours
+              const offsetMatch = offset.match(/([+-])(\d+)/);
+              if (offsetMatch) {
+                const sign = offsetMatch[1];
+                const hours = parseInt(offsetMatch[2]).toString().padStart(2, '0');
+                return `(UTC ${sign}${hours}:00)`;
+              }
+            } else {
+              // Handle pure number or sign+number format
+              const offsetMatch = offset.match(/^([+-]?)(\d+)$/);
+              if (offsetMatch) {
+                let sign = offsetMatch[1] || '+'; // If no sign, default to +
+                const hours = parseInt(offsetMatch[2]).toString().padStart(2, '0');
+                return `(UTC ${sign}${hours}:00)`;
+              }
+            }
+            // Default format
+            return `(UTC ${offset})`;
+          }
+
+          function updateTime() {
+            const now = new Date();
+            const offsetTime = new Date(now.getTime() + (utcOffsetHours * 60 * 60 * 1000));
+            const hours = offsetTime.getUTCHours().toString().padStart(2, '0');
+            const minutes = offsetTime.getUTCMinutes().toString().padStart(2, '0');
+            const formattedOffset = formatUtcOffset(utcOffsetText);
+            const utcOffset = `<span style="font-weight: lighter">${formattedOffset}</span>`;
+            document.getElementById('current-time').innerHTML = `${hours}:${minutes} ${utcOffset}`;
+          }
+
+          // Execute after DOM is fully loaded
+          document.addEventListener('DOMContentLoaded', function() {
+            fetch('./configs/info.json')
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Failed to fetch info.json');
+                }
+                return response.json();
+              })
+              .then(data => {
+                // Update UTC offset
+                utcOffsetText = data.UTC;
+                // Extract hours for calculation
+                const offsetMatch = data.UTC.match(/([+-]\d+)/);
+                if (offsetMatch) {
+                  utcOffsetHours = parseInt(offsetMatch[1]);
+                }
+                // Update time immediately
+                updateTime();
+              })
+              .catch(error => {
+                console.error('Error loading UTC info:', error);
+              });
+          });
+
+          // Initial update and set timer
+          updateTime();
+          setInterval(updateTime, 1000);
+        </script>
+      </div>
+      </div>
+
+      <script>
+        // Execute after DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+          fetch('./configs/info.json')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to fetch info.json');
+              }
+              return response.json();
+            })
+            .then(data => {
+              document.getElementById('name').textContent = data.name;
+              document.getElementById('address').textContent = data.address;
+              document.getElementById('institution').textContent = data.institution;
+              
+              // Add href attributes to links
+              const googleScholar = document.getElementById('googlescholar');
+              googleScholar.innerHTML = `<a href="${data.googlescholar}" target="_blank">Google Scholar</a>`;
+              
+              const github = document.getElementById('github');
+              github.innerHTML = `<a href="${data.github}" target="_blank">Github</a>`;
+              
+              const email = document.getElementById('email');
+              email.innerHTML = `<a href="mailto:${data.email}">Email</a>`;
+              
+              // Update page title
+              document.title = data.name + "'s Homepage";
+              document.getElementById('home-title').textContent = "Welcome to " + data.name + "'s Homepage!";
+            })
+            .catch(error => {
+              console.error('Error loading info:', error);
+            });
+        });
+      </script>
+    <div class="main-content">
+      <section id="home" class="active">
+        <h1 id="home-title" style="text-align: center; font-size: 2.5em; margin-bottom: 30px; color: #a8d8ea;">Welcome to </h1>
+        <div class="right-margin">
+          <!-- Right independent area, add content as needed -->
+        </div>
+
+        <div class="section-box">
+          <p id="intro-content"></p>
+        </div>
+        <hr style="border: 1px solid #add8e6">
+        <h1 class="section-title" style="margin-top: 20px; font-size: 28px; text-decoration: underline;">News</h1>
+        <div class="section-box" style="max-height: 350px; overflow-y: auto; margin-top: 10px;">
+          <div id="news-content" style="padding: 10px; word-wrap: break-word; white-space: pre-wrap;"></div>
+        </div>
+        <hr style="border: 1px solid #add8e6">
+        <h1 class="section-title" style="margin-top: 20px; font-size: 28px; text-decoration: underline;">Research Highlights</h1>
+        <div class="section-box" style="margin-top: 10px; border: none;">
+          <div id="selected-papers-content" style="padding: 10px;"></div>
+        </div>
+
+        <br><br>
+
+        <script>
+          // Load and display homepage content
+          // Load introduction text
+          fetch('configs/intro.txt')
+            .then(response => response.text())
+            .then(text => {
+              document.getElementById('intro-content').innerHTML = text.replace(/\n/g, '<br>');
+            });
+
+          // Load and display news from news.json
+          fetch('configs/news.json')
+            .then(response => response.json())
+            .then(newsData => {
+              const newsContainer = document.getElementById('news-content');
+              newsData.forEach(item => {
+                const newsItem = document.createElement('div');
+                newsItem.className = 'news-item';
+                newsItem.style.marginBottom = '40px';
+                newsItem.style.display = 'flex';
+                newsItem.style.alignItems = 'flex-start';
+                newsItem.style.gap = '30px';
+
+                // Format date (e.g. 2025-07-19 -> Jul 19, 2025)
+                const dateParts = item.time.split('-');
+                const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: '2-digit'
+                }).replace(/\b(\w{3})\b/, '$1.');
+
+                const timeElement = document.createElement('div');
+                timeElement.className = 'news-time';
+                // Font size is now controlled by CSS media queries
+                timeElement.innerHTML = `<strong>${formattedDate}</strong>`;
+                timeElement.style.marginBottom = '0';
+                timeElement.style.minWidth = '120px';
+                timeElement.style.textAlign = 'left';
+                timeElement.style.color = '#e0e0e0';
+                timeElement.style.fontSize = '16px';
+
+                const contentElement = document.createElement('div');
+                contentElement.innerHTML = item.content;
+                contentElement.style.color = '#c0f8ca';
+                contentElement.style.textAlign = 'left';
+                contentElement.style.flexGrow = '1';
+
+                newsItem.appendChild(timeElement);
+                newsItem.appendChild(contentElement);
+                newsContainer.appendChild(newsItem);
+              });
+            });
+
+          // Load and display selected papers from papers.json using 'selected' boolean
+          fetch('configs/papers.json')
+            .then(response => response.json())
+            .then(papersData => {
+              const papersContainer = document.getElementById('selected-papers-content');
+              for (const year in papersData) {
+                if (Array.isArray(papersData[year])) {
+                  papersData[year].forEach(paper => {
+                    if (paper.selectedPaper) {
+                      const paperItem = document.createElement('div');
+                      paperItem.innerHTML = `
+                      <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 0;">
+                        <img src="images/publication/${paper.image}" alt="${paper.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paper.image}')">
+                        <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 0; padding: 15px;">
+                          <h3>${paper.title}</h3>
+                          <p>${paper.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
+                          <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.conference || paper.journal}</em>, ${year}</p>
+                          <div style="text-align: right; margin-top: 10px;">
+                            <a href="javascript:void(0);" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" style="display: inline-block; background-color: #ff9900; color: white; padding: 5px 15px; border-radius: 4px; text-decoration: none;">Jump→</a>
+                          </div>
+                        </div>
+                      </div>`;
+                      papersContainer.appendChild(paperItem);
+                    }
+                  });
+                }
+              }
+            });
+
+          function openModal(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = imageUrl;
+          }
+
+          function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+          }
+
+          // Close modal when clicking outside the image
+          window.onclick = function (event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+              closeModal();
+            }
+          }
+        </script>
+      </section>
+
+<!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
+
+<!-- Last Change: 2025-08-20 -->
+
+      <section id="experiences">
+        <!-- Education and career experience model -->
+        <div id="publication-header">
+          <h1>Experiences</h1>
+          <p>Hope my career journey will be more than just an excursion!</p>
+        </div>
+        <hr style="border: 1px solid #ade6b0;">
+        <div id="education-experience"></div>
+
+        <!-- Honors and Awards -->
+        <div id="Honors-header"></div>
+        <div class="section-box">
+          <div id="honor-content" style="padding-left: 20px;"></div>
+        </div>
+
+        <!-- Teaching -->
+        <div id="teaching-header"></div>
+        <div class="section-box">
+          <div id="teaching-content" style="padding-left: 20px;"></div>
+        </div>
+
+        <!-- Reviewer -->
+        <div id="reviewer-header"></div>
+        <div class="section-box">
+          <div id="reviewer-content" style="padding-left: 20px;"></div>
+        </div>
+
+
+        <br><br>
+
+        <script>
+          // Function to create education experience elements based on provided data
+          function createEducationExperience(experienceData) {
+            // Get education experience container element
+            const container = document.getElementById('education-experience');
+            // Create new div element for education container
+            const div = document.createElement('div');
+            div.className = 'education-container';
+            div.innerHTML = `
+              <div class="education-item">
+                <div class="education-logo-wrapper">
+                  <a href="${experienceData.link}" target="_blank"><img src="images/experience/${experienceData.logoSrc}" alt="Institution Logo" class="education-logo"></a>
+                </div>
+                <div class="education-info">
+                  <p class="institution">${experienceData.school}</p>
+                  <div class="details">
+                    ${experienceData.details.map(detail => `
+                    <p>
+                      <span class="degree">${detail.degree}</span>
+                      <span class="major">${detail.major}</span>, ${detail.college}
+                    </p>
+                    <p class="time">${detail.time}</p>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>`;
+            // Append the new education container to the main container
+            container.appendChild(div);
+          }
+
+          // Load education experience data from JSON file
+          fetch('configs/experiences.json')
+            .then(response => response.json())
+            .then(data => {
+              // Iterate through each education experience and create corresponding elements
+              data.forEach(experience => {
+                createEducationExperience(experience);
+              });
+            });
+          
+          // Hide Honors-header if honors.json is empty
+          fetch('configs/honors.json')
+              .then(response => response.json())
+              .then(data => {
+                  if (data.length === 0) {
+                    // If honors.json is empty, hide the section
+                    document.getElementById('Honors-header').style.display = 'none';
+                  }
+                  else {
+                    // If honors.json is not empty, display the section
+                    document.getElementById('Honors-header').style.display = 'block';
+                    const header = document.getElementById('Honors-header');
+                    header.innerHTML = `
+                    <hr style="border: 1px solid #ade6b0;"> 
+                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Honors and Awards</h1>
+                    `;
+                  }
+              })
+              .catch(error => console.error('Error loading honors.json:', error));
+
+          // Load and display honors from honors.json
+          fetch('configs/honors.json')
+            .then(response => response.json())
+            .then(honorsData => {
+              const honorList = document.getElementById('honor-content');
+              honorsData.forEach(item => {
+                const div = document.createElement('div');
+                div.style.marginBottom = '20px';
+                div.innerHTML =`
+                  <div style="font-size: 18px; display: flex; align-items: baseline; color: #f8f4c0;">• <strong>${item.award}</strong></div>
+                  <div style="margin-left: 20px;">${item.unit}, ${item.time}</div>`;
+                honorList.appendChild(div);
+              });
+            });
+
+          // Hide teaching-header if teaching.json is empty
+          fetch('configs/teaching.json')
+              .then(response => response.json())
+              .then(data => {
+                  if (data.length === 0) {
+                    // If teaching.json is empty, hide the section
+                    document.getElementById('teaching-header').style.display = 'none';
+                  }
+                  else {
+                    // If teaching.json is not empty, display the section
+                    document.getElementById('teaching-header').style.display = 'block';
+                    const header = document.getElementById('teaching-header');
+                    header.innerHTML = `
+                    <hr style="border: 1px solid #ade6b0;"> 
+                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Teaching</h1>
+                    `;
+                  }
+              })
+              .catch(error => console.error('Error loading teaching.json:', error));
+          
+          // Load and display teaching from teaching.json
+          fetch('configs/teaching.json')
+            .then(response => response.json())
+            .then(teachingData => {
+              const teachingList = document.getElementById('teaching-content');
+              teachingData.forEach(item => {
+                const div = document.createElement('div');
+                div.style.marginBottom = '20px';
+                // Check if item.link exists and is not empty
+                if (item.link && item.link.trim() !== '') {
+                  div.innerHTML = `
+                    <div style="font-size: 18px; display: flex; align-items: baseline; color: #fff00f;">• <a href="${item.link}" target="_blank" style="color: #fff00f;"><span style="font-weight: bold;">${item.code} ${item.course}</span></a>, ${item.school}</div>
+                    <div style="margin-left: 20px;">${item.identity}, ${item.season} ${item.year}</div>
+                  `;
+                } else {
+                  div.innerHTML = 
+                  `<div style="font-size: 18px; display: flex; align-items: baseline; color: #fff00f;">• <span style="font-weight: bold;">${item.code} ${item.course}</span>, ${item.school}</div>
+                    <div style="margin-left: 20px;">${item.identity}, ${item.season} ${item.year}</div>
+                  `;
+                }
+                teachingList.appendChild(div);
+              });
+            });
+
+          // Hide reviewer-header if reviewer.json is empty
+          fetch('configs/reviewer.json')
+              .then(response => response.json())
+              .then(data => {
+                  if (data.length === 0) {
+                    // If reviewer.json is empty, hide the section
+                    document.getElementById('reviewer-header').style.display = 'none';
+                  }
+                  else {
+                    // If reviewer.json is not empty, display the section
+                    document.getElementById('reviewer-header').style.display = 'block';
+                    const header = document.getElementById('reviewer-header');
+                    header.innerHTML = `
+                    <hr style="border: 1px solid #ade6b0;"> 
+                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Reviewer</h1>
+                    `;
+                  }
+              })
+              .catch(error => console.error('Error loading reviewer.json:', error));
+
+          // Load and display reviewer from reviewer.json
+          fetch('configs/reviewer.json')
+            .then(response => response.json())
+            .then(reviewerData => {
+              const reviewerList = document.getElementById('reviewer-content');
+              reviewerData.forEach(item => {
+                const div = document.createElement('div');
+                div.style.marginBottom = '20px';
+                div.innerHTML =`
+                  <div style="font-size: 18px; display: flex; align-items: baseline; color: #00ffff;">• <strong>${item.conference || item.journal}, ${item.year}</strong></div>`;
+                reviewerList.appendChild(div);
+              });
+            });
+
+        </script>
+      </section>
+
+      <section id="publications">
+        <!-- Header section for the publications -->
+        <div id="publication-header">
+          <h1>Publications</h1>
+          <p>It is my pleasure that you can enjoy reading my publications!</p>
+        </div>
+        <!-- Container for displaying papers -->
+        <div id="paper-container"></div>
+
+        <!-- Patents information-->
+        <div id="Patents-header"></div>
+        <div class="section-box">
+          <div id="patent-content" style="padding-left: 20px;"></div>
+        </div>
+
+        <br><br>
+        
+        <script>
+            // Hide Patents-header if patents.json is empty
+            fetch('configs/patents.json')
+              .then(response => response.json())
+              .then(data => {
+                  if (data.length === 0) {
+                    // If patents.json is empty, hide the section
+                    document.getElementById('Patents-header').style.display = 'none';
+                  }
+                  else {
+                    // If honors.json is not empty, display the section
+                    document.getElementById('Patents-header').style.display = 'block';
+                    const header = document.getElementById('Patents-header');
+                    header.innerHTML = `
+                    <hr style="border: 1px solid #ff9900;"> 
+                    <h1 class="section-title" style="margin-top: 40px; font-size: 28px; text-decoration: underline;">Patents</h1>
+                    `;
+                  }
+              })
+              .catch(error => console.error('Error loading patents.json:', error));
+
+            // Load and display patents from patents.json
+            fetch('configs/patents.json')
+              .then(response => response.json())
+              .then(PatentData => {
+                const patentList = document.getElementById('patent-content');
+                PatentData['patents'].forEach(item => {
+                  const div = document.createElement('div');
+                  div.style.marginBottom = '20px';
+                  div.innerHTML = `
+                    <div style="font-size: 18px; display: flex; align-items: baseline; color:rgb(0, 255, 255);">• <strong>${item.title}</strong></div>
+                    <div style="margin-left: 20px;"><span>${item.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</span>.
+                    <div><em>${item.type}</em>, <a href="${item.link}" target="_blank">${item.number}</a>, ${item.date}</div>
+                    </div>`;
+                  patentList.appendChild(div);
+                });
+              });
+
+            // Function to create year separator element
+            function createYearSeparator(year) {
+              // Create new div element for year separator
+              const yearDiv = document.createElement('div');
+              yearDiv.innerHTML = `
+
+        <hr style="border: 1px solid #ff9900;">
+        <div class="year-label">${year}</div>
+`;
+              return yearDiv;
+            }
+
+            // Function to create paper element based on paper data
+            function createPaper(year, paperData) {
+              // Create new div element for paper
+              const paperDiv = document.createElement('div');
+              paperDiv.innerHTML = `
+                <div style="display: flex; align-items: center; border: 1px solid transparent; padding: 10px; position: relative;">
+                  <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: 200px; max-height: 200px; width: auto; height: auto; cursor: pointer;" onclick="openModal('images/publication/${paperData.image}')">
+                  <div class="paper" style="width: 100%; border: 2px transparent; margin-bottom: 20px; padding: 15px;">
+                    <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paperData.title}</h3>
+                    <p>${paperData.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
+                    <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.conference || paperData.journal}</em>, ${year}</p>
+                    <p>
+                      ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'award')" class="abs-link">AWARD</a>` : ''}
+                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'abstract')" class="abs-link">ABS</a>
+                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'keywords')" class="key-link">KEY</a>
+                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'bibtex')" class="bib-link">BIB</a>
+                      <a href="${paperData.paperLink}" target="_blank" class="paper-link">PAPER</a>
+                      ${paperData.videoLink ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, '\'')}', 'video')" class="video-link">VIDEO</a>` : ''}
+                      ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
+                      ${paperData.siteLink ? `<a href="${paperData.siteLink}" target="_blank" class="site-link">SITE</a>` : ''}
+                    </p>
+                  </div>
+                </div>
+                <div id="abstract-${paperData.title.replace(/'/g, '\'')}" style="font-size: 13px; border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                  <p>${paperData.abstract}</p>
+                </div>
+                <div id="award-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                  <p>${paperData.award}</p>
+                </div>
+                <div id="keywords-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                  <ul>
+                    ${paperData.keywords.split(',').map(keyword => `<li>${keyword.trim()}</li>`).join('')}
+                  </ul>
+                </div>
+                <div id="bibtex-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                  <pre style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; margin: 0; width: 100%;">${paperData.bibtex}</pre>
+                </div>
+                <div id="video-${paperData.title.replace(/'/g, '\'')}" style="border: 1px dashed white; padding: 10px; margin-top: 10px; width: calc(100% - 20px); display: none;">
+                  <iframe src="${paperData.videoLink}" data-original-src="${paperData.videoLink}" style="width: 100%; aspect-ratio: 16/9;"></iframe>
+                </div>`;
+              return paperDiv;
+            }
+
+            // Load paper data from JSON file
+            fetch('configs/papers.json')
+              .then(response => response.json())
+              .then(data => {
+                // Traverse in chronological order to ensure consistency with the JSON file
+                const sortedYears = Object.keys(data).sort((a, b) => b - a);
+                // Get the paper container element
+                const paperContainer = document.getElementById('paper-container');
+                sortedYears.forEach(year => {
+                  // Create a new div element for the year block
+                  const yearBlock = document.createElement('div');
+                  yearBlock.appendChild(createYearSeparator(year));
+                  const yearPaperContainer = document.createElement('div');
+                  yearPaperContainer.id = `papers-${year}`;
+                  // Iterate through each paper in the current year and append it to the container
+                  data[year].forEach(paper => {
+                    yearPaperContainer.appendChild(createPaper(year, paper));
+                  });
+                  yearBlock.appendChild(yearPaperContainer);
+                  paperContainer.appendChild(yearBlock);
+                });
+              });
+            
+          </script>
+      </section>
+
+      <section id="cv">
+        <style>
+          .download-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 15px;
+          }
+          .download-btn:hover {
+            background-color: #45a049;
+          }
+        </style>
+        <button class="download-btn" onclick="window.open('./configs/cv.pdf', '_blank')">Download this PDF</button>
+        <script>
+          document.write('<object data="./configs/cv.pdf?t=' + new Date().getTime() + '" type="application/pdf" width="100%" height="800px">');
+        </script>
+        <p>
+          Your browser does not support PDF files.
+        </p>
+        </object>
+
+        <br><br>
+
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Function to show a specific page and update the UI accordingly
+    function showPage(pageId, targetId) {
+      // Remove the 'active' class from all sections
+      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      // Add the 'active' class to the target section
+      document.getElementById(pageId).classList.add('active');
+
+      // Scroll to top after switching section
+      window.scrollTo(0, 0);
+
+      // Reset news section scroll when showing home section
+      if (pageId === 'home') {
+        // Precisely target news section scroll container (immediately after News title)
+        const newsContainer = document.querySelector('#home .section-title + .section-box');
+        if (newsContainer) newsContainer.scrollTop = 0;
+      }
+
+      // Hide all dashed boxes
+      document.querySelectorAll('[id^="abstract-"]').forEach(item => item.style.display = 'none');
+      document.querySelectorAll('[id^="bibtex-"]').forEach(item => item.style.display = 'none');
+      document.querySelectorAll('[id^="award-"]').forEach(item => item.style.display = 'none');
+      document.querySelectorAll('[id^="keywords-"]').forEach(item => item.style.display = 'none');
+      document.querySelectorAll('[id^="video-"]').forEach(item => {
+        item.style.display = 'none';
+        // Stop video playback
+        const iframe = item.querySelector('iframe');
+        if (iframe) {
+          iframe.src = '';
+        }
+      });
+
+      // Update navigation bar highlight status
+      document.querySelectorAll('nav a').forEach(navLink => {
+        navLink.classList.remove('active');
+      });
+      document.querySelectorAll('#mySidebar a:not(.closebtn)').forEach(navLink => {
+        navLink.classList.remove('active');
+      });
+      const activeNavLink = pageId === 'publications' ? document.getElementById('nav-publications') : document
+        .getElementById(`nav-${pageId}`);
+      if (activeNavLink) {
+        activeNavLink.classList.add('active');
+      }
+
+      // Scroll to target element at center of viewport if specified
+      if (targetId) {
+        const element = document.getElementById(targetId);
+        if (element) {
+          // Wait for the publications section to be fully rendered
+          setTimeout(() => {
+            const elementRect = element.getBoundingClientRect();
+            const absoluteElementTop = elementRect.top + window.pageYOffset;
+            const middle = absoluteElementTop - (window.innerHeight / 2) + elementRect.height / 2;
+            window.scrollTo({
+              top: middle,
+              behavior: 'smooth'
+            });
+
+            // Highlight paper container with flash effect
+            const paperContainer = element.closest('.paper');
+            if (paperContainer) {
+              paperContainer.style.transition = 'background-color 0.5s ease';
+              paperContainer.style.backgroundColor = 'rgba(255, 165, 0, 0.3)';
+              setTimeout(() => {
+                paperContainer.style.backgroundColor = '';
+              }, 1000);
+            }
+          }, 100);
+        }
+      }
+    }
+
+    // Generic toggle function to switch the display state of a specified element and hide other related elements
+    function toggleContent(button, id, targetType) {
+      const elementMap = {
+        'abstract': document.getElementById(`abstract-${id.replace(/'/g, "'")}`),
+        'bibtex': document.getElementById(`bibtex-${id.replace(/'/g, "'")}`),
+        'award': document.getElementById(`award-${id.replace(/'/g, "'")}`),
+        'keywords': document.getElementById(`keywords-${id.replace(/'/g, "'")}`),
+        'video': document.getElementById(`video-${id.replace(/'/g, "'")}`)
+      };
+
+      // Get target element
+      const targetElement = elementMap[targetType];
+      if (targetElement) {
+        // Toggle the display state of the target element
+        const newDisplay = targetElement.style.display === 'none' ? 'block' : 'none';
+        targetElement.style.display = newDisplay;
+
+        // Handle video iframe loading and stopping
+        if (targetType === 'video') {
+          const iframe = targetElement.querySelector('iframe');
+          if (iframe) {
+            if (newDisplay === 'none') {
+              // Stop video when hiding
+              iframe.src = '';
+            } else {
+              // Pause all other videos before loading current video
+              document.querySelectorAll('[id^="video-"] iframe').forEach(otherIframe => {
+                if (otherIframe !== iframe) {
+                  otherIframe.src = '';
+                }
+              });
+              const originalSrc = iframe.dataset.originalSrc;
+              if (originalSrc) {
+                iframe.src = originalSrc;
+              }
+            }
+          }
+        }
+
+        // If the target element will be displayed, hide other elements
+        if (newDisplay === 'block') {
+          Object.values(elementMap).forEach(element => {
+            if (element && element !== targetElement) {
+              element.style.display = 'none';
+              // If it's a video block, stop playback
+              if (element.id.startsWith('video-')) {
+                const iframe = element.querySelector('iframe');
+                if (iframe) {
+                  iframe.src = '';
+                }
+              }
+            }
+          });
+        }
+
+        // Check if the bottom of the target element exceeds the viewport
+        if (newDisplay === 'block') {
+          const targetRect = targetElement.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          if (targetRect.bottom > viewportHeight) {
+            // Scroll to align target element bottom with viewport bottom
+            window.scrollTo({
+              top: window.scrollY + (targetRect.bottom - viewportHeight),
+              behavior: 'smooth'
+            });
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Image Modal -->
+  <div id="imageModal" class="modal">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <div class="modal-caption"></div>
+  </div>
+
+</body>
+
+<!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
+
+<!-- Last Change: 2025-08-20 -->
+
+<footer>
+  <p style="margin: 0; font-size: 16px;">&copy; 2025 Excursion ConsHein.<span class="footer-break"> </span>Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll.</a></p>
+</footer>
+
+</html>
