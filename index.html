@@ -104,7 +104,7 @@
       /* Removed scroll-behavior: smooth to prevent auto-scrolling on page load */
       
       /* Performance optimization: reduce repaints during scrolling */
-      overflow-y: overlay;
+      overflow-y: auto;
     }
     
     /* Performance optimization: optimize scrolling container */
@@ -441,7 +441,7 @@
       /* Adjust main content for mobile */
       .main-content {
         width: 100%;
-        padding: 20px 15px 15px 15px;
+        padding: 20px 5px 15px 5px;
         margin-left: 0;
         min-height: auto;
       }
@@ -480,6 +480,8 @@
         gap: 0.5rem;
         width: 100%;
         justify-content: center;
+        padding: 0 15px;
+        box-sizing: border-box;
       }
 
       /* Adjust navigation bar links for mobile */
@@ -513,7 +515,7 @@
       .education-item {
         flex-direction: column;
         align-items: flex-start;
-        padding: 15px;
+        padding: 12px 8px;
         border-radius: 10px;
         background-color: rgba(10, 20, 41, 0.3);
         margin-bottom: 15px;
@@ -533,7 +535,7 @@
       .paper-item {
         flex-direction: column;
         align-items: flex-start;
-        padding: 15px;
+        padding: 12px 8px;
         border-radius: 10px;
         background-color: rgba(10, 20, 41, 0.3);
         margin-bottom: 15px;
@@ -553,7 +555,7 @@
       #publications #paper-container>div {
         flex-direction: column;
         align-items: flex-start;
-        padding: 15px;
+        padding: 12px 8px;
         border-radius: 10px;
         background-color: rgba(10, 20, 41, 0.3);
         margin-bottom: 15px;
@@ -585,7 +587,7 @@
           gap: 30px;
           margin-bottom: 40px;
           transition: transform 0.3s ease, box-shadow 0.3s ease;
-          padding: 15px;
+          padding: 12px 8px;
           border-radius: 8px;
           background-color: rgba(10, 20, 41, 0.2);
         }
@@ -635,6 +637,20 @@
             display: block;
           }
         }
+
+        /* Adjust navigation buttons for very narrow screens */
+        @media (max-width: 380px) {
+          .nav-links-container {
+            padding: 0 10px;
+            gap: 0.3rem;
+          }
+          
+          nav a {
+            font-size: 12px;
+            padding: 0.3rem 0.5rem;
+            height: 26px;
+          }
+        }
       /* Selected papers container now directly contains flex items */
       #selected-papers-content {
         display: flex;
@@ -648,7 +664,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding: 15px;
+        padding: 12px 8px;
         border-radius: 10px;
         background-color: rgba(10, 20, 41, 0.3);
         margin-bottom: 15px;
@@ -835,6 +851,15 @@
         border-top: none;
         padding: 20px 15px;
         margin-top: 20px;
+      }
+      
+      /* Show mobile home button and instruction in mobile view */
+      .mobile-home-button {
+        display: inline-block !important;
+      }
+      
+      .mobile-home-instruction {
+        display: block !important;
       }
     }
 
@@ -1080,7 +1105,7 @@
     .section-box {
       border: none;
       border-radius: 12px;
-      padding: 1.8rem;
+      padding: 1.8rem 1.2rem;
       margin-bottom: 1.8rem;
       background-color: rgba(10, 20, 41, 0.6);
       backdrop-filter: blur(5px);
@@ -1465,6 +1490,48 @@
       border-color: var(--accent);
     }
 
+    /* Scroll to top button styles */
+    .scroll-to-top-btn {
+      position: fixed !important;
+      bottom: 30px !important;
+      right: 30px !important;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(42, 107, 198, 0.4);
+      z-index: 9999 !important;
+      /* 确保悬浮球相对于视口定位，不受其他元素影响 */
+      left: auto !important;
+      top: auto !important;
+      margin: 0 !important;
+      transform-origin: center center;
+    }
+    
+    .scroll-to-top-btn.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    .scroll-to-top-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(42, 107, 198, 0.6);
+    }
+    
+    .scroll-to-top-btn i {
+      font-size: 20px;
+    }
+
   </style>
   <link rel="shortcut icon" type="image/x-icon" href="images/homepage/favicon/favicon.ico">
 </head>
@@ -1476,11 +1543,10 @@
       <span onclick="showSidebar()" style="cursor: pointer;">EXCURSION CONSHEIN 2.0</span>
     </div>
     <div class="nav-links-container">
+      <a onclick="showPage('home')" id="nav-home">Home</a>
       <a onclick="showPage('experiences')" id="nav-experiences">Experiences</a>
       <a onclick="showPage('publications')" id="nav-publications">Publications</a>
       <a onclick="showPage('cv')" id="nav-cv">CV</a>
-      <img src="images/homepage/homekey/homekey.png" alt="excursion-conshein" class="nav-icon"
-        onclick="showPage('home')" id="nav-icon">
     </div>
   </nav>
 
@@ -1492,6 +1558,13 @@
       <div style="text-align: center; margin-top: 20px;">
         <p id="name" style="font-size: 30px; font-weight: bold;"></p>
       </div>
+      
+      <!-- Mobile Home Button -->
+      <div style="text-align: center; margin-top: 30px;">
+        <button class="mobile-home-button" onclick="showPage('home')" style="background: linear-gradient(45deg, var(--primary), var(--accent)); color: white; border: none; padding: 12px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 10px; display: none; width: 220px; box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;">Get Home →</button>
+        <p class="mobile-home-instruction" style="font-size: 12px; color: #888; display: none;">You can return this page by pressing <span style="font-weight: bold; color: var(--primary);">EXCURSION CONSHEIN 2.0</span></p>
+      </div>
+      
       <div style="margin-left: calc(50% - 110px); ">
         <img src="images/homepage/info icon/location.png" alt="location"
         style="width: 20px; height: 20px; margin-right: 15px; filter: invert(100%); float: left; margin-right: 5px;">
@@ -1612,7 +1685,28 @@
               
               // Update page title
               document.title = data.name + "'s Homepage";
-              document.getElementById('home-title').textContent = "Welcome to " + data.name + "'s Homepage!";
+              
+              // Function to update home title based on screen orientation
+              function updateHomeTitle() {
+                const homeTitle = document.getElementById('home-title');
+                const isPortrait = window.innerHeight > window.innerWidth || window.innerWidth <= 768;
+                
+                if (isPortrait) {
+                  // Split title into two lines for portrait mode and reduce font size
+                  homeTitle.innerHTML = "Welcome to<br>" + data.name + "'s Homepage!";
+                  homeTitle.style.fontSize = "1em";
+                } else {
+                  // Keep title in one line for landscape mode with original font size
+                  homeTitle.textContent = "Welcome to " + data.name + "'s Homepage!";
+                  homeTitle.style.fontSize = "2.5em";
+                }
+              }
+              
+              // Initial update
+              updateHomeTitle();
+              
+              // Update on window resize
+              window.addEventListener('resize', updateHomeTitle);
             })
             .catch(error => {
               console.error('Error loading info:', error);
@@ -1725,6 +1819,7 @@
             .then(papersData => {
               const papersContainer = document.getElementById('selected-papers-content');
               let hasSelectedPapers = false;
+              let selectedIndex = 0; // Add index counter for selected papers
               
               for (const year in papersData) {
                 if (Array.isArray(papersData[year])) {
@@ -1744,20 +1839,21 @@
                         'margin-right: 10px; width: 200px; flex-shrink: 0;';
                       
                       paperDiv.innerHTML = `
-                        <div class="paper-item">
+                        <div class="paper-item" id="paper-item-${selectedIndex}">
                           <div class="paper-logo-wrapper" style="${imageContainerStyle}">
                             <img src="images/publication/${paper.image}" alt="${paper.title}" class="paper-logo" style="width: 200px; height: auto; cursor: pointer; ${isMobile ? 'margin: 0 auto;' : ''}" onclick="openModal('images/publication/${paper.image}')">
                           </div>
                           <div class="paper-info">
-                            <h3 id="${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}" class="paper-title">${paper.title}</h3>
+                            <h3 id="paper-title-${selectedIndex}" class="paper-title">${paper.title}</h3>
                             <p class="paper-authors">${paper.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
                             <p class="paper-venue"><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.conference || paper.journal}</em>, ${year}</p>
                             <p class="paper-links" style="text-align: right; margin-top: 10px;">
-                              <a href="javascript:void(0);" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" class="jump-btn">Jump→</a>
+                              <a href="javascript:void(0);" onclick="showPage('publications', 'paper-item-${selectedIndex}');" class="jump-btn">Jump→</a>
                             </p>
                           </div>
                         </div>`;
                       papersContainer.appendChild(paperDiv);
+                      selectedIndex++; // Increment index for next selected paper
                     }
                   });
                 }
@@ -2169,6 +2265,24 @@
                 }
               });
 
+            // Function to setup paper event listeners
+            function setupPaperEventListeners() {
+              // Re-attach click event listeners to paper logos for modal functionality
+              const paperLogos = document.querySelectorAll('.paper-logo');
+              paperLogos.forEach(logo => {
+                // Remove any existing event listeners to avoid duplicates
+                logo.removeEventListener('click', logo._modalClickHandler);
+                
+                // Create a new event handler function and store it as a property of the element
+                logo._modalClickHandler = function() {
+                  openModal(this.src);
+                };
+                
+                // Add the event listener
+                logo.addEventListener('click', logo._modalClickHandler);
+              });
+            }
+
             // Function to create year separator element
             function createYearSeparator(year) {
               // Create new div element for year separator
@@ -2178,26 +2292,36 @@
             }
 
             // Function to create paper element based on paper data
-            function createPaper(year, paperData) {
+            function createPaper(year, paperData, index) {
               // Create new div element for paper
               const paperDiv = document.createElement('div');
               paperDiv.className = 'paper-container';
               paperDiv.style.marginBottom = '30px';
               
-              // Determine flex direction based on screen width
-              const isMobile = window.innerWidth <= 768;
+              // Determine flex direction based on screen width and orientation
+              const isMobile = window.innerWidth <= 768 || window.innerHeight <= 667;
+              const isPortrait = window.innerHeight > window.innerWidth;
               const flexDirection = isMobile ? 'column' : 'row';
-              const imageContainerStyle = isMobile ? 
-                'text-align: center; margin-bottom: 15px; display: flex; justify-content: center; width: 100%;' : 
-                'margin-right: 10px; width: 200px; flex-shrink: 0;';
+              
+              // Adjust image container style based on orientation
+              let imageContainerStyle;
+              if (isMobile) {
+                imageContainerStyle = 'text-align: center; margin-bottom: 15px; display: flex; justify-content: center; width: 100%;';
+              } else if (isPortrait) {
+                // Portrait mode on larger screens
+                imageContainerStyle = 'text-align: center; margin-bottom: 15px; display: flex; justify-content: center; width: 100%;';
+              } else {
+                // Landscape mode on larger screens
+                imageContainerStyle = 'margin-right: 10px; width: 200px; flex-shrink: 0;';
+              }
               
               paperDiv.innerHTML = `
-                <div class="paper-item">
+                <div class="paper-item" id="pub-paper-item-${index}">
                   <div class="paper-logo-wrapper" style="${imageContainerStyle}">
-                    <img src="images/publication/${paperData.image}" alt="${paperData.title}" class="paper-logo" style="width: 200px; height: auto; cursor: pointer; ${isMobile ? 'margin: 0 auto;' : ''}" onclick="openModal('images/publication/${paperData.image}')">
+                    <img src="images/publication/${paperData.image}" alt="${paperData.title}" class="paper-logo" style="width: 200px; height: auto; cursor: pointer; ${isMobile || isPortrait ? 'margin: 0 auto;' : ''}" onclick="openModal('images/publication/${paperData.image}')">
                   </div>
                   <div class="paper-info">
-                    <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}" class="paper-title">${paperData.title}</h3>
+                    <h3 id="pub-paper-title-${index}" class="paper-title">${paperData.title}</h3>
                     <p class="paper-authors">${paperData.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
                     <p class="paper-venue"><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.conference || paperData.journal}</em>, ${year}</p>
                     <p class="paper-links" style="text-align: left; margin-top: 10px;">
@@ -2242,6 +2366,8 @@
                 const sortedYears = Object.keys(data).sort((a, b) => b - a);
                 console.log("Sorted years:", sortedYears);
                 
+                let paperIndex = 0; // Initialize paper index
+                
                 sortedYears.forEach(year => {
                   console.log("Processing year:", year);
                   
@@ -2255,12 +2381,19 @@
                   // Iterate through each paper in the current year
                   data[year].forEach(paper => {
                     console.log("Processing paper:", paper.title);
-                    const paperElement = createPaper(year, paper);
+                    const paperElement = createPaper(year, paper, paperIndex);
                     academicPapersContent.appendChild(paperElement);
+                    paperIndex++; // Increment paper index
                   });
                 });
                 
                 console.log("All papers rendered");
+                
+                // Set a flag to indicate publications are loaded
+                window.publicationsLoaded = true;
+                
+                // Setup event listeners for paper elements
+                setupPaperEventListeners();
               })
               .catch(error => {
                 console.error('Error loading papers data:', error);
@@ -2326,6 +2459,9 @@
   </div>
 
   <script>
+    // Initialize publications loaded flag
+    window.publicationsLoaded = false;
+    
     // Performance optimization: use throttle function to limit scroll event trigger frequency
     let lastScrollTop = 0;
     window.addEventListener('scroll', throttle(function() {
@@ -2360,9 +2496,6 @@
       // Show all content immediately
       revealOnScroll();
       
-      // For home page, ensure all sections are visible
-      showPage('home');
-      
       // Check if in mobile view, show sidebar by default
       if (window.innerWidth <= 768 || window.innerHeight <= 667) {
         // Hide all sections
@@ -2371,7 +2504,7 @@
         // Hide main content
         document.querySelector('.main-content').style.display = 'none';
         
-        // Show left sidebar
+        // Show left sidebar (info page)
         const leftSidebar = document.querySelector('.left-sidebar');
         leftSidebar.style.display = 'block';
         
@@ -2382,6 +2515,9 @@
         setTimeout(() => {
           leftSidebar.classList.add('active');
         }, 100);
+      } else {
+        // For desktop view, show home page
+        showPage('home');
       }
       
       // Performance optimization: add lazy loading for images
@@ -2396,6 +2532,40 @@
       function handleOrientationChange() {
         // Get current active page
         const activeSection = document.querySelector('section.active');
+        const leftSidebar = document.querySelector('.left-sidebar');
+        const mainContent = document.querySelector('.main-content');
+        
+        // Check if we're transitioning from portrait to landscape
+        const isLandscape = window.innerWidth > window.innerHeight && window.innerWidth > 768;
+        const wasOnInfoPage = leftSidebar.style.display === 'block' && mainContent.style.display === 'none';
+        
+        // If transitioning from portrait to landscape and was on info page, navigate to home
+        if (isLandscape && wasOnInfoPage) {
+          showPage('home');
+          
+          // Ensure proper layout for landscape mode
+          document.querySelector('.left-sidebar').style.display = 'block';
+          document.querySelector('.left-sidebar').classList.add('active');
+          document.querySelector('.main-content').style.display = 'block';
+          
+          // Ensure home section is active
+          document.querySelectorAll('section').forEach(section => {
+            section.classList.remove('active');
+          });
+          document.getElementById('home').classList.add('active');
+          
+          // Update navigation highlight
+          document.querySelectorAll('nav a').forEach(navLink => {
+            navLink.classList.remove('active');
+          });
+          const homeNavLink = document.getElementById('nav-home');
+          if (homeNavLink) {
+            homeNavLink.classList.add('active');
+          }
+          
+          return;
+        }
+        
         if (activeSection) {
           const pageId = activeSection.id;
           
@@ -2440,7 +2610,63 @@
           if (activeNavLink) {
             activeNavLink.classList.add('active');
           }
+          
+          // Special handling for publications page - re-render papers on orientation change
+          if (pageId === 'publications' && window.publicationsLoaded) {
+            reloadPublications();
+          }
         }
+      }
+      
+      // Function to reload publications when orientation changes
+      function reloadPublications() {
+        // Only reload if publications data has been loaded
+        if (!window.publicationsLoaded) return;
+        
+        // Get the academic papers content container
+        const academicPapersContent = document.getElementById('academic-papers-content');
+        if (!academicPapersContent) return;
+        
+        // Save current scroll position
+        const scrollPosition = window.scrollY;
+        
+        // Clear current content
+        academicPapersContent.innerHTML = '';
+        
+        // Reload papers data
+        fetch('configs/papers.json')
+          .then(response => response.json())
+          .then(data => {
+            // Traverse in chronological order to ensure consistency with the JSON file
+            const sortedYears = Object.keys(data).sort((a, b) => b - a);
+            
+            let paperIndex = 0; // Initialize paper index
+            
+            sortedYears.forEach(year => {
+              // Create a year separator
+              const yearDiv = document.createElement('div');
+              yearDiv.style.marginBottom = '10px';
+              yearDiv.style.textAlign = 'right';
+              yearDiv.innerHTML = `<strong style="color: #00ffff; font-size: 28px;">${year}</strong>`;
+              academicPapersContent.appendChild(yearDiv);
+              
+              // Iterate through each paper in the current year
+              data[year].forEach(paper => {
+                const paperElement = createPaper(year, paper, paperIndex);
+                academicPapersContent.appendChild(paperElement);
+                paperIndex++; // Increment paper index
+              });
+            });
+            
+            // Restore scroll position
+            window.scrollTo(0, scrollPosition);
+            
+            // Re-apply event listeners for paper elements
+            setupPaperEventListeners();
+          })
+          .catch(error => {
+            console.error('Error reloading papers data:', error);
+          });
       }
       
       // Add event listeners for orientation changes
@@ -2570,48 +2796,65 @@
           activeNavLink.classList.add('active');
         }
 
-        // Scroll to specified target element
+        // Scroll to specified target element with simple delay
         if (targetId) {
-          // Wait for publications section to fully render
+          // Simple delay to ensure page content is rendered
           setTimeout(() => {
             const element = document.getElementById(targetId);
             if (element) {
-              console.log("Found target element:", targetId);
+              // Simple scroll to element with offset for navigation bar
+              const elementRect = element.getBoundingClientRect();
+              const navBarHeight = 60;
               
-              // Find the paper container instead of just the title element
-              const paperContainer = element.closest('.paper-container');
-              if (paperContainer) {
-                console.log("Found paper container");
-                const containerRect = paperContainer.getBoundingClientRect();
-                // Calculate the position to align the middle of the paper container with the middle of the viewport
-                const containerMiddle = containerRect.top + window.pageYOffset + (containerRect.height / 2);
-                const scrollToPosition = containerMiddle - (window.innerHeight / 2);
-                console.log("Scrolling to position:", scrollToPosition);
-                window.scrollTo({
-                  top: scrollToPosition,
-                  behavior: 'smooth'
-                });
-              } else {
-                console.error("Paper container not found for element:", targetId);
-                // Fallback to original behavior if container not found
-                const elementRect = element.getBoundingClientRect();
-                const elementMiddle = elementRect.top + window.pageYOffset + (elementRect.height / 2);
-                const scrollToPosition = elementMiddle - (window.innerHeight / 2);
-                console.log("Fallback: Scrolling to position:", scrollToPosition);
-                window.scrollTo({
-                  top: scrollToPosition,
-                  behavior: 'smooth'
-                });
+              // Adjust offset based on screen orientation
+              let additionalOffset = 20; // Default offset for landscape/desktop
+              if (window.innerHeight > window.innerWidth) {
+                // Portrait mode (vertical screen) - add 250px more than landscape
+                additionalOffset = 270; // 20 + 250
               }
-            } else {
-              console.error("Target element not found:", targetId);
+              
+              const scrollToPosition = elementRect.top + window.pageYOffset - navBarHeight - additionalOffset;
+              
+              window.scrollTo({
+                top: scrollToPosition,
+                behavior: 'smooth'
+              });
+              
+              // Simple highlight effect
+              element.style.backgroundColor = 'rgba(255, 255, 0, 0.3)';
+              setTimeout(() => {
+                element.style.backgroundColor = '';
+              }, 1000);
             }
-          }, 500); // Increased delay to ensure page is fully rendered
+          }, 300); // Reduced delay for faster response
         }
       }, 50); // 50ms debounce delay
     }
-
     
+    </script>
+
+  <!-- Scroll to top button functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+      
+      // Show/hide scroll to top button based on scroll position
+      window.addEventListener('scroll', throttle(function() {
+        if (window.scrollY > 50) { // Show button when scrolled down 50px
+          scrollToTopBtn.classList.add('visible');
+        } else {
+          scrollToTopBtn.classList.remove('visible');
+        }
+      }, 100));
+      
+      // Scroll to top when button is clicked
+      scrollToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    });
   </script>
 
   <!-- Performance optimization: resource management and monitoring -->
@@ -2714,6 +2957,10 @@
     <div class="modal-caption"></div>
   </div>
 
+  <!-- Scroll to top button -->
+  <div id="scrollToTopBtn" class="scroll-to-top-btn">
+    <i class="fas fa-arrow-up"></i>
+  </div>
 </body>
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->

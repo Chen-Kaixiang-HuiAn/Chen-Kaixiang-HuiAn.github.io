@@ -20,6 +20,10 @@ Update: 2025-09-15
 
 ![Excursion ConsHein 2.0](./images/preview2.0/interface.png)
 
+- Removed the Homekey icon originally located in the upper right corner, and replaced it with a classic button for easier visitor navigation!
+
+![nav](./images/preview2.0/interface_nav.png)
+
 - The News section now features a special indicator for the latest updates, keeping you informed of the latest developments at a glance!
 
 ![News](./images/preview2.0/interface_news.png)
@@ -37,15 +41,23 @@ Update: 2025-09-15
 
 ![CV](./images/preview2.0/interface_cv.png)
 
-- Added the Excursion ConsHein and "远行鸽" (Excursion Pigeon) logo in the top left corner
+- Added the Excursion ConsHein and "Excursion Pigeon" logo in the top left corner
 
 ![logo](./images/preview2.0/topleft.png)
+
+- Added a sticky floating button in the lower right corner for easy return to the top
+
+![return](./images/preview2.0/return.png)
 
 **Dual-platform design for a more sensory-responsive experience!**
 
 - The computer version offers a smoother experience with seamless page transitions
 
-- The mobile version has a dedicated page for the information sidebar, click on the Excursion Pigeon to jump to it!
+- The mobile version has a dedicated page for the information sidebar, click on the Excursion Pigeon icon in the top left corner to jump to it!
+
+- Not only that, but for the mobile version (vertical screen) state, we have also done the following processing:
+
+![Mobile Version](./images/preview2.0/interface_mobile.png)
 
 - Free and dynamic switching between horizontal and vertical screens, no need to refresh!
 
@@ -116,9 +128,7 @@ The project directory structure is as follows:
 └── images/                # Image files
     ├── experience/        # Experience related images
     ├── homepage/          # Homepage images
-    │   ├── background/    # Background images
     │   ├── favicon/       # Website icons
-    │   ├── homekey/       # Homepage button images
     │   ├── info icon/     # Information icons
     │   └── photo/         # Personal photos
     ├── preview/           # Images for readme
@@ -337,11 +347,15 @@ You can replace `images/homepage/background/BG.png` to change the background ima
 
 ![Favicon](./images/preview/preview_favicon.png)
 
+**After the 2.0 version update, image backgrounds are no longer used to prevent loading lag.** 
+
 ### Homepage Button Image
 
 You can replace `images/homepage/homekey/homekey.png` to customize the appearance of the home button.
 
  ![Homekey](./images/preview/preview_homekey.png)
+
+**After the 2.0 version update, icon buttons are no longer used, replaced with an intuitive home button for easier visitor navigation.**
 
 ### Information Icons
 
@@ -390,7 +404,7 @@ A: After you push changes to GitHub, it usually updates within a few minutes.
 ## 7. Contact Us
 
 If you encounter any issues during use, you can contact us through:
-- Email: conshein_yuanxing@outlook.com
+- Email: Conshein_Yuanxing@outlook.com
 - GitHub: [Excursion-ConsHein](https://github.com/Excursion-ConsHein)
 
 Wish you create an excellent personal homepage!

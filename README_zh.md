@@ -20,6 +20,10 @@ Update: 2025-09-15
 
 ![Excursion ConsHein 2.0](./images/preview2.0/interface.png)
 
+- 删除原本位于右上方的 Homekey 图标，改为使用经典按键，便于访客浏览！
+
+![nav](./images/preview2.0/interface_nav.png)
+
 - News 部分新增了最新动态的特殊标识，掌握最新动向，尽在眼前！
 
 ![News](./images/preview2.0/interface_news.png)
@@ -41,11 +45,19 @@ Update: 2025-09-15
 
 ![logo](./images/preview2.0/topleft.png)
 
+- 新增页面右下角的置顶悬浮球按钮！
+
+![置顶按钮](./images/preview2.0/return.png)
+
 **双端体感设计更加贴近感官反应！**
 
 - 电脑端的体验更为流畅，页面切换相当丝滑
 
 - 移动端为信息边栏单独设置页面，点击远行鸽即可跳转！
+
+- 不仅如此，还为移动端（竖屏）状态下的信息页做了如下处理：
+
+![移动端](./images/preview2.0/interface_mobile.png)
 
 - 横竖屏自由动态切换，无需刷新即可流畅体验！
 
@@ -116,9 +128,7 @@ Update: 2025-09-15
 └── images/                # 图片文件
     ├── experience/        # 经历相关图片
     ├── homepage/          # 主页图片
-    │   ├── background/    # 背景图片
     │   ├── favicon/       # 网站图标
-    │   ├── homekey/       # 主页按钮图片
     │   ├── info icon/     # 信息图标
     │   └── photo/         # 个人照片
     ├── preview/           # readme中的配图
@@ -338,11 +348,15 @@ Update: 2025-09-15
 
 ![favicon](./images/preview/preview_favicon.png)
 
+**2.0 版本更新后，不再使用图片背景，防止加载卡顿。**
+
 ### 主页按钮图片
 
 你可以替换 `images/homepage/homekey/homekey.png` ，自定义home键按钮的外观。
 
 ![homekey](./images/preview/preview_homekey.png)
+
+**2.0 版本更新后，不再使用图标按键，而是用直观的 home 按键，便于访客浏览。**
 
 ### 信息图标
 
