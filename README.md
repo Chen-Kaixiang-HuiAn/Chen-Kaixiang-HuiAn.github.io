@@ -20,11 +20,16 @@ Update: 2025-09-15
 
 ![Excursion ConsHein 2.0](./images/preview2.0/interface.png)
 
+- The News section now features a special indicator for the latest updates, keeping you informed of the latest developments at a glance!
+
+![News](./images/preview2.0/interface_news.png)
+
 - The Experiences section has been revamped, categorizing the original institutional experiences as Institution Experiences, rather than direct Experiences
 
 ![Exp](./images/preview2.0/interface_exp.png)
 
 - The Publications section has also been upgraded, categorizing the original papers as Academic Papers, rather than direct Publications
+- In addition, the paper section has been streamlined with button settings, now only featuring Paper, Code, Video, and Site buttons to prevent clutter and improve visual appeal!
 
 ![Pub](./images/preview2.0/interface_pub.png)
 
@@ -42,9 +47,11 @@ Update: 2025-09-15
 
 - The mobile version has a dedicated page for the information sidebar, click on the Excursion Pigeon to jump to it!
 
-**Hope you can have a good experience with Excursion ConsHein 2.0 today!**
+- Free and dynamic switching between horizontal and vertical screens, no need to refresh!
 
-The old version of the personal homepage template is stored in `src/index_origin.html`.
+**Excursion ConsHein 2.0 is waiting for you to experience!**
+
+(Note: The old version of the personal homepage template is stored in `src/index_origin.html`)
 
 ---
 
@@ -89,6 +96,12 @@ The project directory structure is as follows:
 ```
 ├── README.md              # Project documentation (this tutorial)
 ├── index.html             # Main HTML file
+├── src/                   # Main upgraded component directory for version 2.0
+│   ├── all_min.css        # Upgraded style component for the new version
+│   ├── chart.js           # Upgraded chart logic component for the new version
+│   ├── fa-solid-900.ttf   # Upgraded font icon component (ttf) for the new version
+│   ├── fa-solid-900.woff2 # Upgraded font icon component (woff2) for the new version
+│   └── index_origin.html  # Old version of the personal homepage template
 ├── configs/               # Configuration files
 │   ├── cv.pdf             # Resume PDF
 │   ├── experiences.json   # Work and education experiences
@@ -252,6 +265,12 @@ Edit the `configs/papers.json` file:
 
  ![Highlights](./images/preview/preview_highlights.gif)
 
+**In version 2.0, the following changes have been made to the papers section:**
+
+- Removed the award/abstract/keyword/bibtex fields and their button implementations. The videoLink field has been changed to a website link for videos, reducing memory usage and streamlining button functionality to prevent redundancy.
+
+- Removed the highlight effect to reduce memory usage, but the Jump function still allows for one-click direct access.
+
 ### Add Patents
 
 If you don't have any patents, you can leave the document empty or delete it, and the corresponding section will be hidden.
@@ -371,7 +390,7 @@ A: After you push changes to GitHub, it usually updates within a few minutes.
 ## 7. Contact Us
 
 If you encounter any issues during use, you can contact us through:
-- Email: Conshein_Yuanxing@outlook.com
+- Email: conshein_yuanxing@outlook.com
 - GitHub: [Excursion-ConsHein](https://github.com/Excursion-ConsHein)
 
-Good luck creating your amazing personal homepage!
+Wish you create an excellent personal homepage!

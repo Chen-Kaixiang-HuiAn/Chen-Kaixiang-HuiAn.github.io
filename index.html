@@ -49,6 +49,12 @@
     // Clear local storage when page loads
     window.onload = function() {
       localStorage.clear();
+      // Force scroll to top when page loads
+      window.scrollTo(0, 0);
+      // Disable browser's automatic scroll restoration
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
     };
   </script>
 
@@ -95,7 +101,7 @@
       background: linear-gradient(135deg, var(--dark) 0%, #0c1d3e 100%);
       color: var(--light);
       line-height: 1.6;
-      scroll-behavior: smooth;
+      /* Removed scroll-behavior: smooth to prevent auto-scrolling on page load */
       
       /* Performance optimization: reduce repaints during scrolling */
       overflow-y: overlay;
@@ -181,9 +187,9 @@
     /* Define page layout as flex container */
     .page-container {
       display: flex;
-      padding-top: 80px;
-      /* Compensate for fixed navbar height */
-      min-height: calc(100vh - 80px);
+      padding-top: 0px;
+      /* Reduced padding for sticky navbar */
+      min-height: calc(100vh - 60px);
       /* Full viewport height minus navbar */
       position: relative;
     }
@@ -191,14 +197,16 @@
     /* Define left sidebar style */
     .left-sidebar {
       width: 33.33%;
-      padding: 10px 20px 20px 20px;
+      padding: 0px 20px 20px 20px;
       position: fixed;
-      height: calc(100vh - 80px);
+      height: calc(100vh - 60px);
       overflow-y: auto;
       background-color: transparent;
       backdrop-filter: none;
       border-right: none;
       z-index: 100;
+      top: 60px;
+      /* Position below the sticky navbar */
     }
 
     /* Ensure left sidebar reveal class doesn't affect desktop view */
@@ -220,7 +228,7 @@
       width: 58.67%;
       padding: 20px;
       margin-left: 35.33%;
-      min-height: calc(100vh - 80px - 120px);
+      min-height: calc(100vh - 60px - 120px);
       /* Viewport height minus navbar and footer */
     }
 
@@ -263,12 +271,12 @@
       background: rgba(10, 20, 41, 0.8);
       backdrop-filter: blur(10px);
       box-shadow: 0 2px 15px rgba(0, 30, 90, 0.4);
-      position: fixed;
+      position: sticky;
       top: 0;
       left: 0;
       right: 0;
       z-index: 1000;
-      transition: all 0.3s ease;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
     
     /* Define logo style */
@@ -309,6 +317,7 @@
       padding: 0.7rem 5%;
       background: rgba(10, 20, 41, 0.95);
       box-shadow: 0 4px 20px rgba(0, 30, 90, 0.6);
+      transition: padding 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     }
 
     /* Set the style of the links in the left sidebar */
@@ -383,7 +392,7 @@
         position: static;
         height: auto;
         width: 100%;
-        padding: 100px 15px 15px 15px;
+        padding: 5px 15px 15px 15px;
         background-color: transparent;
         display: none;
       }
@@ -432,14 +441,14 @@
       /* Adjust main content for mobile */
       .main-content {
         width: 100%;
-        padding: 65px 15px 15px 15px;
+        padding: 20px 15px 15px 15px;
         margin-left: 0;
         min-height: auto;
       }
 
       /* Adjust sections for mobile */
       section {
-        padding-top: 50px;
+        padding-top: 20px;
       }
 
       /* Adjust navigation bar for mobile */
@@ -449,7 +458,7 @@
         padding: 0.8rem 3%;
         height: auto;
         min-height: 80px;
-        position: fixed;
+        position: sticky;
         top: 0;
         left: 0;
         right: 0;
@@ -516,23 +525,58 @@
         margin-bottom: 15px;
         width: 100%;
         text-align: center;
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Change the layout of paper items to a column */
+      .paper-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: rgba(10, 20, 41, 0.3);
+        margin-bottom: 15px;
+      }
+
+      /* Adjust the margin of the paper logo wrapper */
+      .paper-logo-wrapper {
+        margin-right: 0;
+        margin-bottom: 15px;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
       }
 
       /* Change the layout of publication paper containers to a column like experience section */
       #publications #paper-container>div {
         flex-direction: column;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 0;
-        margin-bottom: 20px !important;
-        margin-top: 0 !important;
-        background-color: rgba(10, 20, 41, 0.3);
-        border-radius: 10px;
-        padding: 15px;
         align-items: flex-start;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: rgba(10, 20, 41, 0.3);
+        margin-bottom: 15px;
+      }
+
+      /* Adjust the padding of paper info in mobile view */
+      .paper-info {
+        padding-left: 0 !important;
       }
 
       /* Change the layout of selected papers containers to a column */
+
+      /* Center section titles in mobile view */
+      .section-title {
+        text-align: center !important;
+      }
+
+      /* Center download button in mobile view */
+      .download-btn {
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
 
         /* News item style */
         .news-item {
@@ -602,18 +646,17 @@
 
       #selected-papers-content > div {
         display: flex;
-        align-items: center;
-        border: none;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
         border-radius: 10px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem !important;
-        background-color: rgba(10, 20, 41, 0.4);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: rgba(10, 20, 41, 0.3);
+        margin-bottom: 15px;
       }
 
       #selected-papers-content > div:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
       }
 
       /* Adjust the margin and size of images in publication and selected papers containers like experience section */
@@ -621,21 +664,16 @@
       #selected-papers-content img {
         margin-right: 0;
         margin-bottom: 15px;
-        max-width: 100%;
-        max-height: none;
-        width: auto;
-        height: auto;
-        border-radius: 0;
-        box-shadow: none;
-        transition: none;
-        border: none;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
       }
 
       #publications #paper-container img:hover,
       #selected-papers-content img:hover {
         transform: none;
         box-shadow: none;
-        border: none;
       }
 
       /* Adjust the style of paper content to match experience section */
@@ -652,7 +690,7 @@
       /* Adjust the style of selected paper content to reduce container size */
       #selected-papers-content .paper {
         border: none;
-        padding-left: 15px;
+        padding-left: 0;
         flex: 1;
       }
 
@@ -681,31 +719,74 @@
           display: block;
         }
         
+        /* Change publications layout to vertical (image above, text below) on small screens */
+        #publications #paper-container>div {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 15px;
+          border-radius: 10px;
+          background-color: rgba(10, 20, 41, 0.3);
+          margin-bottom: 15px;
+        }
+        
+        #publications #paper-container img {
+          margin-right: 0;
+          margin-bottom: 15px;
+          width: 100%;
+          text-align: center;
+          display: flex;
+          justify-content: center;
+        }
+        
+        #publications #paper-container .paper {
+          border: none;
+          padding-left: 0;
+          flex: 1;
+        }
+        
         /* Change selected papers layout to vertical (image above, text below) on small screens */
         #selected-papers-content > div {
           flex-direction: column;
-          width: 100%;
-          box-sizing: border-box;
-          padding: 0;
-          margin-bottom: 1.5rem !important;
           align-items: flex-start;
+          padding: 15px;
+          border-radius: 10px;
+          background-color: rgba(10, 20, 41, 0.3);
+          margin-bottom: 15px;
         }
         
         #selected-papers-content img {
           margin-right: 0;
           margin-bottom: 15px;
-          max-width: 100%;
-          max-height: none;
+          width: 100%;
+          text-align: center;
+          display: flex;
+          justify-content: center;
         }
         
         #selected-papers-content .paper {
           border: none;
           padding-left: 0;
-          padding-right: 0;
-          padding-top: 0;
-          padding-bottom: 0;
-          width: 100%;
-          text-align: left;
+          flex: 1;
+        }
+        
+        /* 修改featured-paper-container在移动设备上的布局 */
+        .featured-paper-container {
+          flex-direction: column !important;
+          align-items: center !important;
+        }
+        
+        .featured-paper-container > div:first-child {
+          margin-right: 0 !important;
+          margin-left: 0 !important;
+          margin-bottom: 15px !important;
+          width: 100% !important;
+          justify-content: center !important;
+        }
+        
+        .featured-paper-container > div:last-child {
+          padding-left: 0 !important;
+          padding-top: 15px !important;
+          width: 100% !important;
         }
       }
 
@@ -789,9 +870,13 @@
       font-size: 14px;
       letter-spacing: 0.5px;
       box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+      transition: all 0.3s ease;
     }
 
     .jump-btn:hover {
+      background-color: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       color: white;
       text-decoration: none;
     }
@@ -968,6 +1053,13 @@
       margin-top: 20px;
     }
 
+    /* Define paper container style to match education container */
+    .paper-container {
+      border: none;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
     /* Define the style of education items */
     .education-item {
       display: flex;
@@ -1028,12 +1120,11 @@
     .education-logo {
       width: 100px;
       height: 100px;
-      transition: transform 0.3s ease, filter 0.3s ease;
+      transition: transform 0.3s ease;
     }
 
     .education-logo:hover {
       transform: scale(1.1);
-      filter: brightness(1.2);
     }
 
     /* Define the style of the education information section */
@@ -1075,12 +1166,138 @@
       color: rgba(255, 255, 255, 0.6);
     }
 
+    /* Define paper container style to match education container */
+    .paper-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-radius: 8px;
+      background-color: rgba(10, 20, 41, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    .paper-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      background-color: rgba(42, 107, 198, 0.1);
+    }
+
+    /* Define the style of the paper logo wrapper */
+    .paper-logo-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 220px;
+      height: 220px;
+      margin-right: 10px;
+    }
+
+    /* Define the style of the paper logo */
+    .paper-logo {
+      width: 200px;
+      height: 200px;
+      transition: transform 0.3s ease;
+      border-radius: 5px;
+    }
+
+    .paper-logo:hover {
+      transform: scale(1.1);
+    }
+
+    /* Define the style of the paper information section */
+    .paper-info {
+      border: none;
+      padding-left: 15px;
+      flex: 1;
+    }
+
+    .paper-info p {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Define the style of the paper title */
+    .paper-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--light);
+      margin-bottom: 0.3rem;
+    }
+
+    /* Define the style of the paper authors */
+    .paper-authors {
+      font-size: 1rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Define the style of the paper venue */
+    .paper-venue {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Define the style of the paper links */
+    .paper-links {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Define the style of the paper abstract */
+    .paper-abstract {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(10, 20, 41, 0.2);
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    /* Define the style of the paper award */
+    .paper-award {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(10, 20, 41, 0.2);
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    /* Define the style of the paper keywords */
+    .paper-keywords {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(10, 20, 41, 0.2);
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    /* Define the style of the paper bibtex */
+    .paper-bibtex {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(10, 20, 41, 0.2);
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    /* Define the style of the paper video */
+    .paper-video {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(10, 20, 41, 0.2);
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
     /* Define basic HTML page style */
     html {
       position: relative;
       background-color: #000033;
       color: white;
-      scroll-behavior: smooth;
+      /* Removed scroll-behavior: smooth to prevent auto-scrolling on page load */
     }
 
     /* Add scrollbar styling */
@@ -1130,7 +1347,7 @@
     /* Apply slide up animation to sections */
     section {
       animation: slideUp 0.6s ease-out forwards;
-      opacity: 0;
+      opacity: 1;
       transition: opacity 0.5s ease;
     }
     
@@ -1141,8 +1358,8 @@
     /* Add scroll reveal animation */
     .reveal {
       position: relative;
-      transform: translateY(30px);
-      opacity: 0;
+      transform: translateY(0);
+      opacity: 1;
       transition: all 0.8s ease;
     }
 
@@ -1153,8 +1370,8 @@
 
     /* Add staggered animation for children elements */
     .reveal > * {
-      transform: translateY(20px);
-      opacity: 0;
+      transform: translateY(0);
+      opacity: 1;
       transition: all 0.6s ease;
     }
 
@@ -1256,7 +1473,7 @@
   <nav>
     <div class="logo">
       <img src="images/homepage/favicon/favicon.ico" alt="favicon">
-      <span onclick="showSidebar()" style="cursor: pointer;">EXCURSION CONSHEIN</span>
+      <span onclick="showSidebar()" style="cursor: pointer;">EXCURSION CONSHEIN 2.0</span>
     </div>
     <div class="nav-links-container">
       <a onclick="showPage('experiences')" id="nav-experiences">Experiences</a>
@@ -1413,10 +1630,10 @@
           <p id="intro-content"></p>
         </div>
          <h1 class="section-title reveal" style="margin-top: 20px; font-size: 28px;">News</h1>
-        <div class="section-box reveal" style="max-height: 350px; overflow-y: auto; margin-top: 10px;">
+        <div class="section-box reveal" style="max-height: 350px; overflow-y: auto; margin-top: 10px; margin-bottom: 100px;">
           <div id="news-content" style="padding: 10px; word-wrap: break-word; white-space: pre-wrap;"></div>
         </div>
-          <h1 class="section-title reveal" style="margin-top: 20px; font-size: 28px;">Research Highlights</h1>
+          <h1 class="section-title reveal" style="margin-top: 100px; font-size: 28px;">Research Highlights</h1>
         <div class="section-box reveal" style="margin-top: 10px; border: none;">
           <div id="selected-papers-content" style="padding: 0;"></div>
         </div>
@@ -1437,13 +1654,26 @@
             .then(response => response.json())
             .then(newsData => {
               const newsContainer = document.getElementById('news-content');
-              newsData.forEach(item => {
+              
+              // Sort news by time (newest first)
+              const sortedNews = newsData.sort((a, b) => new Date(b.time) - new Date(a.time));
+              
+              sortedNews.forEach((item, index) => {
                 const newsItem = document.createElement('div');
                 newsItem.className = 'news-item';
                 newsItem.style.marginBottom = '40px';
                 newsItem.style.display = 'flex';
                 newsItem.style.alignItems = 'flex-start';
                 newsItem.style.gap = '30px';
+                
+                // Add special styling for the latest news (first item after sorting)
+                if (index === 0) {
+                  newsItem.style.border = '2px solid var(--primary)';
+                  newsItem.style.borderRadius = '10px';
+                  newsItem.style.padding = '15px';
+                  newsItem.style.backgroundColor = 'rgba(10, 20, 41, 0.5)';
+                  newsItem.style.boxShadow = '0 4px 12px rgba(0, 123, 255, 0.3)';
+                }
 
                 // Format date (e.g. 2025-07-19 -> Jul 19, 2025)
                 const dateParts = item.time.split('-');
@@ -1463,12 +1693,25 @@
                 timeElement.style.textAlign = 'left';
                 timeElement.style.color = '#e0e0e0';
                 timeElement.style.fontSize = '16px';
+                
+                // Add special styling for the latest news time
+                if (index === 0) {
+                  timeElement.style.color = 'var(--primary)';
+                  timeElement.style.fontSize = '18px';
+                  timeElement.innerHTML = `<strong>${formattedDate}</strong> <span style="color: var(--primary); font-size: 14px;">(Latest)</span>`;
+                }
 
                 const contentElement = document.createElement('div');
                 contentElement.innerHTML = item.content;
                 contentElement.style.color = '#c0f8ca';
                 contentElement.style.textAlign = 'left';
                 contentElement.style.flexGrow = '1';
+                
+                // Add special styling for the latest news content
+                if (index === 0) {
+                  contentElement.style.color = '#a8d8ff';
+                  contentElement.style.fontWeight = '500';
+                }
 
                 newsItem.appendChild(timeElement);
                 newsItem.appendChild(contentElement);
@@ -1481,23 +1724,35 @@
             .then(response => response.json())
             .then(papersData => {
               const papersContainer = document.getElementById('selected-papers-content');
+              let hasSelectedPapers = false;
+              
               for (const year in papersData) {
                 if (Array.isArray(papersData[year])) {
                   papersData[year].forEach(paper => {
                     if (paper.selectedPaper) {
+                      hasSelectedPapers = true;
                       // Create new div element for paper
                       const paperDiv = document.createElement('div');
-                      paperDiv.className = 'paper';
-                      paperDiv.style.marginBottom = '20px';
-                      paperDiv.style.marginLeft = '20px';
+                      paperDiv.className = 'paper-container';
+                      paperDiv.style.marginBottom = '30px';
+                      
+                      // Determine flex direction based on screen width
+                      const isMobile = window.innerWidth <= 768;
+                      const flexDirection = isMobile ? 'column' : 'row';
+                      const imageContainerStyle = isMobile ? 
+                        'text-align: center; margin-bottom: 15px; display: flex; justify-content: center; width: 100%;' : 
+                        'margin-right: 10px; width: 200px; flex-shrink: 0;';
+                      
                       paperDiv.innerHTML = `
-                        <div style="display: flex; flex-direction: column; border: none; padding: 10px; position: relative;" class="featured-paper-container">
-                          <img src="images/publication/${paper.image}" alt="${paper.title}" style="max-width: 150px; max-height: 150px; width: auto; height: auto; cursor: pointer; margin: 0 auto 15px auto;" onclick="openModal('images/publication/${paper.image}')">
-                          <div class="paper" style="width: 100%; border: none; padding: 15px;">
-                            <h3 id="${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paper.title}</h3>
-                            <p>${paper.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
-                            <p><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.conference || paper.journal}</em>, ${year}</p>
-                            <p style="text-align: right; margin-top: 10px;">
+                        <div class="paper-item">
+                          <div class="paper-logo-wrapper" style="${imageContainerStyle}">
+                            <img src="images/publication/${paper.image}" alt="${paper.title}" class="paper-logo" style="width: 200px; height: auto; cursor: pointer; ${isMobile ? 'margin: 0 auto;' : ''}" onclick="openModal('images/publication/${paper.image}')">
+                          </div>
+                          <div class="paper-info">
+                            <h3 id="${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}" class="paper-title">${paper.title}</h3>
+                            <p class="paper-authors">${paper.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
+                            <p class="paper-venue"><strong style="color: #00FF7F;">${paper.type}</strong> <em>${paper.conference || paper.journal}</em>, ${year}</p>
+                            <p class="paper-links" style="text-align: right; margin-top: 10px;">
                               <a href="javascript:void(0);" onclick="showPage('publications', '${paper.title.replace(/[^a-zA-Z0-9]/g, '-')}');" class="jump-btn">Jump→</a>
                             </p>
                           </div>
@@ -1507,6 +1762,15 @@
                   });
                 }
               }
+              
+              // If no selected papers found, display a message
+              if (!hasSelectedPapers) {
+                papersContainer.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">No research highlights available at the moment.</p>';
+              }
+            })
+            .catch(error => {
+              console.error('Error loading selected papers:', error);
+              document.getElementById('selected-papers-content').innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">Error loading research highlights.</p>';
             });
 
           function openModal(imageUrl) {
@@ -1814,8 +2078,7 @@
 
       <section id="publications">
         <style>
-          .abstract-btn, .bibtex-btn, .award-btn, .keywords-btn, .video-btn, .paper-link, .code-link, .site-link,
-          .abs-link, .key-link, .bib-link, .video-link {
+          .paper-link, .code-link, .video-link, .site-link {
             background-color: var(--primary);
             color: white;
             padding: 8px 16px;
@@ -1833,29 +2096,19 @@
             text-decoration: none;
           }
           
-          .abstract-btn:hover, .bibtex-btn:hover, .award-btn:hover, .keywords-btn:hover, .video-btn:hover, .paper-link:hover, .code-link:hover, .site-link:hover,
-          .abs-link:hover, .key-link:hover, .bib-link:hover, .video-link:hover {
+          .paper-link:hover, .code-link:hover, .video-link:hover, .site-link:hover {
             background-color: var(--secondary);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
           }
           
-          /* Add dashed border for content blocks */
-          div[id^="abstract-"], div[id^="bibtex-"], div[id^="award-"], div[id^="keywords-"], div[id^="video-"] {
-            border: 1px dashed var(--green);
-            border-radius: 5px;
-            background-color: rgba(0, 255, 127, 0.05);
-          }
+          
         </style>
         <!-- Header section for the publications -->
         <div id="subtitle">
           <h1>Publications</h1>
           <p>It is my pleasure that you can enjoy reading my publications!</p>
         </div>
-
-         
-        
-        
 
         <!-- Academic Papers information-->
         <div id="academic-papers-section">
@@ -1928,74 +2181,70 @@
             function createPaper(year, paperData) {
               // Create new div element for paper
               const paperDiv = document.createElement('div');
-              paperDiv.className = 'paper';
-              paperDiv.style.marginBottom = '20px';
+              paperDiv.className = 'paper-container';
+              paperDiv.style.marginBottom = '30px';
               
               // Determine flex direction based on screen width
               const isMobile = window.innerWidth <= 768;
               const flexDirection = isMobile ? 'column' : 'row';
               const imageContainerStyle = isMobile ? 
-                'text-align: center; margin-bottom: 15px; display: flex; justify-content: center;' : 
-                'margin-right: 15px;';
+                'text-align: center; margin-bottom: 15px; display: flex; justify-content: center; width: 100%;' : 
+                'margin-right: 10px; width: 200px; flex-shrink: 0;';
               
               paperDiv.innerHTML = `
-                <div style="display: flex; flex-direction: ${flexDirection}; align-items: ${isMobile ? 'center' : 'center'}; border: none; padding: 10px; position: relative;">
-                  <div style="${imageContainerStyle}">
-                    <img src="images/publication/${paperData.image}" alt="${paperData.title}" style="max-width: ${isMobile ? '150px' : '200px'}; max-height: ${isMobile ? '150px' : '200px'}; width: auto; height: auto; cursor: pointer; ${isMobile ? 'margin: 0 auto;' : ''}" onclick="openModal('images/publication/${paperData.image}')">
+                <div class="paper-item">
+                  <div class="paper-logo-wrapper" style="${imageContainerStyle}">
+                    <img src="images/publication/${paperData.image}" alt="${paperData.title}" class="paper-logo" style="width: 200px; height: auto; cursor: pointer; ${isMobile ? 'margin: 0 auto;' : ''}" onclick="openModal('images/publication/${paperData.image}')">
                   </div>
-                  <div class="paper" style="width: 100%; border: none; padding: ${isMobile ? '0' : '15px'};">
-                    <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}">${paperData.title}</h3>
-                    <p>${paperData.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
-                    <p><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.conference || paperData.journal}</em>, ${year}</p>
-                    <p style="text-align: left; margin-top: 10px;">
-                      ${paperData.award ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'award')" class="award-btn">AWARD</a>` : ''}
-                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'abstract')" class="abstract-btn">ABS</a>
-                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'keywords')" class="keywords-btn">KEY</a>
-                      <a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, "'")}', 'bibtex')" class="bibtex-btn">BIB</a>
+                  <div class="paper-info">
+                    <h3 id="${paperData.title.replace(/[^a-zA-Z0-9]/g, '-')}" class="paper-title">${paperData.title}</h3>
+                    <p class="paper-authors">${paperData.authors.replace(/K. Chen/g, '<span style="text-decoration: underline;">K. Chen</span>')}</p>
+                    <p class="paper-venue"><strong style="color: #00FF7F;">${paperData.type}</strong> <em>${paperData.conference || paperData.journal}</em>, ${year}</p>
+                    <p class="paper-links" style="text-align: left; margin-top: 10px;">
                       <a href="${paperData.paperLink}" target="_blank" class="paper-link">PAPER</a>
-                      ${paperData.videoLink ? `<a href="javascript:void(0);" onclick="toggleContent(this, '${paperData.title.replace(/'/g, '\'')}', 'video')" class="video-btn">VIDEO</a>` : ''}
                       ${paperData.codeLink ? `<a href="${paperData.codeLink}" target="_blank" class="code-link">CODE</a>` : ''}
+                      ${paperData.videoLink ? `<a href="${paperData.videoLink}" target="_blank" class="video-link">VIDEO</a>` : ''}
                       ${paperData.siteLink ? `<a href="${paperData.siteLink}" target="_blank" class="site-link">SITE</a>` : ''}
                     </p>
                   </div>
-                </div>
-                <div id="abstract-${paperData.title.replace(/'/g, '\'')}" style="font-size: 13px; padding: 10px; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
-                  <p>${paperData.abstract}</p>
-                </div>
-                <div id="award-${paperData.title.replace(/'/g, '\'')}" style="padding: 10px; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
-                  <p>${paperData.award}</p>
-                </div>
-                <div id="keywords-${paperData.title.replace(/'/g, '\'')}" style="padding: 10px; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
-                  <ul style="padding-left: 20px; margin: 0;">
-                    ${paperData.keywords.split(',').map(keyword => `<li>${keyword.trim()}</li>`).join('')}
-                  </ul>
-                </div>
-                <div id="bibtex-${paperData.title.replace(/'/g, '\'')}" style="padding: 10px; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
-                  <pre style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; margin: 0; width: 100%; font-family: 'Courier New', Courier, monospace; font-size: 1.1em; font-weight: 600; line-height: 1.5;">${paperData.bibtex}</pre>
-                </div>
-                <div id="video-${paperData.title.replace(/'/g, '\'')}" style="padding: 10px; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
-                  <iframe src="${paperData.videoLink}" data-original-src="${paperData.videoLink}" style="width: 100%; aspect-ratio: 16/9;"></iframe>
                 </div>`;
               return paperDiv;
             }
 
             // Load paper data from JSON file
             fetch('configs/papers.json')
-              .then(response => response.json())
+              .then(response => {
+                console.log("Papers response status:", response.status);
+                return response.json();
+              })
               .then(data => {
+                console.log("Papers data loaded:", data);
+                
                 // Display Academic Papers section title
                 const academicPapersHeader = document.getElementById('Academic-Papers-header');
+                if (!academicPapersHeader) {
+                  console.error('Academic Papers header element not found');
+                  return;
+                }
+                
                 academicPapersHeader.innerHTML = `
                  <h1 class="section-title" style="margin-top: 40px; font-size: 28px;">Academic Papers</h1>
                 `;
                 
                 // Get academic papers content container
                 const academicPapersContent = document.getElementById('academic-papers-content');
+                if (!academicPapersContent) {
+                  console.error('Academic Papers content element not found');
+                  return;
+                }
                 
                 // Traverse in chronological order to ensure consistency with the JSON file
                 const sortedYears = Object.keys(data).sort((a, b) => b - a);
+                console.log("Sorted years:", sortedYears);
                 
                 sortedYears.forEach(year => {
+                  console.log("Processing year:", year);
+                  
                   // Create a year separator
                   const yearDiv = document.createElement('div');
                   yearDiv.style.marginBottom = '10px';
@@ -2005,10 +2254,16 @@
                   
                   // Iterate through each paper in the current year
                   data[year].forEach(paper => {
+                    console.log("Processing paper:", paper.title);
                     const paperElement = createPaper(year, paper);
                     academicPapersContent.appendChild(paperElement);
                   });
                 });
+                
+                console.log("All papers rendered");
+              })
+              .catch(error => {
+                console.error('Error loading papers data:', error);
               });
             
           </script>
@@ -2072,34 +2327,41 @@
 
   <script>
     // Performance optimization: use throttle function to limit scroll event trigger frequency
+    let lastScrollTop = 0;
     window.addEventListener('scroll', throttle(function() {
       const nav = document.querySelector('nav');
-      if (window.scrollY > 50) {
+      const scrollTop = window.scrollY;
+      
+      // Only change class if scroll position crosses the threshold
+      if (scrollTop > 50 && lastScrollTop <= 50) {
         nav.classList.add('scrolled');
-      } else {
+      } else if (scrollTop <= 50 && lastScrollTop > 50) {
         nav.classList.remove('scrolled');
       }
+      
+      lastScrollTop = scrollTop;
     }, 100)); // Execute at most once every 100ms
 
     // Performance optimization: use throttle function to limit scroll animation trigger frequency
     function revealOnScroll() {
+      // All content is now visible by default, no need for scroll-triggered animations
       const reveals = document.querySelectorAll('.reveal');
       
       reveals.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementVisible = 150;
-        
-        if (elementTop < window.innerHeight - elementVisible) {
-          element.classList.add('active');
-        }
+        element.classList.add('active');
       });
     }
 
-    window.addEventListener('scroll', throttle(revealOnScroll, 200)); // Execute at most once every 200ms
-    
     // Initial check and mobile device handling
     document.addEventListener('DOMContentLoaded', function() {
+      // Ensure page starts at the top
+      window.scrollTo(0, 0);
+      
+      // Show all content immediately
       revealOnScroll();
+      
+      // For home page, ensure all sections are visible
+      showPage('home');
       
       // Check if in mobile view, show sidebar by default
       if (window.innerWidth <= 768 || window.innerHeight <= 667) {
@@ -2129,6 +2391,61 @@
           img.setAttribute('loading', 'lazy');
         }
       });
+      
+      // Handle screen orientation change
+      function handleOrientationChange() {
+        // Get current active page
+        const activeSection = document.querySelector('section.active');
+        if (activeSection) {
+          const pageId = activeSection.id;
+          
+          // Reapply page layout based on current orientation
+          if (window.innerWidth <= 768 || window.innerHeight <= 667) {
+            // Mobile view
+            if (pageId === 'home') {
+              // For home page in mobile view, show sidebar by default
+              document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+              document.querySelector('.main-content').style.display = 'none';
+              
+              const leftSidebar = document.querySelector('.left-sidebar');
+              leftSidebar.style.display = 'block';
+              leftSidebar.classList.add('active');
+            } else {
+              // For other pages in mobile view, show content
+              document.querySelector('.left-sidebar').style.display = 'none';
+              document.querySelector('.left-sidebar').classList.remove('active');
+              document.querySelector('.main-content').style.display = 'block';
+            }
+          } else {
+            // Desktop view
+            document.querySelector('.left-sidebar').style.display = 'block';
+            document.querySelector('.left-sidebar').classList.add('active');
+            document.querySelector('.main-content').style.display = 'block';
+          }
+          
+          // Ensure the correct section is active
+          document.querySelectorAll('section').forEach(section => {
+            section.classList.remove('active');
+          });
+          document.getElementById(pageId).classList.add('active');
+          
+          // Update navigation highlight
+          document.querySelectorAll('nav a').forEach(navLink => {
+            navLink.classList.remove('active');
+          });
+          
+          const activeNavLink = pageId === 'publications' 
+            ? document.getElementById('nav-publications') 
+            : document.getElementById(`nav-${pageId}`);
+          if (activeNavLink) {
+            activeNavLink.classList.add('active');
+          }
+        }
+      }
+      
+      // Add event listeners for orientation changes
+      window.addEventListener('resize', handleOrientationChange);
+      window.addEventListener('orientationchange', handleOrientationChange);
     });
 
     // Function to show sidebar in mobile view
@@ -2166,7 +2483,7 @@
       sections: null,
       navLinks: null,
       sidebarLinks: null,
-      dashedBoxes: null,
+      
       mainContent: null,
       leftSidebar: null
     };
@@ -2177,7 +2494,7 @@
         cachedElements.sections = document.querySelectorAll('section');
         cachedElements.navLinks = document.querySelectorAll('nav a');
         cachedElements.sidebarLinks = document.querySelectorAll('#mySidebar a:not(.closebtn)');
-        cachedElements.dashedBoxes = document.querySelectorAll('[id^="abstract-"], [id^="bibtex-"], [id^="award-"], [id^="keywords-"], [id^="video-"]');
+        
         cachedElements.mainContent = document.querySelector('.main-content');
         cachedElements.leftSidebar = document.querySelector('.left-sidebar');
       }
@@ -2194,12 +2511,30 @@
       window.showPageTimeout = setTimeout(() => {
         const elements = getCachedElements();
         
-        // Remove 'active' class from all sections
-        elements.sections.forEach(sec => sec.classList.remove('active'));
-        // Add 'active' class to target section
-        const targetSection = document.getElementById(pageId);
-        if (targetSection) {
-          targetSection.classList.add('active');
+        // For home page, only show home section
+        // For other pages, hide all sections first then show the target one
+        if (pageId === 'home') {
+          // For home page, hide all sections first then show only home section
+          elements.sections.forEach(section => {
+            section.classList.remove('active');
+          });
+          
+          // Add 'active' class to home section to ensure it's visible
+          const homeSection = document.getElementById('home');
+          if (homeSection) {
+            homeSection.classList.add('active');
+          }
+        } else {
+          // For other pages, hide all sections first then show the target one
+          elements.sections.forEach(section => {
+            section.classList.remove('active');
+          });
+          
+          // Add 'active' class to target section to ensure it's visible
+          const targetSection = document.getElementById(pageId);
+          if (targetSection) {
+            targetSection.classList.add('active');
+          }
         }
 
         // In mobile view, hide left sidebar and show main content
@@ -2209,24 +2544,16 @@
           elements.mainContent.style.display = 'block';
         }
 
-        // Scroll to top after switching sections
-        window.scrollTo(0, 0);
+        // Only scroll to top if no target element is specified
+        if (!targetId) {
+          window.scrollTo(0, 0);
+        }
 
         // Reset news section scroll
         if (pageId === 'home') {
           const newsContainer = document.querySelector('#home .section-title + .section-box');
           if (newsContainer) newsContainer.scrollTop = 0;
         }
-
-        // Hide all dashed boxes
-        elements.dashedBoxes.forEach(item => {
-          item.style.display = 'none';
-          // Stop video playback
-          const iframe = item.querySelector('iframe');
-          if (iframe) {
-            iframe.src = '';
-          }
-        });
 
         // Update navigation bar highlight status
         elements.navLinks.forEach(navLink => {
@@ -2245,121 +2572,46 @@
 
         // Scroll to specified target element
         if (targetId) {
-          const element = document.getElementById(targetId);
-          if (element) {
-            // Wait for publications section to fully render
-            setTimeout(() => {
-              const elementRect = element.getBoundingClientRect();
-              const absoluteElementTop = elementRect.top + window.pageYOffset;
-              const middle = absoluteElementTop - (window.innerHeight / 2) + elementRect.height / 2;
-              window.scrollTo({
-                top: middle,
-                behavior: 'smooth'
-              });
-
-              // Highlight paper container
-              const paperContainer = element.closest('.paper');
+          // Wait for publications section to fully render
+          setTimeout(() => {
+            const element = document.getElementById(targetId);
+            if (element) {
+              console.log("Found target element:", targetId);
+              
+              // Find the paper container instead of just the title element
+              const paperContainer = element.closest('.paper-container');
               if (paperContainer) {
-                paperContainer.style.transition = 'background-color 0.5s ease';
-                paperContainer.style.backgroundColor = 'rgba(255, 165, 0, 0.3)';
-                setTimeout(() => {
-                  paperContainer.style.backgroundColor = '';
-                }, 1000);
-              }
-            }, 100);
-          }
-        }
-      }, 50); // 50ms debounce delay
-    }
-
-    // Performance optimization: optimize content switching function to reduce DOM operations
-    function toggleContent(button, id, targetType) {
-      // Use debounce function to reduce performance consumption during frequent switching
-      if (window.toggleContentTimeout) {
-        clearTimeout(window.toggleContentTimeout);
-      }
-      
-      window.toggleContentTimeout = setTimeout(() => {
-        // Use cached elements to reduce DOM queries
-        const elements = getCachedElements();
-        
-        // Build element ID mapping
-        const elementMap = {
-          'abstract': document.getElementById(`abstract-${id.replace(/'/g, "'")}`),
-          'bibtex': document.getElementById(`bibtex-${id.replace(/'/g, "'")}`),
-          'award': document.getElementById(`award-${id.replace(/'/g, "'")}`),
-          'keywords': document.getElementById(`keywords-${id.replace(/'/g, "'")}`),
-          'video': document.getElementById(`video-${id.replace(/'/g, "'")}`)
-        };
-
-        // Get target element
-        const targetElement = elementMap[targetType];
-        if (targetElement) {
-          // Toggle display state of target element
-          const newDisplay = targetElement.style.display === 'none' ? 'block' : 'none';
-          targetElement.style.display = newDisplay;
-
-          // Handle video iframe loading and stopping
-          if (targetType === 'video') {
-            const iframe = targetElement.querySelector('iframe');
-            if (iframe) {
-              if (newDisplay === 'none') {
-                // Stop video when hiding
-                iframe.src = '';
-              } else {
-                // Pause all other videos before showing
-                elements.dashedBoxes.forEach(element => {
-                  if (element.id.startsWith('video-') && element !== targetElement) {
-                    const otherIframe = element.querySelector('iframe');
-                    if (otherIframe) {
-                      otherIframe.src = '';
-                    }
-                  }
-                });
-                
-                // Load current video
-                const originalSrc = iframe.dataset.originalSrc;
-                if (originalSrc) {
-                  iframe.src = originalSrc;
-                }
-              }
-            }
-          }
-
-          // If target element will be displayed, hide other elements
-          if (newDisplay === 'block') {
-            Object.values(elementMap).forEach(element => {
-              if (element && element !== targetElement) {
-                element.style.display = 'none';
-                // If it's a video block, stop playback
-                if (element.id.startsWith('video-')) {
-                  const iframe = element.querySelector('iframe');
-                  if (iframe) {
-                    iframe.src = '';
-                  }
-                }
-              }
-            });
-          }
-
-          // Check if target element bottom exceeds viewport
-          if (newDisplay === 'block') {
-            // Use requestAnimationFrame to optimize scrolling performance
-            requestAnimationFrame(() => {
-              const targetRect = targetElement.getBoundingClientRect();
-              const viewportHeight = window.innerHeight;
-              if (targetRect.bottom > viewportHeight) {
-                // Scroll to align target element bottom with viewport bottom
+                console.log("Found paper container");
+                const containerRect = paperContainer.getBoundingClientRect();
+                // Calculate the position to align the middle of the paper container with the middle of the viewport
+                const containerMiddle = containerRect.top + window.pageYOffset + (containerRect.height / 2);
+                const scrollToPosition = containerMiddle - (window.innerHeight / 2);
+                console.log("Scrolling to position:", scrollToPosition);
                 window.scrollTo({
-                  top: window.scrollY + (targetRect.bottom - viewportHeight),
+                  top: scrollToPosition,
+                  behavior: 'smooth'
+                });
+              } else {
+                console.error("Paper container not found for element:", targetId);
+                // Fallback to original behavior if container not found
+                const elementRect = element.getBoundingClientRect();
+                const elementMiddle = elementRect.top + window.pageYOffset + (elementRect.height / 2);
+                const scrollToPosition = elementMiddle - (window.innerHeight / 2);
+                console.log("Fallback: Scrolling to position:", scrollToPosition);
+                window.scrollTo({
+                  top: scrollToPosition,
                   behavior: 'smooth'
                 });
               }
-            });
-          }
+            } else {
+              console.error("Target element not found:", targetId);
+            }
+          }, 500); // Increased delay to ensure page is fully rendered
         }
       }, 50); // 50ms debounce delay
     }
+
+    
   </script>
 
   <!-- Performance optimization: resource management and monitoring -->

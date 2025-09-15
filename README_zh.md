@@ -20,11 +20,16 @@ Update: 2025-09-15
 
 ![Excursion ConsHein 2.0](./images/preview2.0/interface.png)
 
+- News 部分新增了最新动态的特殊标识，掌握最新动向，尽在眼前！
+
+![News](./images/preview2.0/interface_news.png)
+
 - Experiences 部分焕新升级，将原本的院校经历归为 Institution Experiences，而非直属 Experiences
 
 ![Exp](./images/preview2.0/interface_exp.png)
 
 - Publications 部分也同样升级，将原本的论文部分归为 Academic Papers，而非直属 Publications
+- 除此之外，论文部分精简按键设置，目前仅设置 Paper、Code、Video、Site 四个按键，防止按键堆砌导致观感不佳！
 
 ![Pub](./images/preview2.0/interface_pub.png)
 
@@ -42,9 +47,11 @@ Update: 2025-09-15
 
 - 移动端为信息边栏单独设置页面，点击远行鸽即可跳转！
 
+- 横竖屏自由动态切换，无需刷新即可流畅体验！
+
 **Excursion ConsHein 2.0 版本，等你体验！**
 
-旧版本的个人主页模板已存放在 `src/index_origin.html` 中。
+（注：旧版本的个人主页模板已存放在 `src/index_origin.html` 中）
 
 ---
 
@@ -89,6 +96,12 @@ Update: 2025-09-15
 ```
 ├── README.md              # 项目文档（本教程）
 ├── index.html             # 主 HTML 文件
+├── src/                   # 2.0 版本的主要升级组件目录
+│   ├── all_min.css        # 新版升级的样式组件
+│   ├── chart.js           # 新版升级的图表逻辑组件
+│   ├── fa-solid-900.ttf   # 新版升级的字体图标组件(ttf)
+│   ├── fa-solid-900.woff2 # 新版升级的字体图标组件(woff2)
+│   └── index_origin.html  # 旧版的个人主页模板
 ├── configs/               # 配置文件
 │   ├── cv.pdf             # 简历 PDF
 │   ├── experiences.json   # 工作和教育经历
@@ -252,6 +265,12 @@ Update: 2025-09-15
 ![论文](./images/preview/preview_papers.gif)
 
 ![高亮](./images/preview/preview_highlights.gif)
+
+**2.0 版本中，针对论文部分，做出如下改动：**
+
+- 删除了 award/abstract/keyword/bibtex 的字段及其按钮实现，videoLink 字段改为视频的网址链接，减少内存占用，以及精简按键功能，防止冗余。
+
+- 删除了高亮特效，减少内存占用，但是 Jump 仍可实现一键直达。
 
 ### 添加专利
 
