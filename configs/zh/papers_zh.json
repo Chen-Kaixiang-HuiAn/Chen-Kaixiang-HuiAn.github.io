@@ -1,0 +1,16 @@
+{
+    "2023": [
+        {
+            "title": "基于PID的旋翼驱动VTOL固定翼无人机过渡飞行控制器设计",
+            "authors": "<u>K. Chen</u>",
+            "type": "会议论文",
+            "conference": "国际机电一体化与智能系统会议 (CONF-MSS)",
+            "image": "CONF-MSS-2023.png",
+            "paperLink": "https://dx.doi.org/10.54254/2755-2721/9/20230018",
+            "codeLink": "https://github.com/Excursion-ConsHein/VTOL-control-by-PID",
+            "videoLink": "https://www.youtube.com/watch?v=1234567890",
+            "siteLink": "ojbk",
+            "highlighted": true
+        }
+    ]
+}

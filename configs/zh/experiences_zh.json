@@ -1,0 +1,22 @@
+[
+  {
+    "logoSrc": "CQU_icon.png",
+    "school": "重庆大学",
+    "details": 
+    [
+      {
+        "degree": "校内交流",
+        "major": "智能制造", 
+        "college": "国家卓越工程师学院",
+        "time": "2022.9 - 2023.6"
+      },
+      {
+        "degree": "工学学士",
+        "major": "机械电子工程", 
+        "college": "机械与运载工程学院",
+        "time": "2019.9 - 2023.6"
+      }
+    ],
+    "link": "https://www.cqu.edu.cn/"
+  }
+]

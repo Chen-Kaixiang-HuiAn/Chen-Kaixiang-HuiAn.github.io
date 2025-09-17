@@ -1,0 +1,5 @@
+{
+    "availableLanguages": ["en", "zh"],
+    "defaultLanguage": "en",
+    "singleLanguageMode": false
+}
