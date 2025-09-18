@@ -126,54 +126,6 @@ body {
   flex-direction: column;
 }
 
-/* Main content container with page height counter */
-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  box-sizing: border-box;
-}
-
-/* Content sections with bottom spacing */
-.content-section {
-  width: 100%;
-  padding: 2rem 0;
-  box-sizing: border-box;
-  min-height: calc(100vh - 80px - 4rem); /* Viewport height minus nav bar and padding */
-  display: flex;
-  flex-direction: column;
-}
-
-/* Last element bottom spacing */
-.content-section:last-child {
-  padding-bottom: 4rem; /* Extra space at the bottom of the last section */
-}
-
-/* Container for page content to ensure proper spacing */
-.page-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Footer styles */
-footer {
-  text-align: center;
-  padding: 1.5rem;
-  margin-top: auto;
-  color: rgba(255, 255, 255, 0.7);
-  background: rgba(10, 20, 41, 0.8);
-  border-top: 1px solid rgba(52, 204, 235, 0.2);
-  width: 100%;
-  box-sizing: border-box;
-}
-
 /* Base styles */
 .btn {
   display: inline-block;
@@ -239,7 +191,17 @@ footer {
   margin-bottom: 1.5rem;
 }
 
-/* Section title styles */
+footer {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 3rem;
+  color: rgba(255, 255, 255, 0.7);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
 
 .section-title h2 {
   font-size: 2rem;
@@ -532,7 +494,7 @@ footer {
 }
 
 .news-item:last-child {
-    border-bottom: none !important;
+    border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }

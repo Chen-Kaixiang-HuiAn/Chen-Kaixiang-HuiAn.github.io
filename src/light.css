@@ -185,15 +185,6 @@ body.light-theme .news-date {
     color: var(--primary) !important;
 }
 
-/* News item border styles for light theme */
-body.light-theme .news-item {
-    border-bottom: 1px solid var(--border) !important;
-}
-
-body.light-theme .news-item:last-child {
-    border-bottom: none !important;
-}
-
 body.light-theme .news-item:first-child {
     border-left-color: var(--primary) !important;
     background: rgba(52, 152, 219, 0.1) !important;

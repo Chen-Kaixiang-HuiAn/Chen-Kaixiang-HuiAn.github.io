@@ -48,54 +48,6 @@
     transition: padding-top 0.3s ease !important;
   }
   
-  /* Main content container with page height counter for mobile */
-  main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 100vw;
-    margin: 0 auto;
-    padding: 0 1rem;
-    box-sizing: border-box;
-  }
-  
-  /* Content sections with bottom spacing for mobile */
-  .content-section {
-    width: 100%;
-    padding: 1rem 0;
-    box-sizing: border-box;
-    min-height: calc(100vh - 200px - 3rem); /* Viewport height minus nav bar and padding */
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Last element bottom spacing for mobile */
-  .content-section:last-child {
-    padding-bottom: 3rem; /* Extra space at the bottom of the last section */
-  }
-  
-  /* Container for page content to ensure proper spacing for mobile */
-  .page-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  /* Footer styles for mobile */
-  footer {
-    text-align: center;
-    padding: 1rem;
-    margin-top: auto;
-    color: rgba(255, 255, 255, 0.7);
-    background: rgba(10, 20, 41, 0.8);
-    border-top: 1px solid rgba(52, 204, 235, 0.2);
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
   /* Navigation bar styles for mobile */
   header {
     height: auto;
@@ -928,7 +880,11 @@
     cursor: not-allowed;
   }
   
-  /* Cards in landscape mode */
+  /* Content sections in landscape mode */
+  .content-section {
+    padding: 1rem 1rem 3rem;
+    transition: all 0.3s ease;
+  }
   
   .cards {
     grid-template-columns: repeat(2, 1fr);
