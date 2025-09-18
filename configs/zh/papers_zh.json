@@ -7,8 +7,7 @@
             "conference": "国际机电一体化与智能系统会议 (CONF-MSS)",
             "image": "CONF-MSS-2023.png",
             "paperLink": "https://dx.doi.org/10.54254/2755-2721/9/20230018",
-            "codeLink": "https://github.com/Excursion-ConsHein/VTOL-control-by-PID",
-            "highlighted": true
+            "codeLink": "https://github.com/Excursion-ConsHein/VTOL-control-by-PID"
         }
     ]
 }
