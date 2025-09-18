@@ -886,6 +886,20 @@
     transition: all 0.3s ease;
   }
   
+  /* Dark theme footer styles for landscape mode */
+  body.dark-theme footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    padding: 1rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(10, 20, 41, 0.95);
+    backdrop-filter: blur(10px);
+  }
+  
   .cards {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;

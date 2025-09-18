@@ -3,7 +3,7 @@
  * Last Change: 2025-09-18
  */
 
-/* Light theme styles */
+/* Light theme styles - inherits from dark theme and overrides specific properties */
 body.light-theme {
     /* Override CSS variables for light theme */
     --primary: #3498db;
@@ -15,10 +15,8 @@ body.light-theme {
     --text: #2c3e50;
     --card-bg: #f8f9fa;
     --border: #dee2e6;
-}
-
-/* Light theme specific styles */
-body.light-theme {
+    
+    /* Override background and text color */
     background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
     color: var(--text);
 }
@@ -118,11 +116,28 @@ body.light-theme * {
     scrollbar-color: var(--primary) rgba(236, 240, 241, 0.5);
 }
 
-/* Footer styles for light theme */
+/* Footer styles for light theme - inherits from dark theme and overrides specific properties */
 body.light-theme footer {
     color: var(--dark) !important;
     background: var(--card-bg) !important;
     border-top: 1px solid var(--border);
+}
+
+/* Light theme footer styles for landscape mode - inherits from dark theme and overrides specific properties */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    body.light-theme footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+        padding: 1rem;
+        text-align: center;
+        color: var(--dark) !important;
+        background: var(--card-bg) !important;
+        border-top: 1px solid var(--border);
+        backdrop-filter: blur(10px);
+    }
 }
 
 body.light-theme #footer a {
@@ -192,6 +207,16 @@ body.light-theme .news-item:first-child {
 
 body.light-theme .news-item:first-child .news-date {
     color: var(--primary) !important;
+}
+
+body.light-theme .news-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .news-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 body.light-theme .latest-label {
