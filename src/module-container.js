@@ -1,5 +1,6 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-17
+// Last Change: 2025-09-18
+
 // Module Container Component
 // This component provides a generic container for various types of content
 // such as educational experiences, academic papers, honors, etc.
@@ -128,9 +129,6 @@ function createModuleContainer(data, type, language = 'en') {
     
     moduleTitle.appendChild(titleText);
     titleSection.appendChild(moduleTitle);
-    
-    
-    
     moduleHeader.appendChild(titleSection);
     
     moduleContainer.appendChild(moduleHeader);

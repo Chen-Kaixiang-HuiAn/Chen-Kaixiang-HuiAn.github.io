@@ -1,6 +1,6 @@
 /*
  * Written by Constantine Heinrich Chen (ConsHein Chen)
- * Last Change: 2025-09-17
+ * Last Change: 2025-09-18
  */
 /* Mobile CSS for portrait orientation */
 
@@ -48,28 +48,85 @@
     transition: padding-top 0.3s ease !important;
   }
   
+  /* Main content container with page height counter for mobile */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100vw;
+    margin: 0 auto;
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+  
+  /* Content sections with bottom spacing for mobile */
+  .content-section {
+    width: 100%;
+    padding: 1rem 0;
+    box-sizing: border-box;
+    min-height: calc(100vh - 200px - 3rem); /* Viewport height minus nav bar and padding */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Last element bottom spacing for mobile */
+  .content-section:last-child {
+    padding-bottom: 3rem; /* Extra space at the bottom of the last section */
+  }
+  
+  /* Container for page content to ensure proper spacing for mobile */
+  .page-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Footer styles for mobile */
+  footer {
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(10, 20, 41, 0.8);
+    border-top: 1px solid rgba(52, 204, 235, 0.2);
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
   /* Navigation bar styles for mobile */
   header {
     height: auto;
     padding: 0;
     transition: height 0.3s ease;
+    width: 100vw !important;
+    max-width: 100vw !important;
   }
   
   .navbar {
     flex-direction: column;
     padding: 0;
-    width: 100%;
+    width: 100vw !important;
+    max-width: 100vw !important;
     transition: all 0.3s ease;
+    box-sizing: border-box;
+    margin: 0;
+    left: 0;
+    right: 0;
   }
   
   /* Upper navigation layer - Logo */
   .logo {
-    width: 100%;
+    width: 100vw !important;
+    max-width: 100vw !important;
     justify-content: center;
     padding: 0.8rem 0;
+    margin: 0;
     background: rgba(10, 20, 41, 0.98);
-    border-bottom: 1px solid rgba(52, 204, 235, 0.3);
     transition: all 0.3s ease;
+    box-sizing: border-box;
   }
   
   .logo span {
@@ -82,25 +139,35 @@
     transition: height 0.3s ease;
   }
   
-  /* Language switch layer for mobile - positioned between logo and nav links */
-  .language-switch-container {
-    width: 100%;
-    display: flex;
+  /* Language switch and theme switch layer for mobile - positioned between logo and nav links */
+  .switch-buttons-container {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    display: flex !important;
     justify-content: center;
-    padding: 0.5rem 0;
+    gap: 1rem;
+    padding: 0.2rem 0;
     background: rgba(10, 20, 41, 0.96);
-    border-bottom: 1px solid rgba(52, 204, 235, 0.2);
     transition: all 0.3s ease;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: 0;
   }
   
   /* Lower navigation layer - Navigation links */
   .nav-links {
-    width: 100%;
+    width: 100vw !important;
+    max-width: 100vw !important;
     justify-content: space-around;
     padding: 0.8rem 0;
+    margin: 0;
     background: rgba(10, 20, 41, 0.95);
     gap: 0.5rem;
     transition: all 0.3s ease;
+    box-sizing: border-box;
   }
   
   .nav-links a {
@@ -114,12 +181,321 @@
     background: none;
     border: 1px solid var(--accent);
     color: var(--accent);
-    padding: 0.4rem 0.8rem;
+    padding: 0.2rem 0.8rem;
     border-radius: 20px;
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s ease, transform 0.2s ease;
     transform: scale(1);
+  }
+  
+  /* Theme switch button for mobile */
+  .theme-switch {
+    background: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease, transform 0.2s ease;
+    transform: scale(1);
+  }
+  
+  /* Light theme styles for mobile */
+  body.light-theme .logo {
+    background: rgba(255, 255, 255, 0.98) !important;
+  }
+  
+  body.light-theme .logo span {
+    color: var(--dark) !important;
+  }
+  
+  body.light-theme .logo img {
+    filter: invert(100%) !important;
+  }
+  
+  body.light-theme .switch-buttons-container {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  
+  body.light-theme .nav-links {
+    background: rgba(255, 255, 255, 0.9) !important;
+  }
+  
+  body.light-theme .language-switch,
+  body.light-theme .theme-switch {
+    background: rgba(52, 152, 219, 0.1) !important;
+    color: var(--dark) !important;
+    border: 1px solid var(--primary) !important;
+  }
+  
+  body.light-theme .language-switch:hover,
+  body.light-theme .theme-switch:hover {
+    background: rgba(52, 152, 219, 0.2) !important;
+  }
+  
+  body.light-theme .module-container {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  body.light-theme .module-container:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-5px) !important;
+  }
+  
+  body.light-theme .module-container.publication {
+    border-left: 4px solid var(--primary) !important;
+  }
+  
+  body.light-theme .module-container.education {
+    border-left: 4px solid var(--accent) !important;
+  }
+  
+  body.light-theme .module-container.experience {
+    border-left: 4px solid #4caf50 !important;
+  }
+  
+  body.light-theme .module-container.honor {
+    border-left: 4px solid #ff9800 !important;
+  }
+  
+  body.light-theme .module-container.patent {
+    border-left: 4px solid #f5deb3 !important;
+  }
+  
+  body.light-theme .module-container.teaching {
+    border-left: 4px solid #9c27b0 !important;
+  }
+  
+  body.light-theme .module-container.reviewer {
+    border-left: 4px solid #607d8b !important;
+  }
+  
+  body.light-theme .module-title {
+    color: var(--dark) !important;
+  }
+  
+  body.light-theme .module-content {
+    color: var(--text) !important;
+  }
+  
+  body.light-theme .module-date {
+    color: var(--primary) !important;
+  }
+  
+  body.light-theme .module-container.education .module-date {
+    color: #4caf50 !important;
+  }
+  
+  /* Light theme specific adjustments for publication modules on mobile */
+  body.light-theme .module-container.publication .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.publication .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.publication .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.publication .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.publication .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for experience modules on mobile */
+  body.light-theme .module-container.experience .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.experience .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.experience .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.experience .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.experience .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for honor modules on mobile */
+  body.light-theme .module-container.honor .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.honor .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.honor .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.honor .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.honor .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for patent modules on mobile */
+  body.light-theme .module-container.patent .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.patent .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.patent .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.patent .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.patent .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for teaching modules on mobile */
+  body.light-theme .module-container.teaching .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.teaching .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.teaching .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.teaching .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.teaching .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for reviewer modules on mobile */
+  body.light-theme .module-container.reviewer .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.reviewer .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.reviewer .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.reviewer .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.reviewer .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  .theme-switch:hover {
+    background: var(--accent);
+    color: var(--dark);
+    transform: scale(1.05);
+  }
+  
+  .theme-switch:active {
+    transform: scale(0.95);
+  }
+  
+  .theme-switch:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
   
   .language-switch:hover {
@@ -139,7 +515,7 @@
   
   /* Mobile-specific adjustments for content sections */
   .content-section {
-    padding: 1rem;
+    padding: 1rem 1rem 3rem;
     transition: all 0.3s ease;
   }
   
@@ -160,17 +536,61 @@
   }
   
   /* Tab adjustments for mobile */
-  .tab-buttons {
-    flex-wrap: wrap;
-    justify-content: center;
-    transition: all 0.3s ease;
+  .tabs-container {
+    margin: 1.5rem 0;
+    overflow: hidden;
+  }
+  
+  .tabs {
+    display: flex;
+    border-bottom: 2px solid rgba(52, 204, 235, 0.3);
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) rgba(52, 204, 235, 0.1);
+  }
+  
+  .tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .tabs::-webkit-scrollbar-track {
+    background: rgba(52, 204, 235, 0.1);
+    border-radius: 3px;
+  }
+  
+  .tabs::-webkit-scrollbar-thumb {
+    background-color: var(--accent);
+    border-radius: 3px;
   }
   
   .tab-button {
     padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    margin: 0.2rem;
+    font-size: 1rem;
+    margin: 0 0.2rem;
     transition: all 0.3s ease;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+  
+  /* Light theme tab adjustments for mobile - only color changes */
+  body.light-theme .tab-button {
+    color: rgba(44, 62, 80, 0.7);
+  }
+  
+  body.light-theme .tab-button:hover {
+    color: var(--primary);
+  }
+  
+  body.light-theme .tab-button.active {
+    color: var(--primary);
+  }
+  
+  body.light-theme .tab-button.active::after {
+    background: var(--primary);
   }
   
   /* Home section adjustments for mobile - stack layout */
@@ -196,6 +616,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 3rem;
   }
   
   .cv-pdf-viewer {
@@ -226,6 +647,151 @@
     border-radius: 8px;
     color: var(--light);
   }
+
+  .pdf-error-message {
+    padding: 1.5rem;
+    text-align: center;
+    background: rgba(20, 36, 71, 0.6);
+    border-radius: 8px;
+    color: var(--light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+  }
+
+  .pdf-error-message p {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  /* Light theme specific adjustments for honor modules on mobile landscape */
+  body.light-theme .module-container.honor .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.honor .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.honor .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.honor .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.honor .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for patent modules on mobile landscape */
+  body.light-theme .module-container.patent .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.patent .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.patent .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.patent .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.patent .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for teaching modules on mobile landscape */
+  body.light-theme .module-container.teaching .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.teaching .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.teaching .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.teaching .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.teaching .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for reviewer modules on mobile landscape */
+  body.light-theme .module-container.reviewer .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.reviewer .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.reviewer .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.reviewer .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.reviewer .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
 }
 
 /* Landscape mode styles for mobile devices */
@@ -246,13 +812,16 @@
     height: auto;
     padding: 0;
     transition: height 0.3s ease;
+    width: 100%;
   }
   
   .navbar {
     flex-direction: row;
     padding: 0.5rem 2%;
     width: 100%;
+    max-width: 100%;
     transition: all 0.3s ease;
+    box-sizing: border-box;
   }
   
   /* Logo in landscape mode */
@@ -275,10 +844,18 @@
     transition: height 0.3s ease;
   }
   
-  /* Language switch in landscape mode - part of nav links */
-  .language-switch-container {
-    display: none; /* Hide the container in landscape mode */
+  /* Language switch and theme switch container in landscape mode - part of nav links */
+  .language-switch-container,
+  .theme-switch-container {
+    display: none; /* Hide the old containers in landscape mode */
     transition: all 0.3s ease;
+  }
+  
+  /* Switch buttons container should be visible in landscape mode as part of nav links */
+  .nav-links .switch-buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   
   /* Navigation links in landscape mode */
@@ -310,6 +887,33 @@
     transform: scale(1);
   }
   
+  /* Theme switch button for landscape mode */
+  .theme-switch {
+    background: rgba(42, 107, 198, 0.2);
+    color: white;
+    border: 1px solid var(--accent);
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+    transition: all 0.3s ease, transform 0.2s ease;
+    transform: scale(1);
+  }
+  
+  .theme-switch:hover {
+    background: rgba(42, 107, 198, 0.4);
+    transform: scale(1.05);
+  }
+  
+  .theme-switch:active {
+    transform: scale(0.95);
+  }
+  
+  .theme-switch:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
   .language-switch:hover {
     background: rgba(42, 107, 198, 0.4);
     transform: scale(1.05);
@@ -324,11 +928,7 @@
     cursor: not-allowed;
   }
   
-  /* Content sections in landscape mode */
-  .content-section {
-    padding: 1rem;
-    transition: all 0.3s ease;
-  }
+  /* Cards in landscape mode */
   
   .cards {
     grid-template-columns: repeat(2, 1fr);
@@ -347,17 +947,105 @@
   }
   
   /* Tab adjustments for landscape mode */
-  .tab-buttons {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    transition: all 0.3s ease;
+  .tabs-container {
+    margin: 1.5rem 0;
+    overflow: hidden;
+  }
+  
+  .tabs {
+    display: flex;
+    border-bottom: 2px solid rgba(52, 204, 235, 0.3);
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) rgba(52, 204, 235, 0.1);
+  }
+  
+  .tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .tabs::-webkit-scrollbar-track {
+    background: rgba(52, 204, 235, 0.1);
+    border-radius: 3px;
+  }
+  
+  .tabs::-webkit-scrollbar-thumb {
+    background-color: var(--accent);
+    border-radius: 3px;
   }
   
   .tab-button {
     padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-    margin: 0 0.2rem 0 0;
+    font-size: 1rem;
+    margin: 0 0.2rem;
     transition: all 0.3s ease;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+  
+  /* Light theme tab adjustments for mobile landscape */
+  body.light-theme .tabs {
+    display: flex;
+    border-bottom: 2px solid rgba(52, 204, 235, 0.3);
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) rgba(52, 204, 235, 0.1);
+  }
+  
+  body.light-theme .tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  body.light-theme .tabs::-webkit-scrollbar-track {
+    background: rgba(52, 204, 235, 0.1);
+    border-radius: 3px;
+  }
+  
+  body.light-theme .tabs::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 3px;
+  }
+  
+  body.light-theme .tab-button {
+    background: none;
+    border: none;
+    color: rgba(44, 62, 80, 0.7);
+    padding: 0.4rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    margin: 0 0.2rem;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+  
+  body.light-theme .tab-button:hover {
+    color: var(--primary);
+  }
+  
+  body.light-theme .tab-button.active {
+    color: var(--primary);
+    font-weight: 600;
+  }
+  
+  body.light-theme .tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary);
   }
   
   /* Home section adjustments for landscape mode */
@@ -383,6 +1071,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 3rem;
   }
   
   .cv-pdf-viewer {
@@ -412,5 +1101,149 @@
     background: rgba(20, 36, 71, 0.6);
     border-radius: 8px;
     color: var(--light);
+  }
+  
+  /* Light theme specific adjustments for honor modules on mobile landscape */
+  body.light-theme .module-container.honor {
+    border-left: 4px solid #ff9800 !important;
+  }
+  
+  body.light-theme .module-container.honor .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.honor .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.honor .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.honor .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.honor .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for patent modules on mobile landscape */
+  body.light-theme .module-container.patent {
+    border-left: 4px solid #f5deb3 !important;
+  }
+  
+  body.light-theme .module-container.patent .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.patent .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.patent .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.patent .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.patent .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for teaching modules on mobile landscape */
+  body.light-theme .module-container.teaching {
+    border-left: 4px solid #9c27b0 !important;
+  }
+  
+  body.light-theme .module-container.teaching .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.teaching .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.teaching .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.teaching .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.teaching .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for reviewer modules on mobile landscape */
+  body.light-theme .module-container.reviewer {
+    border-left: 4px solid #607d8b !important;
+  }
+  
+  body.light-theme .module-container.reviewer .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.reviewer .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.reviewer .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.reviewer .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.reviewer .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
   }
 }

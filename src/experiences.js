@@ -1,5 +1,6 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
 // Last Change: 2025-09-17
+
 // Experiences section content
 function loadExperiencesContent() {
     const currentLang = getCurrentLanguage();

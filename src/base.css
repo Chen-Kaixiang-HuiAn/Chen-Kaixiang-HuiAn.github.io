@@ -1,7 +1,8 @@
 /*
  * Written by Constantine Heinrich Chen (ConsHein Chen)
- * Last Change: 2025-09-17
+ * Last Change: 2025-09-18
  */
+
 /* Navigation bar styles */
 :root {
   --primary: #2a6bc6;
@@ -18,9 +19,11 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
+  max-width: 100%;
   left: 0;
   z-index: 1000;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
 }
 
 .navbar {
@@ -28,8 +31,25 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 5%;
+  width: 100%;
   max-width: 1600px;
   margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Mobile-specific adjustments for header and navbar */
+@media (max-width: 768px) {
+  header {
+    padding: 0;
+    width: 100vw;
+    max-width: 100vw;
+  }
+  
+  .navbar {
+    padding: 0;
+    width: 100vw;
+    max-width: 100vw;
+  }
 }
 
 .logo {
@@ -101,7 +121,57 @@ body {
   color: var(--light);
   line-height: 1.6;
   padding-top: 80px; /* Space for fixed navigation bar */
-  transition: padding-top 0.3s ease;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main content container with page height counter */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+/* Content sections with bottom spacing */
+.content-section {
+  width: 100%;
+  padding: 2rem 0;
+  box-sizing: border-box;
+  min-height: calc(100vh - 80px - 4rem); /* Viewport height minus nav bar and padding */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Last element bottom spacing */
+.content-section:last-child {
+  padding-bottom: 4rem; /* Extra space at the bottom of the last section */
+}
+
+/* Container for page content to ensure proper spacing */
+.page-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Footer styles */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: auto;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(10, 20, 41, 0.8);
+  border-top: 1px solid rgba(52, 204, 235, 0.2);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Base styles */
@@ -169,12 +239,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-footer {
-  text-align: center;
-  padding: 2rem;
-  margin-top: 3rem;
-  color: rgba(255, 255, 255, 0.7);
-}
+/* Section title styles */
 
 .section-title h2 {
   font-size: 2rem;
@@ -203,6 +268,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 3rem;
 }
 
 .cv-pdf-viewer {
@@ -261,6 +327,23 @@ footer {
 
 .pdf-fallback a:hover {
   text-decoration: underline;
+}
+
+.pdf-error-message {
+  padding: 2rem;
+  text-align: center;
+  background: rgba(20, 36, 71, 0.6);
+  border-radius: 8px;
+  color: var(--light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 800px;
+}
+
+.pdf-error-message p {
+  font-size: 1.2rem;
+  margin: 0;
 }
 
 /* Tabs container styles */
@@ -334,7 +417,7 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
 .home-content-container {
@@ -408,8 +491,7 @@ footer {
 }
 
 
-.intro-section,
-.research-section {
+.intro-section {
     background: rgba(20, 36, 71, 0.6);
     border-radius: 12px;
     padding: 1.5rem;
@@ -428,8 +510,7 @@ footer {
 }
 
 .intro-section h3,
-.news-section h3,
-.research-section h3 {
+.news-section h3 {
     color: var(--accent);
     margin-bottom: 1rem;
     font-size: 1.5rem;
@@ -451,7 +532,7 @@ footer {
 }
 
 .news-item:last-child {
-    border-bottom: none;
+    border-bottom: none !important;
     margin-bottom: 0;
     padding-bottom: 0;
 }
@@ -525,25 +606,6 @@ footer {
     font-weight: 500;
 }
 
-.research-section {
-    background: rgba(20, 36, 71, 0.6);
-    border-radius: 12px;
-    padding: 1.5rem;
-    border: 1px solid rgba(52, 204, 235, 0.2);
-    box-shadow: 0 5px 25px rgba(0, 30, 90, 0.3);
-    margin-top: 2rem;
-}
-
-.research-section h3 {
-    color: var(--accent);
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.research-section p {
-    color: rgba(255, 255, 255, 0.85);
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
     .home-container {
@@ -560,8 +622,11 @@ footer {
 .content-section {
     width: 100%;
     display: none;
-    padding: 20px 0;
+    padding: 10px 0;
     transition: opacity 0.3s ease;
+    min-height: 60vh;
+    box-sizing: border-box;
+    flex: 1;
 }
 
 .content-section.active {
@@ -589,6 +654,67 @@ footer {
     transform: scale(1) !important;
 }
 
+/* Theme switch button styles */
+.theme-switch {
+    background: rgba(42, 107, 198, 0.2) !important;
+    color: white !important;
+    border: 1px solid var(--accent) !important;
+    border-radius: 20px !important;
+    padding: 0.4rem 1rem !important;
+    font-size: 0.9rem !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease, transform 0.2s ease !important;
+    margin-left: 0.5rem !important;
+    display: inline-block !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: scale(1) !important;
+}
+
+/* Container for switch buttons in landscape mode */
+.switch-buttons-container {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+/* Landscape orientation styles for switch buttons */
+@media screen and (min-width: 769px) and (orientation: landscape) {
+    .switch-buttons-container {
+        display: flex;
+        align-items: center;
+        margin-left: 1rem;
+    }
+    
+    .language-switch, .theme-switch {
+        margin-left: 0.5rem !important;
+    }
+}
+
+.theme-switch:hover {
+    background: rgba(42, 107, 198, 0.4) !important;
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.theme-switch:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(52, 204, 235, 0.5) !important;
+}
+
+.theme-switch:active {
+    transform: translateY(0) scale(0.95) !important;
+}
+
+.theme-switch:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+
 .language-switch:hover {
     background: rgba(42, 107, 198, 0.4) !important;
     transform: translateY(-2px) scale(1.05) !important;
@@ -614,7 +740,6 @@ footer {
 .section-title h2,
 .intro-section h3,
 .news-section h3,
-.research-section h3,
 .info-content h2,
 .info-item span,
 .info-item a,
@@ -632,7 +757,6 @@ footer {
 .home-content-section,
 .intro-section,
 .news-section,
-.research-section,
 .card,
 .module-container,
 .modules-container {
@@ -676,38 +800,15 @@ footer {
     border-radius: 12px;
     border: 1px solid rgba(52, 204, 235, 0.2);
     box-shadow: 0 5px 25px rgba(0, 30, 90, 0.3);
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     overflow: hidden;
     transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     opacity: 1;
+}
+
 .module-container:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(52, 204, 235, 0.3);
-}
-
-/* Highlighted module container styles */
-.module-container.highlighted {
-    border: 2px solid var(--accent);
-    background: rgba(42, 107, 198, 0.2);
-    box-shadow: 0 8px 30px rgba(52, 204, 235, 0.4);
-    position: relative;
-}
-
-.module-container.highlighted::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent), rgba(52, 204, 235, 0.7));
-    border-radius: 4px 4px 0 0;
-}
-
-.module-container.highlighted .module-title {
-    color: var(--accent);
-    font-weight: bold;
-}   border-color: var(--accent);
 }
 
 .module-header {
@@ -734,7 +835,7 @@ footer {
 .module-subtitle {
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.9rem;
-    margin: 0.3rem 0 0 2rem;
+    margin: 0;
 }
 
 .module-body {
@@ -923,12 +1024,28 @@ footer {
     border-left: 4px solid #34cceb;
 }
 
+.module-container.publication .module-title {
+    color: var(--accent);
+}
+
 .module-container.experience {
     border-left: 4px solid #4caf50;
 }
 
 .module-container.honor {
     border-left: 4px solid #ff9800;
+}
+
+.module-container.patent {
+    border-left: 4px solid #f5deb3;
+}
+
+.module-container.teaching {
+    border-left: 4px solid #9c27b0;
+}
+
+.module-container.reviewer {
+    border-left: 4px solid #607d8b;
 }
 
 /* Green color for education degree and publication type */
@@ -954,7 +1071,7 @@ footer {
 
 /* Year header for academic papers */
 .year-header {
-    margin: 2rem 0 1rem 0;
+    margin: 1rem 0 0.5rem 0;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--accent);
 }
@@ -968,13 +1085,13 @@ footer {
 
 /* Container for papers within a year */
 .year-container {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 /* Responsive adjustments for module containers */
 @media (max-width: 768px) {
     .module-container {
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.8rem;
     }
     
     .module-header {

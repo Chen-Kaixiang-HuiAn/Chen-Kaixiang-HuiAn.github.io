@@ -1,5 +1,6 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-17
+// Last Change: 2025-09-18
+
 // Home section content
 function loadHomeContent() {
     const currentLang = getCurrentLanguage();
@@ -40,12 +41,6 @@ function loadHomeContent() {
                         </div>
                     </div>
                 </div>
-                
-                <!-- Research Highlights Section -->
-                <div class="research-section">
-                    <h3>${getText('researchHighlights')}</h3>
-                    <div id="research-highlights-container"></div>
-                </div>
             </div>
         `;
     } else {
@@ -79,12 +74,6 @@ function loadHomeContent() {
                         </div>
                     </div>
                 </div>
-                
-                <!-- Research Highlights Section -->
-                <div class="research-section">
-                    <h3>${getText('researchHighlights')}</h3>
-                    <div id="research-highlights-container"></div>
-                </div>
             </div>
         `;
     }
@@ -97,7 +86,6 @@ function loadHomeContent() {
         loadIntroContent();
         loadWelcomeMessage();
         loadNewsContent();
-        loadResearchHighlights();
         
         // Add fade in effect to home content
         const homeContentWrapper = document.querySelector('.home-content-wrapper');
@@ -259,55 +247,12 @@ function loadNewsContent() {
         });
 }
 
-// Function to load research highlights
-function loadResearchHighlights() {
-    const currentLang = getCurrentLanguage();
-    const configPath = currentLang === 'zh' ? 
-        'configs/zh/papers_zh.json' : 
-        'configs/en/papers.json';
-    
-    fetch(configPath)
-        .then(response => response.json())
-        .then(data => {
-            // Convert the year-based structure to a flat array
-            const papers = [];
-            Object.keys(data).forEach(year => {
-                data[year].forEach(paper => {
-                    paper.year = year;
-                    papers.push(paper);
-                });
-            });
-            
-            // Filter only highlighted papers
-            const highlightedPapers = papers.filter(paper => paper.highlighted === true);
-            
-            // Get container element
-            const container = document.getElementById('research-highlights-container');
-            if (!container) return;
-            
-            if (highlightedPapers.length > 0) {
-                renderModuleContainers(highlightedPapers, 'publication', 'research-highlights-container', currentLang);
-            } else {
-                // If no highlighted papers, show a message
-                container.innerHTML = `
-                    <div class="no-content-message">
-                        <p>No research highlights to display at this time.</p>
-                    </div>
-                `;
-            }
-        })
-        .catch(error => {
-            console.error('Error loading research highlights:', error);
-        });
-}
-
 // Initialize home content when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     loadPersonalInfo();
     loadIntroContent();
     loadWelcomeMessage();
     loadNewsContent();
-    loadResearchHighlights();
 });
 
 // Export functions for use in other modules
@@ -315,4 +260,3 @@ window.loadPersonalInfo = loadPersonalInfo;
 window.loadIntroContent = loadIntroContent;
 window.loadWelcomeMessage = loadWelcomeMessage;
 window.loadNewsContent = loadNewsContent;
-window.loadResearchHighlights = loadResearchHighlights;

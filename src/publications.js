@@ -1,5 +1,6 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
 // Last Change: 2025-09-17
+
 // Publications section content
 function loadPublicationsContent() {
     const currentLang = getCurrentLanguage();

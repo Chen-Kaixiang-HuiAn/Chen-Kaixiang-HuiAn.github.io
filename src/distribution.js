@@ -1,5 +1,6 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-17
+// Last Change: 2025-09-18
+
 // Page layout distribution.js
 // Divide the page into three parts: nav main-content and footer with 1/10 margin on each side
 
@@ -97,11 +98,13 @@ function applyLayoutStyles() {
       align-items: center;
       justify-content: center;
       width: 100vw;
-      position: relative;
+      position: fixed;
+      bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       margin: 0;
       padding: 0 10%;
+      z-index: 999;
     }
     
     /* Language switch button styles */

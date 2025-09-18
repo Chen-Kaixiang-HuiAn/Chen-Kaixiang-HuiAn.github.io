@@ -1,5 +1,6 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-17
+// Last Change: 2025-09-18
+
 // Create navigation bar
 function createNavbar() {
     // Check if navigation bar already exists
@@ -29,11 +30,13 @@ function createNavbar() {
     // Add click event to navigation links
     navLinks.addEventListener('click', function(e) {
         if (e.target.tagName === 'A') {
-            // Hide all sections immediately
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
+            // Prevent default action
+            e.preventDefault();
+            
+            // Update active link immediately
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            e.target.classList.add('active');
             
             // Determine target section based on link text
             let targetId;
@@ -76,104 +79,21 @@ function createNavbar() {
                 }
             }
             
-            // Show the target section immediately
+            // Get all sections and the target section
+            const sections = document.querySelectorAll('.content-section');
             let targetSection = document.getElementById(targetId);
-            if ((targetId === 'home' || targetId === 'cv') && targetSection) {
-                // For home and cv sections, show them with fade effect
-                // Only add transition if not already set
-                if (!targetSection.style.transition) {
-                    targetSection.style.transition = 'opacity 0.5s ease';
-                }
-                targetSection.style.opacity = '0';
-                targetSection.classList.add('active');
-                
-                setTimeout(() => {
-                    // Use requestAnimationFrame for smoother transition
-                    requestAnimationFrame(() => {
-                        targetSection.style.opacity = '1';
-                    });
-                    // Ensure home content is in the correct language
-                    updateSectionContentLanguage(targetId);
-                    // Load home content
-                    if (targetId === 'home' && typeof loadHomeContent === 'function') {
-                        loadHomeContent();
-                    }
-                    // Load CV content
-                    if (targetId === 'cv' && typeof loadCVContent === 'function') {
-                        loadCVContent();
-                    }
-                }, 50);
-            } else if (targetSection) {
-                targetSection.classList.add('active');
-                // Ensure the section content is in the correct language
-                setTimeout(() => {
-                    updateSectionContentLanguage(targetId);
-                    
-                    // Reset to default tab for experiences and publications sections
-                    if (targetId === 'experiences') {
-                        // Find the first tab button (default tab)
-                        const firstTabButton = targetSection.querySelector('.tab-button');
-                        if (firstTabButton) {
-                            // Remove active class from all buttons and panes
-                            targetSection.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                            targetSection.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
-                            
-                            // Add active class to the first tab button and its pane
-                            firstTabButton.classList.add('active');
-                            const tabId = firstTabButton.getAttribute('data-tab');
-                            const tabPane = targetSection.querySelector(`.tab-pane#${tabId}`);
-                            if (tabPane) {
-                                tabPane.classList.add('active');
-                            }
-                            
-                            // Update the stored state to default
-                            if (typeof activeTabStates !== 'undefined') {
-                                activeTabStates.experiences = tabId;
-                            }
-                        }
-                    } else if (targetId === 'publications') {
-                        // Find the first tab button (default tab)
-                        const firstTabButton = targetSection.querySelector('.tab-button');
-                        if (firstTabButton) {
-                            // Remove active class from all buttons and panes
-                            targetSection.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                            targetSection.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
-                            
-                            // Add active class to the first tab button and its pane
-                            firstTabButton.classList.add('active');
-                            const tabId = firstTabButton.getAttribute('data-tab');
-                            const tabPane = targetSection.querySelector(`.tab-pane#${tabId}`);
-                            if (tabPane) {
-                                tabPane.classList.add('active');
-                            }
-                            
-                            // Update the stored state to default
-                            if (typeof activeTabStates !== 'undefined') {
-                                activeTabStates.publications = tabId;
-                            }
-                        }
-                    }
-                }, 50);
-            } else {
-                // If target section doesn't exist, create it
+            
+            // If target section doesn't exist, create it
+            if (!targetSection) {
                 targetSection = document.createElement('section');
                 targetSection.id = targetId;
-                targetSection.className = 'content-section active';
-                
-                // Add fade effect for home and cv sections
-                if (targetId === 'home' || targetId === 'cv') {
-                    targetSection.style.transition = 'opacity 0.5s ease';
-                    targetSection.style.opacity = '0';
-                }
+                targetSection.className = 'content-section';
                 
                 // Add specific content based on section using the new functions
                 switch(targetId) {
                     case 'home':
                         targetSection.innerHTML = '';
                         targetSection.appendChild(document.createElement('div')).id = 'home-content';
-                        if (typeof loadHomeContent === 'function') {
-                            loadHomeContent();
-                        }
                         break;
                     case 'experiences':
                         targetSection.innerHTML = loadExperiencesContent();
@@ -200,28 +120,62 @@ function createNavbar() {
                     mainContent = document.body;
                 }
                 mainContent.appendChild(targetSection);
-                
-                // Apply fade in effect for home and cv sections
-                if (targetId === 'home' || targetId === 'cv') {
-                    setTimeout(() => {
-                        requestAnimationFrame(() => {
-                            targetSection.style.opacity = '1';
-                        });
-                    }, 50);
-                }
-                
-                // Ensure the section content is in the correct language after creation
-                setTimeout(() => {
-                    updateSectionContentLanguage(targetId);
-                    
-                    // For newly created sections, the active tab state will be set by the section's own initialization
-                }, 150);
             }
             
-            // Update active link immediately
-            const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => link.classList.remove('active'));
-            e.target.classList.add('active');
+            // Hide all sections with a fade out effect
+            sections.forEach(section => {
+                if (section !== targetSection) {
+                    section.style.opacity = '0';
+                    setTimeout(() => {
+                        section.classList.remove('active');
+                    }, 300);
+                }
+            });
+            
+            // Show the target section with a fade in effect
+            setTimeout(() => {
+                targetSection.classList.add('active');
+                targetSection.style.opacity = '0';
+                
+                // Ensure the section content is in the correct language
+                updateSectionContentLanguage(targetId);
+                
+                // Load specific content based on section
+                if (targetId === 'home' && typeof loadHomeContent === 'function') {
+                    loadHomeContent();
+                } else if (targetId === 'cv' && typeof loadCVContent === 'function') {
+                    loadCVContent();
+                }
+                
+                // Reset to default tab for experiences and publications sections
+                if (targetId === 'experiences' || targetId === 'publications') {
+                    // Find the first tab button (default tab)
+                    const firstTabButton = targetSection.querySelector('.tab-button');
+                    if (firstTabButton) {
+                        // Remove active class from all buttons and panes
+                        targetSection.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                        targetSection.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+                        
+                        // Add active class to the first tab button and its pane
+                        firstTabButton.classList.add('active');
+                        const tabId = firstTabButton.getAttribute('data-tab');
+                        const tabPane = targetSection.querySelector(`.tab-pane#${tabId}`);
+                        if (tabPane) {
+                            tabPane.classList.add('active');
+                        }
+                        
+                        // Update the stored state to default
+                        if (typeof activeTabStates !== 'undefined') {
+                            activeTabStates[targetId] = tabId;
+                        }
+                    }
+                }
+                
+                // Fade in the target section
+                requestAnimationFrame(() => {
+                    targetSection.style.opacity = '1';
+                });
+            }, 300);
         }
     });
     
@@ -282,63 +236,149 @@ function createNavbar() {
         createLanguageSwitch();
     }
     
+    // Create theme switch after navigation bar is created
+    if (typeof createThemeSwitch === 'function') {
+        createThemeSwitch();
+    }
+    
     // Handle window resize to reposition language switch
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
-        // Clear any existing timeout to prevent multiple rapid executions
-        clearTimeout(resizeTimeout);
+let resizeTimeout;
+window.addEventListener('resize', function() {
+    // Clear any existing timeout to prevent multiple rapid executions
+    clearTimeout(resizeTimeout);
+    
+    // Set a new timeout to execute after resizing stops
+    resizeTimeout = setTimeout(function() {
+        // Get current viewport width and determine layout mode
+        const isMobile = window.innerWidth <= 768;
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const navbar = document.querySelector('.navbar');
         
-        // Set a new timeout to execute after resizing stops
-        resizeTimeout = setTimeout(function() {
-            // Get current orientation
-            const isPortrait = window.innerWidth <= 768 && window.matchMedia('(orientation: portrait)').matches;
-            const isLandscape = window.innerWidth <= 768 && window.matchMedia('(orientation: landscape)').matches;
+        if (!navbar) return;
+        
+        // Get existing elements
+        const existingLangSwitch = document.querySelector('.language-switch');
+        const existingLangContainer = document.querySelector('.language-switch-container');
+        const existingThemeSwitch = document.querySelector('.theme-switch');
+        const existingThemeContainer = document.querySelector('.theme-switch-container');
+        const existingSwitchContainer = document.querySelector('.switch-buttons-container');
+        
+        // Clean up old containers
+        if (existingLangContainer) {
+            existingLangContainer.remove();
+        }
+        if (existingThemeContainer) {
+            existingThemeContainer.remove();
+        }
+        
+        // For mobile mode
+        if (isMobile) {
+            // Get logo and nav links
+            const logo = navbar.querySelector('.logo');
+            const navLinks = navbar.querySelector('.nav-links');
             
-            // Get existing elements
-            const existingLangSwitch = document.querySelector('.language-switch');
-            const existingLangContainer = document.querySelector('.language-switch-container');
-            const navbar = document.querySelector('.navbar');
+            // Remove switch container from nav links if it exists there
+            if (existingSwitchContainer && navLinks && navLinks.contains(existingSwitchContainer)) {
+                navLinks.removeChild(existingSwitchContainer);
+            }
             
-            if (!navbar || !existingLangSwitch) return;
+            // Create or get switch container
+            let switchContainer = existingSwitchContainer;
+            if (!switchContainer) {
+                switchContainer = document.createElement('div');
+                switchContainer.className = 'switch-buttons-container';
+                // Ensure the container has the correct styles for mobile
+                switchContainer.style.width = '100vw';
+                switchContainer.style.maxWidth = '100vw';
+                switchContainer.style.display = 'flex';
+                switchContainer.style.justifyContent = 'center';
+                switchContainer.style.boxSizing = 'border-box';
+                switchContainer.style.margin = '0';
+                switchContainer.style.left = '0';
+                switchContainer.style.right = '0';
+            }
             
-            // For portrait mode, ensure language switch is in its own container between logo and nav links
-            if (isPortrait) {
-                // If container doesn't exist, create it
-                if (!existingLangContainer) {
-                    const langSwitchContainer = document.createElement('div');
-                    langSwitchContainer.className = 'language-switch-container';
-                    
-                    // Get logo and nav links
-                    const logo = navbar.querySelector('.logo');
-                    const navLinks = navbar.querySelector('.nav-links');
-                    
-                    if (logo && navLinks) {
-                        // Insert container between logo and nav links
-                        navbar.insertBefore(langSwitchContainer, navLinks);
-                        // Move language switch to container
-                        langSwitchContainer.appendChild(existingLangSwitch);
-                    }
-                } else if (!existingLangContainer.contains(existingLangSwitch)) {
-                    // If container exists but doesn't contain the switch, move it
-                    existingLangContainer.appendChild(existingLangSwitch);
-                }
-            } 
-            // For landscape mode or desktop, ensure language switch is part of nav links
-            else {
-                // Remove container if it exists
-                if (existingLangContainer) {
-                    existingLangContainer.remove();
-                }
-                
-                // Get nav links
-                const navLinks = navbar.querySelector('.nav-links');
-                if (navLinks && !navLinks.contains(existingLangSwitch)) {
-                    // Add language switch to nav links
-                    navLinks.appendChild(existingLangSwitch);
+            // Ensure container is positioned correctly for mobile
+            if (logo && navLinks && !navbar.contains(switchContainer)) {
+                navbar.insertBefore(switchContainer, navLinks);
+            } else if (!navbar.contains(switchContainer)) {
+                // Fallback: append to navbar
+                navbar.appendChild(switchContainer);
+            } else {
+                // If container already exists but might be in wrong position, ensure it's between logo and navLinks
+                if (logo && navLinks && (switchContainer.previousElementSibling !== logo || switchContainer.nextElementSibling !== navLinks)) {
+                    navbar.removeChild(switchContainer);
+                    navbar.insertBefore(switchContainer, navLinks);
                 }
             }
-        }, 300); // Wait 300ms after resize stops before executing
-    });
+            
+            // Move language switch to the container if it's not already there
+            if (existingLangSwitch && !switchContainer.contains(existingLangSwitch)) {
+                // Remove from nav links if it's there
+                if (navLinks && navLinks.contains(existingLangSwitch)) {
+                    navLinks.removeChild(existingLangSwitch);
+                }
+                switchContainer.appendChild(existingLangSwitch);
+            }
+            
+            // Move theme switch to the container if it exists and not already there
+            if (existingThemeSwitch && !switchContainer.contains(existingThemeSwitch)) {
+                // Remove from nav links if it's there
+                if (navLinks && navLinks.contains(existingThemeSwitch)) {
+                    navLinks.removeChild(existingThemeSwitch);
+                }
+                switchContainer.appendChild(existingThemeSwitch);
+            }
+            
+            // Force reflow to ensure styles are applied correctly
+            navbar.offsetHeight;
+        } 
+        // For desktop mode
+        else {
+            // Remove switch container from navbar if it exists there
+            if (existingSwitchContainer && navbar.contains(existingSwitchContainer)) {
+                navbar.removeChild(existingSwitchContainer);
+            }
+            
+            // Get nav links
+            const navLinks = navbar.querySelector('.nav-links');
+            if (navLinks) {
+                // Create or get switch container
+                let switchContainer = existingSwitchContainer;
+                if (!switchContainer) {
+                    switchContainer = document.createElement('div');
+                    switchContainer.className = 'switch-buttons-container';
+                }
+                
+                // Ensure container is positioned correctly for desktop
+                if (!navLinks.contains(switchContainer)) {
+                    navLinks.appendChild(switchContainer);
+                }
+                
+                // Move language switch to the container if it's not already there
+                if (existingLangSwitch && !switchContainer.contains(existingLangSwitch)) {
+                    // Remove from navbar if it's there
+                    if (navbar.contains(existingLangSwitch)) {
+                        navbar.removeChild(existingLangSwitch);
+                    }
+                    switchContainer.appendChild(existingLangSwitch);
+                }
+                
+                // Move theme switch to the container if it exists and not already there
+                if (existingThemeSwitch && !switchContainer.contains(existingThemeSwitch)) {
+                    // Remove from navbar if it's there
+                    if (navbar.contains(existingThemeSwitch)) {
+                        navbar.removeChild(existingThemeSwitch);
+                    }
+                    switchContainer.appendChild(existingThemeSwitch);
+                }
+                
+                // Force reflow to ensure styles are applied correctly
+                navLinks.offsetHeight;
+            }
+        }
+    }, 300); // Wait 300ms after resize stops before executing
+});
 }
 
 // Create navigation bar when DOM is loaded

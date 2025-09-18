@@ -56,7 +56,6 @@ const languageTexts = {
         downloadFullCV: 'Download Full CV',
         aboutMe: 'About Me',
         news: 'News',
-        researchHighlights: 'Research Highlights',
         welcome: 'Welcome to ',
         homepage: 'homepage!',
     language: '中文',
@@ -92,7 +91,6 @@ const languageTexts = {
         downloadFullCV: '下载完整简历',
         aboutMe: '个人简介',
         news: '新闻动态',
-        researchHighlights: '研究亮点',
         welcome: '欢迎来到',
         homepage: '的主页！',
     language: 'English',
@@ -236,8 +234,7 @@ function updateUILanguage() {
         navLinks: document.querySelectorAll('.nav-links a'),
         langSwitch: document.querySelector('.language-switch'),
         aboutTitle: document.querySelector('.intro-section h3'),
-        newsTitle: document.querySelector('.news-section h3'),
-        researchTitle: document.querySelector('.research-section h3')
+        newsTitle: document.querySelector('.news-section h3')
     };
     
     // Update page title with name from info config
@@ -272,7 +269,6 @@ function updateUILanguage() {
     // Update section titles
     if (elements.aboutTitle) elements.aboutTitle.textContent = getText('aboutMe');
     if (elements.newsTitle) elements.newsTitle.textContent = getText('news');
-    if (elements.researchTitle) elements.researchTitle.textContent = getText('researchHighlights');
     
     // Update footer copyright text
     const footer = document.getElementById('footer');
@@ -437,9 +433,6 @@ function updateSectionContentLanguage(sectionId) {
       if (typeof loadNewsContent === 'function') {
           loadNewsContent();
       }
-      if (typeof loadResearchHighlights === 'function') {
-          loadResearchHighlights();
-      }
       break;
   }
 }
@@ -580,32 +573,40 @@ function createLanguageSwitch() {
     // Add to navigation bar
     const navbar = document.querySelector('.navbar');
     if (navbar) {
-        // For mobile view, create a container for language switch and position it between logo and nav links
-        if (window.innerWidth <= 768) {
-            // Create language switch container for mobile
-            const langSwitchContainer = document.createElement('div');
-            langSwitchContainer.className = 'language-switch-container';
-            langSwitchContainer.appendChild(langSwitch);
+        // Check if switch buttons container already exists
+        let switchContainer = document.querySelector('.switch-buttons-container');
+        
+        if (!switchContainer) {
+            // Create a container for both switches
+            switchContainer = document.createElement('div');
+            switchContainer.className = 'switch-buttons-container';
             
-            // Insert the language switch container between logo and nav links
-            const logo = navbar.querySelector('.logo');
-            const navLinks = navbar.querySelector('.nav-links');
-            if (logo && navLinks) {
-                navbar.insertBefore(langSwitchContainer, navLinks);
+            // For mobile view, place container between logo and nav links
+            if (window.innerWidth <= 768) {
+                const logo = navbar.querySelector('.logo');
+                const navLinks = navbar.querySelector('.nav-links');
+                
+                if (logo && navLinks) {
+                    // Insert container between logo and nav links
+                    navbar.insertBefore(switchContainer, navLinks);
+                } else {
+                    // Fallback: append to navbar
+                    navbar.appendChild(switchContainer);
+                }
             } else {
-                // Fallback: just append to navbar
-                navbar.appendChild(langSwitchContainer);
-            }
-        } else {
-            // For desktop view, add language switch to nav links
-            const navLinks = navbar.querySelector('.nav-links');
-            if (navLinks) {
-                navLinks.appendChild(langSwitch);
-            } else {
-                // Fallback: just append to navbar
-                navbar.appendChild(langSwitch);
+                // For desktop view, add container to nav links
+                const navLinks = navbar.querySelector('.nav-links');
+                if (navLinks) {
+                    navLinks.appendChild(switchContainer);
+                } else {
+                    // Fallback: append to navbar
+                    navbar.appendChild(switchContainer);
+                }
             }
         }
+        
+        // Add language switch to the container
+        switchContainer.appendChild(langSwitch);
     }
 }
 
