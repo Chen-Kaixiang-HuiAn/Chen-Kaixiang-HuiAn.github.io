@@ -6,6 +6,6 @@ You can browse [homepage](https://excursion-conshein.github.io/) in detail.
 
 ---
 
-This homepage is based on [Excursion ConsHein Homepage](https://excursion-conshein.github.io/excursion-conshein-homepage/).
+This homepage is based on [Excursion ConsHein Homepage](https://github.com/Excursion-ConsHein/excursion-conshein-homepage).
 
-本主页基于[Excursion ConsHein Homepage](https://excursion-conshein.github.io/excursion-conshein-homepage/)。
+本主页基于[Excursion ConsHein Homepage](https://github.com/Excursion-ConsHein/excursion-conshein-homepage)。
