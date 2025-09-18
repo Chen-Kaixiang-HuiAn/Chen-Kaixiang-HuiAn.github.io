@@ -18,5 +18,10 @@
         "time": "2022",
         "award": "Third-class Scholarship",
         "unit": "College of Mechanical and Vehicle Engineering (MVE), Chongqing University"
+    },
+    {
+        "time": "2022",
+        "award": "Excellence Award, Deep Learning Track, Chongqing University Intelligent Car Competition",
+        "unit": "College of Optoelectronic Engineering (COE), Chongqing University"
     }
 ]
