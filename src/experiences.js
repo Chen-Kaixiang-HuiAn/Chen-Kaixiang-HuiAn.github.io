@@ -1,7 +1,8 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-17
+// Last Change: 2025-09-19
 
 // Experiences section content
+// Chinese text inherits English structure, only differs in nouns and data introduction
 function loadExperiencesContent() {
     const currentLang = getCurrentLanguage();
     
@@ -71,27 +72,40 @@ function loadExperiencesContent() {
  * Loads institution experiences modules from configuration
  * @param {string} containerId - The ID of the container element
  * @param {string} language - The language code
+ * 中文状态继承英文状态，仅在名词和数据引入方面保留区别
  */
 function loadInstitutionExperiencesModules(containerId, language = 'en') {
-    const configPath = language === 'zh' ? 
-        'configs/zh/experiences_zh.json' : 
-        'configs/en/experiences.json';
+    // First try to get preloaded content
+    const preloadedExperiences = getPreloadedContent('experiences');
     
-    fetch(configPath)
-        .then(response => response.json())
-        .then(data => {
-            // All experiences in the current structure are institution experiences
-            const institutionExperiences = data;
-            
-            // Get container element
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            
-            renderModuleContainers(institutionExperiences, 'education', containerId, language);
-        })
-        .catch(error => {
-            console.error('Error loading institution experiences modules:', error);
-        });
+    if (preloadedExperiences) {
+        // Use preloaded content
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        renderModuleContainers(preloadedExperiences, 'education', containerId, language);
+    } else {
+        // Fall back to fetching content
+        const configPath = language === 'zh' ? 
+            'configs/zh/experiences_zh.json' : 
+            'configs/en/experiences.json';
+        
+        fetch(configPath)
+            .then(response => response.json())
+            .then(data => {
+                // All experiences in the current structure are institution experiences
+                const institutionExperiences = data;
+                
+                // Get container element
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                
+                renderModuleContainers(institutionExperiences, 'education', containerId, language);
+            })
+            .catch(error => {
+                console.error('Error loading institution experiences modules:', error);
+            });
+    }
 }
 
 
@@ -100,169 +114,287 @@ function loadInstitutionExperiencesModules(containerId, language = 'en') {
  * Loads honors and awards modules from configuration
  * @param {string} containerId - The ID of the container element
  * @param {string} language - The language code
+ * 中文状态继承英文状态，仅在名词和数据引入方面保留区别
  */
 function loadHonorsAwardsModules(containerId, language = 'en') {
-    const configPath = language === 'zh' ? 
-        'configs/zh/honors_zh.json' : 
-        'configs/en/honors.json';
+    // First try to get preloaded content
+    const preloadedHonors = getPreloadedContent('honors');
     
-    fetch(configPath)
-        .then(response => response.json())
-        .then(data => {
-            // Check if there are any honors
-            if (data && data.length > 0) {
-                // Get container element
-                const container = document.getElementById(containerId);
-                if (!container) return;
-                
-                // Map the data to the format expected by renderModuleContainers
-                const honorsData = data.map(honor => ({
-                    title: honor.award,
-                    organization: honor.unit,
-                    time: honor.time,
-                    description: `${honor.award} - ${honor.unit}`
-                }));
-                
-                renderModuleContainers(honorsData, 'honor', containerId, language);
-                
-                // Show the tab button if it was hidden
-                const tabButton = document.querySelector('.tab-button[data-tab="honors-awards"]');
-                if (tabButton) {
-                    tabButton.style.display = '';
-                }
-            } else {
-                // Hide the tab button if no honors data
-                const tabButton = document.querySelector('.tab-button[data-tab="honors-awards"]');
-                if (tabButton) {
-                    tabButton.style.display = 'none';
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error loading honors and awards modules:', error);
+    if (preloadedHonors) {
+        // Use preloaded content
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        // Check if there are any honors
+        if (preloadedHonors && preloadedHonors.length > 0) {
+            // Map the data to the format expected by renderModuleContainers
+            const honorsData = preloadedHonors.map(honor => ({
+                title: honor.award,
+                organization: honor.unit,
+                time: honor.time,
+                description: `${honor.award} - ${honor.unit}`
+            }));
             
-            // Hide the tab button if there's an error loading the data
+            renderModuleContainers(honorsData, 'honor', containerId, language);
+            
+            // Show the tab button if it was hidden
+            const tabButton = document.querySelector('.tab-button[data-tab="honors-awards"]');
+            if (tabButton) {
+                tabButton.style.display = '';
+            }
+        } else {
+            // Hide the tab button if no honors data
             const tabButton = document.querySelector('.tab-button[data-tab="honors-awards"]');
             if (tabButton) {
                 tabButton.style.display = 'none';
             }
-        });
+        }
+    } else {
+        // Fall back to fetching content
+        const configPath = language === 'zh' ? 
+            'configs/zh/honors_zh.json' : 
+            'configs/en/honors.json';
+        
+        fetch(configPath)
+            .then(response => response.json())
+            .then(data => {
+                // Check if there are any honors
+                if (data && data.length > 0) {
+                    // Get container element
+                    const container = document.getElementById(containerId);
+                    if (!container) return;
+                    
+                    // Map the data to the format expected by renderModuleContainers
+                    const honorsData = data.map(honor => ({
+                        title: honor.award,
+                        organization: honor.unit,
+                        time: honor.time,
+                        description: `${honor.award} - ${honor.unit}`
+                    }));
+                    
+                    renderModuleContainers(honorsData, 'honor', containerId, language);
+                    
+                    // Show the tab button if it was hidden
+                    const tabButton = document.querySelector('.tab-button[data-tab="honors-awards"]');
+                    if (tabButton) {
+                        tabButton.style.display = '';
+                    }
+                } else {
+                    // Hide the tab button if no honors data
+                    const tabButton = document.querySelector('.tab-button[data-tab="honors-awards"]');
+                    if (tabButton) {
+                        tabButton.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error loading honors and awards modules:', error);
+                
+                // Hide the tab button if there's an error loading the data
+                const tabButton = document.querySelector('.tab-button[data-tab="honors-awards"]');
+                if (tabButton) {
+                    tabButton.style.display = 'none';
+                }
+            });
+    }
 }
 
 /**
  * Loads teaching modules from configuration
  * @param {string} containerId - The ID of the container element
  * @param {string} language - The language code
+ * 中文状态继承英文状态，仅在名词和数据引入方面保留区别
  */
 function loadTeachingModules(containerId, language = 'en') {
-    const configPath = language === 'zh' ? 
-        'configs/zh/teaching_zh.json' : 
-        'configs/en/teaching.json';
+    // First try to get preloaded content
+    const preloadedTeaching = getPreloadedContent('teaching');
     
-    fetch(configPath)
-        .then(response => response.json())
-        .then(data => {
-            // Check if there are any teaching experiences
-            if (data && data.length > 0) {
-                // Get container element
-                const container = document.getElementById(containerId);
-                if (!container) return;
+    if (preloadedTeaching) {
+        // Use preloaded content
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        // Check if there are any teaching experiences
+        if (preloadedTeaching && preloadedTeaching.length > 0) {
+            // Map the data to the format expected by renderModuleContainers
+            const teachingData = preloadedTeaching.map(teaching => {
+                // 根据语言调整年份和季节的显示顺序
+                const timeDisplay = language === 'zh' ? 
+                    `${teaching.year || ''} ${teaching.season || ''}` : 
+                    `${teaching.season || ''} ${teaching.year || ''}`;
                 
-                // Map the data to the format expected by renderModuleContainers
-                const teachingData = data.map(teaching => {
-                    // 根据语言调整年份和季节的显示顺序
-                    const timeDisplay = language === 'zh' ? 
-                        `${teaching.year || ''} ${teaching.season || ''}` : 
-                        `${teaching.season || ''} ${teaching.year || ''}`;
-                    
-                    return {
-                        title: `${teaching.code || ''} ${teaching.course || ''}${teaching.school ? ', ' + teaching.school : ''}`.trim(),
-                        school: teaching.school || '',
-                        code: teaching.code || '',
-                        identity: teaching.identity || (language === 'zh' ? '助教' : 'Teaching Assistant'),
-                        season: teaching.season || '',
-                        year: teaching.year || '',
-                        description: `${teaching.identity || (language === 'zh' ? '助教' : 'Teaching Assistant')} - ${timeDisplay}`.trim()
-                    };
-                });
-                
-                renderModuleContainers(teachingData, 'teaching', containerId, language);
-                
-                // Show the tab button if it was hidden
-                const tabButton = document.querySelector('.tab-button[data-tab="teaching"]');
-                if (tabButton) {
-                    tabButton.style.display = '';
-                }
-            } else {
-                // Hide the tab button if no teaching data
-                const tabButton = document.querySelector('.tab-button[data-tab="teaching"]');
-                if (tabButton) {
-                    tabButton.style.display = 'none';
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error loading teaching modules:', error);
+                return {
+                    title: `${teaching.code || ''} ${teaching.course || ''}${teaching.school ? ', ' + teaching.school : ''}`.trim(),
+                    school: teaching.school || '',
+                    code: teaching.code || '',
+                    identity: teaching.identity || (language === 'zh' ? '助教' : 'Teaching Assistant'),
+                    season: teaching.season || '',
+                    year: teaching.year || '',
+                    description: `${teaching.identity || (language === 'zh' ? '助教' : 'Teaching Assistant')} - ${timeDisplay}`.trim()
+                };
+            });
             
-            // Hide the tab button if there's an error loading the data
+            renderModuleContainers(teachingData, 'teaching', containerId, language);
+            
+            // Show the tab button if it was hidden
+            const tabButton = document.querySelector('.tab-button[data-tab="teaching"]');
+            if (tabButton) {
+                tabButton.style.display = '';
+            }
+        } else {
+            // Hide the tab button if no teaching data
             const tabButton = document.querySelector('.tab-button[data-tab="teaching"]');
             if (tabButton) {
                 tabButton.style.display = 'none';
             }
-        });
+        }
+    } else {
+        // Fall back to fetching content
+        const configPath = language === 'zh' ? 
+            'configs/zh/teaching_zh.json' : 
+            'configs/en/teaching.json';
+        
+        fetch(configPath)
+            .then(response => response.json())
+            .then(data => {
+                // Check if there are any teaching experiences
+                if (data && data.length > 0) {
+                    // Get container element
+                    const container = document.getElementById(containerId);
+                    if (!container) return;
+                    
+                    // Map the data to the format expected by renderModuleContainers
+                    const teachingData = data.map(teaching => {
+                        // 根据语言调整年份和季节的显示顺序
+                        const timeDisplay = language === 'zh' ? 
+                            `${teaching.year || ''} ${teaching.season || ''}` : 
+                            `${teaching.season || ''} ${teaching.year || ''}`;
+                        
+                        return {
+                            title: `${teaching.code || ''} ${teaching.course || ''}${teaching.school ? ', ' + teaching.school : ''}`.trim(),
+                            school: teaching.school || '',
+                            code: teaching.code || '',
+                            identity: teaching.identity || (language === 'zh' ? '助教' : 'Teaching Assistant'),
+                            season: teaching.season || '',
+                            year: teaching.year || '',
+                            description: `${teaching.identity || (language === 'zh' ? '助教' : 'Teaching Assistant')} - ${timeDisplay}`.trim()
+                        };
+                    });
+                    
+                    renderModuleContainers(teachingData, 'teaching', containerId, language);
+                    
+                    // Show the tab button if it was hidden
+                    const tabButton = document.querySelector('.tab-button[data-tab="teaching"]');
+                    if (tabButton) {
+                        tabButton.style.display = '';
+                    }
+                } else {
+                    // Hide the tab button if no teaching data
+                    const tabButton = document.querySelector('.tab-button[data-tab="teaching"]');
+                    if (tabButton) {
+                        tabButton.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error loading teaching modules:', error);
+                
+                // Hide the tab button if there's an error loading the data
+                const tabButton = document.querySelector('.tab-button[data-tab="teaching"]');
+                if (tabButton) {
+                    tabButton.style.display = 'none';
+                }
+            });
+    }
 }
 
 /**
  * Loads reviewer modules from configuration
  * @param {string} containerId - The ID of the container element
  * @param {string} language - The language code
+ * 中文状态继承英文状态，仅在名词和数据引入方面保留区别
  */
 function loadReviewerModules(containerId, language = 'en') {
-    const configPath = language === 'zh' ? 
-        'configs/zh/reviewer_zh.json' : 
-        'configs/en/reviewer.json';
+    // First try to get preloaded content
+    const preloadedReviewer = getPreloadedContent('reviewer');
     
-    fetch(configPath)
-        .then(response => response.json())
-        .then(data => {
-            // Check if there are any reviewer experiences
-            if (data && data.length > 0) {
-                // Get container element
-                const container = document.getElementById(containerId);
-                if (!container) return;
-                
-                // Map the data to the format expected by renderModuleContainers
-                const reviewerData = data.map(reviewer => ({
-                    title: `${reviewer.journal || reviewer.conference}, ${reviewer.year}`,
-                    organization: reviewer.publisher || reviewer.organization,
-                    time: null, // Set to null to hide the time display
-                    description: `${reviewer.journal || reviewer.conference}, ${reviewer.year}`
-                }));
-                
-                renderModuleContainers(reviewerData, 'reviewer', containerId, language);
-                
-                // Show the tab button if it was hidden
-                const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');
-                if (tabButton) {
-                    tabButton.style.display = '';
-                }
-            } else {
-                // Hide the tab button if no reviewer data
-                const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');
-                if (tabButton) {
-                    tabButton.style.display = 'none';
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error loading reviewer modules:', error);
+    if (preloadedReviewer) {
+        // Use preloaded content
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        // Check if there are any reviewer experiences
+        if (preloadedReviewer && preloadedReviewer.length > 0) {
+            // Map the data to the format expected by renderModuleContainers
+            const reviewerData = preloadedReviewer.map(reviewer => ({
+                title: `${reviewer.journal || reviewer.conference}, ${reviewer.year}`,
+                organization: reviewer.publisher || reviewer.organization,
+                time: null, // Set to null to hide the time display
+                description: `${reviewer.journal || reviewer.conference}, ${reviewer.year}`
+            }));
             
-            // Hide the tab button if there's an error loading the data
+            renderModuleContainers(reviewerData, 'reviewer', containerId, language);
+            
+            // Show the tab button if it was hidden
+            const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');
+            if (tabButton) {
+                tabButton.style.display = '';
+            }
+        } else {
+            // Hide the tab button if no reviewer data
             const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');
             if (tabButton) {
                 tabButton.style.display = 'none';
             }
-        });
+        }
+    } else {
+        // Fall back to fetching content
+        const configPath = language === 'zh' ? 
+            'configs/zh/reviewer_zh.json' : 
+            'configs/en/reviewer.json';
+        
+        fetch(configPath)
+            .then(response => response.json())
+            .then(data => {
+                // Check if there are any reviewer experiences
+                if (data && data.length > 0) {
+                    // Get container element
+                    const container = document.getElementById(containerId);
+                    if (!container) return;
+                    
+                    // Map the data to the format expected by renderModuleContainers
+                    const reviewerData = data.map(reviewer => ({
+                        title: `${reviewer.journal || reviewer.conference}, ${reviewer.year}`,
+                        organization: reviewer.publisher || reviewer.organization,
+                        time: null, // Set to null to hide the time display
+                        description: `${reviewer.journal || reviewer.conference}, ${reviewer.year}`
+                    }));
+                    
+                    renderModuleContainers(reviewerData, 'reviewer', containerId, language);
+                    
+                    // Show the tab button if it was hidden
+                    const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');
+                    if (tabButton) {
+                        tabButton.style.display = '';
+                    }
+                } else {
+                    // Hide the tab button if no reviewer data
+                    const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');
+                    if (tabButton) {
+                        tabButton.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error loading reviewer modules:', error);
+                
+                // Hide the tab button if there's an error loading the data
+                const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');
+                if (tabButton) {
+                    tabButton.style.display = 'none';
+                }
+            });
+    }
 }
 
 // Export functions for use in other modules

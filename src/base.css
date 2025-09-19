@@ -1,6 +1,6 @@
 /*
  * Written by Constantine Heinrich Chen (ConsHein Chen)
- * Last Change: 2025-09-18
+ * Last Change: 2025-09-19
  */
 
 /* Navigation bar styles */
@@ -326,6 +326,28 @@ body.dark-theme footer {
 }
 
 .pdf-error-message p {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.pdf-loading-indicator {
+  padding: 2rem;
+  text-align: center;
+  background: rgba(20, 36, 71, 0.6);
+  border-radius: 8px;
+  color: var(--light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 800px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.pdf-loading-indicator p {
   font-size: 1.2rem;
   margin: 0;
 }

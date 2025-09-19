@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-18
+// Last Change: 2025-09-19
 
 // Module Container Component
 // This component provides a generic container for various types of content
@@ -15,7 +15,7 @@ function isMobileDevice() {
 }
 
 /**
- * Gets text in the specified language
+ * Gets text in the specified language - Chinese text inherits English structure, only differs in nouns and data introduction
  * @param {string} key - The text key
  * @param {string} language - The language code (en, zh, etc.)
  * @returns {string} - The text in the specified language
@@ -26,7 +26,7 @@ function getModuleText(key, language = 'en') {
         return window.getText(key, language);
     }
     
-    // Fallback to local language texts
+    // Fallback to local language texts - 中文状态继承英文状态，仅在名词和数据引入方面保留区别
     const localLanguageTexts = {
         en: {
             paper: 'Paper',
@@ -40,6 +40,7 @@ function getModuleText(key, language = 'en') {
             hideDetails: 'Hide Details'
         },
         zh: {
+            // 中文状态继承英文状态，仅在名词和数据引入方面保留区别
             paper: '论文',
             code: '代码',
             video: '视频',

@@ -1,8 +1,9 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-18
+// Last Change: 2025-09-19
 
 // Page layout distribution.js
 // Divide the page into three parts: nav main-content and footer with 1/10 margin on each side
+// Chinese text inherits English structure, only differs in nouns and data introduction
 
 // Page layout initialization
 document.addEventListener('DOMContentLoaded', function() {

@@ -1,7 +1,8 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-18
+// Last Change: 2025-09-19
 
 // Theme management module
+// Chinese text inherits English structure, only differs in nouns and data introduction
 
 // Initialize theme variable
 let currentTheme = 'dark';

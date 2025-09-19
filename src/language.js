@@ -1,9 +1,19 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-17
+// Last Change: 2025-09-19
+
 // Language management module
 
 // Initialize language variable
 let currentLanguage = 'en';
+
+// Global object to store preloaded content
+let preloadedContent = {
+    en: {},
+    zh: {}
+};
+
+// Flag to track if content is preloaded
+let isContentPreloaded = false;
 
 // Load configuration from config.json
 async function loadConfig() {
@@ -13,9 +23,9 @@ async function loadConfig() {
         
         // Remove language switch button in single language mode
         if (config.singleLanguageMode) {
-            const langBtn = document.querySelector('.language-button');
+            const langBtn = document.querySelector('.language-switch');
             if (langBtn) {
-                langBtn.style.display = 'none';
+                langBtn.remove();
             }
         }
         
@@ -29,36 +39,126 @@ async function loadConfig() {
     }
 }
 
-// Initialize configuration when page loads
-document.addEventListener('DOMContentLoaded', loadConfig);
+// Function to preload all content for both languages
+async function preloadAllContent() {
+    if (isContentPreloaded) return;
+    
+    try {
+        // Preload info content
+        await Promise.all([
+            fetch('configs/en/info.json').then(res => res.json()).then(data => { preloadedContent.en.info = data; }),
+            fetch('configs/zh/info_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.info = data; })
+        ]);
+        
+        // Preload intro content
+        await Promise.all([
+            fetch('configs/en/intro.txt').then(res => res.text()).then(data => { preloadedContent.en.intro = data; }),
+            fetch('configs/zh/intro_zh.txt').then(res => res.text()).then(data => { preloadedContent.zh.intro = data; })
+        ]);
+        
+        // Preload news content
+        await Promise.all([
+            fetch('configs/en/news.json').then(res => res.json()).then(data => { preloadedContent.en.news = data; }),
+            fetch('configs/zh/news_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.news = data; })
+        ]);
+        
+        // Preload experiences content
+        await Promise.all([
+            fetch('configs/en/experiences.json').then(res => res.json()).then(data => { preloadedContent.en.experiences = data; }),
+            fetch('configs/zh/experiences_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.experiences = data; })
+        ]);
+        
+        // Preload honors content
+        await Promise.all([
+            fetch('configs/en/honors.json').then(res => res.json()).then(data => { preloadedContent.en.honors = data; }),
+            fetch('configs/zh/honors_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.honors = data; })
+        ]);
+        
+        // Preload teaching content
+        await Promise.all([
+            fetch('configs/en/teaching.json').then(res => res.json()).then(data => { preloadedContent.en.teaching = data; }),
+            fetch('configs/zh/teaching_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.teaching = data; })
+        ]);
+        
+        // Preload reviewer content
+        await Promise.all([
+            fetch('configs/en/reviewer.json').then(res => res.json()).then(data => { preloadedContent.en.reviewer = data; }),
+            fetch('configs/zh/reviewer_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.reviewer = data; })
+        ]);
+        
+        // Preload papers content
+        await Promise.all([
+            fetch('configs/en/papers.json').then(res => res.json()).then(data => { preloadedContent.en.papers = data; }),
+            fetch('configs/zh/papers_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.papers = data; })
+        ]);
+        
+        // Preload patents content
+        await Promise.all([
+            fetch('configs/en/patents.json').then(res => res.json()).then(data => { preloadedContent.en.patents = data; }),
+            fetch('configs/zh/patents_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.patents = data; })
+        ]);
+        
+        // Preload CV content (PDF URLs)
+        preloadedContent.cv = {
+            en: {
+                pdfUrl: 'configs/en/cv.pdf',
+                downloadUrl: 'configs/en/cv.pdf'
+            },
+            zh: {
+                pdfUrl: 'configs/zh/cv_zh.pdf',
+                downloadUrl: 'configs/zh/cv_zh.pdf'
+            }
+        };
+        
+        isContentPreloaded = true;
+        console.log('All content preloaded successfully');
+    } catch (error) {
+        console.error('Error preloading content:', error);
+        // If preloading fails, we'll fall back to the original behavior
+        isContentPreloaded = false;
+    }
+}
 
-// Language texts for UI elements
+// Initialize configuration when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadConfig();
+    // Start preloading content after a short delay to not block initial page load
+    setTimeout(preloadAllContent, 500);
+});
+
+// Language Texts - Chinese text inherits English structure, only differs in nouns and data introduction
 const languageTexts = {
     en: {
+        // Navigation
         home: 'Home',
         experiences: 'Experiences',
         publications: 'Publications',
+        patents: 'Patents',
+        news: 'News',
+        cv: 'CV',
+        
+        // Sections
         institutionExperiences: 'Institution Experiences',
         academicPapers: 'Academic Papers',
         otherPublications: 'Other Publications',
-        patents: 'Patents',
         honorsAndAwards: 'Honors and Awards',
         teaching: 'Teaching',
         reviewer: 'Reviewer',
-        researchContentComingSoon: 'Research content coming soon...',
-        googleScholar: 'Google Scholar',
-        github: 'GitHub',
-        cv: 'CV',
         curriculumVitae: 'Curriculum Vitae',
         education: 'Education',
         professionalExperience: 'Professional Experience',
         skills: 'Skills',
-        downloadFullCV: 'Download Full CV',
         aboutMe: 'About Me',
-        news: 'News',
+        
+        // Personal Info
+        googleScholar: 'Google Scholar',
+        github: 'GitHub',
+        
+        // Common
+        downloadFullCV: 'Download Full CV',
         welcome: 'Welcome to ',
         homepage: 'homepage!',
-    language: '中文',
+        researchContentComingSoon: 'Research content coming soon...',
         paper: 'Paper',
         code: 'Code',
         video: 'Video',
@@ -67,33 +167,42 @@ const languageTexts = {
         abstract: 'Abstract:',
         company: 'Company:',
         organization: 'Organization:',
-        latest: 'Latest'
+        latest: 'Latest',
+        
+        // Language
+        language: '中文'
     },
     zh: {
+        // Navigation - Inherits English structure, only translates navigation items
         home: '主页',
         experiences: '经历',
         publications: '出版物',
+        patents: '专利',
+        news: '新闻动态',
+        cv: '简历',
+        
+        // Sections - Inherits English structure, only translates some key nouns
         institutionExperiences: '院校经历',
         academicPapers: '学术论文',
         otherPublications: '其他出版物',
-        patents: '专利',
         honorsAndAwards: '荣誉奖项',
         teaching: '教学经历',
         reviewer: '审稿经历',
-        researchContentComingSoon: '研究内容即将推出...',
-        googleScholar: 'Google Scholar',
-        github: 'GitHub',
-        cv: '简历',
         curriculumVitae: '个人简历',
         education: '教育背景',
         professionalExperience: '工作经历',
         skills: '技能',
-        downloadFullCV: '下载完整简历',
         aboutMe: '个人简介',
-        news: '新闻动态',
+        
+        // Personal Info - Inherits English structure, only translates labels
+        googleScholar: 'Google Scholar',
+        github: 'GitHub',
+        
+        // Common - Inherits English structure, only translates some common words
+        downloadFullCV: '下载完整简历',
         welcome: '欢迎来到',
         homepage: '的主页！',
-    language: 'English',
+        researchContentComingSoon: '研究内容即将推出...',
         paper: '论文',
         code: '代码',
         video: '视频',
@@ -102,7 +211,10 @@ const languageTexts = {
         abstract: '摘要：',
         company: '公司：',
         organization: '组织：',
-        latest: '最新'
+        latest: '最新',
+        
+        // Language - Inherits English structure, only translates some key nouns
+        language: 'English'
     }
 };
 
@@ -216,6 +328,15 @@ function toggleLanguage() {
 function getText(key, language = null) {
     const lang = language || currentLanguage;
     return languageTexts[lang][key] || key;
+}
+
+// Function to get preloaded content
+function getPreloadedContent(contentType, language = null) {
+    const lang = language || currentLanguage;
+    if (isContentPreloaded && preloadedContent[lang] && preloadedContent[lang][contentType]) {
+        return preloadedContent[lang][contentType];
+    }
+    return null;
 }
 
 // Function to get config file path based on current language
@@ -556,11 +677,26 @@ function reloadContent() {
 }
 
 // Function to create language switch button
-function createLanguageSwitch() {
-    // Check if language switch already exists
-    if (document.querySelector('.language-switch')) {
-        return;
+async function createLanguageSwitch() {
+    // Check if single language mode is enabled
+    try {
+        const response = await fetch('configs/config.json');
+        const config = await response.json();
+        
+        // Don't create language switch button in single language mode
+        if (config.singleLanguageMode) {
+            // Remove any existing language switch buttons
+            const existingLangSwitches = document.querySelectorAll('.language-switch');
+            existingLangSwitches.forEach(btn => btn.remove());
+            return;
+        }
+    } catch (error) {
+        console.warn('Could not load config.json, assuming multi-language mode');
     }
+
+    // Remove any existing language switch buttons to prevent duplicates
+    const existingLangSwitches = document.querySelectorAll('.language-switch');
+    existingLangSwitches.forEach(btn => btn.remove());
 
     // Create language switch button
     const langSwitch = document.createElement('button');

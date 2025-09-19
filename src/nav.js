@@ -1,7 +1,8 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-18
+// Last Change: 2025-09-19
 
-// Create navigation bar
+// Navigation functionality
+// English text structure is used across all languages
 function createNavbar() {
     // Check if navigation bar already exists
     if (document.querySelector('header.navbar')) {
@@ -134,18 +135,17 @@ function createNavbar() {
             
             // Show the target section with a fade in effect
             setTimeout(() => {
-                targetSection.classList.add('active');
-                targetSection.style.opacity = '0';
-                
                 // Ensure the section content is in the correct language
                 updateSectionContentLanguage(targetId);
                 
                 // Load specific content based on section
                 if (targetId === 'home' && typeof loadHomeContent === 'function') {
-                    loadHomeContent();
-                } else if (targetId === 'cv' && typeof loadCVContent === 'function') {
-                    loadCVContent();
+                    targetSection.innerHTML = loadHomeContent();
                 }
+                
+                // Add active class and set opacity for fade in effect
+                targetSection.classList.add('active');
+                targetSection.style.opacity = '0';
                 
                 // Reset to default tab for experiences and publications sections
                 if (targetId === 'experiences' || targetId === 'publications') {
@@ -204,23 +204,15 @@ function createNavbar() {
         homeSection.id = 'home';
         homeSection.className = 'content-section active';
         
-        // Add content to home section
-        homeSection.innerHTML = '';
-        const homeContentDiv = document.createElement('div');
-        homeContentDiv.id = 'home-content';
-        homeSection.appendChild(homeContentDiv);
-        
-        // Add to main content area
+        // Create main content wrapper if it doesn't exist
         let mainContent = document.getElementById('main-content');
         if (!mainContent) {
-            mainContent = document.querySelector('#main-content .content-wrapper');
+            mainContent = document.createElement('main');
+            mainContent.id = 'main-content';
+            document.body.appendChild(mainContent);
         }
-        if (!mainContent) {
-            mainContent = document.querySelector('.content-wrapper');
-        }
-        if (!mainContent) {
-            mainContent = document.body;
-        }
+        
+        // Add home section to main content
         mainContent.appendChild(homeSection);
     } else {
         homeSection.classList.add('active');
@@ -228,12 +220,7 @@ function createNavbar() {
     
     // Load home content
     if (typeof loadHomeContent === 'function') {
-        loadHomeContent();
-    }
-    
-    // Create language switch after navigation bar is created
-    if (typeof createLanguageSwitch === 'function') {
-        createLanguageSwitch();
+        homeSection.innerHTML = loadHomeContent();
     }
     
     // Create theme switch after navigation bar is created
