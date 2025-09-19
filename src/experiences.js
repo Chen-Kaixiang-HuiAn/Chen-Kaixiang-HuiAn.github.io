@@ -13,14 +13,18 @@ function loadExperiencesContent() {
         </div>
         <div class="tabs-container">
             <div class="tabs">
-                <button class="tab-button active" data-tab="institution-experiences">${getText('institutionExperiences')}</button>
+                <button class="tab-button active" data-tab="education">${getText('education')}</button>
+                <button class="tab-button" data-tab="employment">${getText('employment')}</button>
                 <button class="tab-button" data-tab="honors-awards">${getText('honorsAndAwards')}</button>
                 <button class="tab-button" data-tab="teaching">${getText('teaching')}</button>
                 <button class="tab-button" data-tab="reviewer">${getText('reviewer')}</button>
             </div>
             <div class="tab-content">
-                <div id="institution-experiences" class="tab-pane active">
-                    <div id="institution-experiences-modules-container"></div>
+                <div id="education" class="tab-pane active">
+                    <div id="education-modules-container"></div>
+                </div>
+                <div id="employment" class="tab-pane">
+                    <div id="employment-modules-container"></div>
                 </div>
                 <div id="honors-awards" class="tab-pane">
                     <div id="honors-awards-modules-container"></div>
@@ -37,10 +41,81 @@ function loadExperiencesContent() {
     
     // Load modules after the content is added to the DOM
     setTimeout(() => {
-        loadInstitutionExperiencesModules('institution-experiences-modules-container', currentLang);
+        loadInstitutionExperiencesModules('education-modules-container', currentLang);
+        loadEmploymentModules('employment-modules-container', currentLang);
         loadHonorsAwardsModules('honors-awards-modules-container', currentLang);
         loadTeachingModules('teaching-modules-container', currentLang);
         loadReviewerModules('reviewer-modules-container', currentLang);
+        
+        // After loading all modules, check if we need to hide any tabs
+        setTimeout(() => {
+            // Check if employment tab should be hidden
+            const employmentContainer = document.getElementById('employment-modules-container');
+            if (employmentContainer && employmentContainer.children.length === 0) {
+                const employmentTab = document.querySelector('.tab-button[data-tab="employment"]');
+                if (employmentTab) {
+                    employmentTab.style.display = 'none';
+                }
+            }
+            
+            // Check if honors-awards tab should be hidden
+            const honorsContainer = document.getElementById('honors-awards-modules-container');
+            if (honorsContainer && honorsContainer.children.length === 0) {
+                const honorsTab = document.querySelector('.tab-button[data-tab="honors-awards"]');
+                if (honorsTab) {
+                    honorsTab.style.display = 'none';
+                }
+            }
+            
+            // Check if teaching tab should be hidden
+            const teachingContainer = document.getElementById('teaching-modules-container');
+            if (teachingContainer && teachingContainer.children.length === 0) {
+                const teachingTab = document.querySelector('.tab-button[data-tab="teaching"]');
+                if (teachingTab) {
+                    teachingTab.style.display = 'none';
+                }
+            }
+            
+            // Check if reviewer tab should be hidden
+            const reviewerContainer = document.getElementById('reviewer-modules-container');
+            if (reviewerContainer && reviewerContainer.children.length === 0) {
+                const reviewerTab = document.querySelector('.tab-button[data-tab="reviewer"]');
+                if (reviewerTab) {
+                    reviewerTab.style.display = 'none';
+                }
+            }
+            
+            // Ensure at least one tab is active and visible
+            const visibleTabs = Array.from(document.querySelectorAll('.tab-button')).filter(tab => 
+                tab.style.display !== 'none'
+            );
+            
+            if (visibleTabs.length > 0) {
+                // Check if the currently active tab is visible
+                const activeTab = document.querySelector('.tab-button.active');
+                if (activeTab && activeTab.style.display === 'none') {
+                    // If active tab is hidden, activate the first visible tab
+                    activeTab.classList.remove('active');
+                    const firstVisibleTab = visibleTabs[0];
+                    firstVisibleTab.classList.add('active');
+                    
+                    // Also activate the corresponding pane
+                    const tabId = firstVisibleTab.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-pane').forEach(pane => {
+                        pane.classList.remove('active');
+                    });
+                    const targetPane = document.getElementById(tabId);
+                    if (targetPane) {
+                        targetPane.classList.add('active');
+                    }
+                    
+                    // Update the stored state
+                    if (typeof activeTabStates !== 'undefined') {
+                        activeTabStates.experiences = tabId;
+                    }
+                }
+            }
+        }, 500); // Wait for modules to load
         
         // Add tab switching functionality
         const tabButtons = document.querySelectorAll('.tab-button');
@@ -72,38 +147,37 @@ function loadExperiencesContent() {
  * Loads institution experiences modules from configuration
  * @param {string} containerId - The ID of the container element
  * @param {string} language - The language code
- * 中文状态继承英文状态，仅在名词和数据引入方面保留区别
  */
 function loadInstitutionExperiencesModules(containerId, language = 'en') {
     // First try to get preloaded content
-    const preloadedExperiences = getPreloadedContent('experiences');
+    const preloadedEducation = getPreloadedContent('education');
     
-    if (preloadedExperiences) {
+    if (preloadedEducation) {
         // Use preloaded content
         const container = document.getElementById(containerId);
         if (!container) return;
         
-        renderModuleContainers(preloadedExperiences, 'education', containerId, language);
+        renderModuleContainers(preloadedEducation, 'education', containerId, language);
     } else {
         // Fall back to fetching content
         const configPath = language === 'zh' ? 
-            'configs/zh/experiences_zh.json' : 
-            'configs/en/experiences.json';
+            'configs/zh/education_zh.json' : 
+            'configs/en/education.json';
         
         fetch(configPath)
             .then(response => response.json())
             .then(data => {
-                // All experiences in the current structure are institution experiences
-                const institutionExperiences = data;
+                // All education in the current structure are education
+                const educationData = data;
                 
                 // Get container element
                 const container = document.getElementById(containerId);
                 if (!container) return;
                 
-                renderModuleContainers(institutionExperiences, 'education', containerId, language);
+                renderModuleContainers(educationData, 'education', containerId, language);
             })
             .catch(error => {
-                console.error('Error loading institution experiences modules:', error);
+                console.error('Error loading education modules:', error);
             });
     }
 }
@@ -111,10 +185,117 @@ function loadInstitutionExperiencesModules(containerId, language = 'en') {
 
 
 /**
+ * Loads employment modules from configuration
+ * @param {string} containerId - The ID of the container element
+ * @param {string} language - The language code
+ */
+function loadEmploymentModules(containerId, language = 'en') {
+    // First try to get preloaded content
+    const preloadedEmployment = getPreloadedContent('employment');
+    
+    if (preloadedEmployment) {
+        // Use preloaded content
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        // Check if there are any employment records
+        if (preloadedEmployment && preloadedEmployment.length > 0) {
+            // Map the data to the format expected by renderModuleContainers
+            const employmentData = preloadedEmployment.map(employment => {
+                // Create a details list for the employment record
+                const details = employment.details.map(detail => ({
+                    position: detail.position,
+                    department: detail.department,
+                    time: detail.time
+                }));
+                
+                return {
+                    company: employment.company,
+                    logoSrc: employment.logoSrc,
+                    link: employment.link,
+                    details: details,
+                    description: employment.company
+                };
+            });
+            
+            renderModuleContainers(employmentData, 'employment', containerId, language);
+            
+            // Show the tab button if it was hidden
+            const tabButton = document.querySelector('.tab-button[data-tab="employment"]');
+            if (tabButton) {
+                tabButton.style.display = '';
+            }
+        } else {
+            // Hide the tab button if no employment data
+            const tabButton = document.querySelector('.tab-button[data-tab="employment"]');
+            if (tabButton) {
+                tabButton.style.display = 'none';
+            }
+        }
+    } else {
+        // Fall back to fetching content
+        const configPath = language === 'zh' ? 
+            'configs/zh/employment_zh.json' : 
+            'configs/en/employment.json';
+        
+        fetch(configPath)
+            .then(response => response.json())
+            .then(data => {
+                // Check if there are any employment records
+                if (data && data.length > 0) {
+                    // Get container element
+                    const container = document.getElementById(containerId);
+                    if (!container) return;
+                    
+                    // Map the data to the format expected by renderModuleContainers
+                    const employmentData = data.map(employment => {
+                        // Create a details list for the employment record
+                        const details = employment.details.map(detail => ({
+                            position: detail.position,
+                            department: detail.department,
+                            time: detail.time
+                        }));
+                        
+                        return {
+                        company: employment.company,
+                        logoSrc: employment.logoSrc,
+                        link: employment.link,
+                        details: details,
+                        description: employment.company
+                    };
+                    });
+                    
+                    renderModuleContainers(employmentData, 'employment', containerId, language);
+                    
+                    // Show the tab button if it was hidden
+                    const tabButton = document.querySelector('.tab-button[data-tab="employment"]');
+                    if (tabButton) {
+                        tabButton.style.display = '';
+                    }
+                } else {
+                    // Hide the tab button if no employment data
+                    const tabButton = document.querySelector('.tab-button[data-tab="employment"]');
+                    if (tabButton) {
+                        tabButton.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error loading employment modules:', error);
+                
+                // Hide the tab button if there's an error loading the data
+                const tabButton = document.querySelector('.tab-button[data-tab="employment"]');
+                if (tabButton) {
+                    tabButton.style.display = 'none';
+                }
+            });
+    }
+}
+
+/**
  * Loads honors and awards modules from configuration
  * @param {string} containerId - The ID of the container element
  * @param {string} language - The language code
- * 中文状态继承英文状态，仅在名词和数据引入方面保留区别
  */
 function loadHonorsAwardsModules(containerId, language = 'en') {
     // First try to get preloaded content
@@ -203,7 +384,6 @@ function loadHonorsAwardsModules(containerId, language = 'en') {
  * Loads teaching modules from configuration
  * @param {string} containerId - The ID of the container element
  * @param {string} language - The language code
- * 中文状态继承英文状态，仅在名词和数据引入方面保留区别
  */
 function loadTeachingModules(containerId, language = 'en') {
     // First try to get preloaded content
@@ -218,7 +398,6 @@ function loadTeachingModules(containerId, language = 'en') {
         if (preloadedTeaching && preloadedTeaching.length > 0) {
             // Map the data to the format expected by renderModuleContainers
             const teachingData = preloadedTeaching.map(teaching => {
-                // 根据语言调整年份和季节的显示顺序
                 const timeDisplay = language === 'zh' ? 
                     `${teaching.year || ''} ${teaching.season || ''}` : 
                     `${teaching.season || ''} ${teaching.year || ''}`;
@@ -265,7 +444,6 @@ function loadTeachingModules(containerId, language = 'en') {
                     
                     // Map the data to the format expected by renderModuleContainers
                     const teachingData = data.map(teaching => {
-                        // 根据语言调整年份和季节的显示顺序
                         const timeDisplay = language === 'zh' ? 
                             `${teaching.year || ''} ${teaching.season || ''}` : 
                             `${teaching.season || ''} ${teaching.year || ''}`;
@@ -312,7 +490,6 @@ function loadTeachingModules(containerId, language = 'en') {
  * Loads reviewer modules from configuration
  * @param {string} containerId - The ID of the container element
  * @param {string} language - The language code
- * 中文状态继承英文状态，仅在名词和数据引入方面保留区别
  */
 function loadReviewerModules(containerId, language = 'en') {
     // First try to get preloaded content
@@ -397,10 +574,10 @@ function loadReviewerModules(containerId, language = 'en') {
     }
 }
 
-// Export functions for use in other modules
+// Export functions to be used by other modules
 window.loadExperiencesContent = loadExperiencesContent;
 window.loadInstitutionExperiencesModules = loadInstitutionExperiencesModules;
-
+window.loadEmploymentModules = loadEmploymentModules;
 window.loadHonorsAwardsModules = loadHonorsAwardsModules;
 window.loadTeachingModules = loadTeachingModules;
 window.loadReviewerModules = loadReviewerModules;

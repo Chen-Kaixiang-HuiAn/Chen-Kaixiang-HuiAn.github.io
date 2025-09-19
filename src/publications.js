@@ -112,13 +112,17 @@ function loadAcademicPapersModules(containerId, language = 'en') {
                 
                 // Check for English paper types
                 if (language === 'en') {
-                    return paper.type.toLowerCase().includes('paper');
+                    return paper.type.toLowerCase().includes('submission') || 
+                           paper.type.toLowerCase().includes('journal') ||
+                           paper.type.toLowerCase().includes('conference') ||
+                           paper.type.toLowerCase().includes('workshop');
                 }
                 // Check for Chinese paper types
                 else {
-                    return paper.type.includes('论文') || 
+                    return paper.type.includes('在投') || 
                            paper.type.includes('期刊') || 
-                           paper.type.includes('会议');
+                           paper.type.includes('会议') ||
+                           paper.type.includes('研讨会');
                 }
             });
             
@@ -184,7 +188,10 @@ function loadAcademicPapersModules(containerId, language = 'en') {
                         
                         // Check for English paper types
                         if (language === 'en') {
-                            return paper.type.toLowerCase().includes('paper');
+                            return paper.type.toLowerCase().includes('paper') || 
+                                   paper.type.toLowerCase().includes('journal') ||
+                                   paper.type.toLowerCase().includes('conference') ||
+                                   paper.type.toLowerCase().includes('proceedings');
                         }
                         // Check for Chinese paper types
                         else {

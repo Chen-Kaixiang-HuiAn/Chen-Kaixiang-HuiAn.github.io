@@ -212,22 +212,57 @@ function loadIntroContent() {
             introContent.innerHTML = paragraphs.map(p => `<p>${p}</p>`).join('');
         }
     } else {
-        // Fall back to fetching content
+        // If preloaded content is not available yet, start both:
+        // 1. A quick check for preloaded content with moderate intervals
+        // 2. A direct fetch request as fallback
+        
+        let isResolved = false;
+        const introContent = document.getElementById('intro-content');
+        
+        // Start direct fetch immediately
         const configPath = getConfigPath('intro', '.txt');
-        fetch(configPath)
+        const fetchPromise = fetch(configPath)
             .then(response => response.text())
             .then(data => {
-                const introContent = document.getElementById('intro-content');
-                if (introContent) {
+                if (!isResolved && introContent) {
+                    isResolved = true;
                     // Both languages use the same structure, only text content differs
                     // Convert line breaks to paragraphs
                     const paragraphs = data.split('\n').filter(p => p.trim() !== '');
                     introContent.innerHTML = paragraphs.map(p => `<p>${p}</p>`).join('');
                 }
+                return data;
             })
             .catch(error => {
                 console.error('Error loading intro content:', error);
             });
+        
+        // Check for preloaded content with moderate intervals
+        const checkPreloadStatus = setInterval(() => {
+            if (isResolved) {
+                clearInterval(checkPreloadStatus);
+                return;
+            }
+            
+            const preloadedIntroAfterWait = getPreloadedContent('intro');
+            if (preloadedIntroAfterWait) {
+                clearInterval(checkPreloadStatus);
+                if (!isResolved && introContent) {
+                    isResolved = true;
+                    // Both languages use the same structure, only text content differs
+                    // Convert line breaks to paragraphs
+                    const paragraphs = preloadedIntroAfterWait.split('\n').filter(p => p.trim() !== '');
+                    introContent.innerHTML = paragraphs.map(p => `<p>${p}</p>`).join('');
+                }
+            }
+        }, 80); // Check every 80ms for a balanced response
+        
+        // Set a moderate timeout to stop checking after 1.5 seconds
+        setTimeout(() => {
+            clearInterval(checkPreloadStatus);
+            // If fetch is still pending and we haven't resolved yet, 
+            // the fetchPromise will handle it when it completes
+        }, 1500);
     }
 }
 

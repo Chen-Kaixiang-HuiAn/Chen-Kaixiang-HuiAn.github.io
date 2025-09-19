@@ -36,6 +36,9 @@ function getModuleText(key, language = 'en') {
             abstract: 'Abstract:',
             company: 'Company:',
             organization: 'Organization:',
+            position: 'Position:',
+            department: 'Department:',
+            time: 'Time:',
             viewDetails: 'View Details',
             hideDetails: 'Hide Details'
         },
@@ -48,6 +51,9 @@ function getModuleText(key, language = 'en') {
             abstract: '摘要：',
             company: '公司：',
             organization: '组织：',
+            position: '职位：',
+            department: '部门：',
+            time: '时间：',
             viewDetails: '查看详情',
             hideDetails: '隐藏详情'
         }
@@ -90,6 +96,9 @@ function createModuleContainer(data, type, language = 'en') {
         case 'experience':
             icon.className = 'fas fa-briefcase';
             break;
+        case 'employment':
+            icon.className = 'fas fa-briefcase';
+            break;
         case 'honor':
             icon.className = 'fas fa-trophy';
             break;
@@ -116,8 +125,10 @@ function createModuleContainer(data, type, language = 'en') {
         titleText.textContent = data.title;
     } else if (type === 'patent' && data.title) {
         titleText.textContent = data.title;
-    } else if (type === 'experience' && data.position) {
-        titleText.textContent = data.position;
+    } else if (type === 'experience' && data.school) {
+        titleText.textContent = data.school;
+    } else if (type === 'employment' && data.company) {
+        titleText.textContent = data.company;
     } else if (type === 'honor' && data.title) {
         titleText.textContent = data.title;
     } else if (type === 'teaching' && data.title) {
@@ -157,12 +168,12 @@ function createModuleContainer(data, type, language = 'en') {
             const moduleImage = document.createElement('img');
             moduleImage.className = 'module-image';
             moduleImage.src = imageUrl;
-            moduleImage.alt = data.title || data.name || data.school || 'Module image';
+            moduleImage.alt = data.title || data.name || data.company || 'Module image';
             
             // Add click event to image for zooming
             moduleImage.style.cursor = 'pointer';
             moduleImage.addEventListener('click', () => {
-                openImageInModal(imageUrl, data.title || data.name || data.school || 'Module image');
+                openImageInModal(imageUrl, data.title || data.name || data.company || 'Module image');
             });
             
             // Wrap image in a link if website is available
@@ -216,11 +227,55 @@ function createModuleContainer(data, type, language = 'en') {
             `;
             moduleContent.appendChild(patentInfo);
         } else if (type === 'experience') {
-            const expInfo = document.createElement('div');
-            expInfo.innerHTML = `
-                ${data.company ? `<p><strong>${getModuleText('company', language)}</strong> ${data.company}</p>` : ''}
-            `;
-            moduleContent.appendChild(expInfo);
+            if (data.details) {
+                const detailsList = document.createElement('ul');
+                detailsList.style.paddingLeft = '20px';
+                
+                data.details.forEach(detail => {
+                    const detailItem = document.createElement('li');
+                    detailItem.style.marginBottom = '8px';
+                    detailItem.innerHTML = `
+                        <strong>${detail.position || ''}</strong> <em>${detail.department || ''}</em>
+                        ${detail.time ? `<br><span class="module-date">${detail.time}</span>` : ''}
+                    `;
+                    detailsList.appendChild(detailItem);
+                });
+                
+                moduleContent.appendChild(detailsList);
+            } else {
+                const expInfo = document.createElement('div');
+                expInfo.innerHTML = `
+                    ${data.position ? `<p><strong>${getModuleText('position', language)}</strong> ${data.position}</p>` : ''}
+                    ${data.department ? `<p><strong>${getModuleText('department', language)}</strong> ${data.department}</p>` : ''}
+                    ${data.time ? `<p><strong>${getModuleText('time', language)}</strong> ${data.time}</p>` : ''}
+                `;
+                moduleContent.appendChild(expInfo);
+            }
+        } else if (type === 'employment') {
+            if (data.details) {
+                const detailsList = document.createElement('ul');
+                detailsList.style.paddingLeft = '20px';
+                
+                data.details.forEach(detail => {
+                    const detailItem = document.createElement('li');
+                    detailItem.style.marginBottom = '8px';
+                    detailItem.innerHTML = `
+                        <strong>${detail.position || ''}</strong> <em>${detail.department || ''}</em>
+                        ${detail.time ? `<br><span class="module-date">${detail.time}</span>` : ''}
+                    `;
+                    detailsList.appendChild(detailItem);
+                });
+                
+                moduleContent.appendChild(detailsList);
+            } else {
+                const empInfo = document.createElement('div');
+                empInfo.innerHTML = `
+                    ${data.position ? `<p><strong>${getModuleText('position', language)}</strong> ${data.position}</p>` : ''}
+                    ${data.department ? `<p><strong>${getModuleText('department', language)}</strong> ${data.department}</p>` : ''}
+                    ${data.time ? `<p><strong>${getModuleText('time', language)}</strong> ${data.time}</p>` : ''}
+                `;
+                moduleContent.appendChild(empInfo);
+            }
         } else if (type === 'honor') {
             const honorInfo = document.createElement('div');
             honorInfo.innerHTML = `
@@ -404,6 +459,8 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
             titleText.textContent = data.title;
         } else if (type === 'experience' && data.position) {
             titleText.textContent = data.position;
+        } else if (type === 'employment' && data.company) {
+            titleText.textContent = data.company;
         } else if (type === 'honor' && data.title) {
             titleText.textContent = data.title;
         } else if (type === 'teaching' && data.title) {
@@ -444,7 +501,7 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 // Add click event to image for zooming
                 moduleImage.style.cursor = 'pointer';
                 moduleImage.addEventListener('click', () => {
-                    openImageInModal(imageUrl, data.title || data.name || data.school || 'Module image');
+                    openImageInModal(imageUrl, data.title || data.name || data.company || 'Module image');
                 });
                 
                 // Wrap image in a link if link is available
@@ -468,13 +525,13 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 
                 // Update existing image
                 moduleImage.src = imageUrl;
-                moduleImage.alt = data.title || data.name || data.school || 'Module image';
+                moduleImage.alt = data.title || data.name || data.company || 'Module image';
                 
                 // Remove existing click event and add new one
                 moduleImage.style.cursor = 'pointer';
                 const newImage = moduleImage.cloneNode(true);
                 newImage.addEventListener('click', () => {
-                    openImageInModal(imageUrl, data.title || data.name || data.school || 'Module image');
+                    openImageInModal(imageUrl, data.title || data.name || data.company || 'Module image');
                 });
                 moduleImage.parentNode.replaceChild(newImage, moduleImage);
                 
@@ -553,10 +610,66 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 ${data.type ? `<p><strong class="patent-type">${data.type}</strong> ${data.number ? `(<a href="${data.link || '#'}" target="_blank" rel="noopener noreferrer">${data.number}</a>)` : ''}${data.date ? `${language === 'zh' ? '，' : ', '}${data.date}` : ''}</p>` : ''}
                 ${data.abstract ? `<p><strong>${getModuleText('abstract', language)}</strong> ${data.abstract}${data.date ? `${language === 'zh' ? '，' : ', '}${data.date}` : ''}</p>` : ''}
             `;
+        } else if (type === 'employment') {
+            if (data.details) {
+                // Check if we need to update the details list
+                let detailsList = moduleContent.querySelector('ul');
+                if (!detailsList) {
+                    detailsList = document.createElement('ul');
+                    detailsList.style.paddingLeft = '20px';
+                    moduleContent.appendChild(detailsList);
+                }
+                
+                // Clear existing items
+                detailsList.innerHTML = '';
+                
+                // Add new items
+                data.details.forEach(detail => {
+                    const detailItem = document.createElement('li');
+                    detailItem.style.marginBottom = '8px';
+                    detailItem.innerHTML = `
+                        <strong>${detail.position || ''}</strong> <em>${detail.department || ''}</em>
+                        ${detail.time ? `<br><span class="module-date">${detail.time}</span>` : ''}
+                    `;
+                    detailsList.appendChild(detailItem);
+                });
+            } else {
+                moduleContent.innerHTML = `
+                    ${data.position ? `<p><strong>${getModuleText('position', language)}</strong> ${data.position}</p>` : ''}
+                    ${data.department ? `<p><strong>${getModuleText('department', language)}</strong> ${data.department}</p>` : ''}
+                    ${data.time ? `<p><strong>${getModuleText('time', language)}</strong> ${data.time}</p>` : ''}
+                `;
+            }
         } else if (type === 'experience') {
-            moduleContent.innerHTML = `
-                ${data.company ? `<p><strong>${getModuleText('company', language)}</strong> ${data.company}</p>` : ''}
-            `;
+            if (data.details) {
+                // Check if we need to update the details list
+                let detailsList = moduleContent.querySelector('ul');
+                if (!detailsList) {
+                    detailsList = document.createElement('ul');
+                    detailsList.style.paddingLeft = '20px';
+                    moduleContent.appendChild(detailsList);
+                }
+                
+                // Clear existing items
+                detailsList.innerHTML = '';
+                
+                // Add new items
+                data.details.forEach(detail => {
+                    const detailItem = document.createElement('li');
+                    detailItem.style.marginBottom = '8px';
+                    detailItem.innerHTML = `
+                        <strong>${detail.position || ''}</strong> <em>${detail.department || ''}</em>
+                        ${detail.time ? `<br><span class="module-date">${detail.time}</span>` : ''}
+                    `;
+                    detailsList.appendChild(detailItem);
+                });
+            } else {
+                moduleContent.innerHTML = `
+                    ${data.position ? `<p><strong>${getModuleText('position', language)}</strong> ${data.position}</p>` : ''}
+                    ${data.department ? `<p><strong>${getModuleText('department', language)}</strong> ${data.department}</p>` : ''}
+                    ${data.time ? `<p><strong>${getModuleText('time', language)}</strong> ${data.time}</p>` : ''}
+                `;
+            }
         } else if (type === 'honor') {
             moduleContent.innerHTML = `
                 ${data.organization ? `<p>${data.organization}${data.time ? `${language === 'zh' ? '，' : ', '}${data.time}` : ''}</p>` : ''}

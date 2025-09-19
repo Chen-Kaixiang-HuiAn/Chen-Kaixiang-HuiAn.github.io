@@ -860,6 +860,10 @@ body.dark-theme footer {
     flex: 0 0 100px;
 }
 
+.module-container.employment .module-image-container {
+    flex: 0 0 100px;
+}
+
 .module-container.publication .module-image-container {
     flex: 0 0 200px;
 }
@@ -1038,6 +1042,24 @@ body.dark-theme footer {
     border-left: 4px solid #4caf50;
 }
 
+.module-container.employment {
+    border-left: 4px solid #ff5722;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .module-container.honor {
     border-left: 4px solid #ff9800;
 }
@@ -1056,12 +1078,14 @@ body.dark-theme footer {
 
 /* Green color for education degree and publication type */
 .module-container.education .module-content strong:first-child,
-.module-container.publication .module-content p strong:first-of-type {
+.module-container.publication .module-content p strong:first-of-type,
+.module-container.employment .module-content strong:first-child {
     color: #4caf50;
 }
 
 /* Add spacing between degree and major in education modules */
-.module-container.education .module-content strong:first-child {
+.module-container.education .module-content strong:first-child,
+.module-container.employment .module-content strong:first-child {
     margin-right: 0.8rem;
 }
 
@@ -1126,12 +1150,21 @@ body.dark-theme footer {
     max-width: 100px;
 }
 
+.module-container.employment .module-image-container {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-bottom: 1rem;
+    max-width: 100px;
+}
+
 .module-container.publication .module-image-container {
     flex: 0 0 auto;
     width: 100%;
     margin-bottom: 1rem;
     max-width: 200px;
 }
+
+
     
     .module-content {
         flex: 1;

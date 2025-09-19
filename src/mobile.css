@@ -12,8 +12,9 @@
     width: 100%;
     display: block;
   }
-  /* Center images in education and publication modules on mobile */
+  /* Center images in education and employment modules on mobile */
   .module-container.education .module-image-container,
+  .module-container.employment .module-image-container,
   .module-container.publication .module-image-container {
     margin-left: auto;
     margin-right: auto;
@@ -207,6 +208,10 @@
     border-left: 4px solid var(--accent) !important;
   }
   
+  body.light-theme .module-container.employment {
+    border-left: 4px solid #ff5722 !important;
+  }
+  
   body.light-theme .module-container.experience {
     border-left: 4px solid #4caf50 !important;
   }
@@ -243,6 +248,10 @@
     color: #4caf50 !important;
   }
   
+  body.light-theme .module-container.employment .module-date {
+    color: #4caf50 !important;
+  }
+  
   /* Light theme specific adjustments for publication modules on mobile */
   body.light-theme .module-container.publication .module-image-container {
     margin-left: auto;
@@ -270,6 +279,38 @@
   }
   
   body.light-theme .module-container.publication .module-link {
+    flex: 1 1 40%;
+    min-width: 120px;
+    box-sizing: border-box;
+  }
+  
+  /* Light theme specific adjustments for employment modules on mobile */
+  body.light-theme .module-container.employment .module-image-container {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+    float: none;
+  }
+  
+  body.light-theme .module-container.employment .module-title {
+    font-size: 1.05rem !important;
+  }
+  
+  body.light-theme .module-container.employment .module-footer {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  
+  body.light-theme .module-container.employment .module-links {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  body.light-theme .module-container.employment .module-link {
     flex: 1 1 40%;
     min-width: 120px;
     box-sizing: border-box;

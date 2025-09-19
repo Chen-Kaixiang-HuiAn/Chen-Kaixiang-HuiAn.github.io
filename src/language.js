@@ -46,56 +46,62 @@ async function preloadAllContent() {
     try {
         // Preload info content
         await Promise.all([
-            fetch('configs/en/info.json').then(res => res.json()).then(data => { preloadedContent.en.info = data; }),
-            fetch('configs/zh/info_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.info = data; })
+            fetch('configs/en/info.json').then(res => res.json()).then(data => { preloadedContent.en.info = data; }).catch(() => {}),
+            fetch('configs/zh/info_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.info = data; }).catch(() => {})
         ]);
         
         // Preload intro content
         await Promise.all([
-            fetch('configs/en/intro.txt').then(res => res.text()).then(data => { preloadedContent.en.intro = data; }),
-            fetch('configs/zh/intro_zh.txt').then(res => res.text()).then(data => { preloadedContent.zh.intro = data; })
+            fetch('configs/en/intro.txt').then(res => res.text()).then(data => { preloadedContent.en.intro = data; }).catch(() => {}),
+            fetch('configs/zh/intro_zh.txt').then(res => res.text()).then(data => { preloadedContent.zh.intro = data; }).catch(() => {})
         ]);
         
         // Preload news content
         await Promise.all([
-            fetch('configs/en/news.json').then(res => res.json()).then(data => { preloadedContent.en.news = data; }),
-            fetch('configs/zh/news_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.news = data; })
+            fetch('configs/en/news.json').then(res => res.json()).then(data => { preloadedContent.en.news = data; }).catch(() => {}),
+            fetch('configs/zh/news_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.news = data; }).catch(() => {})
         ]);
         
-        // Preload experiences content
+        // Preload education content
         await Promise.all([
-            fetch('configs/en/experiences.json').then(res => res.json()).then(data => { preloadedContent.en.experiences = data; }),
-            fetch('configs/zh/experiences_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.experiences = data; })
+            fetch('configs/en/education.json').then(res => res.json()).then(data => { preloadedContent.en.education = data; }).catch(() => {}),
+            fetch('configs/zh/education_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.education = data; }).catch(() => {})
         ]);
         
-        // Preload honors content
+        // Preload employment content
         await Promise.all([
-            fetch('configs/en/honors.json').then(res => res.json()).then(data => { preloadedContent.en.honors = data; }),
-            fetch('configs/zh/honors_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.honors = data; })
+            fetch('configs/en/employment.json').then(res => res.json()).then(data => { preloadedContent.en.employment = data; }).catch(() => {}),
+            fetch('configs/zh/employment_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.employment = data; }).catch(() => {})
         ]);
+
+      // Preload honors content
+      await Promise.all([
+          fetch('configs/en/honors.json').then(res => res.json()).then(data => { preloadedContent.en.honors = data; }).catch(() => {}),
+          fetch('configs/zh/honors_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.honors = data; }).catch(() => {})
+      ]);
         
         // Preload teaching content
         await Promise.all([
-            fetch('configs/en/teaching.json').then(res => res.json()).then(data => { preloadedContent.en.teaching = data; }),
-            fetch('configs/zh/teaching_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.teaching = data; })
+            fetch('configs/en/teaching.json').then(res => res.json()).then(data => { preloadedContent.en.teaching = data; }).catch(() => {}),
+            fetch('configs/zh/teaching_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.teaching = data; }).catch(() => {})
         ]);
         
         // Preload reviewer content
         await Promise.all([
-            fetch('configs/en/reviewer.json').then(res => res.json()).then(data => { preloadedContent.en.reviewer = data; }),
-            fetch('configs/zh/reviewer_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.reviewer = data; })
+            fetch('configs/en/reviewer.json').then(res => res.json()).then(data => { preloadedContent.en.reviewer = data; }).catch(() => {}),
+            fetch('configs/zh/reviewer_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.reviewer = data; }).catch(() => {})
         ]);
         
         // Preload papers content
         await Promise.all([
-            fetch('configs/en/papers.json').then(res => res.json()).then(data => { preloadedContent.en.papers = data; }),
-            fetch('configs/zh/papers_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.papers = data; })
+            fetch('configs/en/papers.json').then(res => res.json()).then(data => { preloadedContent.en.papers = data; }).catch(() => {}),
+            fetch('configs/zh/papers_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.papers = data; }).catch(() => {})
         ]);
         
         // Preload patents content
         await Promise.all([
-            fetch('configs/en/patents.json').then(res => res.json()).then(data => { preloadedContent.en.patents = data; }),
-            fetch('configs/zh/patents_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.patents = data; })
+            fetch('configs/en/patents.json').then(res => res.json()).then(data => { preloadedContent.en.patents = data; }).catch(() => {}),
+            fetch('configs/zh/patents_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.patents = data; }).catch(() => {})
         ]);
         
         // Preload CV content (PDF URLs)
@@ -138,7 +144,7 @@ const languageTexts = {
         cv: 'CV',
         
         // Sections
-        institutionExperiences: 'Institution Experiences',
+        institutionExperiences: 'Education',
         academicPapers: 'Academic Papers',
         otherPublications: 'Other Publications',
         honorsAndAwards: 'Honors and Awards',
@@ -146,7 +152,7 @@ const languageTexts = {
         reviewer: 'Reviewer',
         curriculumVitae: 'Curriculum Vitae',
         education: 'Education',
-        professionalExperience: 'Professional Experience',
+        employment: 'Employment',
         skills: 'Skills',
         aboutMe: 'About Me',
         
@@ -182,7 +188,7 @@ const languageTexts = {
         cv: '简历',
         
         // Sections - Inherits English structure, only translates some key nouns
-        institutionExperiences: '院校经历',
+        institutionExperiences: '教育经历',
         academicPapers: '学术论文',
         otherPublications: '其他出版物',
         honorsAndAwards: '荣誉奖项',
@@ -191,6 +197,7 @@ const languageTexts = {
         curriculumVitae: '个人简历',
         education: '教育背景',
         professionalExperience: '工作经历',
+        employment: '工作经历',
         skills: '技能',
         aboutMe: '个人简介',
         
@@ -220,7 +227,7 @@ const languageTexts = {
 
 // Global variables to store active tab states
 let activeTabStates = {
-  experiences: 'institution-experiences',
+  experiences: 'education',
   publications: 'academic-papers'
 };
 
@@ -339,12 +346,35 @@ function getPreloadedContent(contentType, language = null) {
     return null;
 }
 
-// Function to get config file path based on current language
-function getConfigPath(filename, extension) {
-    const langPrefix = currentLanguage === 'zh' ? 'zh/' : 'en/';
-    const filePrefix = currentLanguage === 'zh' ? '_zh' : '';
-    const ext = extension || (filename.includes('.') ? '' : '.json');
-    return `configs/${langPrefix}${filename}${filePrefix}${ext}`;
+/**
+ * Get the configuration file path based on the current language
+ * @param {string} configType - The type of configuration file
+ * @param {string} extension - The file extension (optional, defaults to .json)
+ * @returns {string} The path to the configuration file
+ */
+function getConfigPath(configType, extension = '.json') {
+    const currentLang = getCurrentLanguage();
+    const langPrefix = currentLang === 'zh' ? 'zh' : 'en';
+    
+    // Special handling for intro.txt files
+    if (configType === 'intro') {
+        return `configs/${langPrefix}/intro${currentLang === 'zh' ? '_zh' : ''}.txt`;
+    }
+    
+    // Map configuration types to file paths
+    const configPaths = {
+        'education': `configs/${langPrefix}/education${currentLang === 'zh' ? '_zh' : ''}.json`,
+        'employment': `configs/${langPrefix}/employment${currentLang === 'zh' ? '_zh' : ''}.json`,
+        'honors': `configs/${langPrefix}/honors${currentLang === 'zh' ? '_zh' : ''}.json`,
+        'teaching': `configs/${langPrefix}/teaching${currentLang === 'zh' ? '_zh' : ''}.json`,
+        'reviewer': `configs/${langPrefix}/reviewer${currentLang === 'zh' ? '_zh' : ''}.json`,
+        'papers': `configs/${langPrefix}/papers.json`,
+        'patents': `configs/${langPrefix}/patents.json`,
+        'projects': `configs/${langPrefix}/projects.json`,
+        'skills': `configs/${langPrefix}/skills.json`
+    };
+    
+    return configPaths[configType] || `configs/${langPrefix}/${configType}${extension}`;
 }
 
 // Function to update UI language elements
@@ -430,22 +460,33 @@ function updateSectionContentLanguage(sectionId) {
       
       // Update tab titles
       const expTabButtons = section.querySelectorAll('.tab-button');
-      if (expTabButtons.length >= 4) {
+      if (expTabButtons.length >= 5) {
         expTabButtons[0].textContent = getText('institutionExperiences');
-        expTabButtons[1].textContent = getText('honorsAndAwards');
-        expTabButtons[2].textContent = getText('teaching');
-        expTabButtons[3].textContent = getText('reviewer');
+        expTabButtons[1].textContent = getText('employment');
+        expTabButtons[2].textContent = getText('honorsAndAwards');
+        expTabButtons[3].textContent = getText('teaching');
+        expTabButtons[4].textContent = getText('reviewer');
       }
       
       // Reload modules with current language
-      const expInstitutionContainer = document.getElementById('institution-experiences-modules-container');
-      if (expInstitutionContainer && typeof loadInstitutionExperiencesModules === 'function') {
+      const expEducationContainer = document.getElementById('education-modules-container');
+      if (expEducationContainer && typeof loadInstitutionExperiencesModules === 'function') {
         // Reset tab button visibility before reloading
-        const institutionTab = document.querySelector('.tab-button[data-tab="institution-experiences"]');
-        if (institutionTab) {
-          institutionTab.style.display = '';
+        const educationTab = document.querySelector('.tab-button[data-tab="education"]');
+        if (educationTab) {
+          educationTab.style.display = '';
         }
-        loadInstitutionExperiencesModules('institution-experiences-modules-container', lang);
+        loadInstitutionExperiencesModules('education-modules-container', lang);
+      }
+      
+      const expEmploymentContainer = document.getElementById('employment-modules-container');
+      if (expEmploymentContainer && typeof loadEmploymentModules === 'function') {
+        // Reset tab button visibility before reloading
+        const employmentTab = document.querySelector('.tab-button[data-tab="employment"]');
+        if (employmentTab) {
+          employmentTab.style.display = '';
+        }
+        loadEmploymentModules('employment-modules-container', lang);
       }
       
       const expHonorsContainer = document.getElementById('honors-awards-modules-container');
@@ -477,6 +518,72 @@ function updateSectionContentLanguage(sectionId) {
         }
         loadReviewerModules('reviewer-modules-container', lang);
       }
+      
+      // After reloading all modules, check if we need to hide any tabs
+      setTimeout(() => {
+        // Check if employment tab should be hidden
+        if (expEmploymentContainer && expEmploymentContainer.children.length === 0) {
+          const employmentTab = document.querySelector('.tab-button[data-tab="employment"]');
+          if (employmentTab) {
+            employmentTab.style.display = 'none';
+          }
+        }
+        
+        // Check if honors-awards tab should be hidden
+        if (expHonorsContainer && expHonorsContainer.children.length === 0) {
+          const honorsTab = document.querySelector('.tab-button[data-tab="honors-awards"]');
+          if (honorsTab) {
+            honorsTab.style.display = 'none';
+          }
+        }
+        
+        // Check if teaching tab should be hidden
+        if (expTeachingContainer && expTeachingContainer.children.length === 0) {
+          const teachingTab = document.querySelector('.tab-button[data-tab="teaching"]');
+          if (teachingTab) {
+            teachingTab.style.display = 'none';
+          }
+        }
+        
+        // Check if reviewer tab should be hidden
+        if (expReviewerContainer && expReviewerContainer.children.length === 0) {
+          const reviewerTab = document.querySelector('.tab-button[data-tab="reviewer"]');
+          if (reviewerTab) {
+            reviewerTab.style.display = 'none';
+          }
+        }
+        
+        // Ensure at least one tab is active and visible
+        const visibleTabs = Array.from(section.querySelectorAll('.tab-button')).filter(tab => 
+          tab.style.display !== 'none'
+        );
+        
+        if (visibleTabs.length > 0) {
+          // Check if the currently active tab is visible
+          const activeTab = section.querySelector('.tab-button.active');
+          if (activeTab && activeTab.style.display === 'none') {
+            // If active tab is hidden, activate the first visible tab
+            activeTab.classList.remove('active');
+            const firstVisibleTab = visibleTabs[0];
+            firstVisibleTab.classList.add('active');
+            
+            // Also activate the corresponding pane
+            const tabId = firstVisibleTab.getAttribute('data-tab');
+            section.querySelectorAll('.tab-pane').forEach(pane => {
+              pane.classList.remove('active');
+            });
+            const targetPane = section.getElementById(tabId);
+            if (targetPane) {
+              targetPane.classList.add('active');
+            }
+            
+            // Update the stored state
+            if (typeof activeTabStates !== 'undefined') {
+              activeTabStates.experiences = tabId;
+            }
+          }
+        }
+      }, 500); // Wait for modules to load
       break;
       
     case 'publications':
@@ -608,7 +715,7 @@ function reloadContent() {
         });
         
         // Get the previously active tab ID from stored state
-        const activeTabId = activeTabStates && activeTabStates.experiences ? activeTabStates.experiences : 'institution-experiences';
+        const activeTabId = activeTabStates?.experiences || 'education';
         
         // Find the tab button with the stored ID
         const activeTabButton = Array.from(expTabButtons).find(btn => 
@@ -650,7 +757,7 @@ function reloadContent() {
         });
         
         // Get the previously active tab ID from stored state
-        const activeTabId = activeTabStates && activeTabStates.publications ? activeTabStates.publications : 'academic-papers';
+        const activeTabId = activeTabStates?.publications || 'academic-papers';
         
         // Find the tab button with the stored ID
         const activeTabButton = Array.from(pubTabButtons).find(btn => 
