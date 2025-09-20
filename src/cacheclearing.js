@@ -24,6 +24,67 @@ function clearPageCache() {
       });
     });
   }
+  
+  // After clearing cache, we need to recheck and hide empty modules
+  // This ensures that modules that were relying on preloaded content
+  // are properly hidden when the cache is cleared
+  setTimeout(() => {
+    // Check experiences section modules
+    const experiencesSection = document.getElementById('experiences');
+    if (experiencesSection) {
+      const lang = getCurrentLanguage();
+      
+      // Check employment content
+      const employmentData = getPreloadedContent ? getPreloadedContent('employment', lang) : null;
+      if (!employmentData || (Array.isArray(employmentData) && employmentData.length === 0)) {
+        const employmentTab = experiencesSection.querySelector('.tab-button[data-tab="employment"]');
+        if (employmentTab && employmentTab.style.display !== 'none') {
+          employmentTab.style.display = 'none';
+        }
+      }
+      
+      // Check honors content
+      const honorsData = getPreloadedContent ? getPreloadedContent('honors', lang) : null;
+      if (!honorsData || (Array.isArray(honorsData) && honorsData.length === 0)) {
+        const honorsTab = experiencesSection.querySelector('.tab-button[data-tab="honors-awards"]');
+        if (honorsTab && honorsTab.style.display !== 'none') {
+          honorsTab.style.display = 'none';
+        }
+      }
+      
+      // Check teaching content
+      const teachingData = getPreloadedContent ? getPreloadedContent('teaching', lang) : null;
+      if (!teachingData || (Array.isArray(teachingData) && teachingData.length === 0)) {
+        const teachingTab = experiencesSection.querySelector('.tab-button[data-tab="teaching"]');
+        if (teachingTab && teachingTab.style.display !== 'none') {
+          teachingTab.style.display = 'none';
+        }
+      }
+      
+      // Check reviewer content
+      const reviewerData = getPreloadedContent ? getPreloadedContent('reviewer', lang) : null;
+      if (!reviewerData || (Array.isArray(reviewerData) && reviewerData.length === 0)) {
+        const reviewerTab = experiencesSection.querySelector('.tab-button[data-tab="reviewer"]');
+        if (reviewerTab && reviewerTab.style.display !== 'none') {
+          reviewerTab.style.display = 'none';
+        }
+      }
+    }
+    
+    // Check publications section modules
+    const publicationsSection = document.getElementById('publications');
+    if (publicationsSection) {
+      const lang = getCurrentLanguage();
+      const patentsData = getPreloadedContent ? getPreloadedContent('patents', lang) : null;
+      if (!patentsData || (Array.isArray(patentsData) && patentsData.length === 0) || 
+          (patentsData && patentsData.patents && Array.isArray(patentsData.patents) && patentsData.patents.length === 0)) {
+        const patentsTab = publicationsSection.querySelector('.tab-button[data-tab="patents"]');
+        if (patentsTab && patentsTab.style.display !== 'none') {
+          patentsTab.style.display = 'none';
+        }
+      }
+    }
+  }, 300); // Wait a bit for the cache to be cleared
 }
 
 /**

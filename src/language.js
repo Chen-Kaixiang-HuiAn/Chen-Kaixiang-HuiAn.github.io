@@ -553,6 +553,47 @@ function updateSectionContentLanguage(sectionId) {
           }
         }
         
+        // Additional check for cache overload scenarios - verify content directly
+        // This ensures that even if preloaded content is cleared due to cache overload,
+        // we still hide tabs that have no actual content
+        const lang = getCurrentLanguage();
+        
+        // Check employment content
+        const employmentData = getPreloadedContent('employment', lang);
+        if (!employmentData || (Array.isArray(employmentData) && employmentData.length === 0)) {
+          const employmentTab = document.querySelector('.tab-button[data-tab="employment"]');
+          if (employmentTab && employmentTab.style.display !== 'none') {
+            employmentTab.style.display = 'none';
+          }
+        }
+        
+        // Check honors content
+        const honorsData = getPreloadedContent('honors', lang);
+        if (!honorsData || (Array.isArray(honorsData) && honorsData.length === 0)) {
+          const honorsTab = document.querySelector('.tab-button[data-tab="honors-awards"]');
+          if (honorsTab && honorsTab.style.display !== 'none') {
+            honorsTab.style.display = 'none';
+          }
+        }
+        
+        // Check teaching content
+        const teachingData = getPreloadedContent('teaching', lang);
+        if (!teachingData || (Array.isArray(teachingData) && teachingData.length === 0)) {
+          const teachingTab = document.querySelector('.tab-button[data-tab="teaching"]');
+          if (teachingTab && teachingTab.style.display !== 'none') {
+            teachingTab.style.display = 'none';
+          }
+        }
+        
+        // Check reviewer content
+        const reviewerData = getPreloadedContent('reviewer', lang);
+        if (!reviewerData || (Array.isArray(reviewerData) && reviewerData.length === 0)) {
+          const reviewerTab = document.querySelector('.tab-button[data-tab="reviewer"]');
+          if (reviewerTab && reviewerTab.style.display !== 'none') {
+            reviewerTab.style.display = 'none';
+          }
+        }
+        
         // Ensure at least one tab is active and visible
         const visibleTabs = Array.from(section.querySelectorAll('.tab-button')).filter(tab => 
           tab.style.display !== 'none'
@@ -610,6 +651,59 @@ function updateSectionContentLanguage(sectionId) {
       if (patentsContainer && typeof window.loadPatentsModules === 'function') {
         window.loadPatentsModules('patents-modules-container', lang);
       }
+      
+      // After reloading modules, check if we need to hide the patents tab
+      setTimeout(() => {
+        // Check if patents container has no content
+        if (patentsContainer && patentsContainer.children.length === 0) {
+          const patentsTab = document.querySelector('.tab-button[data-tab="patents"]');
+          if (patentsTab) {
+            patentsTab.style.display = 'none';
+          }
+        }
+        
+        // Additional check for cache overload scenarios - verify patents content directly
+        const lang = getCurrentLanguage();
+        const patentsData = getPreloadedContent('patents', lang);
+        if (!patentsData || (Array.isArray(patentsData) && patentsData.length === 0) || 
+            (patentsData && patentsData.patents && Array.isArray(patentsData.patents) && patentsData.patents.length === 0)) {
+          const patentsTab = document.querySelector('.tab-button[data-tab="patents"]');
+          if (patentsTab && patentsTab.style.display !== 'none') {
+            patentsTab.style.display = 'none';
+          }
+        }
+        
+        // Ensure at least one tab is active and visible
+        const visibleTabs = Array.from(section.querySelectorAll('.tab-button')).filter(tab => 
+          tab.style.display !== 'none'
+        );
+        
+        if (visibleTabs.length > 0) {
+          // Check if the currently active tab is visible
+          const activeTab = section.querySelector('.tab-button.active');
+          if (activeTab && activeTab.style.display === 'none') {
+            // If active tab is hidden, activate the first visible tab
+            activeTab.classList.remove('active');
+            const firstVisibleTab = visibleTabs[0];
+            firstVisibleTab.classList.add('active');
+            
+            // Also activate the corresponding pane
+            const tabId = firstVisibleTab.getAttribute('data-tab');
+            section.querySelectorAll('.tab-pane').forEach(pane => {
+              pane.classList.remove('active');
+            });
+            const targetPane = section.getElementById(tabId);
+            if (targetPane) {
+              targetPane.classList.add('active');
+            }
+            
+            // Update the stored state
+            if (typeof activeTabStates !== 'undefined') {
+              activeTabStates.publications = tabId;
+            }
+          }
+        }
+      }, 500); // Wait for modules to load
       break;
       
     case 'cv':
@@ -737,6 +831,75 @@ function reloadContent() {
           activeTabStates.experiences = tabId;
         }
       }
+      
+      // After setting active tab, check if we need to hide any tabs due to cache overload
+      const lang = getCurrentLanguage();
+      
+      // Check employment content
+      const employmentData = getPreloadedContent('employment', lang);
+      if (!employmentData || (Array.isArray(employmentData) && employmentData.length === 0)) {
+        const employmentTab = experiencesSection.querySelector('.tab-button[data-tab="employment"]');
+        if (employmentTab && employmentTab.style.display !== 'none') {
+          employmentTab.style.display = 'none';
+        }
+      }
+      
+      // Check honors content
+      const honorsData = getPreloadedContent('honors', lang);
+      if (!honorsData || (Array.isArray(honorsData) && honorsData.length === 0)) {
+        const honorsTab = experiencesSection.querySelector('.tab-button[data-tab="honors-awards"]');
+        if (honorsTab && honorsTab.style.display !== 'none') {
+          honorsTab.style.display = 'none';
+        }
+      }
+      
+      // Check teaching content
+      const teachingData = getPreloadedContent('teaching', lang);
+      if (!teachingData || (Array.isArray(teachingData) && teachingData.length === 0)) {
+        const teachingTab = experiencesSection.querySelector('.tab-button[data-tab="teaching"]');
+        if (teachingTab && teachingTab.style.display !== 'none') {
+          teachingTab.style.display = 'none';
+        }
+      }
+      
+      // Check reviewer content
+      const reviewerData = getPreloadedContent('reviewer', lang);
+      if (!reviewerData || (Array.isArray(reviewerData) && reviewerData.length === 0)) {
+        const reviewerTab = experiencesSection.querySelector('.tab-button[data-tab="reviewer"]');
+        if (reviewerTab && reviewerTab.style.display !== 'none') {
+          reviewerTab.style.display = 'none';
+        }
+      }
+      
+      // Ensure the active tab is still visible after hiding empty tabs
+      const activeTab = experiencesSection.querySelector('.tab-button.active');
+      if (activeTab && activeTab.style.display === 'none') {
+        // Find the first visible tab
+        const visibleTabs = Array.from(experiencesSection.querySelectorAll('.tab-button')).filter(tab => 
+          tab.style.display !== 'none'
+        );
+        
+        if (visibleTabs.length > 0) {
+          activeTab.classList.remove('active');
+          const firstVisibleTab = visibleTabs[0];
+          firstVisibleTab.classList.add('active');
+          
+          // Also activate the corresponding pane
+          const tabId = firstVisibleTab.getAttribute('data-tab');
+          experiencesSection.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+          });
+          const targetPane = experiencesSection.querySelector(`.tab-pane#${tabId}`);
+          if (targetPane) {
+            targetPane.classList.add('active');
+          }
+          
+          // Update the stored state
+          if (typeof activeTabStates !== 'undefined') {
+            activeTabStates.experiences = tabId;
+          }
+        }
+      }
     }
     
     // For publications section
@@ -777,6 +940,47 @@ function reloadContent() {
         // Update the stored state
         if (typeof activeTabStates !== 'undefined') {
           activeTabStates.publications = tabId;
+        }
+      }
+      
+      // After setting active tab, check if we need to hide patents tab due to cache overload
+      const lang = getCurrentLanguage();
+      const patentsData = getPreloadedContent('patents', lang);
+      if (!patentsData || (Array.isArray(patentsData) && patentsData.length === 0) || 
+          (patentsData && patentsData.patents && Array.isArray(patentsData.patents) && patentsData.patents.length === 0)) {
+        const patentsTab = publicationsSection.querySelector('.tab-button[data-tab="patents"]');
+        if (patentsTab && patentsTab.style.display !== 'none') {
+          patentsTab.style.display = 'none';
+        }
+      }
+      
+      // Ensure the active tab is still visible after hiding empty tabs
+      const activeTab = publicationsSection.querySelector('.tab-button.active');
+      if (activeTab && activeTab.style.display === 'none') {
+        // Find the first visible tab
+        const visibleTabs = Array.from(publicationsSection.querySelectorAll('.tab-button')).filter(tab => 
+          tab.style.display !== 'none'
+        );
+        
+        if (visibleTabs.length > 0) {
+          activeTab.classList.remove('active');
+          const firstVisibleTab = visibleTabs[0];
+          firstVisibleTab.classList.add('active');
+          
+          // Also activate the corresponding pane
+          const tabId = firstVisibleTab.getAttribute('data-tab');
+          publicationsSection.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+          });
+          const targetPane = publicationsSection.querySelector(`.tab-pane#${tabId}`);
+          if (targetPane) {
+            targetPane.classList.add('active');
+          }
+          
+          // Update the stored state
+          if (typeof activeTabStates !== 'undefined') {
+            activeTabStates.publications = tabId;
+          }
         }
       }
     }
