@@ -1,6 +1,6 @@
 /*
  * Written by Constantine Heinrich Chen (ConsHein Chen)
- * Last Change: 2025-09-19
+ * Last Change: 2025-09-26
  */
 
 /* Navigation bar styles */
@@ -1095,8 +1095,239 @@ body.dark-theme footer {
 }
 
 /* Beige color for patent type */
-.module-container.patent .module-content strong.patent-type {
-    color: #f5deb3 !important; /* 米黄色 */
+.module-container.patent .module-content .patent-type {
+    color: #f5deb3 !important;
+}
+
+/* Styles for tutor, dissertation, and project elements */
+.module-tutor {
+    display: inline-block;
+    background: rgba(76, 175, 80, 0.15);
+    color: #81c784;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    margin: 0.3rem 0;
+    font-weight: 500;
+    border-left: 3px solid #4caf50;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.module-tutor:hover {
+    background: rgba(76, 175, 80, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.module-dissertation {
+    display: inline-block;
+    background: rgba(33, 150, 243, 0.15);
+    color: #64b5f6;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    margin: 0.3rem 0;
+    font-weight: 500;
+    border-left: 3px solid #2196f3;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.module-dissertation:hover {
+    background: rgba(33, 150, 243, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.module-project {
+    display: inline-block;
+    background: rgba(255, 87, 34, 0.15);
+    color: #ff8a65;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    margin: 0.3rem 0;
+    font-weight: 500;
+    border-left: 3px solid #ff5722;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.module-project:hover {
+    background: rgba(255, 87, 34, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Update module-date style to better complement the new elements */
+.module-date {
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: inline-block;
+    background: rgba(52, 204, 235, 0.1);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    margin-top: 0.5rem;
+    border: 1px solid rgba(52, 204, 235, 0.2);
+    transition: all 0.3s ease;
+}
+
+.module-date:hover {
+    background: rgba(52, 204, 235, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Styles for honors module content */
+.module-container.honor .module-content p {
+    display: inline-block;
+    background: rgba(255, 152, 0, 0.15);
+    color: #ffb74d;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin: 0.3rem 0;
+    font-weight: 500;
+    border-left: 3px solid #ff9800;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: auto;
+}
+
+.module-container.honor .module-content p:hover {
+    background: rgba(255, 152, 0, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Styles for teaching module content */
+.module-container.teaching .module-content p {
+    display: inline-block;
+    background: rgba(156, 39, 176, 0.15);
+    color: #ba68c8;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin: 0.3rem 0;
+    font-weight: 500;
+    border-left: 3px solid #9c27b0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: auto;
+    line-height: 1.6;
+}
+
+.module-container.teaching .module-content p:hover {
+    background: rgba(156, 39, 176, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Styles for reviewer module content */
+.module-container.reviewer .module-content p {
+    display: inline-block;
+    background: rgba(96, 125, 139, 0.15);
+    color: #b0bec5;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin: 0.3rem 0;
+    font-weight: 500;
+    border-left: 3px solid #607d8b;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: auto;
+    line-height: 1.6;
+}
+
+.module-container.reviewer .module-content p:hover {
+    background: rgba(96, 125, 139, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Styles for publication module content */
+.module-container.publication .module-content {
+    padding: 0;
+}
+
+.module-container.publication .module-content > div {
+    display: inline-block;
+    width: auto;
+}
+
+.module-container.publication .module-content p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.module-container.publication .module-content p:first-child {
+    font-weight: 500;
+    color: var(--accent);
+    margin-top: 0;
+}
+
+.module-container.publication .module-content p:nth-child(2) {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+}
+
+.module-container.publication .module-content p:last-child {
+    border-left: 2px solid rgba(52, 204, 235, 0.3);
+    padding-left: 0.8rem;
+    background: rgba(52, 204, 235, 0.05);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0 4px 4px 0;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.module-container.publication .module-content p:last-child:hover {
+    background: rgba(52, 204, 235, 0.1);
+}
+
+/* Styles for patent module content */
+.module-container.patent .module-content {
+    padding: 0;
+}
+
+.module-container.patent .module-content > div {
+    display: inline-block;
+    width: auto;
+}
+
+.module-container.patent .module-content p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.module-container.patent .module-content p:first-child {
+    font-weight: 500;
+    color: var(--accent);
+    margin-top: 0;
+}
+
+.module-container.patent .module-content p:nth-child(2) {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+}
+
+.module-container.patent .module-content .patent-type {
+    color: #f5deb3;
+    font-weight: 500;
+}
+
+.module-container.patent .module-content p:last-child {
+    border-left: 2px solid rgba(245, 222, 179, 0.3);
+    padding-left: 0.8rem;
+    background: rgba(245, 222, 179, 0.05);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0 4px 4px 0;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.85);
+    display: inline-block;
+    width: auto;
+}
+
+.module-container.patent .module-content p:last-child:hover {
+    background: rgba(245, 222, 179, 0.1);
 }
 
 /* Year header for academic papers */

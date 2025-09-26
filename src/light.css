@@ -1,6 +1,6 @@
 /*
  * Written by Constantine Heinrich Chen (ConsHein Chen)
- * Last Change: 2025-09-19
+ * Last Change: 2025-09-26
  */
 
 /* Light theme styles - inherits from dark theme and overrides specific properties */
@@ -240,6 +240,22 @@ body.light-theme .module-container.publication .module-title {
     color: var(--dark) !important;
 }
 
+body.light-theme .module-container.publication .module-content p {
+    color: var(--text) !important;
+}
+
+body.light-theme .module-container.publication .module-content p:first-child {
+    color: var(--primary) !important;
+}
+
+body.light-theme .module-container.publication .module-content p:nth-child(2) {
+    color: rgba(44, 62, 80, 0.8) !important;
+}
+
+body.light-theme .module-container.publication .module-content p:last-child {
+    color: rgba(44, 62, 80, 0.85) !important;
+}
+
 body.light-theme .module-container.publication .module-content p strong:first-of-type {
     color: var(--primary) !important;
 }
@@ -249,9 +265,9 @@ body.light-theme .module-container.education {
     border-left: 4px solid var(--accent) !important;
 }
 
-/* Experience module styles for light theme */
-body.light-theme .module-container.experience {
-    border-left: 4px solid #4caf50 !important;
+/* Employment module styles for light theme */
+body.light-theme .module-container.employment {
+    border-left: 4px solid #ff5722 !important;
 }
 
 /* Honor module styles for light theme */
@@ -264,6 +280,39 @@ body.light-theme .module-container.patent {
     border-left: 4px solid #f5deb3 !important;
 }
 
+body.light-theme .module-container.patent .module-content > div {
+    display: inline-block !important;
+    width: auto !important;
+}
+
+body.light-theme .module-container.patent .module-content p {
+    color: var(--text) !important;
+}
+
+body.light-theme .module-container.patent .module-content p:first-child {
+    color: var(--primary) !important;
+}
+
+body.light-theme .module-container.patent .module-content p:nth-child(2) {
+    color: rgba(44, 62, 80, 0.8) !important;
+}
+
+body.light-theme .module-container.patent .module-content p:last-child {
+    color: rgba(44, 62, 80, 0.85) !important;
+    display: inline-block !important;
+    width: auto !important;
+    border-left: 2px solid rgba(245, 222, 179, 0.3) !important;
+    background: rgba(245, 222, 179, 0.05) !important;
+}
+
+body.light-theme .module-container.patent .module-content p:last-child:hover {
+    background: rgba(245, 222, 179, 0.1) !important;
+}
+
+body.light-theme .module-container.patent .module-content strong.patent-type {
+    color: #9c27b0 !important;
+}
+
 /* Teaching module styles for light theme */
 body.light-theme .module-container.teaching {
     border-left: 4px solid #9c27b0 !important;
@@ -272,6 +321,16 @@ body.light-theme .module-container.teaching {
 /* Reviewer module styles for light theme */
 body.light-theme .module-container.reviewer {
     border-left: 4px solid #607d8b !important;
+}
+
+body.light-theme .module-container.reviewer .module-content p {
+    background: rgba(96, 125, 139, 0.1) !important;
+    color: #455a64 !important;
+    border-left: 3px solid #607d8b !important;
+}
+
+body.light-theme .module-container.reviewer .module-content p:hover {
+    background: rgba(96, 125, 139, 0.2) !important;
 }
 
 /* Module title styles for light theme */
@@ -307,6 +366,21 @@ body.light-theme .module-date {
 /* Education module date styles for light theme */
 body.light-theme .module-container.education .module-date {
     color: #e74c3c !important;
+}
+
+/* Employment module date styles for light theme */
+body.light-theme .module-container.employment .module-date {
+    color: #e74c3c !important;
+}
+
+/* Education module strong:first-child styles for light theme */
+body.light-theme .module-container.education .module-content strong:first-child {
+    color: #3498db !important;
+}
+
+/* Employment module strong:first-child styles for light theme */
+body.light-theme .module-container.employment .module-content strong:first-child {
+    color: #3498db !important;
 }
 
 /* Module link styles for light theme */

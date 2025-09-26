@@ -3,7 +3,7 @@
 
 <!-- Written by Constantine Heinrich Chen (ConsHein Chen) -->
 
-<!-- Last Change: 2025-09-18 -->
+<!-- Last Change: 2025-09-26 -->
 
 <head>
   <meta charset="utf-8">
@@ -12,104 +12,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>
-    // Cache clearing function
-    function clearPageCache() {
-      // Clear any cached fetch requests
-      if ('caches' in window) {
-        caches.keys().then(cacheNames => {
-          cacheNames.forEach(cacheName => {
-            caches.delete(cacheName);
-          });
-        });
-      }
-      
-      // Force reload of all external resources
-      const links = document.querySelectorAll('link[rel="stylesheet"]');
-      links.forEach(link => {
-        const href = link.href;
-        if (href) {
-          // Add timestamp to force reload
-          const timestamp = new Date().getTime();
-          const newHref = href + (href.includes('?') ? '&' : '?') + 't=' + timestamp;
-          link.href = newHref;
-        }
-      });
-      
-      // Clear any module containers to force reload
-      const moduleContainers = document.querySelectorAll('.modules-container');
-      moduleContainers.forEach(container => {
-        container.innerHTML = '';
-      });
-    }
-    
-    window.onload = function() {
-      // Intercept and block requests to /@vite/client to prevent 404 errors
-      const originalFetch = window.fetch;
-      window.fetch = function(url, options) {
-        if (typeof url === 'string' && url.includes('/@vite/client')) {
-          console.log('Blocked request to Vite client:', url);
-          return Promise.reject(new Error('Vite client request blocked'));
-        }
-        return originalFetch.apply(this, arguments);
-      };
-      
-      // Also intercept XMLHttpRequest
-      const originalXHROpen = XMLHttpRequest.prototype.open;
-      XMLHttpRequest.prototype.open = function(method, url, ...args) {
-        if (typeof url === 'string' && url.includes('/@vite/client')) {
-          console.log('Blocked XHR request to Vite client:', url);
-          throw new Error('Vite client request blocked');
-        }
-        return originalXHROpen.apply(this, [method, url, ...args]);
-      };
-      
-      // Override the original setLanguage function to include cache clearing
-      if (typeof setLanguage === 'function') {
-        const originalSetLanguage = setLanguage;
-        window.setLanguage = function(lang) {
-          // Clear cache before language change
-          clearPageCache();
-          // Call original function
-          originalSetLanguage(lang);
-        };
-      }
-      
-      // Override the original toggleLanguage function to include cache clearing
-      if (typeof toggleLanguage === 'function') {
-        const originalToggleLanguage = toggleLanguage;
-        window.toggleLanguage = function() {
-          // Clear cache before language toggle
-          clearPageCache();
-          // Call original function
-          originalToggleLanguage();
-        };
-      }
-      
-      // Override the original reloadContent function to include cache clearing
-      if (typeof reloadContent === 'function') {
-        const originalReloadContent = reloadContent;
-        window.reloadContent = function() {
-          // Clear cache before content reload
-          clearPageCache();
-          // Call original function
-          originalReloadContent();
-        };
-      }
-      
-      // Override the original switchSection function to include cache clearing
-      if (typeof switchSection === 'function') {
-        const originalSwitchSection = switchSection;
-        window.switchSection = function(sectionId) {
-          // Clear cache before section switch
-          clearPageCache();
-          // Call original function
-          originalSwitchSection(sectionId);
-        };
-      }
-    };
-  </script>
-
+  <script src="src/cacheclearing.js"></script>
   <link rel="stylesheet" href="src/base.css">
   <link rel="stylesheet" href="components/all_min.css">
   <link rel="stylesheet" href="src/mobile.css">
@@ -121,7 +24,10 @@
   <script src="src/home.js"></script>
   <script src="src/experiences.js"></script>
   <script src="src/publications.js"></script>
+  <script src="components/pdf-lib.min.js"></script>
+  <script src="components/fontkit.umd.js"></script>
   <script src="src/cv.js"></script>
+  <script src="src/cv_generator.js"></script>
   <script src="src/nav.js"></script>
   <script src="src/module-container.js"></script>
 </head>

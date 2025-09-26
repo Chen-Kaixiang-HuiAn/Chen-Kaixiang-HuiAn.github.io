@@ -10,20 +10,27 @@ const MIN_LANGUAGE_CHANGE_INTERVAL = 2000; // Increased to 2 seconds minimum bet
 
 /**
  * Clears page cache to ensure fresh content loading
- * This is a minimal version that only clears essential caches
+ * This is a comprehensive version that clears all caches and reloads resources
  */
 function clearPageCache() {
-  // Only clear fetch request cache, keep other caches for performance
+  // Clear any cached fetch requests
   if ('caches' in window) {
     caches.keys().then(cacheNames => {
       cacheNames.forEach(cacheName => {
-        // Only clear specific caches, not all caches
-        if (cacheName.includes('fetch-') || cacheName.includes('api-')) {
-          caches.delete(cacheName);
-        }
+        caches.delete(cacheName);
       });
     });
   }
+  
+  // Don't force reload of all external resources to avoid style flickering
+  // Instead, we'll just clear the module containers to force content reload
+  // This prevents the white flash caused by style reloading
+  
+  // Clear any module containers to force reload
+  const moduleContainers = document.querySelectorAll('.modules-container');
+  moduleContainers.forEach(container => {
+    container.innerHTML = '';
+  });
   
   // After clearing cache, we need to recheck and hide empty modules
   // This ensures that modules that were relying on preloaded content
@@ -98,44 +105,70 @@ function forcePageReload() {
 }
 
 /**
- * Initialize cache clearing overrides
+ * Initialize cache clearing overrides and page load functionality
  */
 function initializeCacheClearing() {
-  // Only override the setLanguage function to include minimal cache clearing
+  // Intercept and block requests to /@vite/client to prevent 404 errors
+  const originalFetch = window.fetch;
+  window.fetch = function(url, options) {
+    if (typeof url === 'string' && url.includes('/@vite/client')) {
+      console.log('Blocked request to Vite client:', url);
+      return Promise.reject(new Error('Vite client request blocked'));
+    }
+    return originalFetch.apply(this, arguments);
+  };
+  
+  // Also intercept XMLHttpRequest
+  const originalXHROpen = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function(method, url, ...args) {
+    if (typeof url === 'string' && url.includes('/@vite/client')) {
+      console.log('Blocked XHR request to Vite client:', url);
+      throw new Error('Vite client request blocked');
+    }
+    return originalXHROpen.apply(this, [method, url, ...args]);
+  };
+  
+  // Override the original setLanguage function to include cache clearing
   if (typeof setLanguage === 'function') {
     const originalSetLanguage = setLanguage;
     window.setLanguage = function(lang) {
-      // Call original function first
-      originalSetLanguage(lang);
-      
-      // Only clear cache if enough time has passed since the last language change
-      const currentTime = new Date().getTime();
-      if (currentTime - lastLanguageChangeTime > MIN_LANGUAGE_CHANGE_INTERVAL) {
-        lastLanguageChangeTime = currentTime;
-        // Clear cache with a longer delay to avoid blocking the UI
-        setTimeout(() => {
-          clearPageCache();
-        }, 500); // Increased delay to reduce UI impact
+      // Only clear cache if language actually changed
+      if (getCurrentLanguage() !== lang) {
+        clearPageCache();
       }
+      // Call original function
+      originalSetLanguage(lang);
     };
   }
   
-  // Only override the toggleLanguage function to include minimal cache clearing
+  // Override the original toggleLanguage function to include cache clearing
   if (typeof toggleLanguage === 'function') {
     const originalToggleLanguage = toggleLanguage;
     window.toggleLanguage = function() {
-      // Call original function first
+      // Call original function without clearing cache here
+      // The cache will be cleared in the setLanguage function instead
       originalToggleLanguage();
-      
-      // Only clear cache if enough time has passed since the last language change
-      const currentTime = new Date().getTime();
-      if (currentTime - lastLanguageChangeTime > MIN_LANGUAGE_CHANGE_INTERVAL) {
-        lastLanguageChangeTime = currentTime;
-        // Clear cache with a longer delay to avoid blocking the UI
-        setTimeout(() => {
-          clearPageCache();
-        }, 500); // Increased delay to reduce UI impact
-      }
+    };
+  }
+  
+  // Override the original reloadContent function to include cache clearing
+  if (typeof reloadContent === 'function') {
+    const originalReloadContent = reloadContent;
+    window.reloadContent = function() {
+      // Don't clear cache here as it's already cleared in setLanguage
+      // Call original function
+      originalReloadContent();
+    };
+  }
+  
+  // Override the original switchSection function to include cache clearing
+  if (typeof switchSection === 'function') {
+    const originalSwitchSection = switchSection;
+    window.switchSection = function(sectionId) {
+      // Clear cache before section switch
+      clearPageCache();
+      // Call original function
+      originalSwitchSection(sectionId);
     };
   }
   
@@ -149,6 +182,8 @@ function initializeCacheClearing() {
       setTimeout(() => {
         // Ensure the language is still correct after navigation
         if (getCurrentLanguage() !== currentLang) {
+          // Only set language if it actually changed
+          // This prevents unnecessary cache clearing
           setLanguage(currentLang);
         }
         
@@ -168,36 +203,13 @@ function initializeCacheClearing() {
     }
   }, true); // Use capture to ensure this runs before the original handler
   
-  // Add a new function for manual cache clearing
-  window.manualClearCache = function() {
-    if (confirm('确定要清除缓存并重新加载页面吗？')) {
-      forcePageReload();
-    }
-  };
   
-  // Add a manual cache clearing button to the page
-  function addCacheClearButton() {
-    // Check if button already exists
-    if (document.querySelector('.cache-clear-button')) {
-      return;
-    }
-    
-    // Create button
-    const button = document.createElement('button');
-    button.className = 'cache-clear-button';
-    button.textContent = '清除缓存';
-    button.style.cssText = 'position: fixed; bottom: 10px; right: 10px; z-index: 9999; padding: 5px 10px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; font-size: 12px;';
-    
-    // Add click event
-    button.addEventListener('click', manualClearCache);
-    
-    // Add to page
-    document.body.appendChild(button);
-  }
-  
-  // Add the button after a longer delay
-  setTimeout(addCacheClearButton, 2000); // Increased delay
 }
+
+// Initialize cache clearing when the page loads
+window.onload = function() {
+  initializeCacheClearing();
+};
 
 // Initialize cache clearing when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {

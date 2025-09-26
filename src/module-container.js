@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-19
+// Last Change: 2025-09-26
 
 // Module Container Component
 // This component provides a generic container for various types of content
@@ -26,7 +26,7 @@ function getModuleText(key, language = 'en') {
         return window.getText(key, language);
     }
     
-    // Fallback to local language texts - 中文状态继承英文状态，仅在名词和数据引入方面保留区别
+    // Fallback to local language texts - Chinese state inherits English structure, only differs in nouns and data introduction
     const localLanguageTexts = {
         en: {
             paper: 'Paper',
@@ -40,10 +40,13 @@ function getModuleText(key, language = 'en') {
             department: 'Department:',
             time: 'Time:',
             viewDetails: 'View Details',
-            hideDetails: 'Hide Details'
+            hideDetails: 'Hide Details',
+            tutor: 'Tutor',
+            dissertation: 'Dissertation',
+            project: 'Project'
         },
         zh: {
-            // 中文状态继承英文状态，仅在名词和数据引入方面保留区别
+            // Chinese state inherits English structure, only differs in nouns and data introduction
             paper: '论文',
             code: '代码',
             video: '视频',
@@ -55,7 +58,10 @@ function getModuleText(key, language = 'en') {
             department: '部门：',
             time: '时间：',
             viewDetails: '查看详情',
-            hideDetails: '隐藏详情'
+            hideDetails: '隐藏详情',
+            tutor: '导师',
+            dissertation: '学位论文',
+            project: '项目'
         }
     };
     
@@ -149,8 +155,19 @@ function createModuleContainer(data, type, language = 'en') {
     const moduleBody = document.createElement('div');
     moduleBody.className = 'module-body';
     
-    // For reviewer type, skip adding body content to only show the title
-    if (type !== 'reviewer') {
+    // For reviewer type, add body content with the same style as other modules
+    if (type === 'reviewer') {
+        const moduleContent = document.createElement('div');
+        moduleContent.className = 'module-content';
+        
+        const reviewerInfo = document.createElement('div');
+        reviewerInfo.innerHTML = `
+            ${data.description ? `<p>${data.description}</p>` : ''}
+        `;
+        moduleContent.appendChild(reviewerInfo);
+        
+        moduleBody.appendChild(moduleContent);
+    } else {
         // Add image if available
         let imageUrl = data.image;
         if (!imageUrl && data.logoSrc) {
@@ -202,19 +219,68 @@ function createModuleContainer(data, type, language = 'en') {
             data.details.forEach(detail => {
                 const detailItem = document.createElement('li');
                 detailItem.style.marginBottom = '8px';
-                detailItem.innerHTML = `
+                let detailHTML = `
                     <strong>${detail.degree || ''}</strong> <em>${detail.major || ''}</em>${detail.college ? `, ${detail.college}` : ''}
-                    ${detail.time ? `<br><span class="module-date">${detail.time}</span>` : ''}
                 `;
+                // Add tutor information if available
+                if (detail.tutor) {
+                    detailHTML += `<br><span class="module-tutor">${getModuleText('tutor', language)}: ${detail.tutor}</span>`;
+                }
+                // Add dissertation information if available
+                if (detail.dissertation) {
+                    detailHTML += `<br><span class="module-dissertation">${getModuleText('dissertation', language)}: ${detail.dissertation}</span>`;
+                }
+                // Add time information at the bottom
+                if (detail.time) {
+                    detailHTML += `<br><span class="module-date">${detail.time}</span>`;
+                }
+                detailItem.innerHTML = detailHTML;
                 detailsList.appendChild(detailItem);
             });
             
             moduleContent.appendChild(detailsList);
         } else if (type === 'publication') {
             const pubInfo = document.createElement('div');
+            // Format publication information based on type
+            let publicationInfo = '';
+            if (data.type) {
+                if (data.conference) {
+                    // Conference paper format: {type} {conference} ({abbr}), {location}, {year}
+                    publicationInfo = `<p><strong>${data.type}</strong> <em>${data.conference}`;
+                    if (data.abbr) {
+                        publicationInfo += ` (${data.abbr})`;
+                    }
+                    publicationInfo += `</em>`;
+                    if (data.location) {
+                        publicationInfo += `, ${data.location}`;
+                    }
+                    if (data.year) {
+                        publicationInfo += `, ${data.year}`;
+                    }
+                    publicationInfo += `</p>`;
+                } else if (data.journal) {
+                    // Journal paper format: {type} {journal} ({abbr}) ({volume}), {year}
+                    publicationInfo = `<p><strong>${data.type}</strong> <em>${data.journal}`;
+                    if (data.abbr) {
+                        publicationInfo += ` (${data.abbr})`;
+                    }
+                    publicationInfo += `</em>`;
+                    if (data.volume) {
+                        publicationInfo += ` (${data.volume})`;
+                    }
+                    if (data.year) {
+                        publicationInfo += `, ${data.year}`;
+                    }
+                    publicationInfo += `</p>`;
+                } else {
+                    // Fallback to original format if neither conference nor journal is specified
+                    publicationInfo = `<p><strong>${data.type}</strong> <em>${data.conference || data.journal || ''}</em>${data.year ? `, ${data.year}` : ''}</p>`;
+                }
+            }
+            
             pubInfo.innerHTML = `
                 ${data.authors ? `<p>${data.authors}</p>` : ''}
-                ${data.type ? `<p><strong>${data.type}</strong> <em>${data.conference || data.journal || ''}</em>${data.year ? `, ${data.year}` : ''}</p>` : ''}
+                ${publicationInfo}
                 ${data.abstract ? `<p><strong>${getModuleText('abstract', language)}</strong> ${data.abstract}${data.date ? `${language === 'zh' ? '，' : ', '}${data.date}` : ''}</p>` : ''}
             `;
             moduleContent.appendChild(pubInfo);
@@ -259,21 +325,34 @@ function createModuleContainer(data, type, language = 'en') {
                 data.details.forEach(detail => {
                     const detailItem = document.createElement('li');
                     detailItem.style.marginBottom = '8px';
-                    detailItem.innerHTML = `
+                    let detailHTML = `
                         <strong>${detail.position || ''}</strong> <em>${detail.department || ''}</em>
-                        ${detail.time ? `<br><span class="module-date">${detail.time}</span>` : ''}
                     `;
+                    // Add project information if available
+                    if (detail.project) {
+                        detailHTML += `<br><span class="module-project">${getModuleText('project', language)}: ${detail.project}</span>`;
+                    }
+                    // Add time information at the bottom
+                    if (detail.time) {
+                        detailHTML += `<br><span class="module-date">${detail.time}</span>`;
+                    }
+                    detailItem.innerHTML = detailHTML;
                     detailsList.appendChild(detailItem);
                 });
                 
                 moduleContent.appendChild(detailsList);
             } else {
                 const empInfo = document.createElement('div');
-                empInfo.innerHTML = `
+                let empHTML = `
                     ${data.position ? `<p><strong>${getModuleText('position', language)}</strong> ${data.position}</p>` : ''}
                     ${data.department ? `<p><strong>${getModuleText('department', language)}</strong> ${data.department}</p>` : ''}
                     ${data.time ? `<p><strong>${getModuleText('time', language)}</strong> ${data.time}</p>` : ''}
                 `;
+                // Add project information if available
+                if (data.project) {
+                    empHTML += `<p><strong>${getModuleText('project', language)}</strong> ${data.project}</p>`;
+                }
+                empInfo.innerHTML = empHTML;
                 moduleContent.appendChild(empInfo);
             }
         } else if (type === 'honor') {
@@ -289,8 +368,12 @@ function createModuleContainer(data, type, language = 'en') {
             `;
             moduleContent.appendChild(teachingInfo);
         } else if (type === 'reviewer') {
-            // For reviewer type, don't add any additional content to keep it as one line
-            // The title already contains all necessary information
+            // For reviewer type, add description as a paragraph to match other modules' styles
+            const reviewerInfo = document.createElement('div');
+            reviewerInfo.innerHTML = `
+                ${data.description ? `<p>${data.description}</p>` : ''}
+            `;
+            moduleContent.appendChild(reviewerInfo);
         } else {
             // Generic content
             const genericContent = document.createElement('div');
@@ -344,16 +427,14 @@ function createModuleContainer(data, type, language = 'en') {
             }
             
             moduleFooter.appendChild(moduleLinks);
-            // 先不添加moduleFooter，等到moduleBody添加到moduleContainer后再添加
+            // Don't add moduleFooter yet, wait until moduleBody is added to moduleContainer
         }
     }
     
-    // Only add body to container if it's not a reviewer type or if it has content
-    if (type !== 'reviewer' || moduleBody.children.length > 0) {
-        moduleContainer.appendChild(moduleBody);
-    }
+    // Always add body to container to ensure consistent styling across all module types
+    moduleContainer.appendChild(moduleBody);
     
-    // 现在添加moduleFooter到moduleContainer中，确保它在moduleBody之后
+    // Now add moduleFooter to moduleContainer, ensuring it's after moduleBody
     if (data.paperLink || data.codeLink || data.videoLink || data.siteLink) {
         const moduleFooter = document.createElement('div');
         moduleFooter.className = 'module-footer';
@@ -382,7 +463,7 @@ function createModuleContainer(data, type, language = 'en') {
         }
         
         moduleFooter.appendChild(moduleLinks);
-        moduleContainer.appendChild(moduleFooter); // 现在将页脚添加到模块容器中，确保它在moduleBody之后
+        moduleContainer.appendChild(moduleFooter); // Now add footer to module container, ensuring it's after moduleBody
     }
     
     return moduleContainer;
@@ -484,9 +565,27 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
         imageUrl = `images/publication/${imageUrl}`;
     }
     
-    // For reviewer type, skip adding body content to only show the title
-    if (type !== 'reviewer') {
-        if (imageUrl) {
+    // For reviewer type, add body content with the same style as other modules
+    if (type === 'reviewer') {
+        // For reviewer type, add body content if it doesn't exist
+        let moduleBody = moduleContainer.querySelector('.module-body');
+        if (!moduleBody) {
+            moduleBody = document.createElement('div');
+            moduleBody.className = 'module-body';
+            moduleContainer.appendChild(moduleBody);
+        }
+        
+        let moduleContent = moduleBody.querySelector('.module-content');
+        if (!moduleContent) {
+            moduleContent = document.createElement('div');
+            moduleContent.className = 'module-content';
+            moduleBody.appendChild(moduleContent);
+        }
+        
+        moduleContent.innerHTML = `
+            ${data.description ? `<p>${data.description}</p>` : ''}
+        `;
+    } else if (imageUrl) {
             let moduleImageContainer = moduleContainer.querySelector('.module-image-container');
             let moduleImage = moduleContainer.querySelector('.module-image');
             
@@ -560,17 +659,10 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 }
             }
         }
-    } else {
-        // For reviewer type, remove any existing body content
-        const moduleBody = moduleContainer.querySelector('.module-body');
-        if (moduleBody) {
-            moduleBody.remove();
-        }
-    }
     
     // Update content based on type
     const moduleContent = moduleContainer.querySelector('.module-content');
-    if (moduleContent && type !== 'reviewer') {
+    if (moduleContent) {
         // Store original content dimensions to prevent layout shifts
         const contentRect = moduleContent.getBoundingClientRect();
         moduleContent.style.width = contentRect.width + 'px';
@@ -592,10 +684,22 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
             data.details.forEach(detail => {
                 const detailItem = document.createElement('li');
                 detailItem.style.marginBottom = '8px';
-                detailItem.innerHTML = `
+                let detailHTML = `
                     <strong>${detail.degree || ''}</strong> <em>${detail.major || ''}</em>${detail.college ? `, ${detail.college}` : ''}
-                    ${detail.time ? `<br><span class="module-date">${detail.time}</span>` : ''}
                 `;
+                // Add tutor information if available
+                if (detail.tutor) {
+                    detailHTML += `<br><span class="module-tutor">${getModuleText('tutor', language)}: ${detail.tutor}</span>`;
+                }
+                // Add dissertation information if available
+                if (detail.dissertation) {
+                    detailHTML += `<br><span class="module-dissertation">${getModuleText('dissertation', language)}: ${detail.dissertation}</span>`;
+                }
+                // Add time information at the bottom
+                if (detail.time) {
+                    detailHTML += `<br><span class="module-date">${detail.time}</span>`;
+                }
+                detailItem.innerHTML = detailHTML;
                 detailsList.appendChild(detailItem);
             });
         } else if (type === 'publication') {
@@ -627,18 +731,31 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 data.details.forEach(detail => {
                     const detailItem = document.createElement('li');
                     detailItem.style.marginBottom = '8px';
-                    detailItem.innerHTML = `
+                    let detailHTML = `
                         <strong>${detail.position || ''}</strong> <em>${detail.department || ''}</em>
-                        ${detail.time ? `<br><span class="module-date">${detail.time}</span>` : ''}
                     `;
+                    // Add project information if available
+                    if (detail.project) {
+                        detailHTML += `<br><span class="module-project">${getModuleText('project', language)}: ${detail.project}</span>`;
+                    }
+                    // Add time information at the bottom
+                    if (detail.time) {
+                        detailHTML += `<br><span class="module-date">${detail.time}</span>`;
+                    }
+                    detailItem.innerHTML = detailHTML;
                     detailsList.appendChild(detailItem);
                 });
             } else {
-                moduleContent.innerHTML = `
+                let empHTML = `
                     ${data.position ? `<p><strong>${getModuleText('position', language)}</strong> ${data.position}</p>` : ''}
                     ${data.department ? `<p><strong>${getModuleText('department', language)}</strong> ${data.department}</p>` : ''}
                     ${data.time ? `<p><strong>${getModuleText('time', language)}</strong> ${data.time}</p>` : ''}
                 `;
+                // Add project information if available
+                if (data.project) {
+                    empHTML += `<p><strong>${getModuleText('project', language)}</strong> ${data.project}</p>`;
+                }
+                moduleContent.innerHTML = empHTML;
             }
         } else if (type === 'experience') {
             if (data.details) {
@@ -679,18 +796,12 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 ${data.description ? `<p>${data.description}</p>` : ''}
             `;
         } else if (type === 'reviewer') {
-            // For reviewer type, don't add any additional content to keep it as one line
-            // The title already contains all necessary information
-            moduleContent.innerHTML = '';
+            moduleContent.innerHTML = `
+                ${data.description ? `<p>${data.description}</p>` : ''}
+            `;
         } else {
             // Generic content
             moduleContent.textContent = data.description || data.content || '';
-        }
-    } else if (type === 'reviewer') {
-        // For reviewer type, remove any existing content
-        const moduleBody = moduleContainer.querySelector('.module-body');
-        if (moduleBody) {
-            moduleBody.remove();
         }
     }
     
@@ -715,11 +826,8 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
             moduleTags.appendChild(moduleTag);
         });
     } else if (type === 'reviewer') {
-        // For reviewer type, remove any existing tags
-        const moduleTags = moduleContainer.querySelector('.module-tags');
-        if (moduleTags) {
-            moduleTags.remove();
-        }
+        // For reviewer type, keep the existing tags
+        // The tags have already been updated above
     }
     
     // Update footer links if applicable
@@ -765,11 +873,8 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
             moduleLinks.appendChild(siteLinkElement);
         }
     } else if (type === 'reviewer') {
-        // For reviewer type, remove any existing footer
-        const moduleFooter = moduleContainer.querySelector('.module-footer');
-        if (moduleFooter) {
-            moduleFooter.remove();
-        }
+        // For reviewer type, keep the existing footer
+        // The footer has already been updated above
     } else {
         // Remove footer if no links
         const moduleFooter = moduleContainer.querySelector('.module-footer');

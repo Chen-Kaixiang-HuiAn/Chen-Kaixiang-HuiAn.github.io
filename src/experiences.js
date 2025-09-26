@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-19
+// Last Change: 2025-09-26
 
 // Experiences section content
 // Chinese text inherits English structure, only differs in nouns and data introduction
@@ -206,7 +206,8 @@ function loadEmploymentModules(containerId, language = 'en') {
                 const details = employment.details.map(detail => ({
                     position: detail.position,
                     department: detail.department,
-                    time: detail.time
+                    time: detail.time,
+                    project: detail.project
                 }));
                 
                 return {
@@ -253,7 +254,8 @@ function loadEmploymentModules(containerId, language = 'en') {
                         const details = employment.details.map(detail => ({
                             position: detail.position,
                             department: detail.department,
-                            time: detail.time
+                            time: detail.time,
+                            project: detail.project
                         }));
                         
                         return {
@@ -502,15 +504,10 @@ function loadReviewerModules(containerId, language = 'en') {
         
         // Check if there are any reviewer experiences
         if (preloadedReviewer && preloadedReviewer.length > 0) {
-            // Map the data to the format expected by renderModuleContainers
-            const reviewerData = preloadedReviewer.map(reviewer => ({
-                title: `${reviewer.journal || reviewer.conference}, ${reviewer.year}`,
-                organization: reviewer.publisher || reviewer.organization,
-                time: null, // Set to null to hide the time display
-                description: `${reviewer.journal || reviewer.conference}, ${reviewer.year}`
-            }));
+            // Process and merge reviewer data
+            const processedReviewerData = processReviewerData(preloadedReviewer, language);
             
-            renderModuleContainers(reviewerData, 'reviewer', containerId, language);
+            renderModuleContainers(processedReviewerData, 'reviewer', containerId, language);
             
             // Show the tab button if it was hidden
             const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');
@@ -539,15 +536,10 @@ function loadReviewerModules(containerId, language = 'en') {
                     const container = document.getElementById(containerId);
                     if (!container) return;
                     
-                    // Map the data to the format expected by renderModuleContainers
-                    const reviewerData = data.map(reviewer => ({
-                        title: `${reviewer.journal || reviewer.conference}, ${reviewer.year}`,
-                        organization: reviewer.publisher || reviewer.organization,
-                        time: null, // Set to null to hide the time display
-                        description: `${reviewer.journal || reviewer.conference}, ${reviewer.year}`
-                    }));
+                    // Process and merge reviewer data
+                    const processedReviewerData = processReviewerData(data, language);
                     
-                    renderModuleContainers(reviewerData, 'reviewer', containerId, language);
+                    renderModuleContainers(processedReviewerData, 'reviewer', containerId, language);
                     
                     // Show the tab button if it was hidden
                     const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');
@@ -572,6 +564,54 @@ function loadReviewerModules(containerId, language = 'en') {
                 }
             });
     }
+}
+
+/**
+ * Processes reviewer data to merge entries with the same conference/journal but different years
+ * @param {Array} reviewerData - The raw reviewer data
+ * @param {string} language - The language code
+ * @returns {Array} - Processed reviewer data with merged entries
+ */
+function processReviewerData(reviewerData, language = 'en') {
+    // Create a map to group by conference/journal name
+    const reviewerMap = new Map();
+    
+    reviewerData.forEach(reviewer => {
+        // Use conference or journal as the key
+        const key = reviewer.conference || reviewer.journal;
+        
+        if (reviewerMap.has(key)) {
+            // If the key already exists, add the year to the existing entry
+            const existingEntry = reviewerMap.get(key);
+            if (!existingEntry.years.includes(reviewer.year)) {
+                existingEntry.years.push(reviewer.year);
+            }
+        } else {
+            // If the key doesn't exist, create a new entry
+            reviewerMap.set(key, {
+                title: key,
+                years: [reviewer.year],
+                type: reviewer.conference ? 'conference' : 'journal'
+            });
+        }
+    });
+    
+    // Convert the map back to an array and sort years
+    const processedData = Array.from(reviewerMap.values()).map(entry => {
+        // Sort years in ascending order
+        entry.years.sort((a, b) => parseInt(a) - parseInt(b));
+        
+        // Join years with slashes
+        const yearsString = entry.years.join(' / ');
+        
+        return {
+            title: entry.title,
+            description: `${language === 'zh' ? '年份：' : 'Year: '}${yearsString}`,
+            time: null // Set to null to use the custom description format
+        };
+    });
+    
+    return processedData;
 }
 
 // Export functions to be used by other modules

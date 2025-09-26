@@ -4,7 +4,9 @@
             "title": "Controller design for transition flight of rotor-driven VTOL fixed-wing UAV based on PID",
             "authors": "<u>K. Chen</u>",
             "type": "Conference Paper",
-            "conference": "International Conference on Mechatronics and Smart Systems (CONF-MSS)",
+            "conference": "International Conference on Mechatronics and Smart Systems",
+            "abbr": "CONF-MSS",
+            "location": "Oxford, UK",
             "image": "CONF-MSS-2023.png",
             "paperLink": "https://dx.doi.org/10.54254/2755-2721/9/20230018",
             "codeLink": "https://github.com/Excursion-ConsHein/VTOL-control-by-PID"

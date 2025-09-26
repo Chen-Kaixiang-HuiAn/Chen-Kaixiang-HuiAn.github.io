@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-19
+// Last Change: 2025-09-26
 
 // Language management module
 
@@ -14,6 +14,12 @@ let preloadedContent = {
 
 // Flag to track if content is preloaded
 let isContentPreloaded = false;
+
+// Function to update language content
+function updateLanguageContent() {
+    updateUILanguage();
+    reloadContent();
+}
 
 // Load configuration from config.json
 async function loadConfig() {
@@ -46,73 +52,73 @@ async function preloadAllContent() {
     try {
         // Preload info content
         await Promise.all([
-            fetch('configs/en/info.json').then(res => res.json()).then(data => { preloadedContent.en.info = data; }).catch(() => {}),
-            fetch('configs/zh/info_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.info = data; }).catch(() => {})
+            fetch('../configs/en/info.json').then(res => res.json()).then(data => { preloadedContent.en.info = data; }).catch(() => {}),
+            fetch('../configs/zh/info_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.info = data; }).catch(() => {})
         ]);
         
         // Preload intro content
         await Promise.all([
-            fetch('configs/en/intro.txt').then(res => res.text()).then(data => { preloadedContent.en.intro = data; }).catch(() => {}),
-            fetch('configs/zh/intro_zh.txt').then(res => res.text()).then(data => { preloadedContent.zh.intro = data; }).catch(() => {})
+            fetch('../configs/en/intro.txt').then(res => res.text()).then(data => { preloadedContent.en.intro = data; }).catch(() => {}),
+            fetch('../configs/zh/intro_zh.txt').then(res => res.text()).then(data => { preloadedContent.zh.intro = data; }).catch(() => {})
         ]);
         
         // Preload news content
         await Promise.all([
-            fetch('configs/en/news.json').then(res => res.json()).then(data => { preloadedContent.en.news = data; }).catch(() => {}),
-            fetch('configs/zh/news_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.news = data; }).catch(() => {})
+            fetch('../configs/en/news.json').then(res => res.json()).then(data => { preloadedContent.en.news = data; }).catch(() => {}),
+            fetch('../configs/zh/news_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.news = data; }).catch(() => {})
         ]);
         
         // Preload education content
         await Promise.all([
-            fetch('configs/en/education.json').then(res => res.json()).then(data => { preloadedContent.en.education = data; }).catch(() => {}),
-            fetch('configs/zh/education_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.education = data; }).catch(() => {})
+            fetch('../configs/en/education.json').then(res => res.json()).then(data => { preloadedContent.en.education = data; }).catch(() => {}),
+            fetch('../configs/zh/education_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.education = data; }).catch(() => {})
         ]);
         
         // Preload employment content
         await Promise.all([
-            fetch('configs/en/employment.json').then(res => res.json()).then(data => { preloadedContent.en.employment = data; }).catch(() => {}),
-            fetch('configs/zh/employment_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.employment = data; }).catch(() => {})
+            fetch('../configs/en/employment.json').then(res => res.json()).then(data => { preloadedContent.en.employment = data; }).catch(() => {}),
+            fetch('../configs/zh/employment_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.employment = data; }).catch(() => {})
         ]);
 
       // Preload honors content
       await Promise.all([
-          fetch('configs/en/honors.json').then(res => res.json()).then(data => { preloadedContent.en.honors = data; }).catch(() => {}),
-          fetch('configs/zh/honors_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.honors = data; }).catch(() => {})
+          fetch('../configs/en/honors.json').then(res => res.json()).then(data => { preloadedContent.en.honors = data; }).catch(() => {}),
+          fetch('../configs/zh/honors_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.honors = data; }).catch(() => {})
       ]);
         
         // Preload teaching content
         await Promise.all([
-            fetch('configs/en/teaching.json').then(res => res.json()).then(data => { preloadedContent.en.teaching = data; }).catch(() => {}),
-            fetch('configs/zh/teaching_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.teaching = data; }).catch(() => {})
+            fetch('../configs/en/teaching.json').then(res => res.json()).then(data => { preloadedContent.en.teaching = data; }).catch(() => {}),
+            fetch('../configs/zh/teaching_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.teaching = data; }).catch(() => {})
         ]);
         
         // Preload reviewer content
         await Promise.all([
-            fetch('configs/en/reviewer.json').then(res => res.json()).then(data => { preloadedContent.en.reviewer = data; }).catch(() => {}),
-            fetch('configs/zh/reviewer_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.reviewer = data; }).catch(() => {})
+            fetch('../configs/en/reviewer.json').then(res => res.json()).then(data => { preloadedContent.en.reviewer = data; }).catch(() => {}),
+            fetch('../configs/zh/reviewer_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.reviewer = data; }).catch(() => {})
         ]);
         
         // Preload papers content
         await Promise.all([
-            fetch('configs/en/papers.json').then(res => res.json()).then(data => { preloadedContent.en.papers = data; }).catch(() => {}),
-            fetch('configs/zh/papers_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.papers = data; }).catch(() => {})
+            fetch('../configs/en/papers.json').then(res => res.json()).then(data => { preloadedContent.en.papers = data; }).catch(() => {}),
+            fetch('../configs/zh/papers_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.papers = data; }).catch(() => {})
         ]);
         
         // Preload patents content
         await Promise.all([
-            fetch('configs/en/patents.json').then(res => res.json()).then(data => { preloadedContent.en.patents = data; }).catch(() => {}),
-            fetch('configs/zh/patents_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.patents = data; }).catch(() => {})
+            fetch('../configs/en/patents.json').then(res => res.json()).then(data => { preloadedContent.en.patents = data; }).catch(() => {}),
+            fetch('../configs/zh/patents_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.patents = data; }).catch(() => {})
         ]);
         
         // Preload CV content (PDF URLs)
         preloadedContent.cv = {
             en: {
-                pdfUrl: 'configs/en/cv.pdf',
-                downloadUrl: 'configs/en/cv.pdf'
+                pdfUrl: '../configs/en/cv.pdf',
+                downloadUrl: '../configs/en/cv.pdf'
             },
             zh: {
-                pdfUrl: 'configs/zh/cv_zh.pdf',
-                downloadUrl: 'configs/zh/cv_zh.pdf'
+                pdfUrl: '../configs/zh/cv_zh.pdf',
+                downloadUrl: '../configs/zh/cv_zh.pdf'
             }
         };
         
@@ -161,7 +167,8 @@ const languageTexts = {
         github: 'GitHub',
         
         // Common
-        downloadFullCV: 'Download Full CV',
+        downloadFullCV: 'Generate and Download Full CV',
+        cvButtonText: 'Click the button above to generate and download your full CV',
         welcome: 'Welcome to ',
         homepage: 'homepage!',
         researchContentComingSoon: 'Research content coming soon...',
@@ -174,6 +181,9 @@ const languageTexts = {
         company: 'Company:',
         organization: 'Organization:',
         latest: 'Latest',
+        tutor: 'Tutor',
+        dissertation: 'Dissertation',
+        project: 'Project',
         
         // Language
         language: '中文'
@@ -206,7 +216,8 @@ const languageTexts = {
         github: 'GitHub',
         
         // Common - Inherits English structure, only translates some common words
-        downloadFullCV: '下载完整简历',
+        downloadFullCV: '生成并下载完整简历',
+        cvButtonText: '点击上方按钮生成并下载您的完整简历',
         welcome: '欢迎来到',
         homepage: '的主页！',
         researchContentComingSoon: '研究内容即将推出...',
@@ -219,6 +230,9 @@ const languageTexts = {
         company: '公司：',
         organization: '组织：',
         latest: '最新',
+        tutor: '导师',
+        dissertation: '学位论文',
+        project: '项目',
         
         // Language - Inherits English structure, only translates some key nouns
         language: 'English'
@@ -265,20 +279,20 @@ function setLanguage(lang) {
                 // Set html lang attribute for CSS selectors
                 document.documentElement.lang = lang;
                 
-                // Update UI language elements
+                // Update UI language elements first to maintain UI consistency
                 updateUILanguage();
                 
-                // Reload content for the active section
+                // Then reload content for the active section
                 reloadContent();
                 
-                // Wait a bit longer for translation to complete, then fade in
+                // Wait a bit longer for content to load, then fade in
                 setTimeout(() => {
                     // Use requestAnimationFrame for smoother transition
                     requestAnimationFrame(() => {
                         activeSection.style.transition = 'opacity 0.4s ease';
                         activeSection.style.opacity = '1';
                     });
-                }, 300); // Increased delay for translation to complete
+                }, 400); // Increased delay to ensure content is loaded before fade in
             }, 400); // Wait for fade out to complete
         } else {
             // No active section, just change language directly
@@ -328,7 +342,7 @@ function toggleLanguage() {
         }
         // Reset flag to allow language switching again
         isLanguageSwitchInProgress = false;
-    }, 800); // Wait for language change to complete (increased to match new timing)
+    }, 1200); // Increased wait time to ensure content is fully loaded before restoring button
 }
 
 // Function to get text in current language
@@ -723,6 +737,24 @@ function updateSectionContentLanguage(sectionId) {
           ? `configs/zh/cv_zh.pdf?t=${timestamp}`
           : `configs/en/cv.pdf?t=${timestamp}`;
         cvDownloadBtn.setAttribute('href', newHref);
+        
+        // Ensure the button has the correct ID for the event listener
+        cvDownloadBtn.setAttribute('id', 'generate-cv-btn');
+        
+        // Remove any existing event listeners to avoid duplicates
+        const newButton = cvDownloadBtn.cloneNode(true);
+        cvDownloadBtn.parentNode.replaceChild(newButton, cvDownloadBtn);
+        
+        // Re-initialize the button event
+        if (typeof initCVGenerator === 'function') {
+          initCVGenerator();
+        }
+      }
+      
+      // Update CV info text
+      const cvInfoText = section.querySelector('.cv-info p');
+      if (cvInfoText) {
+        cvInfoText.textContent = getText('cvButtonText');
       }
       
       // Clear PDF viewer before refreshing to prevent caching issues
@@ -991,7 +1023,7 @@ function reloadContent() {
 async function createLanguageSwitch() {
     // Check if single language mode is enabled
     try {
-        const response = await fetch('configs/config.json');
+        const response = await fetch('../configs/config.json');
         const config = await response.json();
         
         // Don't create language switch button in single language mode

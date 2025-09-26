@@ -104,6 +104,12 @@ function createNavbar() {
                         break;
                     case 'cv':
                         targetSection.innerHTML = loadCVContent();
+                        // Initialize CV generator button after a short delay to ensure DOM is updated
+                        setTimeout(() => {
+                            if (typeof initCVGenerator === 'function') {
+                                initCVGenerator();
+                            }
+                        }, 100);
                         break;
                     default:
                         targetSection.innerHTML = `<p>Content for ${targetId} section.</p>`;

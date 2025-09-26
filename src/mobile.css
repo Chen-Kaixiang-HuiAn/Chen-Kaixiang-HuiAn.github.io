@@ -601,14 +601,14 @@
   /* Mobile-specific adjustments for info items */
   /* Adjust icon position and padding for mobile */
   .info-item {
-    padding-left: 12%; /* Adjusted left boundary for mobile */
-    padding-right: 12%; /* Adjusted right boundary for mobile */
+    padding-left: 12% !important; /* Adjusted left boundary for mobile */
+    padding-right: 12% !important; /* Adjusted right boundary for mobile */
     position: relative; /* Ensure positioning context for icon */
   }
   
   .info-icon {
     position: absolute;
-    left: 12%; /* Position icon right edge at text left edge */
+    left: 12% !important; /* Position icon right edge at text left edge */
     transform: translateX(-100%); /* Shift icon left by its full width */
     margin-right: 0; /* Override base margin */
     padding-right: 2px; /* Add 2px space between icon and text */
@@ -1111,14 +1111,14 @@
   
   /* Landscape-specific adjustments for info items */
   .info-item {
-    padding-left: 12%; /* Adjusted left boundary for landscape */
-    padding-right: 12%; /* Adjusted right boundary for landscape */
+    padding-left: 12% !important; /* Adjusted left boundary for landscape */
+    padding-right: 12% !important; /* Adjusted right boundary for landscape */
     position: relative; /* Ensure positioning context for icon */
   }
   
   .info-icon {
     position: absolute;
-    left: 12%; /* Position icon right edge at text left edge */
+    left: 12% !important; /* Position icon right edge at text left edge */
     transform: translateX(-100%); /* Shift icon left by its full width */
     margin-right: 0; /* Override base margin */
     padding-right: 2px; /* Add 2px space between icon and text */
