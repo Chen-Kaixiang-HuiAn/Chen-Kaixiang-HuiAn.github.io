@@ -176,7 +176,7 @@ const languageTexts = {
         code: 'Code',
         video: 'Video',
         site: 'Site',
-        copyright: '&copy; 2025 Excursion ConsHein. Powered by <a href="https://www.jekyll.com/" target="_blank">Jekyll</a>.',
+        copyright: '&copy; 2025 <a href="https://github.com/excursion-conshein/personal-homepage-template", target="_blank">Excursion ConsHein Personal Homepage (ECPH)</a>.',
         abstract: 'Abstract:',
         company: 'Company:',
         organization: 'Organization:',
@@ -225,7 +225,7 @@ const languageTexts = {
         code: '代码',
         video: '视频',
         site: '网站',
-        copyright: '&copy; 2025 Excursion ConsHein. 由 <a href="https://www.jekyll.com.cn/" target="_blank">Jekyll</a> 提供支持。',
+        copyright: '&copy; 2025 <a href="https://github.com/excursion-conshein/personal-homepage-template", target="_blank">远行工作室-个人主页模板 (ECPH)</a>。',
         abstract: '摘要：',
         company: '公司：',
         organization: '组织：',
@@ -399,7 +399,8 @@ function updateUILanguage() {
         navLinks: document.querySelectorAll('.nav-links a'),
         langSwitch: document.querySelector('.language-switch'),
         aboutTitle: document.querySelector('.intro-section h3'),
-        newsTitle: document.querySelector('.news-section h3')
+        newsTitle: document.querySelector('.news-section h3'),
+        logo: document.querySelector('.logo')
     };
     
     // Update page title with name from info config
@@ -410,12 +411,29 @@ function updateUILanguage() {
       .then(data => {
         if (data && data.name) {
           document.title = data.name;
+          
+          // Update logo content with the same name data
+          if (elements.logo) {
+            elements.logo.innerHTML = `<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>${data.name}</span>`;
+          }
         } else {
           document.title = getText('pageTitle'); // fallback
+          
+          // Update logo with fallback text
+          if (elements.logo) {
+            const fallbackText = lang === 'zh' ? '主页' : 'Home';
+            elements.logo.innerHTML = `<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>${fallbackText}</span>`;
+          }
         }
       })
       .catch(() => {
         document.title = getText('pageTitle'); // fallback
+        
+        // Update logo with fallback text in case of error
+        if (elements.logo) {
+          const fallbackText = lang === 'zh' ? '主页' : 'Home';
+          elements.logo.innerHTML = `<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>${fallbackText}</span>`;
+        }
       });
     
     // Update navigation links

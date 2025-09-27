@@ -512,6 +512,11 @@
     transition: all 0.3s ease;
   }
   
+  /* Mobile footer styles - smaller font size */
+  footer {
+    font-size: 0.8rem !important;
+  }
+  
   .cards {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -977,6 +982,11 @@
     color: rgba(255, 255, 255, 0.7);
     background: rgba(10, 20, 41, 0.95);
     backdrop-filter: blur(10px);
+  }
+  
+  /* Mobile footer styles - smaller font size */
+  footer {
+    font-size: 0.8rem !important;
   }
   
   .cards {

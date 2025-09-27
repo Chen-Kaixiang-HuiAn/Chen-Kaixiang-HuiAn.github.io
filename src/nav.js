@@ -15,9 +15,45 @@ function createNavbar() {
     
     // Create upper layer - Logo
     const logo = document.createElement('div');
-    logo.className = 'logo';
-    logo.innerHTML = '<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>EXCURSION CONSHEIN 2.0</span>';
+    logo.className = 'logo'; 
     
+    // 添加默认内容，确保导航栏始终可见
+    if (getCurrentLanguage() === 'en') {
+        logo.innerHTML = `<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>Home</span>`;
+        
+        fetch('configs/en/info.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                logo.innerHTML = `<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>${data.name}</span>`;
+            })
+            .catch(error => {
+                console.error('Error loading name:', error);
+                // 保持默认内容不变
+            });  
+    } else {
+        logo.innerHTML = `<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>主页</span>`;
+        
+        fetch('configs/zh/info.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                logo.innerHTML = `<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>${data.name}</span>`;
+            })
+            .catch(error => {
+                console.error('Error loading name:', error);
+                // 保持默认内容不变
+            });  
+    }
+
     // Create lower layer - Navigation links
     const navLinks = document.createElement('div');
     navLinks.className = 'nav-links';
