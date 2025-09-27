@@ -6,6 +6,6 @@ You can browse [homepage](https://chen-kaixiang-huian.github.io/) in detail.
 
 ---
 
-This homepage is based on [Excursion ConsHein Homepage](https://github.com/Excursion-ConsHein/excursion-conshein-homepage).
+This homepage is based on [Excursion Studio Personal Homepage](https://github.com/excursion-studio/personal-homepage-template).
 
-本主页基于[Excursion ConsHein Homepage](https://github.com/Excursion-ConsHein/excursion-conshein-homepage)。
+本主页基于[Excursion Studio Personal Homepage](https://github.com/excursion-studio/personal-homepage-template)。
