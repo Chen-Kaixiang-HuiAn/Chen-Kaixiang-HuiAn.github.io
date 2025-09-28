@@ -115,6 +115,14 @@ function loadExperiencesContent() {
                     }
                 }
             }
+            
+            // Force a reflow to ensure all floating elements are properly rendered
+            const experiencesSection = document.getElementById('experiences');
+            if (experiencesSection) {
+                experiencesSection.style.display = 'none';
+                experiencesSection.offsetHeight; // Trigger reflow
+                experiencesSection.style.display = '';
+            }
         }, 500); // Wait for modules to load
         
         // Add tab switching functionality
@@ -157,7 +165,7 @@ function loadInstitutionExperiencesModules(containerId, language = 'en') {
         const container = document.getElementById(containerId);
         if (!container) return;
         
-        renderModuleContainers(preloadedEducation, 'education', containerId, language);
+        renderModuleContainers(preloadedEducation, 'education', containerId, language, true);
     } else {
         // Fall back to fetching content
         const configPath = language === 'zh' ? 
@@ -174,7 +182,7 @@ function loadInstitutionExperiencesModules(containerId, language = 'en') {
                 const container = document.getElementById(containerId);
                 if (!container) return;
                 
-                renderModuleContainers(educationData, 'education', containerId, language);
+                renderModuleContainers(educationData, 'education', containerId, language, true);
             })
             .catch(error => {
                 console.error('Error loading education modules:', error);
@@ -219,7 +227,7 @@ function loadEmploymentModules(containerId, language = 'en') {
                 };
             });
             
-            renderModuleContainers(employmentData, 'employment', containerId, language);
+            renderModuleContainers(employmentData, 'employment', containerId, language, true);
             
             // Show the tab button if it was hidden
             const tabButton = document.querySelector('.tab-button[data-tab="employment"]');
@@ -267,7 +275,7 @@ function loadEmploymentModules(containerId, language = 'en') {
                     };
                     });
                     
-                    renderModuleContainers(employmentData, 'employment', containerId, language);
+                    renderModuleContainers(employmentData, 'employment', containerId, language, true);
                     
                     // Show the tab button if it was hidden
                     const tabButton = document.querySelector('.tab-button[data-tab="employment"]');
@@ -318,7 +326,7 @@ function loadHonorsAwardsModules(containerId, language = 'en') {
                 description: `${honor.award} - ${honor.unit}`
             }));
             
-            renderModuleContainers(honorsData, 'honor', containerId, language);
+            renderModuleContainers(honorsData, 'honor', containerId, language, true);
             
             // Show the tab button if it was hidden
             const tabButton = document.querySelector('.tab-button[data-tab="honors-awards"]');
@@ -355,7 +363,7 @@ function loadHonorsAwardsModules(containerId, language = 'en') {
                         description: `${honor.award} - ${honor.unit}`
                     }));
                     
-                    renderModuleContainers(honorsData, 'honor', containerId, language);
+                    renderModuleContainers(honorsData, 'honor', containerId, language, true);
                     
                     // Show the tab button if it was hidden
                     const tabButton = document.querySelector('.tab-button[data-tab="honors-awards"]');
@@ -461,7 +469,7 @@ function loadTeachingModules(containerId, language = 'en') {
                         };
                     });
                     
-                    renderModuleContainers(teachingData, 'teaching', containerId, language);
+                    renderModuleContainers(teachingData, 'teaching', containerId, language, true);
                     
                     // Show the tab button if it was hidden
                     const tabButton = document.querySelector('.tab-button[data-tab="teaching"]');
@@ -507,7 +515,7 @@ function loadReviewerModules(containerId, language = 'en') {
             // Process and merge reviewer data
             const processedReviewerData = processReviewerData(preloadedReviewer, language);
             
-            renderModuleContainers(processedReviewerData, 'reviewer', containerId, language);
+            renderModuleContainers(processedReviewerData, 'reviewer', containerId, language, true);
             
             // Show the tab button if it was hidden
             const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');
@@ -539,7 +547,7 @@ function loadReviewerModules(containerId, language = 'en') {
                     // Process and merge reviewer data
                     const processedReviewerData = processReviewerData(data, language);
                     
-                    renderModuleContainers(processedReviewerData, 'reviewer', containerId, language);
+                    renderModuleContainers(processedReviewerData, 'reviewer', containerId, language, true);
                     
                     // Show the tab button if it was hidden
                     const tabButton = document.querySelector('.tab-button[data-tab="reviewer"]');

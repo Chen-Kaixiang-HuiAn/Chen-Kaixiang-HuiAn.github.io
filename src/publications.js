@@ -54,18 +54,56 @@ function loadPublicationsContent() {
             });
         });
         
-        // Check if patents tab is visible, if not, ensure academic-papers is active
-        const patentsTabButton = document.querySelector('.tab-button[data-tab="patents"]');
-        if (patentsTabButton && patentsTabButton.style.display === 'none') {
-            // Make sure academic-papers is active
-            const academicPapersButton = document.querySelector('.tab-button[data-tab="academic-papers"]');
-            const academicPapersPane = document.getElementById('academic-papers');
-            
-            if (academicPapersButton && academicPapersPane) {
-                academicPapersButton.classList.add('active');
-                academicPapersPane.classList.add('active');
+        // After loading all modules, check if we need to hide any tabs
+        setTimeout(() => {
+            // Check if patents tab should be hidden
+            const patentsContainer = document.getElementById('patents-modules-container');
+            if (patentsContainer && patentsContainer.children.length === 0) {
+                const patentsTab = document.querySelector('.tab-button[data-tab="patents"]');
+                if (patentsTab) {
+                    patentsTab.style.display = 'none';
+                }
             }
-        }
+            
+            // Ensure at least one tab is active and visible
+            const visibleTabs = Array.from(document.querySelectorAll('.tab-button')).filter(tab => 
+                tab.style.display !== 'none'
+            );
+            
+            if (visibleTabs.length > 0) {
+                // Check if the currently active tab is visible
+                const activeTab = document.querySelector('.tab-button.active');
+                if (activeTab && activeTab.style.display === 'none') {
+                    // If active tab is hidden, activate the first visible tab
+                    activeTab.classList.remove('active');
+                    const firstVisibleTab = visibleTabs[0];
+                    firstVisibleTab.classList.add('active');
+                    
+                    // Also activate the corresponding pane
+                    const tabId = firstVisibleTab.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-pane').forEach(pane => {
+                        pane.classList.remove('active');
+                    });
+                    const targetPane = document.getElementById(tabId);
+                    if (targetPane) {
+                        targetPane.classList.add('active');
+                    }
+                    
+                    // Update the stored state
+                    if (typeof activeTabStates !== 'undefined') {
+                        activeTabStates.publications = tabId;
+                    }
+                }
+            }
+            
+            // Force a reflow to ensure all floating elements are properly rendered
+            const publicationsSection = document.getElementById('publications');
+            if (publicationsSection) {
+                publicationsSection.style.display = 'none';
+                publicationsSection.offsetHeight; // Trigger reflow
+                publicationsSection.style.display = '';
+            }
+        }, 500); // Wait for modules to load
     }, 100);
     
     return content;
@@ -146,7 +184,7 @@ function loadAcademicPapersModules(containerId, language = 'en') {
                 });
                 
                 // Render papers for this year
-                renderModuleContainers(academicPapers, 'publication', yearContainer.id, language);
+                renderModuleContainers(academicPapers, 'publication', yearContainer.id, language, true);
             }
         });
     } else {
@@ -221,7 +259,7 @@ function loadAcademicPapersModules(containerId, language = 'en') {
                         });
                         
                         // Render papers for this year
-                        renderModuleContainers(academicPapers, 'publication', yearContainer.id, language);
+                        renderModuleContainers(academicPapers, 'publication', yearContainer.id, language, true);
                     }
                 });
             })
@@ -260,7 +298,7 @@ function loadPatentsModules(containerId, language = 'en') {
                 description: `${patent.type} - ${patent.number}`
             }));
             
-            renderModuleContainers(patentsData, 'patent', containerId, language);
+            renderModuleContainers(patentsData, 'patent', containerId, language, true);
             
             // Show the tab button if it was hidden
             const tabButton = document.querySelector('.tab-button[data-tab="patents"]');
@@ -300,7 +338,7 @@ function loadPatentsModules(containerId, language = 'en') {
                         description: `${patent.type} - ${patent.number}`
                     }));
                     
-                    renderModuleContainers(patentsData, 'patent', containerId, language);
+                    renderModuleContainers(patentsData, 'patent', containerId, language, true);
                     
                     // Show the tab button if it was hidden
                     const tabButton = document.querySelector('.tab-button[data-tab="patents"]');
