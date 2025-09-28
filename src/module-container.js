@@ -41,9 +41,9 @@ function getModuleText(key, language = 'en') {
             time: 'Time:',
             viewDetails: 'View Details',
             hideDetails: 'Hide Details',
-            tutor: 'Tutor',
-            dissertation: 'Dissertation',
-            project: 'Project'
+            tutor: 'Tutor:',
+            dissertation: 'Dissertation:',
+            project: 'Project:'
         },
         zh: {
             // Chinese state inherits English structure, only differs in nouns and data introduction
@@ -59,9 +59,9 @@ function getModuleText(key, language = 'en') {
             time: '时间：',
             viewDetails: '查看详情',
             hideDetails: '隐藏详情',
-            tutor: '导师',
-            dissertation: '学位论文',
-            project: '项目'
+            tutor: '导师：',
+            dissertation: '学位论文：',
+            project: '项目：'
         }
     };
     
@@ -226,11 +226,11 @@ function createModuleContainer(data, type, language = 'en') {
                 if (detail.tutor || detail.dissertation) {
                     let infoText = '';
                     if (detail.tutor && detail.dissertation) {
-                        infoText = `${getModuleText('tutor', language)}: ${detail.tutor}<br>${getModuleText('dissertation', language)}: ${detail.dissertation}`;
+                        infoText = `${getModuleText('tutor', language)} ${detail.tutor}<br>${getModuleText('dissertation', language)} ${detail.dissertation}`;
                     } else if (detail.tutor) {
-                        infoText = `${getModuleText('tutor', language)}: ${detail.tutor}`;
+                        infoText = `${getModuleText('tutor', language)} ${detail.tutor}`;
                     } else if (detail.dissertation) {
-                        infoText = `${getModuleText('dissertation', language)}: ${detail.dissertation}`;
+                        infoText = `${getModuleText('dissertation', language)} ${detail.dissertation}`;
                     }
                     detailHTML += `<br><span class="module-tutor">${infoText}</span>`;
                 }
@@ -334,7 +334,7 @@ function createModuleContainer(data, type, language = 'en') {
                     `;
                     // Add project information if available
                     if (detail.project) {
-                        detailHTML += `<br><span class="module-project">${getModuleText('project', language)}: ${detail.project}</span>`;
+                        detailHTML += `<br><span class="module-project">${getModuleText('project', language)} ${detail.project}</span>`;
                     }
                     // Add time information at the bottom
                     if (detail.time) {
@@ -354,7 +354,7 @@ function createModuleContainer(data, type, language = 'en') {
                 `;
                 // Add project information if available
                 if (data.project) {
-                    empHTML += `<p><strong>${getModuleText('project', language)}</strong> ${data.project}</p>`;
+                    empHTML += `<p><strong>${getModuleText('project', language)}</strong>: ${data.project}</p>`;
                 }
                 empInfo.innerHTML = empHTML;
                 moduleContent.appendChild(empInfo);
@@ -687,11 +687,11 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 if (detail.tutor || detail.dissertation) {
                     let infoText = '';
                     if (detail.tutor && detail.dissertation) {
-                        infoText = `${getModuleText('tutor', language)}: ${detail.tutor}<br>${getModuleText('dissertation', language)}: ${detail.dissertation}`;
+                        infoText = `${getModuleText('tutor', language)} ${detail.tutor}<br>${getModuleText('dissertation', language)} ${detail.dissertation}`;
                     } else if (detail.tutor) {
-                        infoText = `${getModuleText('tutor', language)}: ${detail.tutor}`;
+                        infoText = `${getModuleText('tutor', language)} ${detail.tutor}`;
                     } else if (detail.dissertation) {
-                        infoText = `${getModuleText('dissertation', language)}: ${detail.dissertation}`;
+                        infoText = `${getModuleText('dissertation', language)} ${detail.dissertation}`;
                     }
                     detailHTML += `<br><span class="module-tutor">${infoText}</span>`;
                 }
@@ -736,7 +736,7 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                     `;
                     // Add project information if available
                     if (detail.project) {
-                        detailHTML += `<br><span class="module-project">${getModuleText('project', language)}: ${detail.project}</span>`;
+                        detailHTML += `<br><span class="module-project">${getModuleText('project', language)} ${detail.project}</span>`;
                     }
                     // Add time information at the bottom
                     if (detail.time) {
@@ -753,7 +753,7 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 `;
                 // Add project information if available
                 if (data.project) {
-                    empHTML += `<p><strong>${getModuleText('project', language)}</strong> ${data.project}</p>`;
+                    empHTML += `<p><strong>${getModuleText('project', language)}</strong>: ${data.project}</p>`;
                 }
                 moduleContent.innerHTML = empHTML;
             }

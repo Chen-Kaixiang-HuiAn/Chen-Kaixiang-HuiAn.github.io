@@ -195,9 +195,9 @@ const languageTexts = {
         company: 'Company:',
         organization: 'Organization:',
         latest: 'Latest',
-        tutor: 'Tutor',
-        dissertation: 'Dissertation',
-        project: 'Project',
+        tutor: 'Tutor:',
+        dissertation: 'Dissertation:',
+        project: 'Project:',
         
         // Language
         language: '中文'
@@ -244,9 +244,9 @@ const languageTexts = {
         company: '公司：',
         organization: '组织：',
         latest: '最新',
-        tutor: '导师',
-        dissertation: '学位论文',
-        project: '项目',
+        tutor: '导师：',
+        dissertation: '学位论文：',
+        project: '项目：',
         
         // Language - Inherits English structure, only translates some key nouns
         language: 'English'
