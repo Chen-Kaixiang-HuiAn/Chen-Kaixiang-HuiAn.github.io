@@ -107,7 +107,7 @@ async function generatePDF() {
         let institution = '';
         let email = '';
         
-        const response = await fetch('../configs/en/info.json');
+        const response = await fetch('configs/en/info.json');
         const data = await response.json();
 
         const title_fontsize = 24;
@@ -808,7 +808,7 @@ async function generatePDF() {
         }
         
         // Education Section
-        const educationResponse = await fetch('../configs/en/education.json');
+        const educationResponse = await fetch('configs/en/education.json');
         const educationData = await educationResponse.json();
 
         // Add Education section only if there is data
@@ -828,7 +828,7 @@ async function generatePDF() {
         }
 
         // Employment Section
-        const employmentResponse = await fetch('../configs/en/employment.json');
+        const employmentResponse = await fetch('configs/en/employment.json');
         const employmentData = await employmentResponse.json();
 
         // Add Employment section only if there is data
@@ -848,7 +848,7 @@ async function generatePDF() {
         }
 
         // Publications Section
-        const publicationsResponse = await fetch('../configs/en/papers.json');
+        const publicationsResponse = await fetch('configs/en/papers.json');
         const publicationsData = await publicationsResponse.json();
 
         // Check if there are any publications
@@ -878,7 +878,7 @@ async function generatePDF() {
         }
 
         // Add patents sub-section which belongs to Publication section
-        const patentsResponse = await fetch('../configs/en/patents.json');
+        const patentsResponse = await fetch('configs/en/patents.json');
         const patentsData = await patentsResponse.json();
         
         // Add Patents subsection only if there is data
@@ -901,13 +901,13 @@ async function generatePDF() {
         }
 
         // Check if any Academic Service subsections have data
-        const teachingResponse = await fetch('../configs/en/teaching.json');
+        const teachingResponse = await fetch('configs/en/teaching.json');
         const teachingData = await teachingResponse.json();
         
-        const honorsResponse = await fetch('../configs/en/honors.json');
+        const honorsResponse = await fetch('configs/en/honors.json');
         const honorsData = await honorsResponse.json();
         
-        const reviewerResponse = await fetch('../configs/en/reviewer.json');
+        const reviewerResponse = await fetch('configs/en/reviewer.json');
         const reviewerData = await reviewerResponse.json();
 
         // Add academic service section only if there is data in any subsection

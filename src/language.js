@@ -52,73 +52,73 @@ async function preloadAllContent() {
     try {
         // Preload info content
         await Promise.all([
-            fetch('../configs/en/info.json').then(res => res.json()).then(data => { preloadedContent.en.info = data; }).catch(() => {}),
-            fetch('../configs/zh/info_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.info = data; }).catch(() => {})
+            fetch('configs/en/info.json').then(res => res.json()).then(data => { preloadedContent.en.info = data; }).catch(() => {}),
+            fetch('configs/zh/info_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.info = data; }).catch(() => {})
         ]);
         
         // Preload intro content
         await Promise.all([
-            fetch('../configs/en/intro.txt').then(res => res.text()).then(data => { preloadedContent.en.intro = data; }).catch(() => {}),
-            fetch('../configs/zh/intro_zh.txt').then(res => res.text()).then(data => { preloadedContent.zh.intro = data; }).catch(() => {})
+            fetch('configs/en/intro.txt').then(res => res.text()).then(data => { preloadedContent.en.intro = data; }).catch(() => {}),
+            fetch('configs/zh/intro_zh.txt').then(res => res.text()).then(data => { preloadedContent.zh.intro = data; }).catch(() => {})
         ]);
         
         // Preload news content
         await Promise.all([
-            fetch('../configs/en/news.json').then(res => res.json()).then(data => { preloadedContent.en.news = data; }).catch(() => {}),
-            fetch('../configs/zh/news_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.news = data; }).catch(() => {})
+            fetch('configs/en/news.json').then(res => res.json()).then(data => { preloadedContent.en.news = data; }).catch(() => {}),
+            fetch('configs/zh/news_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.news = data; }).catch(() => {})
         ]);
         
         // Preload education content
         await Promise.all([
-            fetch('../configs/en/education.json').then(res => res.json()).then(data => { preloadedContent.en.education = data; }).catch(() => {}),
-            fetch('../configs/zh/education_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.education = data; }).catch(() => {})
+            fetch('configs/en/education.json').then(res => res.json()).then(data => { preloadedContent.en.education = data; }).catch(() => {}),
+            fetch('configs/zh/education_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.education = data; }).catch(() => {})
         ]);
         
         // Preload employment content
         await Promise.all([
-            fetch('../configs/en/employment.json').then(res => res.json()).then(data => { preloadedContent.en.employment = data; }).catch(() => {}),
-            fetch('../configs/zh/employment_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.employment = data; }).catch(() => {})
+            fetch('configs/en/employment.json').then(res => res.json()).then(data => { preloadedContent.en.employment = data; }).catch(() => {}),
+            fetch('configs/zh/employment_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.employment = data; }).catch(() => {})
         ]);
 
       // Preload honors content
       await Promise.all([
-          fetch('../configs/en/honors.json').then(res => res.json()).then(data => { preloadedContent.en.honors = data; }).catch(() => {}),
-          fetch('../configs/zh/honors_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.honors = data; }).catch(() => {})
+          fetch('configs/en/honors.json').then(res => res.json()).then(data => { preloadedContent.en.honors = data; }).catch(() => {}),
+          fetch('configs/zh/honors_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.honors = data; }).catch(() => {})
       ]);
         
         // Preload teaching content
         await Promise.all([
-            fetch('../configs/en/teaching.json').then(res => res.json()).then(data => { preloadedContent.en.teaching = data; }).catch(() => {}),
-            fetch('../configs/zh/teaching_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.teaching = data; }).catch(() => {})
+            fetch('configs/en/teaching.json').then(res => res.json()).then(data => { preloadedContent.en.teaching = data; }).catch(() => {}),
+            fetch('configs/zh/teaching_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.teaching = data; }).catch(() => {})
         ]);
         
         // Preload reviewer content
         await Promise.all([
-            fetch('../configs/en/reviewer.json').then(res => res.json()).then(data => { preloadedContent.en.reviewer = data; }).catch(() => {}),
-            fetch('../configs/zh/reviewer_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.reviewer = data; }).catch(() => {})
+            fetch('configs/en/reviewer.json').then(res => res.json()).then(data => { preloadedContent.en.reviewer = data; }).catch(() => {}),
+            fetch('configs/zh/reviewer_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.reviewer = data; }).catch(() => {})
         ]);
         
         // Preload papers content
         await Promise.all([
-            fetch('../configs/en/papers.json').then(res => res.json()).then(data => { preloadedContent.en.papers = data; }).catch(() => {}),
-            fetch('../configs/zh/papers_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.papers = data; }).catch(() => {})
+            fetch('configs/en/papers.json').then(res => res.json()).then(data => { preloadedContent.en.papers = data; }).catch(() => {}),
+            fetch('configs/zh/papers_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.papers = data; }).catch(() => {})
         ]);
         
         // Preload patents content
         await Promise.all([
-            fetch('../configs/en/patents.json').then(res => res.json()).then(data => { preloadedContent.en.patents = data; }).catch(() => {}),
-            fetch('../configs/zh/patents_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.patents = data; }).catch(() => {})
+            fetch('configs/en/patents.json').then(res => res.json()).then(data => { preloadedContent.en.patents = data; }).catch(() => {}),
+            fetch('configs/zh/patents_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.patents = data; }).catch(() => {})
         ]);
         
         // Preload CV content (PDF URLs)
         preloadedContent.cv = {
             en: {
-                pdfUrl: '../configs/en/cv.pdf',
-                downloadUrl: '../configs/en/cv.pdf'
+                pdfUrl: 'configs/en/cv.pdf',
+                downloadUrl: 'configs/en/cv.pdf'
             },
             zh: {
-                pdfUrl: '../configs/zh/cv_zh.pdf',
-                downloadUrl: '../configs/zh/cv_zh.pdf'
+                pdfUrl: 'configs/zh/cv_zh.pdf',
+                downloadUrl: 'configs/zh/cv_zh.pdf'
             }
         };
         
@@ -1041,7 +1041,7 @@ function reloadContent() {
 async function createLanguageSwitch() {
     // Check if single language mode is enabled
     try {
-        const response = await fetch('../configs/config.json');
+        const response = await fetch('configs/config.json');
         const config = await response.json();
         
         // Don't create language switch button in single language mode
