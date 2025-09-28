@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-26
+// Last Change: 2025-09-29
 
 // Experiences section content
 // Chinese text inherits English structure, only differs in nouns and data introduction
@@ -41,89 +41,44 @@ function loadExperiencesContent() {
     
     // Load modules after the content is added to the DOM
     setTimeout(() => {
-        loadInstitutionExperiencesModules('education-modules-container', currentLang);
-        loadEmploymentModules('employment-modules-container', currentLang);
-        loadHonorsAwardsModules('honors-awards-modules-container', currentLang);
-        loadTeachingModules('teaching-modules-container', currentLang);
-        loadReviewerModules('reviewer-modules-container', currentLang);
-        
-        // After loading all modules, check if we need to hide any tabs
-        setTimeout(() => {
-            // Check if employment tab should be hidden
-            const employmentContainer = document.getElementById('employment-modules-container');
-            if (employmentContainer && employmentContainer.children.length === 0) {
-                const employmentTab = document.querySelector('.tab-button[data-tab="employment"]');
-                if (employmentTab) {
-                    employmentTab.style.display = 'none';
+        // Check if content is preloaded before loading modules
+        if (getPreloadedContent('education') && getPreloadedContent('employment') && 
+            getPreloadedContent('honors') && getPreloadedContent('teaching') && getPreloadedContent('reviewer')) {
+            console.log('Using preloaded content for experiences');
+            loadInstitutionExperiencesModules('education-modules-container', currentLang);
+            loadEmploymentModules('employment-modules-container', currentLang);
+            loadHonorsAwardsModules('honors-awards-modules-container', currentLang);
+            loadTeachingModules('teaching-modules-container', currentLang);
+            loadReviewerModules('reviewer-modules-container', currentLang);
+            
+            // After loading all modules, check if we need to hide any tabs
+            setTimeout(() => {
+                checkAndHideEmptyTabs();
+            }, 100);
+        } else {
+            console.log('Waiting for content to be preloaded for experiences');
+            // Wait for content to be ready
+            document.addEventListener('contentReady', function eventHandler(event) {
+                console.log('Content is ready, loading experiences modules');
+                loadInstitutionExperiencesModules('education-modules-container', currentLang);
+                loadEmploymentModules('employment-modules-container', currentLang);
+                loadHonorsAwardsModules('honors-awards-modules-container', currentLang);
+                loadTeachingModules('teaching-modules-container', currentLang);
+                loadReviewerModules('reviewer-modules-container', currentLang);
+                
+                // After loading all modules, check if we need to hide any tabs
+                // Only call checkAndHideEmptyTabs if the experiences section is currently active
+                const experiencesSection = document.getElementById('experiences');
+                if (experiencesSection && experiencesSection.classList.contains('active')) {
+                    setTimeout(() => {
+                        checkAndHideEmptyTabs();
+                    }, 500);
                 }
-            }
-            
-            // Check if honors-awards tab should be hidden
-            const honorsContainer = document.getElementById('honors-awards-modules-container');
-            if (honorsContainer && honorsContainer.children.length === 0) {
-                const honorsTab = document.querySelector('.tab-button[data-tab="honors-awards"]');
-                if (honorsTab) {
-                    honorsTab.style.display = 'none';
-                }
-            }
-            
-            // Check if teaching tab should be hidden
-            const teachingContainer = document.getElementById('teaching-modules-container');
-            if (teachingContainer && teachingContainer.children.length === 0) {
-                const teachingTab = document.querySelector('.tab-button[data-tab="teaching"]');
-                if (teachingTab) {
-                    teachingTab.style.display = 'none';
-                }
-            }
-            
-            // Check if reviewer tab should be hidden
-            const reviewerContainer = document.getElementById('reviewer-modules-container');
-            if (reviewerContainer && reviewerContainer.children.length === 0) {
-                const reviewerTab = document.querySelector('.tab-button[data-tab="reviewer"]');
-                if (reviewerTab) {
-                    reviewerTab.style.display = 'none';
-                }
-            }
-            
-            // Ensure at least one tab is active and visible
-            const visibleTabs = Array.from(document.querySelectorAll('.tab-button')).filter(tab => 
-                tab.style.display !== 'none'
-            );
-            
-            if (visibleTabs.length > 0) {
-                // Check if the currently active tab is visible
-                const activeTab = document.querySelector('.tab-button.active');
-                if (activeTab && activeTab.style.display === 'none') {
-                    // If active tab is hidden, activate the first visible tab
-                    activeTab.classList.remove('active');
-                    const firstVisibleTab = visibleTabs[0];
-                    firstVisibleTab.classList.add('active');
-                    
-                    // Also activate the corresponding pane
-                    const tabId = firstVisibleTab.getAttribute('data-tab');
-                    document.querySelectorAll('.tab-pane').forEach(pane => {
-                        pane.classList.remove('active');
-                    });
-                    const targetPane = document.getElementById(tabId);
-                    if (targetPane) {
-                        targetPane.classList.add('active');
-                    }
-                    
-                    // Update the stored state
-                    if (typeof activeTabStates !== 'undefined') {
-                        activeTabStates.experiences = tabId;
-                    }
-                }
-            }
-            
-            // Force a reflow to ensure all floating elements are properly rendered
-            const experiencesSection = document.getElementById('experiences');
-            if (experiencesSection) {
-                experiencesSection.style.display = 'none';
-                experiencesSection.offsetHeight; // Trigger reflow
-                experiencesSection.style.display = '';
-            }
-        }, 500); // Wait for modules to load
+                
+                // Remove the event listener to prevent multiple calls
+                document.removeEventListener('contentReady', eventHandler);
+            });
+        }
         
         // Add tab switching functionality
         const tabButtons = document.querySelectorAll('.tab-button');
@@ -165,7 +120,15 @@ function loadInstitutionExperiencesModules(containerId, language = 'en') {
         const container = document.getElementById(containerId);
         if (!container) return;
         
-        renderModuleContainers(preloadedEducation, 'education', containerId, language, true);
+        // Map the data to the format expected by renderModuleContainers
+        const educationData = preloadedEducation.map(edu => ({
+            school: edu.school,
+            logoSrc: edu.logoSrc,
+            link: edu.link,
+            details: edu.details
+        }));
+        
+        renderModuleContainers(educationData, 'education', containerId, language, true);
     } else {
         // Fall back to fetching content
         const configPath = language === 'zh' ? 
@@ -175,8 +138,13 @@ function loadInstitutionExperiencesModules(containerId, language = 'en') {
         fetch(configPath)
             .then(response => response.json())
             .then(data => {
-                // All education in the current structure are education
-                const educationData = data;
+                // Map the data to the format expected by renderModuleContainers
+                const educationData = data.map(edu => ({
+                    school: edu.school,
+                    logoSrc: edu.logoSrc,
+                    link: edu.link,
+                    details: edu.details
+                }));
                 
                 // Get container element
                 const container = document.getElementById(containerId);

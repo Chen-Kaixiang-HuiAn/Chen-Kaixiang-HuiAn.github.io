@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-26
+// Last Change: 2025-09-29
 
 // Module Container Component
 // This component provides a generic container for various types of content
@@ -185,12 +185,12 @@ function createModuleContainer(data, type, language = 'en') {
             const moduleImage = document.createElement('img');
             moduleImage.className = 'module-image';
             moduleImage.src = imageUrl;
-            moduleImage.alt = data.title || data.name || data.company || 'Module image';
+            moduleImage.alt = data.title || data.name || data.school || data.company || 'Module image';
             
             // Add click event to image for zooming
             moduleImage.style.cursor = 'pointer';
             moduleImage.addEventListener('click', () => {
-                openImageInModal(imageUrl, data.title || data.name || data.company || 'Module image');
+                openImageInModal(imageUrl, data.title || data.name || data.school || data.company || 'Module image');
             });
             
             // Wrap image in a link if website is available
@@ -598,27 +598,37 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 moduleImageContainer = document.createElement('div');
                 moduleImageContainer.className = 'module-image-container';
                 
-                moduleImage = document.createElement('img');
-                moduleImage.className = 'module-image';
-                
-                // Add click event to image for zooming
-                moduleImage.style.cursor = 'pointer';
-                moduleImage.addEventListener('click', () => {
-                    openImageInModal(imageUrl, data.title || data.name || data.company || 'Module image');
-                });
-                
-                // Wrap image in a link if link is available
-                if (data.link) {
-                    const imageLink = document.createElement('a');
-                    imageLink.href = data.link;
-                    imageLink.target = '_blank';
-                    imageLink.rel = 'noopener noreferrer';
-                    imageLink.appendChild(moduleImage);
-                    moduleImageContainer.appendChild(imageLink);
+                // Create text element instead of image for education and employment
+                if (type === 'education' && data.school) {
+                    moduleImage = document.createElement('div');
+                    moduleImage.className = 'module-image-text';
+                    moduleImage.textContent = data.school;
+                    moduleImage.style.fontSize = '1.2rem';
+                    moduleImage.style.fontWeight = 'bold';
+                    moduleImage.style.textAlign = 'center';
+                    moduleImage.style.padding = '20px';
+                    moduleImage.style.color = 'var(--text-color)';
+                } else if (type === 'employment' && data.company) {
+                    moduleImage = document.createElement('div');
+                    moduleImage.className = 'module-image-text';
+                    moduleImage.textContent = data.company;
+                    moduleImage.style.fontSize = '1.2rem';
+                    moduleImage.style.fontWeight = 'bold';
+                    moduleImage.style.textAlign = 'center';
+                    moduleImage.style.padding = '20px';
+                    moduleImage.style.color = 'var(--text-color)';
                 } else {
-                    moduleImageContainer.appendChild(moduleImage);
+                    moduleImage = document.createElement('img');
+                    moduleImage.className = 'module-image';
+                    
+                    // Add click event to image for zooming
+                    moduleImage.style.cursor = 'pointer';
+                    moduleImage.addEventListener('click', () => {
+                        openImageInModal(imageUrl, data.title || data.name || data.school || data.company || 'Module image');
+                    });
                 }
                 
+                moduleImageContainer.appendChild(moduleImage);
                 moduleBody.insertBefore(moduleImageContainer, moduleBody.firstChild);
             } else {
                 // Store original image dimensions to prevent layout shifts
@@ -628,38 +638,20 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 
                 // Update existing image
                 moduleImage.src = imageUrl;
-                moduleImage.alt = data.title || data.name || data.company || 'Module image';
+                moduleImage.alt = data.title || data.name || data.school || data.company || 'Module image';
                 
                 // Remove existing click event and add new one
                 moduleImage.style.cursor = 'pointer';
                 const newImage = moduleImage.cloneNode(true);
                 newImage.addEventListener('click', () => {
-                    openImageInModal(imageUrl, data.title || data.name || data.company || 'Module image');
+                    openImageInModal(imageUrl, data.title || data.name || data.school || data.company || 'Module image');
                 });
                 moduleImage.parentNode.replaceChild(newImage, moduleImage);
                 
-                // Check if we need to wrap/unwrap the image in a link
                 const existingLink = moduleImageContainer.querySelector('a');
-                if (data.link) {
-                    if (!existingLink) {
-                        // Wrap image in a link
-                        const imageLink = document.createElement('a');
-                        imageLink.href = data.link;
-                        imageLink.target = '_blank';
-                        imageLink.rel = 'noopener noreferrer';
-                        moduleImageContainer.removeChild(moduleImageContainer.firstChild);
-                        imageLink.appendChild(moduleImageContainer.firstChild);
-                        moduleImageContainer.appendChild(imageLink);
-                    } else {
-                        // Update existing link
-                        existingLink.href = data.link;
-                    }
-                } else {
-                    if (existingLink) {
-                        // Unwrap image from link
-                        moduleImageContainer.removeChild(existingLink);
-                        moduleImageContainer.appendChild(existingLink.firstChild);
-                    }
+                if (existingLink) {
+                    moduleImageContainer.removeChild(existingLink);
+                    moduleImageContainer.appendChild(existingLink.firstChild);
                 }
             }
         }
@@ -1102,12 +1094,12 @@ function renderModuleContainers(dataArray, type, containerId, language = 'en', f
             container.style.width = '';
             container.style.minHeight = '';
             
-            // Force a reflow if requested (to ensure floating elements are properly rendered)
-            if (forceReflow) {
-                container.style.display = 'none';
-                container.offsetHeight; // Trigger reflow
-                container.style.display = '';
-            }
+            // Don't force a reflow to avoid page reload
+            // if (forceReflow) {
+            //     container.style.display = 'none';
+            //     container.offsetHeight; // Trigger reflow
+            //     container.style.display = '';
+            // }
         }, 350);
     } else {
         // Add fade out effect
@@ -1128,14 +1120,14 @@ function renderModuleContainers(dataArray, type, containerId, language = 'en', f
             // Fade in new content
             container.style.opacity = '1';
             
-            // Force a reflow if requested (to ensure floating elements are properly rendered)
-            if (forceReflow) {
-                setTimeout(() => {
-                    container.style.display = 'none';
-                    container.offsetHeight; // Trigger reflow
-                    container.style.display = '';
-                }, 100);
-            }
+            // Don't force a reflow to avoid page reload
+            // if (forceReflow) {
+            //     setTimeout(() => {
+            //         container.style.display = 'none';
+            //         container.offsetHeight; // Trigger reflow
+            //         container.style.display = '';
+            //     }, 100);
+            // }
         }, 300);
     }
 }

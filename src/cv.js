@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-19
+// Last Change: 2025-09-29
 
 // CV section content
 // English text structure is used across all languages

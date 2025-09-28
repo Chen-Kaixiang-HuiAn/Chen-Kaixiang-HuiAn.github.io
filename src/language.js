@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-26
+// Last Change: 2025-09-29
 
 // Language management module
 
@@ -133,9 +133,23 @@ async function preloadAllContent() {
 
 // Initialize configuration when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    loadConfig();
-    // Start preloading content after a short delay to not block initial page load
-    setTimeout(preloadAllContent, 500);
+    // First, load the main configuration
+    loadConfig().then(() => {
+        // After config is loaded, preload all content before initializing the page
+        console.log('Config loaded, preloading content...');
+        return preloadAllContent();
+    }).then(() => {
+        console.log('Content preloaded, initializing page...');
+        // After content is preloaded, initialize the page
+        // Dispatch a custom event to signal that content is ready
+        const contentReadyEvent = new CustomEvent('contentReady', { detail: { isPreloaded: isContentPreloaded } });
+        document.dispatchEvent(contentReadyEvent);
+    }).catch(error => {
+        console.error('Error during initialization:', error);
+        // Even if there's an error, we still need to initialize the page
+        const contentReadyEvent = new CustomEvent('contentReady', { detail: { isPreloaded: false } });
+        document.dispatchEvent(contentReadyEvent);
+    });
 });
 
 // Language Texts - Chinese text inherits English structure, only differs in nouns and data introduction
@@ -278,8 +292,8 @@ function setLanguage(lang) {
                 
                 // Set html lang attribute for CSS selectors
                 document.documentElement.lang = lang;
-                
-                // Update UI language elements first to maintain UI consistency
+
+    // Update UI language elements first to maintain UI consistency
                 updateUILanguage();
                 
                 // Then reload content for the active section
@@ -304,6 +318,89 @@ function setLanguage(lang) {
             
             updateUILanguage();
             reloadContent();
+        }
+    }
+}
+
+// Function to check and hide empty tabs
+function checkAndHideEmptyTabs() {
+    // Check if employment tab should be hidden
+    const employmentContainer = document.getElementById('employment-modules-container');
+    if (employmentContainer && employmentContainer.children.length === 0) {
+        const employmentTab = document.querySelector('.tab-button[data-tab="employment"]');
+        if (employmentTab) {
+            employmentTab.style.display = 'none';
+        }
+    }
+    
+    // Check if honors-awards tab should be hidden
+    const honorsContainer = document.getElementById('honors-awards-modules-container');
+    if (honorsContainer && honorsContainer.children.length === 0) {
+        const honorsTab = document.querySelector('.tab-button[data-tab="honors-awards"]');
+        if (honorsTab) {
+            honorsTab.style.display = 'none';
+        }
+    }
+    
+    // Check if teaching tab should be hidden
+    const teachingContainer = document.getElementById('teaching-modules-container');
+    if (teachingContainer && teachingContainer.children.length === 0) {
+        const teachingTab = document.querySelector('.tab-button[data-tab="teaching"]');
+        if (teachingTab) {
+            teachingTab.style.display = 'none';
+        }
+    }
+    
+    // Check if reviewer tab should be hidden
+    const reviewerContainer = document.getElementById('reviewer-modules-container');
+    if (reviewerContainer && reviewerContainer.children.length === 0) {
+        const reviewerTab = document.querySelector('.tab-button[data-tab="reviewer"]');
+        if (reviewerTab) {
+            reviewerTab.style.display = 'none';
+        }
+    }
+    
+    // Check if patents tab should be hidden
+    const patentsContainer = document.getElementById('patents-modules-container');
+    if (patentsContainer && patentsContainer.children.length === 0) {
+        const patentsTab = document.querySelector('.tab-button[data-tab="patents"]');
+        if (patentsTab) {
+            patentsTab.style.display = 'none';
+        }
+    }
+    
+    // Ensure at least one tab is active and visible
+    const visibleTabs = Array.from(document.querySelectorAll('.tab-button')).filter(tab => 
+        tab.style.display !== 'none'
+    );
+    
+    if (visibleTabs.length > 0) {
+        // Check if the currently active tab is visible
+        const activeTab = document.querySelector('.tab-button.active');
+        if (activeTab && activeTab.style.display === 'none') {
+            // If active tab is hidden, activate the first visible tab
+            activeTab.classList.remove('active');
+            const firstVisibleTab = visibleTabs[0];
+            firstVisibleTab.classList.add('active');
+            
+            // Also activate the corresponding pane
+            const tabId = firstVisibleTab.getAttribute('data-tab');
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            const targetPane = document.getElementById(tabId);
+            if (targetPane) {
+                targetPane.classList.add('active');
+            }
+            
+            // Update the stored state
+            if (typeof activeTabStates !== 'undefined') {
+                if (activeTabStates.experiences) {
+                    activeTabStates.experiences = tabId;
+                } else if (activeTabStates.publications) {
+                    activeTabStates.publications = tabId;
+                }
+            }
         }
     }
 }
@@ -552,111 +649,11 @@ function updateSectionContentLanguage(sectionId) {
       }
       
       // After reloading all modules, check if we need to hide any tabs
-      setTimeout(() => {
-        // Check if employment tab should be hidden
-        if (expEmploymentContainer && expEmploymentContainer.children.length === 0) {
-          const employmentTab = document.querySelector('.tab-button[data-tab="employment"]');
-          if (employmentTab) {
-            employmentTab.style.display = 'none';
-          }
-        }
-        
-        // Check if honors-awards tab should be hidden
-        if (expHonorsContainer && expHonorsContainer.children.length === 0) {
-          const honorsTab = document.querySelector('.tab-button[data-tab="honors-awards"]');
-          if (honorsTab) {
-            honorsTab.style.display = 'none';
-          }
-        }
-        
-        // Check if teaching tab should be hidden
-        if (expTeachingContainer && expTeachingContainer.children.length === 0) {
-          const teachingTab = document.querySelector('.tab-button[data-tab="teaching"]');
-          if (teachingTab) {
-            teachingTab.style.display = 'none';
-          }
-        }
-        
-        // Check if reviewer tab should be hidden
-        if (expReviewerContainer && expReviewerContainer.children.length === 0) {
-          const reviewerTab = document.querySelector('.tab-button[data-tab="reviewer"]');
-          if (reviewerTab) {
-            reviewerTab.style.display = 'none';
-          }
-        }
-        
-        // Additional check for cache overload scenarios - verify content directly
-        // This ensures that even if preloaded content is cleared due to cache overload,
-        // we still hide tabs that have no actual content
-        const lang = getCurrentLanguage();
-        
-        // Check employment content
-        const employmentData = getPreloadedContent('employment', lang);
-        if (!employmentData || (Array.isArray(employmentData) && employmentData.length === 0)) {
-          const employmentTab = document.querySelector('.tab-button[data-tab="employment"]');
-          if (employmentTab && employmentTab.style.display !== 'none') {
-            employmentTab.style.display = 'none';
-          }
-        }
-        
-        // Check honors content
-        const honorsData = getPreloadedContent('honors', lang);
-        if (!honorsData || (Array.isArray(honorsData) && honorsData.length === 0)) {
-          const honorsTab = document.querySelector('.tab-button[data-tab="honors-awards"]');
-          if (honorsTab && honorsTab.style.display !== 'none') {
-            honorsTab.style.display = 'none';
-          }
-        }
-        
-        // Check teaching content
-        const teachingData = getPreloadedContent('teaching', lang);
-        if (!teachingData || (Array.isArray(teachingData) && teachingData.length === 0)) {
-          const teachingTab = document.querySelector('.tab-button[data-tab="teaching"]');
-          if (teachingTab && teachingTab.style.display !== 'none') {
-            teachingTab.style.display = 'none';
-          }
-        }
-        
-        // Check reviewer content
-        const reviewerData = getPreloadedContent('reviewer', lang);
-        if (!reviewerData || (Array.isArray(reviewerData) && reviewerData.length === 0)) {
-          const reviewerTab = document.querySelector('.tab-button[data-tab="reviewer"]');
-          if (reviewerTab && reviewerTab.style.display !== 'none') {
-            reviewerTab.style.display = 'none';
-          }
-        }
-        
-        // Ensure at least one tab is active and visible
-        const visibleTabs = Array.from(section.querySelectorAll('.tab-button')).filter(tab => 
-          tab.style.display !== 'none'
-        );
-        
-        if (visibleTabs.length > 0) {
-          // Check if the currently active tab is visible
-          const activeTab = section.querySelector('.tab-button.active');
-          if (activeTab && activeTab.style.display === 'none') {
-            // If active tab is hidden, activate the first visible tab
-            activeTab.classList.remove('active');
-            const firstVisibleTab = visibleTabs[0];
-            firstVisibleTab.classList.add('active');
-            
-            // Also activate the corresponding pane
-            const tabId = firstVisibleTab.getAttribute('data-tab');
-            section.querySelectorAll('.tab-pane').forEach(pane => {
-              pane.classList.remove('active');
-            });
-            const targetPane = section.getElementById(tabId);
-            if (targetPane) {
-              targetPane.classList.add('active');
-            }
-            
-            // Update the stored state
-            if (typeof activeTabStates !== 'undefined') {
-              activeTabStates.experiences = tabId;
-            }
-          }
-        }
-      }, 500); // Wait for modules to load
+      // Only call checkAndHideEmptyTabs if the section is currently active
+      const experiencesSection = document.getElementById('experiences');
+      if (experiencesSection && experiencesSection.classList.contains('active')) {
+        setTimeout(checkAndHideEmptyTabs, 500); // Wait for modules to load
+      }
       break;
       
     case 'publications':
@@ -685,57 +682,11 @@ function updateSectionContentLanguage(sectionId) {
       }
       
       // After reloading modules, check if we need to hide the patents tab
-      setTimeout(() => {
-        // Check if patents container has no content
-        if (patentsContainer && patentsContainer.children.length === 0) {
-          const patentsTab = document.querySelector('.tab-button[data-tab="patents"]');
-          if (patentsTab) {
-            patentsTab.style.display = 'none';
-          }
-        }
-        
-        // Additional check for cache overload scenarios - verify patents content directly
-        const lang = getCurrentLanguage();
-        const patentsData = getPreloadedContent('patents', lang);
-        if (!patentsData || (Array.isArray(patentsData) && patentsData.length === 0) || 
-            (patentsData && patentsData.patents && Array.isArray(patentsData.patents) && patentsData.patents.length === 0)) {
-          const patentsTab = document.querySelector('.tab-button[data-tab="patents"]');
-          if (patentsTab && patentsTab.style.display !== 'none') {
-            patentsTab.style.display = 'none';
-          }
-        }
-        
-        // Ensure at least one tab is active and visible
-        const visibleTabs = Array.from(section.querySelectorAll('.tab-button')).filter(tab => 
-          tab.style.display !== 'none'
-        );
-        
-        if (visibleTabs.length > 0) {
-          // Check if the currently active tab is visible
-          const activeTab = section.querySelector('.tab-button.active');
-          if (activeTab && activeTab.style.display === 'none') {
-            // If active tab is hidden, activate the first visible tab
-            activeTab.classList.remove('active');
-            const firstVisibleTab = visibleTabs[0];
-            firstVisibleTab.classList.add('active');
-            
-            // Also activate the corresponding pane
-            const tabId = firstVisibleTab.getAttribute('data-tab');
-            section.querySelectorAll('.tab-pane').forEach(pane => {
-              pane.classList.remove('active');
-            });
-            const targetPane = section.getElementById(tabId);
-            if (targetPane) {
-              targetPane.classList.add('active');
-            }
-            
-            // Update the stored state
-            if (typeof activeTabStates !== 'undefined') {
-              activeTabStates.publications = tabId;
-            }
-          }
-        }
-      }, 500); // Wait for modules to load
+      // Only call checkAndHideEmptyTabs if the section is currently active
+      const publicationsSection = document.getElementById('publications');
+      if (publicationsSection && publicationsSection.classList.contains('active')) {
+        setTimeout(checkAndHideEmptyTabs, 500); // Wait for modules to load
+      }
       break;
       
     case 'cv':
@@ -814,30 +765,16 @@ function updateSectionContentLanguage(sectionId) {
  * This function updates all sections content, not just the active one
  */
 function reloadContent() {
-  // Update all sections, not just the active one
-  const allSections = document.querySelectorAll('.content-section');
+  // Only update the active section, not all sections
+  const activeSection = document.querySelector('.content-section.active');
   
-  allSections.forEach(section => {
-    const sectionId = section.id;
+  if (activeSection) {
+    const sectionId = activeSection.id;
     if (sectionId) {
-      // Use the centralized function to update section content
-      // We need to temporarily make the section active for update, then restore its original state
-      const wasActive = section.classList.contains('active');
-      
-      // Temporarily make it active if it's not
-      if (!wasActive) {
-        section.classList.add('active');
-      }
-      
       // Update the section content
       updateSectionContentLanguage(sectionId);
-      
-      // Restore original active state
-      if (!wasActive) {
-        section.classList.remove('active');
-      }
     }
-  });
+  }
   
   // After reloading content, ensure the active tab is properly displayed
   setTimeout(() => {

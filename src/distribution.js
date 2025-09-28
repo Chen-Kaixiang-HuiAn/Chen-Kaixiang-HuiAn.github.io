@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-19
+// Last Change: 2025-09-29
 
 // Page layout distribution.js
 // Divide the page into three parts: nav main-content and footer with 1/10 margin on each side
@@ -7,22 +7,26 @@
 
 // Page layout initialization
 document.addEventListener('DOMContentLoaded', function() {
-  // Apply layout styles
-  applyLayoutStyles();
-  
-  // Create page structure
-  createPageStructure();
-  
-  // Update footer text after language is initialized
-  setTimeout(() => {
-    const footer = document.getElementById('footer');
-    if (footer) {
-      const footerText = footer.querySelector('p');
-      if (footerText) {
-        footerText.innerHTML = getText('copyright');
-      }
-    }
-  }, 100);
+    // Wait for content to be ready before initializing the page
+    document.addEventListener('contentReady', function(event) {
+        console.log('Content is ready, initializing page layout...');
+        // Apply layout styles
+        applyLayoutStyles();
+        
+        // Create page structure
+        createPageStructure();
+        
+        // Update footer text after language is initialized
+        setTimeout(() => {
+            const footer = document.getElementById('footer');
+            if (footer) {
+                const footerText = footer.querySelector('p');
+                if (footerText) {
+                    footerText.innerHTML = getText('copyright');
+                }
+            }
+        }, 100);
+    });
 });
 
 // Create page structure

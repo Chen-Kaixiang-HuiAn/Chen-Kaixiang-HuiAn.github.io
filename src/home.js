@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-19
+// Last Change: 2025-09-29
 
 // Home section content - Chinese version inherits English structure, differs only in nouns and data
 function loadHomeContent() {

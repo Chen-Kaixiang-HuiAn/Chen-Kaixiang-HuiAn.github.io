@@ -1,5 +1,5 @@
 // Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-19
+// Last Change: 2025-09-29
 
 // Cache clearing module
 // This module provides functions to clear page cache to ensure proper language switching and page transitions
@@ -13,85 +13,7 @@ const MIN_LANGUAGE_CHANGE_INTERVAL = 2000; // Increased to 2 seconds minimum bet
  * This is a comprehensive version that clears all caches and reloads resources
  */
 function clearPageCache() {
-  // Clear any cached fetch requests
-  if ('caches' in window) {
-    caches.keys().then(cacheNames => {
-      cacheNames.forEach(cacheName => {
-        caches.delete(cacheName);
-      });
-    });
-  }
-  
-  // Don't force reload of all external resources to avoid style flickering
-  // Instead, we'll just clear the module containers to force content reload
-  // This prevents the white flash caused by style reloading
-  
-  // Clear any module containers to force reload
-  const moduleContainers = document.querySelectorAll('.modules-container');
-  moduleContainers.forEach(container => {
-    container.innerHTML = '';
-  });
-  
-  // After clearing cache, we need to recheck and hide empty modules
-  // This ensures that modules that were relying on preloaded content
-  // are properly hidden when the cache is cleared
-  setTimeout(() => {
-    // Check experiences section modules
-    const experiencesSection = document.getElementById('experiences');
-    if (experiencesSection) {
-      const lang = getCurrentLanguage();
-      
-      // Check employment content
-      const employmentData = getPreloadedContent ? getPreloadedContent('employment', lang) : null;
-      if (!employmentData || (Array.isArray(employmentData) && employmentData.length === 0)) {
-        const employmentTab = experiencesSection.querySelector('.tab-button[data-tab="employment"]');
-        if (employmentTab && employmentTab.style.display !== 'none') {
-          employmentTab.style.display = 'none';
-        }
-      }
-      
-      // Check honors content
-      const honorsData = getPreloadedContent ? getPreloadedContent('honors', lang) : null;
-      if (!honorsData || (Array.isArray(honorsData) && honorsData.length === 0)) {
-        const honorsTab = experiencesSection.querySelector('.tab-button[data-tab="honors-awards"]');
-        if (honorsTab && honorsTab.style.display !== 'none') {
-          honorsTab.style.display = 'none';
-        }
-      }
-      
-      // Check teaching content
-      const teachingData = getPreloadedContent ? getPreloadedContent('teaching', lang) : null;
-      if (!teachingData || (Array.isArray(teachingData) && teachingData.length === 0)) {
-        const teachingTab = experiencesSection.querySelector('.tab-button[data-tab="teaching"]');
-        if (teachingTab && teachingTab.style.display !== 'none') {
-          teachingTab.style.display = 'none';
-        }
-      }
-      
-      // Check reviewer content
-      const reviewerData = getPreloadedContent ? getPreloadedContent('reviewer', lang) : null;
-      if (!reviewerData || (Array.isArray(reviewerData) && reviewerData.length === 0)) {
-        const reviewerTab = experiencesSection.querySelector('.tab-button[data-tab="reviewer"]');
-        if (reviewerTab && reviewerTab.style.display !== 'none') {
-          reviewerTab.style.display = 'none';
-        }
-      }
-    }
-    
-    // Check publications section modules
-    const publicationsSection = document.getElementById('publications');
-    if (publicationsSection) {
-      const lang = getCurrentLanguage();
-      const patentsData = getPreloadedContent ? getPreloadedContent('patents', lang) : null;
-      if (!patentsData || (Array.isArray(patentsData) && patentsData.length === 0) || 
-          (patentsData && patentsData.patents && Array.isArray(patentsData.patents) && patentsData.patents.length === 0)) {
-        const patentsTab = publicationsSection.querySelector('.tab-button[data-tab="patents"]');
-        if (patentsTab && patentsTab.style.display !== 'none') {
-          patentsTab.style.display = 'none';
-        }
-      }
-    }
-  }, 300); // Wait a bit for the cache to be cleared
+    // Abandoned already, as it's not necessary to clear cache to ensure proper language switching and page transitions
 }
 
 /**
@@ -132,9 +54,12 @@ function initializeCacheClearing() {
   if (typeof setLanguage === 'function') {
     const originalSetLanguage = setLanguage;
     window.setLanguage = function(lang) {
-      // Only clear cache if language actually changed
-      if (getCurrentLanguage() !== lang) {
-        clearPageCache();
+      // Only clear cache if language actually changed and enough time has passed
+      const currentTime = new Date().getTime();
+      if (getCurrentLanguage() !== lang && (currentTime - lastLanguageChangeTime) > MIN_LANGUAGE_CHANGE_INTERVAL) {
+        lastLanguageChangeTime = currentTime;
+        // Don't clear cache to avoid page reload
+        // clearPageCache();
       }
       // Call original function
       originalSetLanguage(lang);
@@ -161,12 +86,11 @@ function initializeCacheClearing() {
     };
   }
   
-  // Override the original switchSection function to include cache clearing
+  // Override the original switchSection function to remove cache clearing
   if (typeof switchSection === 'function') {
     const originalSwitchSection = switchSection;
     window.switchSection = function(sectionId) {
-      // Clear cache before section switch
-      clearPageCache();
+      // Don't clear cache before section switch to avoid page reload
       // Call original function
       originalSwitchSection(sectionId);
     };
@@ -175,31 +99,24 @@ function initializeCacheClearing() {
   // Simplified navigation click handler to reduce performance impact
   document.addEventListener('click', function(e) {
     if (e.target.tagName === 'A' && e.target.closest('.nav-links')) {
-      // Get current language before navigation
-      const currentLang = getCurrentLanguage();
+      // Don't get current language before navigation to avoid page reload
+      // const currentLang = getCurrentLanguage();
       
-      // After navigation, ensure the new content uses the correct language
-      setTimeout(() => {
-        // Ensure the language is still correct after navigation
-        if (getCurrentLanguage() !== currentLang) {
-          // Only set language if it actually changed
-          // This prevents unnecessary cache clearing
-          setLanguage(currentLang);
-        }
-        
-        // Update UI language elements
-        updateUILanguage();
-        
-        // If the active section changed, ensure its content is in the correct language
-        const activeSection = document.querySelector('.content-section.active');
-        if (activeSection) {
-          const sectionId = activeSection.id;
-          // Use the centralized function to update section content
-          if (typeof updateSectionContentLanguage === 'function') {
-            updateSectionContentLanguage(sectionId);
-          }
-        }
-      }, 100); // Slightly increased delay for smoother transition
+      // After navigation, don't ensure the new content uses the correct language to avoid page reload
+      // setTimeout(() => {
+      //   // Ensure the language is still correct after navigation
+      //   if (getCurrentLanguage() !== currentLang) {
+      //     // Only set language if it actually changed
+      //     // This prevents unnecessary cache clearing
+      //     setLanguage(currentLang);
+      //   }
+      //   
+      //   // Update UI language elements
+      //   updateUILanguage();
+      //   
+      //   // Don't call updateSectionContentLanguage here to avoid page reload
+      //   // The section content will be updated by the original navigation handler
+      // }, 100); // Slightly increased delay for smoother transition
     }
   }, true); // Use capture to ensure this runs before the original handler
   
