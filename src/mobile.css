@@ -244,9 +244,7 @@
     color: var(--primary) !important;
   }
   
-  body.light-theme .module-container.education .module-date {
-    color: #4caf50 !important;
-  }
+  
   
   body.light-theme .module-container.employment .module-date {
     color: #4caf50 !important;

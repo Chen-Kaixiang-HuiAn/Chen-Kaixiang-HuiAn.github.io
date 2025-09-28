@@ -1099,8 +1099,8 @@ body.dark-theme footer {
     color: #f5deb3 !important;
 }
 
-/* Styles for tutor, dissertation, and project elements */
-.module-tutor {
+/* Styles for tutor and dissertation elements - combined with green style */
+.module-tutor, .module-dissertation {
     display: inline-block;
     background: rgba(76, 175, 80, 0.15);
     color: #81c784;
@@ -1113,27 +1113,8 @@ body.dark-theme footer {
     transition: all 0.3s ease;
 }
 
-.module-tutor:hover {
+.module-tutor:hover, .module-dissertation:hover {
     background: rgba(76, 175, 80, 0.25);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.module-dissertation {
-    display: inline-block;
-    background: rgba(33, 150, 243, 0.15);
-    color: #64b5f6;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    margin: 0.3rem 0;
-    font-weight: 500;
-    border-left: 3px solid #2196f3;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.module-dissertation:hover {
-    background: rgba(33, 150, 243, 0.25);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -1157,23 +1138,12 @@ body.dark-theme footer {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Update module-date style to better complement the new elements */
+/* Update module-date style for education section - remove outer styling */
 .module-date {
     color: var(--accent);
     font-weight: 500;
     font-size: 0.9rem;
-    display: inline-block;
-    background: rgba(52, 204, 235, 0.1);
-    padding: 0.3rem 0.8rem;
-    border-radius: 15px;
     margin-top: 0.5rem;
-    border: 1px solid rgba(52, 204, 235, 0.2);
-    transition: all 0.3s ease;
-}
-
-.module-date:hover {
-    background: rgba(52, 204, 235, 0.2);
-    transform: translateY(-2px);
 }
 
 /* Styles for honors module content */

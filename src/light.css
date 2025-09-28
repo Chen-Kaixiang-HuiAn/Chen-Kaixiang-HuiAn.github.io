@@ -363,10 +363,7 @@ body.light-theme .module-date {
     color: var(--primary) !important;
 }
 
-/* Education module date styles for light theme */
-body.light-theme .module-container.education .module-date {
-    color: #e74c3c !important;
-}
+
 
 /* Employment module date styles for light theme */
 body.light-theme .module-container.employment .module-date {

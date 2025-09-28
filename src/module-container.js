@@ -222,13 +222,17 @@ function createModuleContainer(data, type, language = 'en') {
                 let detailHTML = `
                     <strong>${detail.degree || ''}</strong> <em>${detail.major || ''}</em>${detail.college ? `, ${detail.college}` : ''}
                 `;
-                // Add tutor information if available
-                if (detail.tutor) {
-                    detailHTML += `<br><span class="module-tutor">${getModuleText('tutor', language)}: ${detail.tutor}</span>`;
-                }
-                // Add dissertation information if available
-                if (detail.dissertation) {
-                    detailHTML += `<br><span class="module-dissertation">${getModuleText('dissertation', language)}: ${detail.dissertation}</span>`;
+                // Add tutor and dissertation information if available
+                if (detail.tutor || detail.dissertation) {
+                    let infoText = '';
+                    if (detail.tutor && detail.dissertation) {
+                        infoText = `${getModuleText('tutor', language)}: ${detail.tutor}<br>${getModuleText('dissertation', language)}: ${detail.dissertation}`;
+                    } else if (detail.tutor) {
+                        infoText = `${getModuleText('tutor', language)}: ${detail.tutor}`;
+                    } else if (detail.dissertation) {
+                        infoText = `${getModuleText('dissertation', language)}: ${detail.dissertation}`;
+                    }
+                    detailHTML += `<br><span class="module-tutor">${infoText}</span>`;
                 }
                 // Add time information at the bottom
                 if (detail.time) {
@@ -687,13 +691,17 @@ function updateModuleContainer(moduleContainer, data, type, language = 'en') {
                 let detailHTML = `
                     <strong>${detail.degree || ''}</strong> <em>${detail.major || ''}</em>${detail.college ? `, ${detail.college}` : ''}
                 `;
-                // Add tutor information if available
-                if (detail.tutor) {
-                    detailHTML += `<br><span class="module-tutor">${getModuleText('tutor', language)}: ${detail.tutor}</span>`;
-                }
-                // Add dissertation information if available
-                if (detail.dissertation) {
-                    detailHTML += `<br><span class="module-dissertation">${getModuleText('dissertation', language)}: ${detail.dissertation}</span>`;
+                // Add tutor and dissertation information if available
+                if (detail.tutor || detail.dissertation) {
+                    let infoText = '';
+                    if (detail.tutor && detail.dissertation) {
+                        infoText = `${getModuleText('tutor', language)}: ${detail.tutor}<br>${getModuleText('dissertation', language)}: ${detail.dissertation}`;
+                    } else if (detail.tutor) {
+                        infoText = `${getModuleText('tutor', language)}: ${detail.tutor}`;
+                    } else if (detail.dissertation) {
+                        infoText = `${getModuleText('dissertation', language)}: ${detail.dissertation}`;
+                    }
+                    detailHTML += `<br><span class="module-tutor">${infoText}</span>`;
                 }
                 // Add time information at the bottom
                 if (detail.time) {
