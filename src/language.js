@@ -1063,8 +1063,13 @@ function initializeLanguage() {
 // Initialize language system when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeLanguage();
-    createLanguageSwitch();
     updateUILanguage();
+    
+    // Wait for content to be ready before creating language switch
+    document.addEventListener('contentReady', function(event) {
+        console.log('Content is ready, creating language switch...');
+        createLanguageSwitch();
+    });
 });
 
 // Export functions for use in other modules
