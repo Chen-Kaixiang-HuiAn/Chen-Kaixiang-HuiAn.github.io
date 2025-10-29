@@ -1,0 +1,995 @@
+/* Written by Constantine Heinrich CHEN (ConsHein CHEN) */
+/* Last Updated: 2025-10-29 */
+
+/* Module Container Component - Assembly Interface | 模块容器组件 - 组装接口 */
+/* This CSS provides styles for the module container assembly interface | 此CSS为模块容器组装接口提供样式 */
+
+/* Module Container Styles | 模块容器样式 */
+.module-container {
+    display: flex;
+    margin: 0 auto 25px auto; /* Add left and right margin of auto to center the module container | 添加左右边距为auto以实现居中 */
+    border-radius: 8px;
+    background-color: var(--module-bg-color);
+    box-shadow: var(--module-shadow);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 60vw;
+    max-width: 1200px; /* Increased max-width to accommodate longer text | 增加最大宽度以容纳更长的文本 */
+    position: relative;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.module-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Module Left Border Styles | 模块左边框样式 */
+.module-left-border {
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* Module Type Specific Border Colors | 模块类型特定的边框颜色 */
+.module-container.education .module-left-border {
+    background-color: var(--education-color);
+}
+
+.module-container.publication .module-left-border {
+    background-color: var(--publication-color);
+}
+
+.module-container.experience .module-left-border {
+    background-color: var(--experience-color);
+}
+
+.module-container.employment .module-left-border {
+    background-color: var(--employment-color);
+}
+
+.module-container.honor .module-left-border {
+    background-color: var(--honor-color);
+}
+
+.module-container.teaching .module-left-border {
+    background-color: var(--teaching-color);
+}
+
+.module-container.reviewer .module-left-border {
+    background-color: var(--reviewer-color);
+}
+
+.module-container.patent .module-left-border {
+    background-color: var(--patent-color);
+}
+
+/* Content Wrapper | 内容包装器 */
+.module-content-wrapper {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles | 头部样式 */
+.module-header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.module-title {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.module-title i {
+    margin-right: 10px !important;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.module-title span {
+    line-height: 1.2rem;
+    display: inline-block;
+}
+
+/* 确保所有模块的图标与标题间距一致 */
+.module-container.education .module-title i,
+.module-container.employment .module-title i,
+.module-container.publication .module-title i,
+.module-container.experience .module-title i,
+.module-container.honor .module-title i,
+.module-container.teaching .module-title i,
+.module-container.reviewer .module-title i,
+.module-container.patent .module-title i {
+    margin-right: 10px !important;
+}
+
+/* 确保特定图标与标题间距一致 */
+.module-title i.fa-graduation-cap,
+.module-title i.fa-briefcase,
+.module-title i.fa-book,
+.module-title i.fa-trophy,
+.module-title i.fa-chalkboard-teacher,
+.module-title i.fa-user-tie,
+.module-title i.fa-lightbulb {
+    margin-right: 10px !important;
+}
+
+/* Column Layout | 分栏布局 */
+.module-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.module-container.honor .module-columns {
+    margin-bottom: 0;
+}
+
+.module-container.teaching .module-columns {
+    margin-bottom: 0;
+}
+
+.module-container.reviewer .module-columns {
+    margin-bottom: 0;
+}
+
+.module-container.patent .module-columns {
+    margin-bottom: 0;
+}
+
+.module-column {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Education column specific styles | 教育列特定样式 */
+.edu-info-column {
+    flex: 3;
+    min-width: 300px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* Content Styles | 内容样式 */
+.module-content {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.module-list-item {
+    margin-bottom: 8px;
+}
+
+.module-date {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+}
+
+.module-tutor {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+}
+
+/* Word Background Special effects | 文字背景特效 */
+.module-container.education .module-tutor {
+    display: inline-block;
+    background: var(--text-bg-education);
+    color: var(--education-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    margin: 0.3rem 0;
+    font-weight: 500;
+    border-left: 3px solid var(--education-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: auto;
+    line-height: 1.6;
+    max-width: 100%;
+}
+
+.module-container.education .module-tutor:hover {
+    background: var(--text-bg-education-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Education Info Styles | 教育信息样式 */
+.module-container.education .education-info {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: var(--text-color);
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.module-container.education .education-info p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: var(--text-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    display: block !important;
+    width: 100% !important;
+    white-space: normal !important;
+}
+
+.module-container.education .education-info p:first-child {
+    font-weight: 500;
+    color: var(--education-color);
+    margin-top: 0;
+}
+
+.module-container.education .education-info p:nth-child(2),
+.module-container.education .education-info p:nth-child(3),
+.module-container.education .education-info p:nth-child(4) {
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+/* Spacing for multiple degrees from the same school | 同一学校多个学位的间距 */
+.multiple-degree-spacing {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+}
+
+/* Employment Info Styles | 就业信息样式 */
+.module-container.employment .employment-info {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: var(--text-color);
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.module-container.employment .employment-info p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: var(--text-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    display: block !important;
+    width: 100% !important;
+    white-space: normal !important;
+}
+
+.module-container.employment .employment-info p:first-child {
+    font-weight: 500;
+    color: var(--employment-color);
+    margin-top: 0;
+}
+
+.module-container.employment .employment-info p:nth-child(2),
+.module-container.employment .employment-info p:nth-child(3) {
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+.module-container.employment .employment-info p:nth-child(4) {
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+/* Spacing for multiple positions from the same company | 同一公司多个职位的间距 */
+.multiple-position-spacing {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+}
+
+/* Employment column specific styles | 就业列特定样式 */
+.emp-info-column {
+    flex: 3;
+    min-width: 300px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* Override module-content p styles for education | 覆盖教育模块的module-content p样式 */
+.module-container.education .module-content.education-info p {
+    display: block !important;
+    width: 100% !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+}
+
+/* Override module-content p styles for employment | 覆盖就业模块的module-content p样式 */
+.module-container.employment .module-content.employment-info p {
+    display: block !important;
+    width: 100% !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+}
+
+.module-container.publication .module-content {
+    padding: 0;
+}
+
+.module-container.publication .module-content > div {
+    display: inline-block;
+    width: auto;
+}
+
+.module-container.publication .module-content p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-container.publication .module-content p:first-child {
+    font-weight: 500;
+    color: var(--publication-color);
+    margin-top: 0;
+}
+
+.module-container.publication .module-content p:nth-child(2) {
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+.module-container.publication .module-content p:last-child {
+    border-left: 2px solid var(--publication-color);
+    opacity: 0.3;
+    padding-left: 0.8rem;
+    background: var(--text-bg-publication);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0 4px 4px 0;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+}
+
+.module-container.publication .module-content p:last-child:hover {
+    background: var(--text-bg-publication-hover);
+}
+
+.module-container.experience .module-content p {
+    display: inline-block;
+    background: var(--text-bg-experience);
+    color: var(--experience-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    margin: 0.3rem 0;
+    font-weight: 500;
+    border-left: 3px solid var(--experience-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    width: auto;
+    line-height: 1.6;
+}
+
+.module-container.experience .module-content p:hover {
+    background: var(--text-bg-experience-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.module-container.employment .module-content p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-container.employment .module-content p:first-child {
+    font-weight: 500;
+    color: var(--employment-color);
+    margin-top: 0;
+}
+
+.module-container.employment .module-content p:nth-child(2),
+.module-container.employment .module-content p:nth-child(3) {
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+.module-container.employment .module-content p:nth-child(4) {
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.module-container.honor .module-content {
+    margin-bottom: 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-container.teaching .module-content {
+    margin-bottom: 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-container.reviewer .module-content {
+    margin-bottom: 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-container.honor .module-content p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-container.honor .module-content p:first-child {
+    font-weight: 500;
+    color: var(--honor-color);
+    margin-top: 0;
+}
+
+.module-container.honor .module-content p:nth-child(2),
+.module-container.honor .module-content p:nth-child(3),
+.module-container.honor .module-content p:nth-child(4) {
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+/* Honor Info Styles | 荣誉信息样式 */
+.module-container.honor .honor-info {
+    margin-bottom: 0;
+    line-height: 1.6;
+    color: var(--text-color);
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.module-container.honor .honor-info p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: var(--text-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    display: block !important;
+    width: 100% !important;
+    white-space: normal !important;
+}
+
+.module-container.honor .honor-info p:first-child {
+    font-weight: 500;
+    color: var(--honor-color);
+    margin-top: 0;
+}
+
+.module-container.honor .honor-info p:nth-child(2),
+.module-container.honor .honor-info p:nth-child(3),
+.module-container.honor .honor-info p:nth-child(4) {
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+/* Honor column specific styles | 荣誉列特定样式 */
+.honor-info-column {
+    flex: 3;
+    min-width: 300px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* Override module-content p styles for honor | 覆盖荣誉模块的module-content p样式 */
+.module-container.honor .module-content.honor-info p {
+    display: block !important;
+    width: 100% !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+}
+
+.module-container.teaching .module-content p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-container.teaching .module-content p:first-child {
+    font-weight: 500;
+    color: var(--teaching-color);
+    margin-top: 0;
+}
+
+.module-container.teaching .module-content p:nth-child(2),
+.module-container.teaching .module-content p:nth-child(3),
+.module-container.teaching .module-content p:nth-child(4) {
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+.module-container.reviewer .module-content p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-container.reviewer .module-content p:first-child {
+    font-weight: 500;
+    color: var(--reviewer-color);
+    margin-top: 0;
+}
+
+.module-container.reviewer .module-content p:nth-child(2),
+.module-container.reviewer .module-content p:nth-child(3),
+.module-container.reviewer .module-content p:nth-child(4) {
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+.module-container.patent .module-content {
+    margin-bottom: 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-container.patent .module-content p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.module-container.patent .module-content p:first-child {
+    font-weight: 500;
+    color: var(--patent-color);
+    margin-top: 0;
+}
+
+.module-container.patent .module-content p:nth-child(2),
+.module-container.patent .module-content p:nth-child(3),
+.module-container.patent .module-content p:nth-child(4) {
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+/* Patent Info Styles | 专利信息样式 */
+.module-container.patent .patent-info {
+    margin-bottom: 0;
+    line-height: 1.6;
+    color: var(--text-color);
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.module-container.patent .patent-info p {
+    margin: 0.4rem 0;
+    line-height: 1.6;
+    color: var(--text-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    display: block !important;
+    width: 100% !important;
+    white-space: normal !important;
+}
+
+.module-container.patent .patent-info p:first-child {
+    font-weight: 500;
+    color: var(--patent-color);
+    margin-top: 0;
+}
+
+.module-container.patent .patent-info p:nth-child(2),
+.module-container.patent .patent-info p:nth-child(3),
+.module-container.patent .patent-info p:nth-child(4) {
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+/* Patent column specific styles | 专利列特定样式 */
+.patent-info-column {
+    flex: 3;
+    min-width: 300px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* Override module-content p styles for patent | 覆盖专利模块的module-content p样式 */
+.module-container.patent .module-content.patent-info p {
+    display: block !important;
+    width: 100% !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+}
+
+/* Image Styles | 图片样式 */
+.module-image-container {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.module-image {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.module-image:hover {
+    transform: scale(1.03);
+}
+
+/* Button Styles | 按钮样式 */
+.module-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.module-button i {
+    margin-right: 6px;
+}
+
+.module-button:hover {
+    background-color: var(--primary-hover-color);
+}
+
+/* Tag Styles | 标签样式 */
+.module-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.module-tag {
+    background-color: var(--tag-bg-color);
+    color: var(--tag-text-color);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+/* Link Styles | 链接样式 */
+.module-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.module-link {
+    color: var(--link-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    background: var(--link-bg-color);
+    border: 1px solid var(--link-border-color);
+}
+
+.module-link i {
+    margin-right: 6px;
+}
+
+.module-link:hover {
+    color: var(--link-hover-color);
+    text-decoration: none;
+    background: var(--link-hover-bg-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Special styling for different link types | 不同类型链接的特殊样式 */
+.module-link.video-link {
+    background: var(--video-link-bg-color);
+    border-color: var(--video-link-border-color);
+    color: var(--video-link-color);
+}
+
+.module-link.video-link:hover {
+    background: var(--video-link-hover-bg-color);
+    color: var(--video-link-hover-color);
+}
+
+.module-link.site-link {
+    background: var(--site-link-bg-color);
+    border-color: var(--site-link-border-color);
+    color: var(--site-link-color);
+}
+
+.module-link.site-link:hover {
+    background: var(--site-link-hover-bg-color);
+    color: var(--site-link-hover-color);
+}
+
+/* Paper Year Header Styles | 论文年份标题样式 */
+.paper-year-header {
+    margin-left: 0 !important;
+    padding-left: 20px;
+    width: calc(60vw - 40px);
+    max-width: calc(1200px - 40px);
+    border-bottom: none !important; /* 移除下划线 */
+}
+
+/* All Papers Container | 所有论文容器 */
+.all-papers-container {
+    width: 100%;
+}
+
+/* Paper Module Styles | 论文模块样式 */
+.module-container.paper {
+    margin-bottom: 15px;
+}
+
+.module-link.paper-link {
+    background: var(--paper-link-bg-color);
+    border-color: var(--paper-link-border-color);
+    color: var(--paper-link-color);
+}
+
+.module-link.paper-link:hover {
+    background: var(--paper-link-hover-bg-color);
+    color: var(--paper-link-hover-color);
+}
+
+.module-link.code-link {
+    background: var(--code-link-bg-color);
+    border-color: var(--code-link-border-color);
+    color: var(--code-link-color);
+}
+
+.module-link.code-link:hover {
+    background: var(--code-link-hover-bg-color);
+    color: var(--code-link-hover-color);
+}
+
+/* Responsive Styles | 响应式样式 */
+@media (max-width: 992px) {
+    .module-columns {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .module-column {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .module-container {
+        flex-direction: column;
+    }
+    
+    .module-left-border {
+        width: 100%;
+        height: 6px;
+    }
+    
+    .module-content-wrapper {
+        padding: 15px;
+    }
+    
+    .module-title {
+        font-size: 1.1rem;
+        line-height: 1;
+    }
+    
+    .module-title i {
+        margin-right: 8px !important;
+        font-size: 1.1rem;
+        line-height: 1;
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+    
+    .module-title span {
+        line-height: 1.1rem;
+    }
+    
+    .module-links {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+/* Light Theme Variables | 浅色主题变量 */
+.light-theme {
+    --module-bg-color: #f8f8f8;
+    --module-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --module-border-color: #e0e0e0;
+    --text-color: #333333;
+    --secondary-text-color: #666666;
+    --border-color: #eeeeee;
+    --primary-color: #3498db;
+    --primary-hover-color: #2980b9;
+    --link-color: #3498db;
+    --link-hover-color: #2980b9;
+    --tag-bg-color: #f0f0f0;
+    --tag-text-color: #555555;
+    
+    /* Link Button Styles | 链接按钮样式 */
+    --link-bg-color: rgba(52, 152, 219, 0.1);
+    --link-border-color: rgba(52, 152, 219, 0.2);
+    --link-hover-bg-color: rgba(52, 152, 219, 0.3);
+    
+    /* Video Link Styles | 视频链接样式 */
+    --video-link-bg-color: rgba(255, 82, 82, 0.1);
+    --video-link-border-color: rgba(255, 82, 82, 0.2);
+    --video-link-color: #ff5252;
+    --video-link-hover-bg-color: rgba(255, 82, 82, 0.3);
+    --video-link-hover-color: white;
+    
+    /* Site Link Styles | 网站链接样式 */
+    --site-link-bg-color: rgba(76, 175, 80, 0.1);
+    --site-link-border-color: rgba(76, 175, 80, 0.2);
+    --site-link-color: #66bb6a;
+    --site-link-hover-bg-color: rgba(76, 175, 80, 0.3);
+    --site-link-hover-color: white;
+    
+    /* Paper Link Styles | 论文链接样式 */
+    --paper-link-bg-color: rgba(33, 150, 243, 0.1);
+    --paper-link-border-color: rgba(33, 150, 243, 0.2);
+    --paper-link-color: #42a5f5;
+    --paper-link-hover-bg-color: rgba(33, 150, 243, 0.3);
+    --paper-link-hover-color: white;
+    
+    /* Code Link Styles | 代码链接样式 */
+    --code-link-bg-color: rgba(156, 39, 176, 0.1);
+    --code-link-border-color: rgba(156, 39, 176, 0.2);
+    --code-link-color: #ba68c8;
+    --code-link-hover-bg-color: rgba(156, 39, 176, 0.3);
+    --code-link-hover-color: white;
+    
+    /* Module Type Colors | 模块类型颜色 */
+    --education-color: #3498db;
+    --publication-color: #e74c3c;
+    --experience-color: #2ecc71;
+    --employment-color: #f39c12;
+    --honor-color: #9b59b6;
+    --teaching-color: #1abc9c;
+    --reviewer-color: #34495e;
+    --patent-color: #e67e22;
+    
+    /* 文字背景特效变量 - 浅色主题 */
+    --text-bg-education: rgba(52, 152, 219, 0.15);
+    --text-bg-education-hover: rgba(52, 152, 219, 0.25);
+    --text-bg-publication: rgba(231, 76, 60, 0.15);
+    --text-bg-publication-hover: rgba(231, 76, 60, 0.25);
+    --text-bg-experience: rgba(46, 204, 113, 0.15);
+    --text-bg-experience-hover: rgba(46, 204, 113, 0.25);
+    --text-bg-employment: rgba(243, 156, 18, 0.15);
+    --text-bg-employment-hover: rgba(243, 156, 18, 0.25);
+    --text-bg-honor: rgba(155, 89, 182, 0.15);
+    --text-bg-honor-hover: rgba(155, 89, 182, 0.25);
+    --text-bg-teaching: rgba(26, 188, 156, 0.15);
+    --text-bg-teaching-hover: rgba(26, 188, 156, 0.25);
+    --text-bg-reviewer: rgba(52, 73, 94, 0.15);
+    --text-bg-reviewer-hover: rgba(52, 73, 94, 0.25);
+    --text-bg-patent: rgba(230, 126, 34, 0.15);
+    --text-bg-patent-hover: rgba(230, 126, 34, 0.25);
+}
+
+/* Dark Theme Variables | 深色主题变量 */
+.dark-theme {
+    --module-bg-color: #383838;
+    --module-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --module-border-color: #444444;
+    --text-color: #f0f0f0;
+    --secondary-text-color: #b0b0b0;
+    --border-color: #444444;
+    --primary-color: #5dade2;
+    --primary-hover-color: #3498db;
+    --link-color: #5dade2;
+    --link-hover-color: #3498db;
+    --tag-bg-color: #444444;
+    --tag-text-color: #b0b0b0;
+    
+    /* Link Button Styles | 链接按钮样式 */
+    --link-bg-color: rgba(93, 173, 226, 0.15);
+    --link-border-color: rgba(93, 173, 226, 0.25);
+    --link-hover-bg-color: rgba(93, 173, 226, 0.25);
+    
+    /* Video Link Styles | 视频链接样式 */
+    --video-link-bg-color: rgba(255, 82, 82, 0.15);
+    --video-link-border-color: rgba(255, 82, 82, 0.25);
+    --video-link-color: #ff7f7f;
+    --video-link-hover-bg-color: rgba(255, 82, 82, 0.25);
+    --video-link-hover-color: white;
+    
+    /* Site Link Styles | 网站链接样式 */
+    --site-link-bg-color: rgba(102, 187, 106, 0.15);
+    --site-link-border-color: rgba(102, 187, 106, 0.25);
+    --site-link-color: #81c784;
+    --site-link-hover-bg-color: rgba(102, 187, 106, 0.25);
+    --site-link-hover-color: white;
+    
+    /* Paper Link Styles | 论文链接样式 */
+    --paper-link-bg-color: rgba(66, 165, 245, 0.15);
+    --paper-link-border-color: rgba(66, 165, 245, 0.25);
+    --paper-link-color: #64b5f6;
+    --paper-link-hover-bg-color: rgba(66, 165, 245, 0.25);
+    --paper-link-hover-color: white;
+    
+    /* Code Link Styles | 代码链接样式 */
+    --code-link-bg-color: rgba(186, 104, 200, 0.15);
+    --code-link-border-color: rgba(186, 104, 200, 0.25);
+    --code-link-color: #ce93d8;
+    --code-link-hover-bg-color: rgba(186, 104, 200, 0.25);
+    --code-link-hover-color: white;
+    
+    /* Module Type Colors | 模块类型颜色 */
+    --education-color: #5dade2;
+    --publication-color: #ec7063;
+    --experience-color: #58d68d;
+    --employment-color: #f5b041;
+    --honor-color: #af7ac5;
+    --teaching-color: #48c9b0;
+    --reviewer-color: #5d6d7e;
+    --patent-color: #eb984e;
+    
+    /* 文字背景特效变量 - 深色主题 */
+    --text-bg-education: rgba(93, 173, 226, 0.15);
+    --text-bg-education-hover: rgba(93, 173, 226, 0.25);
+    --text-bg-publication: rgba(236, 112, 99, 0.15);
+    --text-bg-publication-hover: rgba(236, 112, 99, 0.25);
+    --text-bg-experience: rgba(88, 214, 141, 0.15);
+    --text-bg-experience-hover: rgba(88, 214, 141, 0.25);
+    --text-bg-employment: rgba(245, 176, 65, 0.15);
+    --text-bg-employment-hover: rgba(245, 176, 65, 0.25);
+    --text-bg-honor: rgba(175, 122, 197, 0.15);
+    --text-bg-honor-hover: rgba(175, 122, 197, 0.25);
+    --text-bg-teaching: rgba(72, 201, 176, 0.15);
+    --text-bg-teaching-hover: rgba(72, 201, 176, 0.25);
+    --text-bg-reviewer: rgba(93, 109, 126, 0.15);
+    --text-bg-reviewer-hover: rgba(93, 109, 126, 0.25);
+    --text-bg-patent: rgba(235, 152, 78, 0.15);
+    --text-bg-patent-hover: rgba(235, 152, 78, 0.25);
+}

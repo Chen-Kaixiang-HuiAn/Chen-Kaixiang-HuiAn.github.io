@@ -1,1321 +1,497 @@
-/*
- * Written by Constantine Heinrich Chen (ConsHein Chen)
- * Last Change: 2025-09-29
- */
-/* Mobile CSS for portrait orientation */
+/* Written by Constantine Heinrich CHEN (ConsHein CHEN) */
+/* Last Updated: 2025-10-29 */
 
-/* Base mobile styles */
-@media screen and (max-width: 768px) and (orientation: portrait) {
-  /* Center all section titles on mobile portrait */
-  .section-title h2 {
-    text-align: center !important;
-    width: 100%;
-    display: block;
-  }
-  /* Center images in education and employment modules on mobile */
-  .module-container.education .module-image-container,
-  .module-container.employment .module-image-container,
-  .module-container.publication .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  /* Publication module: smaller title font on mobile */
-  .module-container.publication .module-title {
-    font-size: 1.05rem;
-  }
-
-  /* Publication module: footer buttons wrap to two rows if more than 2 */
-  .module-container.publication .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  .module-container.publication .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  .module-container.publication .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  body {
-    padding-top: 200px !important; /* Increased space for three-layer navigation bar (logo + language switch + nav links) */
-    transition: padding-top 0.3s ease !important;
-  }
-  
-  /* Navigation bar styles for mobile */
-  header {
-    height: auto;
-    padding: 0;
-    transition: height 0.3s ease;
-    width: 100vw !important;
-    max-width: 100vw !important;
-  }
-  
-  .navbar {
-    flex-direction: column;
-    padding: 0;
-    width: 100vw !important;
-    max-width: 100vw !important;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-    margin: 0;
-    left: 0;
-    right: 0;
-  }
-  
-  /* Upper navigation layer - Logo */
-  .logo {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    justify-content: center;
-    padding: 0.8rem 0;
-    margin: 0;
-    background: rgba(10, 20, 41, 0.98);
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-  }
-  
-  .logo span {
-    font-size: 1.2rem;
-    transition: font-size 0.3s ease;
-  }
-  
-  .logo img {
-    height: 24px;
-    transition: height 0.3s ease;
-  }
-  
-  /* Language switch and theme switch layer for mobile - positioned between logo and nav links */
-  .switch-buttons-container {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    display: flex !important;
-    justify-content: center;
-    gap: 1rem;
-    padding: 0.2rem 0;
-    background: rgba(10, 20, 41, 0.96);
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-    flex-shrink: 0;
-    position: relative;
-    left: 0;
-    right: 0;
-    margin: 0;
-  }
-  
-  /* Lower navigation layer - Navigation links */
-  .nav-links {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    justify-content: space-around;
-    padding: 0.8rem 0;
-    margin: 0;
-    background: rgba(10, 20, 41, 0.95);
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-  }
-  
-  .nav-links a {
-    font-size: 0.9rem;
-    padding: 0.5rem;
-    transition: all 0.3s ease;
-  }
-  
-  /* Language switch button for mobile */
-  .language-switch {
-    background: none;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 0.2rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease, transform 0.2s ease;
-    transform: scale(1);
-  }
-  
-  /* Theme switch button for mobile */
-  .theme-switch {
-    background: none;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 0.2rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease, transform 0.2s ease;
-    transform: scale(1);
-  }
-  
-  /* Light theme styles for mobile */
-  body.light-theme .logo {
-    background: rgba(255, 255, 255, 0.98) !important;
-  }
-  
-  body.light-theme .logo span {
-    color: var(--dark) !important;
-  }
-  
-  body.light-theme .logo img {
-    filter: invert(100%) !important;
-  }
-  
-  body.light-theme .switch-buttons-container {
-    background: rgba(255, 255, 255, 0.9) !important;
-    border-bottom: 1px solid var(--border) !important;
-  }
-  
-  body.light-theme .nav-links {
-    background: rgba(255, 255, 255, 0.9) !important;
-  }
-  
-  body.light-theme .language-switch,
-  body.light-theme .theme-switch {
-    background: rgba(52, 152, 219, 0.1) !important;
-    color: var(--dark) !important;
-    border: 1px solid var(--primary) !important;
-  }
-  
-  body.light-theme .language-switch:hover,
-  body.light-theme .theme-switch:hover {
-    background: rgba(52, 152, 219, 0.2) !important;
-  }
-  
-  body.light-theme .module-container {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border) !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
-  }
-  
-  body.light-theme .module-container:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1) !important;
-    transform: translateY(-5px) !important;
-  }
-  
-  body.light-theme .module-container.publication {
-    border-left: 4px solid var(--primary) !important;
-  }
-  
-  body.light-theme .module-container.education {
-    border-left: 4px solid var(--accent) !important;
-  }
-  
-  body.light-theme .module-container.employment {
-    border-left: 4px solid #ff5722 !important;
-  }
-  
-  body.light-theme .module-container.experience {
-    border-left: 4px solid #4caf50 !important;
-  }
-  
-  body.light-theme .module-container.honor {
-    border-left: 4px solid #ff9800 !important;
-  }
-  
-  body.light-theme .module-container.patent {
-    border-left: 4px solid #f5deb3 !important;
-  }
-  
-  body.light-theme .module-container.teaching {
-    border-left: 4px solid #9c27b0 !important;
-  }
-  
-  body.light-theme .module-container.reviewer {
-    border-left: 4px solid #607d8b !important;
-  }
-  
-  body.light-theme .module-title {
-    color: var(--dark) !important;
-  }
-  
-  body.light-theme .module-content {
-    color: var(--text) !important;
-  }
-  
-  body.light-theme .module-date {
-    color: var(--primary) !important;
-  }
-  
-  
-  
-  body.light-theme .module-container.employment .module-date {
-    color: #4caf50 !important;
-  }
-  
-  /* Light theme specific adjustments for publication modules on mobile */
-  body.light-theme .module-container.publication .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.publication .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.publication .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.publication .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.publication .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for employment modules on mobile */
-  body.light-theme .module-container.employment .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.employment .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.employment .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.employment .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.employment .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for experience modules on mobile */
-  body.light-theme .module-container.experience .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.experience .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.experience .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.experience .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.experience .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for honor modules on mobile */
-  body.light-theme .module-container.honor .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.honor .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.honor .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.honor .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.honor .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for patent modules on mobile */
-  body.light-theme .module-container.patent .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.patent .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.patent .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.patent .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.patent .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for teaching modules on mobile */
-  body.light-theme .module-container.teaching .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.teaching .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.teaching .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.teaching .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.teaching .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for reviewer modules on mobile */
-  body.light-theme .module-container.reviewer .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.reviewer .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.reviewer .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.reviewer .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.reviewer .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  .theme-switch:hover {
-    background: var(--accent);
-    color: var(--dark);
-    transform: scale(1.05);
-  }
-  
-  .theme-switch:active {
-    transform: scale(0.95);
-  }
-  
-  .theme-switch:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .language-switch:hover {
-    background: var(--accent);
-    color: var(--dark);
-    transform: scale(1.05);
-  }
-  
-  .language-switch:active {
-    transform: scale(0.95);
-  }
-  
-  .language-switch:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  /* Mobile-specific adjustments for content sections */
-  .content-section {
-    padding: 1rem 1rem 3rem;
-    transition: all 0.3s ease;
-  }
-  
-  /* Mobile footer styles - smaller font size */
-  footer {
-    font-size: 0.8rem !important;
-  }
-  
-  .cards {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    transition: all 0.3s ease;
-  }
-  
-  .card {
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-  }
-  
-  .section-title h2 {
-    font-size: 1.5rem;
-    transition: font-size 0.3s ease;
-  }
-  
-  /* Tab adjustments for mobile */
-  .tabs-container {
-    margin: 1.5rem 0;
-    overflow: hidden;
-  }
-  
-  .tabs {
-    display: flex;
-    border-bottom: 2px solid rgba(52, 204, 235, 0.3);
-    margin-bottom: 1.5rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent) rgba(52, 204, 235, 0.1);
-  }
-  
-  .tabs::-webkit-scrollbar {
-    height: 6px;
-  }
-  
-  .tabs::-webkit-scrollbar-track {
-    background: rgba(52, 204, 235, 0.1);
-    border-radius: 3px;
-  }
-  
-  .tabs::-webkit-scrollbar-thumb {
-    background-color: var(--accent);
-    border-radius: 3px;
-  }
-  
-  .tab-button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    margin: 0 0.2rem;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-    display: inline-block;
-  }
-  
-  /* Light theme tab adjustments for mobile - only color changes */
-  body.light-theme .tab-button {
-    color: rgba(44, 62, 80, 0.7);
-  }
-  
-  body.light-theme .tab-button:hover {
-    color: var(--primary);
-  }
-  
-  body.light-theme .tab-button.active {
-    color: var(--primary);
-  }
-  
-  body.light-theme .tab-button.active::after {
-    background: var(--primary);
-  }
-  
-  /* Home section adjustments for mobile - stack layout */
-  .home-content-container {
-    flex-direction: column;
-    gap: 1.5rem;
-    transition: all 0.3s ease;
-  }
-  
-  .info-section {
-    width: 100%;
-    transition: all 0.3s ease;
-  }
-  
-  /* Mobile-specific adjustments for info items */
-  /* Adjust icon position and padding for mobile */
-  .info-item {
-    padding-left: 12% !important; /* Adjusted left boundary for mobile */
-    padding-right: 12% !important; /* Adjusted right boundary for mobile */
-    position: relative; /* Ensure positioning context for icon */
-  }
-  
-  .info-icon {
-    position: absolute;
-    left: 12% !important; /* Position icon right edge at text left edge */
-    transform: translateX(-100%); /* Shift icon left by its full width */
-    margin-right: 0; /* Override base margin */
-    padding-right: 2px; /* Add 2px space between icon and text */
-  }
-  
-  .home-content-section {
-    width: 100%;
-    transition: all 0.3s ease;
-  }
-  
-  /* PDF viewer adjustments for mobile portrait mode */
-  .cv-content {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 3rem;
-  }
-  
-  .cv-pdf-viewer {
-    width: 100%;
-    max-width: 100%;
-    margin: 1rem 0;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-    background: #fff;
-    position: relative;
-  }
-  
-  .cv-pdf-viewer object,
-  .cv-pdf-viewer embed,
-  .cv-pdf-viewer iframe {
-    width: 100%;
-    height: 500px;
-    border: none;
-    display: block;
-    max-width: 100%;
-  }
-  
-  .pdf-fallback {
-    padding: 1.5rem;
-    text-align: center;
-    background: rgba(20, 36, 71, 0.6);
-    border-radius: 8px;
-    color: var(--light);
-  }
-
-  .pdf-error-message {
-    padding: 1.5rem;
-    text-align: center;
-    background: rgba(20, 36, 71, 0.6);
-    border-radius: 8px;
-    color: var(--light);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 400px;
-  }
-
-  .pdf-error-message p {
-    font-size: 1rem;
-    margin: 0;
-  }
-  
-  .pdf-loading-indicator {
-    padding: 1.5rem;
-    text-align: center;
-    background: rgba(20, 36, 71, 0.6);
-    border-radius: 8px;
-    color: var(--light);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 400px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10;
-  }
-
-  .pdf-loading-indicator p {
-    font-size: 1rem;
-    margin: 0;
-  }
-
-  /* Light theme specific adjustments for honor modules on mobile landscape */
-  body.light-theme .module-container.honor .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.honor .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.honor .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.honor .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.honor .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for patent modules on mobile landscape */
-  body.light-theme .module-container.patent .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.patent .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.patent .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.patent .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.patent .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for teaching modules on mobile landscape */
-  body.light-theme .module-container.teaching .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.teaching .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.teaching .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.teaching .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.teaching .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for reviewer modules on mobile landscape */
-  body.light-theme .module-container.reviewer .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.reviewer .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.reviewer .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.reviewer .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.reviewer .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
+/* Mobile Styles | 移动设备样式 */
+@media (max-width: 768px) {
+    body {
+        padding-top: 120px; /* 增加body的顶部内边距以适应更高的移动端导航栏 | Increase body top padding to accommodate taller mobile navigation bar */
+    }
+    
+    header {
+        width: 100vw;
+        padding: 0;
+    }
+    
+    .navbar {
+        flex-direction: column;
+        width: 100vw;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .logo {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .nav-links a {
+        outline: none;
+        -webkit-outline: none;
+        -moz-outline: none;
+        -ms-outline: none;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        -ms-box-shadow: none;
+    }
+    
+    .nav-links a:focus {
+        outline: none;
+        -webkit-outline: none;
+        -moz-outline: none;
+        -ms-outline: none;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        -ms-box-shadow: none;
+    }
+    
+    .nav-links a:active {
+        outline: none;
+        -webkit-outline: none;
+        -moz-outline: none;
+        -ms-outline: none;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        -ms-box-shadow: none;
+    }
+    
+    /* Global link styles for mobile | 移动设备全局超链接样式 */
+    a:active {
+        color: var(--link-color);
+        text-decoration: none;
+    }
+    
+    .controls {
+        width: 100%;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .theme-switch, .language-switch {
+        outline: none !important;
+        -webkit-outline: none !important;
+        -moz-outline: none !important;
+        -ms-outline: none !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        -ms-box-shadow: none !important;
+    }
+    
+    .theme-switch:focus, .language-switch:focus {
+        outline: none !important;
+        -webkit-outline: none !important;
+        -moz-outline: none !important;
+        -ms-outline: none !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        -ms-box-shadow: none !important;
+    }
+    
+    .theme-switch:active, .language-switch:active {
+        outline: none !important;
+        -webkit-outline: none !important;
+        -moz-outline: none !important;
+        -ms-outline: none !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        -ms-box-shadow: none !important;
+    }
+    
+    .main-container {
+        padding: 1rem;
+    }
+    
+    .content-section {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+    }
+    
+    .section-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    /* Home page mobile styles | 主页移动端样式 */
+    .home-content-container {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .info-section {
+        order: 1; /* 信息栏放在最上面 | Info section at the top */
+        padding: 1rem;
+    }
+    
+    .home-content-section {
+        order: 2; /* 内容区域放在信息栏下方 | Content section below info section */
+        gap: 1rem;
+    }
+    
+    .intro-section {
+        order: 1; /* 介绍区域放在内容区域的第一个位置 | Intro section first in content area */
+        padding: 1rem;
+    }
+    
+    .news-section {
+        order: 2; /* 新闻区域放在内容区域的第二个位置 | News section second in content area */
+        padding: 1rem;
+    }
+    
+    .profile-photo {
+        width: 120px;
+        height: 120px;
+    }
+    
+    /* 移动端模块容器样式 | Mobile Module Container Styles */
+    .module-container {
+        width: 95% !important; /* 使用百分比宽度而非vw单位，确保在小屏幕上也能正确显示 */
+        max-width: 100% !important; /* 确保不超过屏幕宽度 */
+        margin: 0 auto 20px auto !important; /* 居中并添加底部间距 */
+        box-sizing: border-box !important; /* 确保内边距不会增加总宽度 */
+        word-wrap: break-word !important; /* 确保长文本能够换行 */
+        overflow-wrap: break-word !important; /* 现代浏览器的换行属性 */
+        hyphens: auto !important; /* 自动添加连字符 */
+        overflow: hidden !important; /* 防止内容溢出 */
+    }
+    
+    /* 移动端模块列布局 | Mobile Module Column Layout */
+    .module-columns {
+        flex-direction: column !important; /* 在移动端改为垂直布局 */
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 15px !important; /* 减小间距 */
+    }
+    
+    /* 移动端模块列 | Mobile Module Columns */
+    .module-column {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        flex: none !important; /* 覆盖flex属性，确保列不会拉伸 */
+    }
+    
+    /* 移动端教育信息列 | Mobile Education Info Column */
+    .edu-info-column {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        flex: none !important; /* 覆盖flex属性 */
+    }
+    
+    /* 移动端内容包装器 | Mobile Content Wrapper */
+    .module-content-wrapper {
+        padding: 15px !important; /* 减小内边距 */
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 移动端内容样式 | Mobile Content Styles */
+    .module-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 移动端标签页容器 | Mobile Tab Container */
+    .tabs-container {
+        position: relative !important;
+        width: 95% !important; /* 使用百分比宽度 */
+        max-width: 100% !important;
+        margin: 0.5rem auto !important; /* 居中显示 */
+        align-items: initial !important;
+        display: flex !important;
+        flex-direction: column !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 隐藏传统标签页 | Hide traditional tabs */
+    .tabs {
+        display: none !important;
+    }
+    
+    /* 显示紧凑型标签页 | Show compact tabs */
+    .compact-tab-list {
+        display: flex !important;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 1rem;
+        position: relative;
+        order: 1; /* 确保标签页显示在内容上方 | Ensure tabs display above content */
+    }
+    
+    .compact-tab-button {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+        text-align: left;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-color);
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .compact-tab-button:hover {
+        background: var(--hover-bg);
+    }
+    
+    .compact-tab-button.expanded {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom: none;
+    }
+    
+    .compact-tab-button::after {
+        content: '';
+        display: inline-block;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid var(--text-color);
+        transition: transform 0.3s ease;
+    }
+    
+    .compact-tab-button.expanded::after {
+        transform: rotate(180deg);
+    }
+    
+    .compact-tab-options {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-top: none;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        max-height: 0;
+        overflow: hidden;
+        z-index: 10;
+        transition: max-height 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: none;
+        /* 确保选项展开时占据实际空间，将内容向下推 | Ensure options take up actual space when expanded, pushing content down */
+        transform: translateZ(0); /* 启用硬件加速 | Enable hardware acceleration */
+        margin-top: -1px; /* 与按钮边框对齐 | Align with button border */
+        /* 移除下边框，避免收缩时显示线条 | Remove bottom border to avoid showing line when collapsed */
+        border-bottom: none;
+    }
+    
+    .compact-tab-options.show {
+        max-height: 300px;
+        overflow-y: auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* 展开时添加下边框 | Add bottom border when expanded */
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .compact-tab-option {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        text-align: left;
+        background: transparent;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-color);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+    
+    .compact-tab-option:last-child {
+        border-bottom: none;
+    }
+    
+    .compact-tab-option:hover {
+        background: var(--hover-bg);
+    }
+    
+    .compact-tab-option.active {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    /* Tab content styling | 标签页内容样式 */
+    .tab-content {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        position: relative;
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0; /* Remove padding here, add to tab-pane instead | 移除此处的内边距，添加到tab-pane */
+        background: transparent; /* Make transparent | 设为透明 */
+        border-radius: 0; /* Remove border radius | 移除圆角 */
+        border: none; /* Remove border | 移除边框 */
+        margin-bottom: 0; /* Remove margin | 移除外边距 */
+        order: 2; /* 确保内容显示在标签页下方 | Ensure content displays below tabs */
+    }
+    
+    /* Tab pane styling for mobile | 移动端标签页面板样式 */
+    .tab-pane {
+        padding: 1.5rem; /* Add padding inside content | 在内容内添加内边距 */
+        background: rgba(255, 255, 255, 0.03); /* Subtle background | 微妙的背景 */
+        border-radius: 8px; /* Rounded corners | 圆角 */
+        border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border | 微妙的边框 */
+        margin-bottom: 1rem; /* Space below content | 内容下方的间距 */
+    }
+    
+    /* Hide all tab content by default | 默认隐藏所有标签页内容 */
+    .tab-pane:not(.active) {
+        display: none;
+    }
+    
+    /* Show active tab content with animation | 带动画显示活动标签页内容 */
+    .tab-pane.active {
+        display: block;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    /* Fade in animation | 淡入动画 */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 }
 
-/* Landscape mode styles for mobile devices */
-@media screen and (max-width: 768px) and (orientation: landscape) {
-  /* Center all section titles on mobile landscape */
-  .section-title h2 {
-    text-align: center !important;
-    width: 100%;
-    display: block;
-  }
-  body {
-    padding-top: 80px !important; /* Standard space for navigation bar in landscape mode */
-    transition: padding-top 0.3s ease !important;
-  }
-  
-  /* Navigation bar styles for landscape mode */
-  header {
-    height: auto;
-    padding: 0;
-    transition: height 0.3s ease;
-    width: 100%;
-  }
-  
-  .navbar {
-    flex-direction: row;
-    padding: 0.5rem 2%;
-    width: 100%;
-    max-width: 100%;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-  }
-  
-  /* Logo in landscape mode */
-  .logo {
-    width: auto;
-    justify-content: flex-start;
-    padding: 0;
-    background: transparent;
-    border-bottom: none;
-    transition: all 0.3s ease;
-  }
-  
-  .logo span {
-    font-size: 1rem;
-    transition: font-size 0.3s ease;
-  }
-  
-  .logo img {
-    height: 20px;
-    transition: height 0.3s ease;
-  }
-  
-  /* Language switch and theme switch container in landscape mode - part of nav links */
-  .language-switch-container,
-  .theme-switch-container {
-    display: none; /* Hide the old containers in landscape mode */
-    transition: all 0.3s ease;
-  }
-  
-  /* Switch buttons container should be visible in landscape mode as part of nav links */
-  .nav-links .switch-buttons-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  /* Navigation links in landscape mode */
-  .nav-links {
-    width: auto;
-    justify-content: flex-end;
-    padding: 0;
-    background: transparent;
-    gap: 1rem;
-    transition: all 0.3s ease;
-  }
-  
-  .nav-links a {
-    font-size: 0.8rem;
-    padding: 0.3rem 0.5rem;
-    transition: all 0.3s ease;
-  }
-  
-  /* Language switch button for landscape mode */
-  .language-switch {
-    background: rgba(42, 107, 198, 0.2);
-    color: white;
-    border: 1px solid var(--accent);
-    padding: 0.3rem 0.6rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    margin-left: 0.5rem;
-    transition: all 0.3s ease, transform 0.2s ease;
-    transform: scale(1);
-  }
-  
-  /* Theme switch button for landscape mode */
-  .theme-switch {
-    background: rgba(42, 107, 198, 0.2);
-    color: white;
-    border: 1px solid var(--accent);
-    padding: 0.3rem 0.6rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    margin-left: 0.5rem;
-    transition: all 0.3s ease, transform 0.2s ease;
-    transform: scale(1);
-  }
-  
-  .theme-switch:hover {
-    background: rgba(42, 107, 198, 0.4);
-    transform: scale(1.05);
-  }
-  
-  .theme-switch:active {
-    transform: scale(0.95);
-  }
-  
-  .theme-switch:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .language-switch:hover {
-    background: rgba(42, 107, 198, 0.4);
-    transform: scale(1.05);
-  }
-  
-  .language-switch:active {
-    transform: scale(0.95);
-  }
-  
-  .language-switch:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  /* Content sections in landscape mode */
-  .content-section {
-    padding: 1rem 1rem 3rem;
-    transition: all 0.3s ease;
-  }
-  
-  /* Dark theme footer styles for landscape mode */
-  body.dark-theme footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-    padding: 1rem;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.7);
-    background: rgba(10, 20, 41, 0.95);
-    backdrop-filter: blur(10px);
-  }
-  
-  /* Mobile footer styles - smaller font size */
-  footer {
-    font-size: 0.8rem !important;
-  }
-  
-  .cards {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    transition: all 0.3s ease;
-  }
-  
-  .card {
-    padding: 1rem;
-    transition: all 0.3s ease;
-  }
-  
-  .section-title h2 {
-    font-size: 1.3rem;
-    transition: font-size 0.3s ease;
-  }
-  
-  /* Tab adjustments for landscape mode */
-  .tabs-container {
-    margin: 1.5rem 0;
-    overflow: hidden;
-  }
-  
-  .tabs {
-    display: flex;
-    border-bottom: 2px solid rgba(52, 204, 235, 0.3);
-    margin-bottom: 1.5rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent) rgba(52, 204, 235, 0.1);
-  }
-  
-  .tabs::-webkit-scrollbar {
-    height: 6px;
-  }
-  
-  .tabs::-webkit-scrollbar-track {
-    background: rgba(52, 204, 235, 0.1);
-    border-radius: 3px;
-  }
-  
-  .tabs::-webkit-scrollbar-thumb {
-    background-color: var(--accent);
-    border-radius: 3px;
-  }
-  
-  .tab-button {
-    padding: 0.4rem 0.8rem;
-    font-size: 1rem;
-    margin: 0 0.2rem;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-    display: inline-block;
-  }
-  
-  /* Light theme tab adjustments for mobile landscape */
-  body.light-theme .tabs {
-    display: flex;
-    border-bottom: 2px solid rgba(52, 204, 235, 0.3);
-    margin-bottom: 1.5rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary) rgba(52, 204, 235, 0.1);
-  }
-  
-  body.light-theme .tabs::-webkit-scrollbar {
-    height: 6px;
-  }
-  
-  body.light-theme .tabs::-webkit-scrollbar-track {
-    background: rgba(52, 204, 235, 0.1);
-    border-radius: 3px;
-  }
-  
-  body.light-theme .tabs::-webkit-scrollbar-thumb {
-    background-color: var(--primary);
-    border-radius: 3px;
-  }
-  
-  body.light-theme .tab-button {
-    background: none;
-    border: none;
-    color: rgba(44, 62, 80, 0.7);
-    padding: 0.4rem 0.8rem;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    margin: 0 0.2rem;
-    flex-shrink: 0;
-    display: inline-block;
-  }
-  
-  body.light-theme .tab-button:hover {
-    color: var(--primary);
-  }
-  
-  body.light-theme .tab-button.active {
-    color: var(--primary);
-    font-weight: 600;
-  }
-  
-  body.light-theme .tab-button.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--primary);
-  }
-  
-  /* Home section adjustments for landscape mode */
-  .home-content-container {
-    flex-direction: row;
-    gap: 1rem;
-    transition: all 0.3s ease;
-  }
-  
-  .info-section {
-    width: 30%;
-    transition: all 0.3s ease;
-  }
-  
-  /* Landscape-specific adjustments for info items */
-  .info-item {
-    padding-left: 12% !important; /* Adjusted left boundary for landscape */
-    padding-right: 12% !important; /* Adjusted right boundary for landscape */
-    position: relative; /* Ensure positioning context for icon */
-  }
-  
-  .info-icon {
-    position: absolute;
-    left: 12% !important; /* Position icon right edge at text left edge */
-    transform: translateX(-100%); /* Shift icon left by its full width */
-    margin-right: 0; /* Override base margin */
-    padding-right: 2px; /* Add 2px space between icon and text */
-  }
-  
-  .home-content-section {
-    width: 70%;
-    transition: all 0.3s ease;
-  }
-  
-  /* PDF viewer adjustments for mobile landscape mode */
-  .cv-content {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 3rem;
-  }
-  
-  .cv-pdf-viewer {
-    width: 100%;
-    max-width: 100%;
-    margin: 1rem 0;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-    background: #fff;
-    position: relative;
-  }
-  
-  .cv-pdf-viewer object,
-  .cv-pdf-viewer embed,
-  .cv-pdf-viewer iframe {
-    width: 100%;
-    height: 400px;
-    border: none;
-    display: block;
-    max-width: 100%;
-  }
-  
-  .pdf-fallback {
-    padding: 1.5rem;
-    text-align: center;
-    background: rgba(20, 36, 71, 0.6);
-    border-radius: 8px;
-    color: var(--light);
-  }
-  
-  /* Light theme specific adjustments for honor modules on mobile landscape */
-  body.light-theme .module-container.honor {
-    border-left: 4px solid #ff9800 !important;
-  }
-  
-  body.light-theme .module-container.honor .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.honor .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.honor .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.honor .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.honor .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for patent modules on mobile landscape */
-  body.light-theme .module-container.patent {
-    border-left: 4px solid #f5deb3 !important;
-  }
-  
-  body.light-theme .module-container.patent .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.patent .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.patent .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.patent .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.patent .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for teaching modules on mobile landscape */
-  body.light-theme .module-container.teaching {
-    border-left: 4px solid #9c27b0 !important;
-  }
-  
-  body.light-theme .module-container.teaching .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.teaching .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.teaching .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.teaching .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.teaching .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
-  
-  /* Light theme specific adjustments for reviewer modules on mobile landscape */
-  body.light-theme .module-container.reviewer {
-    border-left: 4px solid #607d8b !important;
-  }
-  
-  body.light-theme .module-container.reviewer .module-image-container {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    text-align: center;
-    float: none;
-  }
-  
-  body.light-theme .module-container.reviewer .module-title {
-    font-size: 1.05rem !important;
-  }
-  
-  body.light-theme .module-container.reviewer .module-footer {
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-  }
-  
-  body.light-theme .module-container.reviewer .module-links {
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    column-gap: 1rem;
-    justify-content: flex-start;
-    max-width: 100%;
-  }
-  
-  body.light-theme .module-container.reviewer .module-link {
-    flex: 1 1 40%;
-    min-width: 120px;
-    box-sizing: border-box;
-  }
+    /* 移动端文本元素换行 | Mobile Text Elements Wrapping */
+    .module-container p,
+    .module-container span,
+    .module-container div,
+    .module-container li,
+    .module-container h1,
+    .module-container h2,
+    .module-container h3,
+    .module-container h4,
+    .module-container h5,
+    .module-container h6 {
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 移动端链接和按钮 | Mobile Links and Buttons */
+    .module-container a,
+    .module-container button {
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
+        max-width: 100% !important;
+        white-space: normal !important; /* 允许换行 */
+        box-sizing: border-box !important;
+    }
+    
+    /* 移动端标签和链接容器 | Mobile Tags and Links Container */
+    .module-tags,
+    .module-links {
+        display: flex !important;
+        flex-wrap: wrap !important; /* 允许换行 */
+        gap: 8px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    .module-tags .tag,
+    .module-links .link {
+        flex: 0 0 auto !important; /* 不拉伸，但允许收缩 */
+        max-width: 100% !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
+        white-space: normal !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 移动端亮色主题标签页面板样式 | Mobile Light Theme Tab Pane Styles */
+    body.light-theme .tab-pane {
+        background: var(--module-card-bg); /* 使用亮色主题的模块卡片背景色 */
+        border: 1px solid var(--module-border-color); /* 使用亮色主题的模块边框色 */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 添加轻微阴影效果 */
+    }
+    
+    /* 移动端亮色主题紧凑型标签页按钮样式 | Mobile Light Theme Compact Tab Button Styles */
+    body.light-theme .compact-tab-button {
+        background: var(--module-card-bg);
+        border: 1px solid var(--module-border-color);
+        border-bottom: 1px solid var(--module-border-color); /* 确保下边框使用主题颜色 */
+        color: var(--module-text-color);
+    }
+    
+    body.light-theme .compact-tab-button:hover {
+        background: var(--bg-secondary);
+    }
+    
+    body.light-theme .compact-tab-button.expanded {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom: none; /* 确保展开时下边框不显示 */
+    }
+    
+    /* 移动端亮色主题紧凑型标签页选项样式 | Mobile Light Theme Compact Tab Option Styles */
+    body.light-theme .compact-tab-options {
+        background: var(--module-card-bg);
+        border: 1px solid var(--module-border-color);
+        border-top: none; /* 确保上边框不重复显示 */
+        border-bottom: none; /* 移除下边框，避免收缩时显示线条 */
+        margin-top: -1px; /* 与按钮边框对齐 | Align with button border */
+    }
+    
+    body.light-theme .compact-tab-options.show {
+        box-shadow: none; /* 移除阴影效果，避免出现多余的线 */
+        /* 展开时添加下边框 | Add bottom border when expanded */
+        border-bottom: 1px solid var(--module-border-color);
+    }
+    
+    body.light-theme .compact-tab-option {
+        color: var(--module-text-color);
+        border-bottom: 1px solid var(--module-border-color);
+    }
+    
+    body.light-theme .compact-tab-option:hover {
+        background: var(--bg-secondary);
+    }
+    
+    body.light-theme .compact-tab-option.active {
+        background: var(--primary);
+        color: white;
+    }
+
+/* 桌面端样式 | Desktop Styles */
+@media (min-width: 769px) {
+    /* 隐藏紧凑型标签页 | Hide compact tabs */
+    .compact-tab-list {
+        display: none !important;
+    }
+    
+    /* 显示传统标签页 | Show traditional tabs */
+    .tabs {
+        display: flex !important;
+    }
 }

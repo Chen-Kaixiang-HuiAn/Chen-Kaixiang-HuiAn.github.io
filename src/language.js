@@ -1,1080 +1,1175 @@
-// Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-29
+// Written by Constantine Heinrich CHEN (ConsHein CHEN)
+// Last Updated: 2025-10-29
 
-// Language management module
+// Language Manager | 语言管理器
+// Take Responsibility: Manage multi-language content, language switching, and static text translation, supporting hot switching | 负责管理多语言内容、语言切换和静态文本转换，支持热切换功能
 
-// Initialize language variable
-let currentLanguage = 'en';
-
-// Global object to store preloaded content
-let preloadedContent = {
-    en: {},
-    zh: {}
-};
-
-// Flag to track if content is preloaded
-let isContentPreloaded = false;
-
-// Function to update language content
-function updateLanguageContent() {
-    updateUILanguage();
-    reloadContent();
-}
-
-// Load configuration from config.json
-async function loadConfig() {
-    try {
-        const response = await fetch('configs/config.json');
-        const config = await response.json();
+/**
+ * Language Manager Class | 语言管理器类
+ */
+class LanguageManager {
+    constructor() {
+        this.currentLanguage = 'en'; // Default language | 默认语言
+        this.availableLanguages = ['en', 'zh']; // Available languages | 可用语言
+        this.contentData = {}; // Store all language content | 存储所有语言内容
+        this.staticTexts = {}; // Store static texts for UI elements | 存储UI元素的静态文本
+        this.isInitialized = false; // Initialization flag | 初始化标志
         
-        // Remove language switch button in single language mode
-        if (config.singleLanguageMode) {
-            const langBtn = document.querySelector('.language-switch');
-            if (langBtn) {
-                langBtn.remove();
-            }
-        }
-        
-        // Set language from config
-        if (config.defaultLanguage) {
-            currentLanguage = config.defaultLanguage;
-            updateLanguageContent();
-        }
-    } catch (error) {
-        console.warn('Could not load config.json, using default language settings');
+        // Initialize static texts | 初始化静态文本
+        this.initializeStaticTexts();
     }
-}
-
-// Function to preload all content for both languages
-async function preloadAllContent() {
-    if (isContentPreloaded) return;
     
-    try {
-        // Preload info content
-        await Promise.all([
-            fetch('configs/en/info.json').then(res => res.json()).then(data => { preloadedContent.en.info = data; }).catch(() => {}),
-            fetch('configs/zh/info_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.info = data; }).catch(() => {})
-        ]);
-        
-        // Preload intro content
-        await Promise.all([
-            fetch('configs/en/intro.txt').then(res => res.text()).then(data => { preloadedContent.en.intro = data; }).catch(() => {}),
-            fetch('configs/zh/intro_zh.txt').then(res => res.text()).then(data => { preloadedContent.zh.intro = data; }).catch(() => {})
-        ]);
-        
-        // Preload news content
-        await Promise.all([
-            fetch('configs/en/news.json').then(res => res.json()).then(data => { preloadedContent.en.news = data; }).catch(() => {}),
-            fetch('configs/zh/news_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.news = data; }).catch(() => {})
-        ]);
-        
-        // Preload education content
-        await Promise.all([
-            fetch('configs/en/education.json').then(res => res.json()).then(data => { preloadedContent.en.education = data; }).catch(() => {}),
-            fetch('configs/zh/education_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.education = data; }).catch(() => {})
-        ]);
-        
-        // Preload employment content
-        await Promise.all([
-            fetch('configs/en/employment.json').then(res => res.json()).then(data => { preloadedContent.en.employment = data; }).catch(() => {}),
-            fetch('configs/zh/employment_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.employment = data; }).catch(() => {})
-        ]);
-
-      // Preload honors content
-      await Promise.all([
-          fetch('configs/en/honors.json').then(res => res.json()).then(data => { preloadedContent.en.honors = data; }).catch(() => {}),
-          fetch('configs/zh/honors_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.honors = data; }).catch(() => {})
-      ]);
-        
-        // Preload teaching content
-        await Promise.all([
-            fetch('configs/en/teaching.json').then(res => res.json()).then(data => { preloadedContent.en.teaching = data; }).catch(() => {}),
-            fetch('configs/zh/teaching_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.teaching = data; }).catch(() => {})
-        ]);
-        
-        // Preload reviewer content
-        await Promise.all([
-            fetch('configs/en/reviewer.json').then(res => res.json()).then(data => { preloadedContent.en.reviewer = data; }).catch(() => {}),
-            fetch('configs/zh/reviewer_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.reviewer = data; }).catch(() => {})
-        ]);
-        
-        // Preload papers content
-        await Promise.all([
-            fetch('configs/en/papers.json').then(res => res.json()).then(data => { preloadedContent.en.papers = data; }).catch(() => {}),
-            fetch('configs/zh/papers_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.papers = data; }).catch(() => {})
-        ]);
-        
-        // Preload patents content
-        await Promise.all([
-            fetch('configs/en/patents.json').then(res => res.json()).then(data => { preloadedContent.en.patents = data; }).catch(() => {}),
-            fetch('configs/zh/patents_zh.json').then(res => res.json()).then(data => { preloadedContent.zh.patents = data; }).catch(() => {})
-        ]);
-        
-        // Preload CV content (PDF URLs)
-        preloadedContent.cv = {
+    /**
+     * Initialize static texts for different languages | 初始化不同语言的静态文本
+     */
+    initializeStaticTexts() {
+        this.staticTexts = {
             en: {
-                pdfUrl: 'configs/en/cv.pdf',
-                downloadUrl: 'configs/en/cv.pdf'
+                // Navigation | 导航
+                navHome: 'Home',
+                navExperiences: 'Experiences',
+                navPublications: 'Publications',
+                
+                // Home page | 主页
+                aboutMe: 'About Me',
+                news: 'News',
+                latest: 'Latest',
+                googleScholar: 'Google Scholar',
+                
+                // Experiences | 经历
+                experiences: 'Experiences',
+                education: 'Education',
+                employment: 'Employment',
+                project: 'Project',
+                honorsAndAwards: 'Honors and Awards',
+                teaching: 'Teaching',
+                reviewer: 'Reviewer',
+                major: 'Major',
+                college: 'College',
+                time: 'Time',
+                tutor: 'Tutor',
+                dissertation: 'Dissertation',
+                schoolWebsite: 'School Website',
+                
+                // Publications | 出版物
+                publications: 'Publications',
+                academicPapers: 'Academic Papers',
+                patents: 'Patents',
+                journal: 'Journal',
+                conference: 'Conference',
+                authors: 'Authors',
+                abstract: 'Abstract',
+                doi: 'DOI',
+                patentNumber: 'Patent Number',
+                inventor: 'Inventor',
+                assignee: 'Assignee',
+                filingDate: 'Filing Date',
+                publicationDate: 'Publication Date',
+                type: 'Type',
+                
+                // Paper links | 论文链接
+                paper: 'Paper',
+                code: 'Code',
+                video: 'Video',
+                site: 'Site',
+                
+                // Footer | 页脚
+                copyright: '© {year} <a href="https://github.com/excursion-studio/personal-homepage-template" target="_blank">Excursion Studio Personal Homepage (ESPH)</a>.',
+                
+                // Language switch | 语言切换
+                langSwitchTo: '中', // Text to show when current language is English
+                
+                // No content message | 无内容消息
+                noContentAvailable: 'No content available',
             },
             zh: {
-                pdfUrl: 'configs/zh/cv_zh.pdf',
-                downloadUrl: 'configs/zh/cv_zh.pdf'
+                // Navigation | 导航
+                navHome: '主页',
+                navExperiences: '经历',
+                navPublications: '出版物',
+                
+                // Home page | 主页
+                aboutMe: '关于我',
+                news: '新闻',
+                latest: '最新',
+                googleScholar: '谷歌学术',
+                
+                // Experiences | 经历
+                experiences: '经历',
+                education: '教育',
+                employment: '工作',
+                project: '项目',
+                honorsAndAwards: '荣誉奖项',
+                teaching: '教学',
+                reviewer: '审稿',
+                major: '专业',
+                college: '学院',
+                time: '时间',
+                tutor: '导师',
+                dissertation: '学位论文',
+                schoolWebsite: '学校网站',
+                
+                // Publications | 出版物
+                publications: '出版物',
+                academicPapers: '学术论文',
+                patents: '专利',
+                journal: '期刊',
+                conference: '会议',
+                authors: '作者',
+                abstract: '摘要',
+                doi: 'DOI',
+                patentNumber: '专利号',
+                inventor: '发明人',
+                assignee: '受让人',
+                filingDate: '申请日期',
+                publicationDate: '公布日期',
+                type: '类型',
+                
+                // Paper links | 论文链接
+                paper: '论文',
+                code: '代码',
+                video: '视频',
+                site: '网站',
+                
+                // Footer | 页脚
+                copyright: '© {year} <a href="https://github.com/excursion-studio/personal-homepage-template" target="_blank">远行工作室-个人主页</a>。',
+                
+                // Language switch | 语言切换
+                langSwitchTo: 'EN', // Text to show when current language is Chinese
+                
+                // No content message | 无内容消息
+                noContentAvailable: '暂无内容',
             }
         };
-        
-        isContentPreloaded = true;
-        console.log('All content preloaded successfully');
-    } catch (error) {
-        console.error('Error preloading content:', error);
-        // If preloading fails, we'll fall back to the original behavior
-        isContentPreloaded = false;
     }
-}
-
-// Initialize configuration when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // First, load the main configuration
-    loadConfig().then(() => {
-        // After config is loaded, preload all content before initializing the page
-        console.log('Config loaded, preloading content...');
-        return preloadAllContent();
-    }).then(() => {
-        console.log('Content preloaded, initializing page...');
-        // After content is preloaded, initialize the page
-        // Dispatch a custom event to signal that content is ready
-        const contentReadyEvent = new CustomEvent('contentReady', { detail: { isPreloaded: isContentPreloaded } });
-        document.dispatchEvent(contentReadyEvent);
-    }).catch(error => {
-        console.error('Error during initialization:', error);
-        // Even if there's an error, we still need to initialize the page
-        const contentReadyEvent = new CustomEvent('contentReady', { detail: { isPreloaded: false } });
-        document.dispatchEvent(contentReadyEvent);
-    });
-});
-
-// Language Texts - Chinese text inherits English structure, only differs in nouns and data introduction
-const languageTexts = {
-    en: {
-        // Navigation
-        home: 'Home',
-        experiences: 'Experiences',
-        publications: 'Publications',
-        patents: 'Patents',
-        news: 'News',
-        cv: 'CV',
-        
-        // Sections
-        institutionExperiences: 'Education',
-        academicPapers: 'Academic Papers',
-        otherPublications: 'Other Publications',
-        honorsAndAwards: 'Honors and Awards',
-        teaching: 'Teaching',
-        reviewer: 'Reviewer',
-        curriculumVitae: 'Curriculum Vitae',
-        education: 'Education',
-        employment: 'Employment',
-        skills: 'Skills',
-        aboutMe: 'About Me',
-        
-        // Personal Info
-        googleScholar: 'Google Scholar',
-        github: 'GitHub',
-        
-        // Common
-        downloadFullCV: 'Generate and Download Full CV',
-        cvButtonText: 'Click the button above to generate and download your full CV',
-        welcome: 'Welcome to ',
-        homepage: 'homepage!',
-        researchContentComingSoon: 'Research content coming soon...',
-        paper: 'Paper',
-        code: 'Code',
-        video: 'Video',
-        site: 'Site',
-        copyright: '&copy; 2025 <a href="https://github.com/Excursion-Studio/Personal-Homepage-Template", target="_blank">Excursion Studio Personal Homepage (ESPH)</a>.',
-        abstract: 'Abstract:',
-        company: 'Company:',
-        organization: 'Organization:',
-        latest: 'Latest',
-        tutor: 'Tutor:',
-        dissertation: 'Dissertation:',
-        project: 'Project:',
-        
-        // Language
-        language: '中文'
-    },
-    zh: {
-        // Navigation - Inherits English structure, only translates navigation items
-        home: '主页',
-        experiences: '经历',
-        publications: '出版物',
-        patents: '专利',
-        news: '新闻动态',
-        cv: '简历',
-        
-        // Sections - Inherits English structure, only translates some key nouns
-        institutionExperiences: '教育经历',
-        academicPapers: '学术论文',
-        otherPublications: '其他出版物',
-        honorsAndAwards: '荣誉奖项',
-        teaching: '教学经历',
-        reviewer: '审稿经历',
-        curriculumVitae: '个人简历',
-        education: '教育背景',
-        professionalExperience: '工作经历',
-        employment: '工作经历',
-        skills: '技能',
-        aboutMe: '个人简介',
-        
-        // Personal Info - Inherits English structure, only translates labels
-        googleScholar: 'Google Scholar',
-        github: 'GitHub',
-        
-        // Common - Inherits English structure, only translates some common words
-        downloadFullCV: '生成并下载完整简历',
-        cvButtonText: '点击上方按钮生成并下载您的完整简历',
-        welcome: '欢迎来到',
-        homepage: '的主页！',
-        researchContentComingSoon: '研究内容即将推出...',
-        paper: '论文',
-        code: '代码',
-        video: '视频',
-        site: '网站',
-        copyright: '&copy; 2025 <a href="https://github.com/Excursion-Studio/Personal-Homepage-Template", target="_blank">远行工作室-个人主页模板 (ESPH)</a>。',
-        abstract: '摘要：',
-        company: '公司：',
-        organization: '组织：',
-        latest: '最新',
-        tutor: '导师：',
-        dissertation: '学位论文：',
-        project: '项目：',
-        
-        // Language - Inherits English structure, only translates some key nouns
-        language: 'English'
+    
+    /**
+     * Initialize the language manager | 初始化语言管理器
+     * @param {Object} config - Configuration object | 配置对象
+     * @param {Object} contentData - All language content data | 所有语言内容数据
+     */
+    async init(config, contentData) {
+        try {
+            console.log('Initializing language manager with config:', config);
+            console.log('Content data received:', contentData);
+            
+            // Set available languages and default language | 设置可用语言和默认语言
+            this.availableLanguages = config.availableLanguages || ['en', 'zh'];
+            this.currentLanguage = config.defaultLanguage || 'en';
+            
+            // Store content data | 存储内容数据
+            this.contentData = contentData || {};
+            
+            // Get saved language from localStorage or use default | 从localStorage获取保存的语言或使用默认语言
+            const savedLanguage = localStorage.getItem('language');
+            if (savedLanguage && this.availableLanguages.includes(savedLanguage)) {
+                this.currentLanguage = savedLanguage;
+            }
+            
+            this.isInitialized = true;
+            console.log(`Language manager initialized with language: ${this.currentLanguage}`);
+            console.log('Available languages:', this.availableLanguages);
+            console.log('Content data structure in language manager:', this.contentData);
+            
+            // Trigger language change event | 触发语言更改事件
+            this.triggerLanguageChange();
+            
+            return true;
+        } catch (error) {
+            console.error('Error initializing language manager:', error);
+            return false;
+        }
     }
-};
-
-// Global variables to store active tab states
-let activeTabStates = {
-  experiences: 'education',
-  publications: 'academic-papers'
-};
-
-// Function to get current language
-function getCurrentLanguage() {
-    return currentLanguage;
-}
-
-// Function to set current language
-function setLanguage(lang) {
-    if (lang === 'en' || lang === 'zh') {
-        // Store the previous language for comparison
-        const previousLanguage = currentLanguage;
+    
+    /**
+     * Get current language | 获取当前语言
+     * @returns {string} Current language code | 当前语言代码
+     */
+    getCurrentLanguage() {
+        return this.currentLanguage;
+    }
+    
+    /**
+     * Get available languages | 获取可用语言
+     * @returns {Array} Array of available language codes | 可用语言代码数组
+     */
+    getAvailableLanguages() {
+        return [...this.availableLanguages];
+    }
+    
+    /**
+     * Switch to a different language | 切换到不同的语言
+     * @param {string} languageCode - Language code to switch to | 要切换到的语言代码
+     * @returns {boolean} Success status | 成功状态
+     */
+    async switchLanguage(languageCode) {
+        if (!this.availableLanguages.includes(languageCode)) {
+            console.error(`Language ${languageCode} is not available`);
+            return false;
+        }
         
-        // Only proceed if language actually changed
-        if (previousLanguage === lang) {
+        if (this.currentLanguage === languageCode) {
+            console.log(`Already using language ${languageCode}`);
+            return true;
+        }
+        
+        this.currentLanguage = languageCode;
+        localStorage.setItem('language', languageCode);
+        
+        console.log(`Switched to language: ${languageCode}`);
+        
+        // Trigger language change event | 触发语言更改事件
+        await this.triggerLanguageChange(languageCode);
+        
+        return true;
+    }
+    
+    /**
+     * Get content for a specific file in the current language | 获取当前语言中特定文件的内容
+     * @param {string} fileName - Name of the content file | 内容文件名
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     * @returns {Object|null} Content data or null if not found | 内容数据，如果未找到则为null
+     */
+    getContent(fileName, language = null) {
+        const lang = language || this.currentLanguage;
+        console.log(`Getting content for ${fileName} in language ${lang}`);
+        console.log('Available content keys:', Object.keys(this.contentData[lang] || {}));
+        
+        if (!this.contentData[lang]) {
+            console.warn(`No content data available for language: ${lang}`);
+            return null;
+        }
+        
+        if (!this.contentData[lang][fileName]) {
+            console.warn(`Content not found for ${fileName} in language ${lang}`);
+            return null;
+        }
+        
+        console.log(`Successfully retrieved content for ${fileName} in language ${lang}`);
+        return this.contentData[lang][fileName];
+    }
+    
+    /**
+     * Get static text for UI elements | 获取UI元素的静态文本
+     * @param {string} key - Text key | 文本键
+     * @param {Object} params - Parameters for text interpolation | 文本插值的参数
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     * @returns {string} Static text | 静态文本
+     */
+    getText(key, params = {}, language = null) {
+        const lang = language || this.currentLanguage;
+        
+        if (!this.staticTexts[lang] || !this.staticTexts[lang][key]) {
+            console.warn(`Static text not found for key: ${key} in language: ${lang}`);
+            return key; // Return key as fallback | 返回键作为回退
+        }
+        
+        let text = this.staticTexts[lang][key];
+        
+        // Replace parameters in text | 替换文本中的参数
+        Object.keys(params).forEach(param => {
+            text = text.replace(new RegExp(`{${param}}`, 'g'), params[param]);
+        });
+        
+        return text;
+    }
+    
+    /**
+     * Update home page content with hot switching | 使用热切换更新主页内容
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     */
+    updateHomeContent(language = null) {
+        const lang = language || this.currentLanguage;
+        console.log(`Updating home content for language: ${lang}`);
+        
+        // Check if home content structure exists, if not, load it | 检查主页内容结构是否存在，如果不存在，则加载它
+        const homeSection = document.getElementById('home-section');
+        if (homeSection && !homeSection.querySelector('.home-content-wrapper')) {
+            console.log('Home content structure not found, loading it...');
+            if (window.loadHomeContent) {
+                window.loadHomeContent();
+            }
+        }
+        
+        // Update personal info | 更新个人信息
+        this.updatePersonalInfo(lang);
+        
+        // Update intro content | 更新介绍内容
+        this.updateIntroContent(lang);
+        
+        // Update news content | 更新新闻内容
+        this.updateNewsContent(lang);
+        
+        // Update section titles | 更新部分标题
+        const introTitle = document.getElementById('intro-title');
+        const newsTitle = document.getElementById('news-title');
+        
+        if (introTitle) {
+            introTitle.textContent = this.getText('aboutMe', {}, lang);
+        }
+        
+        if (newsTitle) {
+            newsTitle.textContent = this.getText('news', {}, lang);
+        }
+        
+        console.log('Home content updated successfully');
+    }
+    
+    /**
+     * Update experiences page content with hot switching | 使用热切换更新经历页面内容
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     */
+    updateExperiencesContent(language = null) {
+        const lang = language || this.currentLanguage;
+        console.log(`Updating experiences content for language: ${lang}`);
+        
+        // Get data for each tab to check if they should be hidden | 获取每个标签页的数据以检查是否应该隐藏
+        const employmentData = this.getContent('employment', lang);
+        const honorsData = this.getContent('honors', lang);
+        const teachingData = this.getContent('teaching', lang);
+        const reviewerData = this.getContent('reviewer', lang);
+        
+        // Update section title
+        const sectionTitle = document.querySelector('#experiences-section .section-title h2');
+        if (sectionTitle) {
+            sectionTitle.textContent = this.getText('experiences', {}, lang);
+        }
+        
+        // Update tab buttons visibility and text
+        const employmentTab = document.querySelector('#experiences-section .tab-button[data-tab="employment"]');
+        const honorsTab = document.querySelector('#experiences-section .tab-button[data-tab="honors-awards"]');
+        const teachingTab = document.querySelector('#experiences-section .tab-button[data-tab="teaching"]');
+        const reviewerTab = document.querySelector('#experiences-section .tab-button[data-tab="reviewer"]');
+        
+        // Handle employment tab | 处理就业标签页
+        if (employmentTab) {
+            if (employmentData && employmentData.length > 0) {
+                employmentTab.style.display = '';
+                employmentTab.textContent = this.getText('employment', {}, lang);
+            } else {
+                employmentTab.style.display = 'none';
+            }
+        }
+        
+        // Handle honors tab | 处理荣誉标签页
+        if (honorsTab) {
+            if (honorsData && honorsData.length > 0) {
+                honorsTab.style.display = '';
+                honorsTab.textContent = this.getText('honorsAndAwards', {}, lang);
+            } else {
+                honorsTab.style.display = 'none';
+            }
+        }
+        
+        // Handle teaching tab | 处理教学标签页
+        if (teachingTab) {
+            if (teachingData && teachingData.length > 0) {
+                teachingTab.style.display = '';
+                teachingTab.textContent = this.getText('teaching', {}, lang);
+            } else {
+                teachingTab.style.display = 'none';
+            }
+        }
+        
+        // Handle reviewer tab | 处理审稿人标签页
+        if (reviewerTab) {
+            if (reviewerData && reviewerData.length > 0) {
+                reviewerTab.style.display = '';
+                reviewerTab.textContent = this.getText('reviewer', {}, lang);
+            } else {
+                reviewerTab.style.display = 'none';
+            }
+        }
+        
+        // Update education content if education tab is active | 如果教育标签页处于活动状态，则更新教育内容
+        const educationPane = document.getElementById('education');
+        
+        if (educationPane && educationPane.classList.contains('active')) {
+            this.updateEducationContent(lang);
+        }
+        
+        // Update employment content if employment tab is active | 如果就业标签页处于活动状态，则更新就业内容
+        const employmentPane = document.getElementById('employment');
+        
+        if (employmentPane && employmentPane.classList.contains('active')) {
+            this.updateEmploymentContent(lang);
+        }
+
+        // Update honors and awards content if honors tab is active | 如果荣誉标签页处于活动状态，则更新荣誉和奖励内容
+        const honorsPane = document.getElementById('honors-awards');
+        
+        if (honorsPane && honorsPane.classList.contains('active')) {
+            this.updateHonorsContent(lang);
+        }
+
+        // Update teaching content if teaching tab is active | 如果教学标签页处于活动状态，则更新教学内容
+        const teachingPane = document.getElementById('teaching');
+        
+        if (teachingPane && teachingPane.classList.contains('active')) {
+            this.updateTeachingContent(lang);
+        }
+        
+        // Update reviewer content if reviewer tab is active | 如果审稿人标签页处于活动状态，则更新审稿人内容
+        const reviewerPane = document.getElementById('reviewer');
+        
+        if (reviewerPane && reviewerPane.classList.contains('active')) {
+            this.updateReviewerContent(lang);
+        }
+        
+        console.log('Experiences content updated successfully');
+    }
+    
+    /**
+     * Update education content with hot switching | 使用热切换更新教育内容
+     * @param {string} language - Language code | 语言代码
+     */
+    updateEducationContent(language) {
+        console.log(`Updating education content for language: ${language}`);
+        const educationData = this.getContent('education', language);
+        console.log('Education data retrieved:', educationData);
+        
+        if (!educationData) {
+            console.error(`No education data found for language: ${language}`);
             return;
         }
         
-        // Get the active section
-        const activeSection = document.querySelector('.content-section.active');
+        const container = document.getElementById('education-modules-container');
+        if (!container) {
+            console.warn('Education modules container not found');
+            return;
+        }
         
-        // If there's an active section, apply fade out effect
-        if (activeSection) {
-            // Add fade out effect to the active section
-            activeSection.style.transition = 'opacity 0.4s ease';
-            activeSection.style.opacity = '0';
-            
-            // After fade out, change language and prepare content
-            setTimeout(() => {
-                // Set the new language
-                currentLanguage = lang;
-                localStorage.setItem('preferredLanguage', lang);
-                
-                // Set html lang attribute for CSS selectors
-                document.documentElement.lang = lang;
-
-    // Update UI language elements first to maintain UI consistency
-                updateUILanguage();
-                
-                // Then reload content for the active section
-                reloadContent();
-                
-                // Wait a bit longer for content to load, then fade in
-                setTimeout(() => {
-                    // Use requestAnimationFrame for smoother transition
-                    requestAnimationFrame(() => {
-                        activeSection.style.transition = 'opacity 0.4s ease';
-                        activeSection.style.opacity = '1';
-                    });
-                }, 400); // Increased delay to ensure content is loaded before fade in
-            }, 400); // Wait for fade out to complete
-        } else {
-            // No active section, just change language directly
-            currentLanguage = lang;
-            localStorage.setItem('preferredLanguage', lang);
-            
-            // Set html lang attribute for CSS selectors
-            document.documentElement.lang = lang;
-            
-            updateUILanguage();
-            reloadContent();
-        }
-    }
-}
-
-// Function to check and hide empty tabs
-function checkAndHideEmptyTabs() {
-    // Check if employment tab should be hidden
-    const employmentContainer = document.getElementById('employment-modules-container');
-    if (employmentContainer && employmentContainer.children.length === 0) {
-        const employmentTab = document.querySelector('.tab-button[data-tab="employment"]');
-        if (employmentTab) {
-            employmentTab.style.display = 'none';
-        }
-    }
-    
-    // Check if honors-awards tab should be hidden
-    const honorsContainer = document.getElementById('honors-awards-modules-container');
-    if (honorsContainer && honorsContainer.children.length === 0) {
-        const honorsTab = document.querySelector('.tab-button[data-tab="honors-awards"]');
-        if (honorsTab) {
-            honorsTab.style.display = 'none';
-        }
-    }
-    
-    // Check if teaching tab should be hidden
-    const teachingContainer = document.getElementById('teaching-modules-container');
-    if (teachingContainer && teachingContainer.children.length === 0) {
-        const teachingTab = document.querySelector('.tab-button[data-tab="teaching"]');
-        if (teachingTab) {
-            teachingTab.style.display = 'none';
-        }
-    }
-    
-    // Check if reviewer tab should be hidden
-    const reviewerContainer = document.getElementById('reviewer-modules-container');
-    if (reviewerContainer && reviewerContainer.children.length === 0) {
-        const reviewerTab = document.querySelector('.tab-button[data-tab="reviewer"]');
-        if (reviewerTab) {
-            reviewerTab.style.display = 'none';
-        }
-    }
-    
-    // Check if patents tab should be hidden
-    const patentsContainer = document.getElementById('patents-modules-container');
-    if (patentsContainer && patentsContainer.children.length === 0) {
-        const patentsTab = document.querySelector('.tab-button[data-tab="patents"]');
-        if (patentsTab) {
-            patentsTab.style.display = 'none';
-        }
-    }
-    
-    // Ensure at least one tab is active and visible
-    const visibleTabs = Array.from(document.querySelectorAll('.tab-button')).filter(tab => 
-        tab.style.display !== 'none'
-    );
-    
-    if (visibleTabs.length > 0) {
-        // Check if the currently active tab is visible
-        const activeTab = document.querySelector('.tab-button.active');
-        if (activeTab && activeTab.style.display === 'none') {
-            // If active tab is hidden, activate the first visible tab
-            activeTab.classList.remove('active');
-            const firstVisibleTab = visibleTabs[0];
-            firstVisibleTab.classList.add('active');
-            
-            // Also activate the corresponding pane
-            const tabId = firstVisibleTab.getAttribute('data-tab');
-            document.querySelectorAll('.tab-pane').forEach(pane => {
-                pane.classList.remove('active');
+        // Clear existing content
+        container.innerHTML = '';
+        
+        // Create modules using the function from experiences.js
+        if (window.createEducationModule) {
+            educationData.forEach(edu => {
+                const module = window.createEducationModule(edu);
+                container.appendChild(module);
             });
-            const targetPane = document.getElementById(tabId);
-            if (targetPane) {
-                targetPane.classList.add('active');
-            }
-            
-            // Update the stored state
-            if (typeof activeTabStates !== 'undefined') {
-                if (activeTabStates.experiences) {
-                    activeTabStates.experiences = tabId;
-                } else if (activeTabStates.publications) {
-                    activeTabStates.publications = tabId;
-                }
-            }
+        } else {
+            console.error('createEducationModule function not available');
         }
+        
+        console.log('Education content updated successfully');
     }
-}
 
-// Variable to track if language switch is in progress
-let isLanguageSwitchInProgress = false;
+    /**
+     * Update employment content with hot switching | 使用热切换更新就业内容
+     * @param {string} language - Language code | 语言代码
+     */
+    updateEmploymentContent(language) {
+        console.log(`Updating employment content for language: ${language}`);
+        const employmentData = this.getContent('employment', language);
+        console.log('Employment data retrieved:', employmentData);
+        
+        if (!employmentData) {
+            console.error(`No employment data found for language: ${language}`);
+            return;
+        }
+        
+        const container = document.getElementById('employment-modules-container');
+        if (!container) {
+            console.warn('Employment modules container not found');
+            return;
+        }
+        
+        // Clear existing content
+        container.innerHTML = '';
+        
+        // Create modules using the function from experiences.js
+        if (window.createEmploymentModule) {
+            employmentData.forEach(job => {
+                const module = window.createEmploymentModule(job);
+                container.appendChild(module);
+            });
+        } else {
+            console.error('createEmploymentModule function not available');
+        }
+        
+        console.log('Employment content updated successfully');
+    }
 
-// Function to toggle language
-function toggleLanguage() {
-    // Prevent multiple rapid clicks
-    if (isLanguageSwitchInProgress) {
+    /**
+     * Update honors and awards content with hot switching | 使用热切换更新荣誉和奖励内容
+     * @param {string} language - Language code | 语言代码
+     */
+    updateHonorsContent(language) {
+        console.log(`Updating honors and awards content for language: ${language}`);
+        const honorsData = this.getContent('honors', language);
+        console.log('Honors and awards data retrieved:', honorsData);
+        
+        if (!honorsData) {
+            console.error(`No honors and awards data found for language: ${language}`);
+            return;
+        }
+        
+        const container = document.getElementById('honors-awards-modules-container');
+        if (!container) {
+            console.warn('Honors and awards container not found');
+            return;
+        }
+        
+        // Clear existing content
+        container.innerHTML = '';
+        
+        // Create modules using the function from experiences.js
+        if (window.createHonorModule) {
+            honorsData.forEach(honor => {
+                const module = window.createHonorModule(honor);
+                container.appendChild(module);
+            });
+        } else {
+            console.error('createHonorModule function not available');
+        }
+        
+        console.log('Honors and awards content updated successfully');
+    }
+    
+    /**
+     * Update teaching content with hot switching | 使用热切换更新教学内容
+     * @param {string} language - Language code | 语言代码
+     */
+    updateTeachingContent(language) {
+        console.log(`Updating teaching content for language: ${language}`);
+        const teachingData = this.getContent('teaching', language);
+        console.log('Teaching data retrieved:', teachingData);
+        
+        if (!teachingData) {
+            console.error(`No teaching data found for language: ${language}`);
+            return;
+        }
+        
+        const container = document.getElementById('teaching-modules-container');
+        if (!container) {
+            console.warn('Teaching modules container not found');
+            return;
+        }
+        
+        // Clear existing content
+        container.innerHTML = '';
+        
+        // Create modules using the function from experiences.js
+        if (window.createTeachingModule) {
+            teachingData.forEach(teaching => {
+                const module = window.createTeachingModule(teaching);
+                container.appendChild(module);
+            });
+        } else {
+            console.error('createTeachingModule function not available');
+        }
+        
+        console.log('Teaching content updated successfully');
+    }
+    
+    /**
+     * Update reviewer content with hot switching | 使用热切换更新审稿人内容
+     * @param {string} language - Language code | 语言代码
+     */
+    updateReviewerContent(language) {
+        console.log(`Updating reviewer content for language: ${language}`);
+        const reviewerData = this.getContent('reviewer', language);
+        console.log('Reviewer data retrieved:', reviewerData);
+        
+        if (!reviewerData) {
+        console.warn(`No reviewer data found for language: ${language}`);
         return;
     }
     
-    // Set flag to indicate language switch is in progress
-    isLanguageSwitchInProgress = true;
-    
-    const currentLang = getCurrentLanguage();
-    const newLang = currentLang === 'en' ? 'zh' : 'en';
-    
-    // Add transition effect to language switch button
-    const langSwitch = document.querySelector('.language-switch');
-    if (langSwitch) {
-        langSwitch.style.transition = 'opacity 0.3s ease';
-        langSwitch.style.opacity = '0.5';
-        langSwitch.disabled = true; // Disable button during transition
+    const container = document.getElementById('reviewer-modules-container');
+    if (!container) {
+        console.warn('Reviewer modules container not found');
+        return;
     }
-    
-    setLanguage(newLang);
-    
-    // Restore button after transition and reset flag
-    setTimeout(() => {
-        if (langSwitch) {
-            langSwitch.style.opacity = '1';
-            langSwitch.disabled = false;
-        }
-        // Reset flag to allow language switching again
-        isLanguageSwitchInProgress = false;
-    }, 1200); // Increased wait time to ensure content is fully loaded before restoring button
-}
-
-// Function to get text in current language
-function getText(key, language = null) {
-    const lang = language || currentLanguage;
-    return languageTexts[lang][key] || key;
-}
-
-// Function to get preloaded content
-function getPreloadedContent(contentType, language = null) {
-    const lang = language || currentLanguage;
-    if (isContentPreloaded && preloadedContent[lang] && preloadedContent[lang][contentType]) {
-        return preloadedContent[lang][contentType];
-    }
-    return null;
-}
-
-/**
- * Get the configuration file path based on the current language
- * @param {string} configType - The type of configuration file
- * @param {string} extension - The file extension (optional, defaults to .json)
- * @returns {string} The path to the configuration file
- */
-function getConfigPath(configType, extension = '.json') {
-    const currentLang = getCurrentLanguage();
-    const langPrefix = currentLang === 'zh' ? 'zh' : 'en';
-    
-    // Special handling for intro.txt files
-    if (configType === 'intro') {
-        return `configs/${langPrefix}/intro${currentLang === 'zh' ? '_zh' : ''}.txt`;
-    }
-    
-    // Map configuration types to file paths
-    const configPaths = {
-        'education': `configs/${langPrefix}/education${currentLang === 'zh' ? '_zh' : ''}.json`,
-        'employment': `configs/${langPrefix}/employment${currentLang === 'zh' ? '_zh' : ''}.json`,
-        'honors': `configs/${langPrefix}/honors${currentLang === 'zh' ? '_zh' : ''}.json`,
-        'teaching': `configs/${langPrefix}/teaching${currentLang === 'zh' ? '_zh' : ''}.json`,
-        'reviewer': `configs/${langPrefix}/reviewer${currentLang === 'zh' ? '_zh' : ''}.json`,
-        'papers': `configs/${langPrefix}/papers.json`,
-        'patents': `configs/${langPrefix}/patents.json`,
-        'projects': `configs/${langPrefix}/projects.json`,
-        'skills': `configs/${langPrefix}/skills.json`
-    };
-    
-    return configPaths[configType] || `configs/${langPrefix}/${configType}${extension}`;
-}
-
-// Function to update UI language elements
-function updateUILanguage() {
-    // Cache DOM elements to reduce queries
-    const elements = {
-        title: document.title,
-        navLinks: document.querySelectorAll('.nav-links a'),
-        langSwitch: document.querySelector('.language-switch'),
-        aboutTitle: document.querySelector('.intro-section h3'),
-        newsTitle: document.querySelector('.news-section h3'),
-        logo: document.querySelector('.logo')
-    };
-    
-    // Update page title with name from info config
-    const lang = getCurrentLanguage();
-    const infoPath = lang === 'zh' ? 'info_zh.json' : 'info.json';
-    fetch(`configs/${lang}/${infoPath}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.name) {
-          document.title = data.name;
-          
-          // Update logo content with the same name data
-          if (elements.logo) {
-            elements.logo.innerHTML = `<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>${data.name}</span>`;
-          }
+        
+        // Clear existing content
+        container.innerHTML = '';
+        
+        // Create modules using the function from experiences.js
+        if (window.createReviewerModule) {
+            const module = window.createReviewerModule(reviewerData);
+            container.appendChild(module);
         } else {
-          document.title = getText('pageTitle'); // fallback
-          
-          // Update logo with fallback text
-          if (elements.logo) {
-            const fallbackText = lang === 'zh' ? '主页' : 'Home';
-            elements.logo.innerHTML = `<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>${fallbackText}</span>`;
-          }
+            console.error('createReviewerModule function not available');
         }
-      })
-      .catch(() => {
-        document.title = getText('pageTitle'); // fallback
         
-        // Update logo with fallback text in case of error
-        if (elements.logo) {
-          const fallbackText = lang === 'zh' ? '主页' : 'Home';
-          elements.logo.innerHTML = `<img src="images/homepage/favicon/favicon.ico" alt="Logo" style="height: 32px; margin-right: 10px;"><span>${fallbackText}</span>`;
-        }
-      });
-    
-    // Update navigation links
-    if (elements.navLinks.length >= 4) {
-        elements.navLinks[0].textContent = getText('home');
-        elements.navLinks[1].textContent = getText('experiences');
-        elements.navLinks[2].textContent = getText('publications');
-        elements.navLinks[3].textContent = getText('cv');
+        console.log('Reviewer content updated successfully');
     }
 
-    // Update language switch button
-    if (elements.langSwitch) {
-        elements.langSwitch.textContent = getText('language');
-    }
-
-    // Update section titles
-    if (elements.aboutTitle) elements.aboutTitle.textContent = getText('aboutMe');
-    if (elements.newsTitle) elements.newsTitle.textContent = getText('news');
-    
-    // Update footer copyright text
-    const footer = document.getElementById('footer');
-    if (footer) {
-        // Try to find the paragraph element first
-        const footerText = footer.querySelector('p');
-        if (footerText) {
-            footerText.innerHTML = getText('copyright');
-        } else {
-            // If no paragraph element exists, create one
-            footer.innerHTML = `<p>${getText('copyright')}</p>`;
-        }
-    }
-}
-
-/**
- * Update the content language for a specific section
- * @param {string} sectionId - The ID of the section to update
- */
-function updateSectionContentLanguage(sectionId) {
-  // Update if the section exists
-  const section = document.getElementById(sectionId);
-  if (!section) {
-    return;
-  }
-  
-  // Get the current language
-  const lang = getCurrentLanguage();
-  
-  // Update section content based on section ID
-  switch(sectionId) {
-    case 'experiences':
-      // Update section title
-      const expTitle = section.querySelector('.section-title h2');
-      if (expTitle) {
-        expTitle.textContent = getText('experiences');
-      }
-      
-      // Update tab titles
-      const expTabButtons = section.querySelectorAll('.tab-button');
-      if (expTabButtons.length >= 5) {
-        expTabButtons[0].textContent = getText('institutionExperiences');
-        expTabButtons[1].textContent = getText('employment');
-        expTabButtons[2].textContent = getText('honorsAndAwards');
-        expTabButtons[3].textContent = getText('teaching');
-        expTabButtons[4].textContent = getText('reviewer');
-      }
-      
-      // Reload modules with current language
-      const expEducationContainer = document.getElementById('education-modules-container');
-      if (expEducationContainer && typeof loadInstitutionExperiencesModules === 'function') {
-        // Reset tab button visibility before reloading
-        const educationTab = document.querySelector('.tab-button[data-tab="education"]');
-        if (educationTab) {
-          educationTab.style.display = '';
-        }
-        loadInstitutionExperiencesModules('education-modules-container', lang);
-      }
-      
-      const expEmploymentContainer = document.getElementById('employment-modules-container');
-      if (expEmploymentContainer && typeof loadEmploymentModules === 'function') {
-        // Reset tab button visibility before reloading
-        const employmentTab = document.querySelector('.tab-button[data-tab="employment"]');
-        if (employmentTab) {
-          employmentTab.style.display = '';
-        }
-        loadEmploymentModules('employment-modules-container', lang);
-      }
-      
-      const expHonorsContainer = document.getElementById('honors-awards-modules-container');
-      if (expHonorsContainer && typeof loadHonorsAwardsModules === 'function') {
-        // Reset tab button visibility before reloading
-        const honorsTab = document.querySelector('.tab-button[data-tab="honors-awards"]');
-        if (honorsTab) {
-          honorsTab.style.display = '';
-        }
-        loadHonorsAwardsModules('honors-awards-modules-container', lang);
-      }
-      
-      const expTeachingContainer = document.getElementById('teaching-modules-container');
-      if (expTeachingContainer && typeof loadTeachingModules === 'function') {
-        // Reset tab button visibility before reloading
-        const teachingTab = document.querySelector('.tab-button[data-tab="teaching"]');
-        if (teachingTab) {
-          teachingTab.style.display = '';
-        }
-        loadTeachingModules('teaching-modules-container', lang);
-      }
-      
-      const expReviewerContainer = document.getElementById('reviewer-modules-container');
-      if (expReviewerContainer && typeof loadReviewerModules === 'function') {
-        // Reset tab button visibility before reloading
-        const reviewerTab = document.querySelector('.tab-button[data-tab="reviewer"]');
-        if (reviewerTab) {
-          reviewerTab.style.display = '';
-        }
-        loadReviewerModules('reviewer-modules-container', lang);
-      }
-      
-      // After reloading all modules, check if we need to hide any tabs
-      // Only call checkAndHideEmptyTabs if the section is currently active
-      const experiencesSection = document.getElementById('experiences');
-      if (experiencesSection && experiencesSection.classList.contains('active')) {
-        setTimeout(checkAndHideEmptyTabs, 500); // Wait for modules to load
-      }
-      break;
-      
-    case 'publications':
-      // Update section title
-      const pubTitle = section.querySelector('.section-title h2');
-      if (pubTitle) {
-        pubTitle.textContent = getText('publications');
-      }
-      
-      // Update tab titles
-      const pubTabButtons = section.querySelectorAll('.tab-button');
-      if (pubTabButtons.length >= 2) {
-        pubTabButtons[0].textContent = getText('academicPapers');
-        pubTabButtons[1].textContent = getText('patents');
-      }
-      
-      // Reload modules with current language
-      const pubContainer = document.getElementById('academic-papers-modules-container');
-      if (pubContainer && typeof loadAcademicPapersModules === 'function') {
-        loadAcademicPapersModules('academic-papers-modules-container', lang);
-      }
-      
-      const patentsContainer = document.getElementById('patents-modules-container');
-      if (patentsContainer && typeof window.loadPatentsModules === 'function') {
-        window.loadPatentsModules('patents-modules-container', lang);
-      }
-      
-      // After reloading modules, check if we need to hide the patents tab
-      // Only call checkAndHideEmptyTabs if the section is currently active
-      const publicationsSection = document.getElementById('publications');
-      if (publicationsSection && publicationsSection.classList.contains('active')) {
-        setTimeout(checkAndHideEmptyTabs, 500); // Wait for modules to load
-      }
-      break;
-      
-    case 'cv':
-      // Update section title
-      const cvTitle = section.querySelector('.section-title h2');
-      if (cvTitle) {
-        cvTitle.textContent = getText('curriculumVitae');
-      }
-      
-      // Update download button text
-      const cvDownloadBtn = section.querySelector('.cv-download-container .btn');
-      if (cvDownloadBtn) {
-        cvDownloadBtn.textContent = getText('downloadFullCV');
-        // Update download link href based on current language
-        const timestamp = new Date().getTime(); // Add timestamp to prevent caching
-        const newHref = currentLanguage === 'zh' 
-          ? `configs/zh/cv_zh.pdf?t=${timestamp}`
-          : `configs/en/cv.pdf?t=${timestamp}`;
-        cvDownloadBtn.setAttribute('href', newHref);
+    /**
+     * Update publications page content with hot switching | 使用热切换更新出版物页面内容
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     */
+    updatePublicationsContent(language = null) {
+        const lang = language || this.currentLanguage;
+        console.log(`Updating publications content for language: ${lang}`);
         
-        // Ensure the button has the correct ID for the event listener
-        cvDownloadBtn.setAttribute('id', 'generate-cv-btn');
+        // Get data for each tab to check if they should be hidden | 获取每个标签页的数据以检查是否应该隐藏
+        const patentData = this.getContent('patent', lang);
         
-        // Remove any existing event listeners to avoid duplicates
-        const newButton = cvDownloadBtn.cloneNode(true);
-        cvDownloadBtn.parentNode.replaceChild(newButton, cvDownloadBtn);
-        
-        // Re-initialize the button event
-        if (typeof initCVGenerator === 'function') {
-          initCVGenerator();
-        }
-      }
-      
-      // Update CV info text
-      const cvInfoText = section.querySelector('.cv-info p');
-      if (cvInfoText) {
-        cvInfoText.textContent = getText('cvButtonText');
-      }
-      
-      // Clear PDF viewer before refreshing to prevent caching issues
-      const pdfObject = document.getElementById('cv-pdf-object');
-      if (pdfObject) {
-        // First, completely clear the current PDF
-        pdfObject.setAttribute('data', '');
-        
-        // Refresh PDF viewer after a delay to ensure proper clearing
-        if (typeof refreshPDFViewer === 'function') {
-          setTimeout(() => {
-            refreshPDFViewer();
-          }, 200); // Increased delay to ensure proper clearing
-        }
-      }
-      break;
-      
-    case 'home':
-      // Let home.js handle the fade effect to avoid conflicts
-      // Just reload the content without fade effects
-      if (typeof loadPersonalInfo === 'function') {
-          loadPersonalInfo();
-      }
-      if (typeof loadIntroContent === 'function') {
-          loadIntroContent();
-      }
-      if (typeof loadWelcomeMessage === 'function') {
-          loadWelcomeMessage();
-      }
-      if (typeof loadNewsContent === 'function') {
-          loadNewsContent();
-      }
-      break;
-  }
-}
-
-/**
- * Reload content based on the current language
- * This function updates all sections content, not just the active one
- */
-function reloadContent() {
-  // Only update the active section, not all sections
-  const activeSection = document.querySelector('.content-section.active');
-  
-  if (activeSection) {
-    const sectionId = activeSection.id;
-    if (sectionId) {
-      // Update the section content
-      updateSectionContentLanguage(sectionId);
-    }
-  }
-  
-  // After reloading content, ensure the active tab is properly displayed
-  setTimeout(() => {
-    // For experiences section
-    const experiencesSection = document.getElementById('experiences');
-    if (experiencesSection) {
-      // First, reset all tab buttons visibility
-      const expTabButtons = experiencesSection.querySelectorAll('.tab-button');
-      expTabButtons.forEach(button => {
-        button.style.display = '';
-      });
-      
-      // Restore the previously active tab instead of resetting to default
-      if (expTabButtons.length > 0) {
-        // Remove active class from all tab buttons and panes
-        expTabButtons.forEach(btn => btn.classList.remove('active'));
-        experiencesSection.querySelectorAll('.tab-pane').forEach(pane => {
-          pane.classList.remove('active');
-        });
-        
-        // Get the previously active tab ID from stored state
-        const activeTabId = activeTabStates?.experiences || 'education';
-        
-        // Find the tab button with the stored ID
-        const activeTabButton = Array.from(expTabButtons).find(btn => 
-          btn.getAttribute('data-tab') === activeTabId
-        );
-        
-        // If found, make it active, otherwise make the first tab active
-        const tabToActivate = activeTabButton || expTabButtons[0];
-        tabToActivate.classList.add('active');
-        
-        const tabId = tabToActivate.getAttribute('data-tab');
-        const tabPane = experiencesSection.querySelector(`.tab-pane#${tabId}`);
-        if (tabPane) {
-          tabPane.classList.add('active');
+        // Update section title
+        const sectionTitle = document.querySelector('#publications-section .section-title h2');
+        if (sectionTitle) {
+            sectionTitle.textContent = this.getText('publications', {}, lang);
         }
         
-        // Update the stored state
-        if (typeof activeTabStates !== 'undefined') {
-          activeTabStates.experiences = tabId;
-        }
-      }
-      
-      // After setting active tab, check if we need to hide any tabs due to cache overload
-      const lang = getCurrentLanguage();
-      
-      // Check employment content
-      const employmentData = getPreloadedContent('employment', lang);
-      if (!employmentData || (Array.isArray(employmentData) && employmentData.length === 0)) {
-        const employmentTab = experiencesSection.querySelector('.tab-button[data-tab="employment"]');
-        if (employmentTab && employmentTab.style.display !== 'none') {
-          employmentTab.style.display = 'none';
-        }
-      }
-      
-      // Check honors content
-      const honorsData = getPreloadedContent('honors', lang);
-      if (!honorsData || (Array.isArray(honorsData) && honorsData.length === 0)) {
-        const honorsTab = experiencesSection.querySelector('.tab-button[data-tab="honors-awards"]');
-        if (honorsTab && honorsTab.style.display !== 'none') {
-          honorsTab.style.display = 'none';
-        }
-      }
-      
-      // Check teaching content
-      const teachingData = getPreloadedContent('teaching', lang);
-      if (!teachingData || (Array.isArray(teachingData) && teachingData.length === 0)) {
-        const teachingTab = experiencesSection.querySelector('.tab-button[data-tab="teaching"]');
-        if (teachingTab && teachingTab.style.display !== 'none') {
-          teachingTab.style.display = 'none';
-        }
-      }
-      
-      // Check reviewer content
-      const reviewerData = getPreloadedContent('reviewer', lang);
-      if (!reviewerData || (Array.isArray(reviewerData) && reviewerData.length === 0)) {
-        const reviewerTab = experiencesSection.querySelector('.tab-button[data-tab="reviewer"]');
-        if (reviewerTab && reviewerTab.style.display !== 'none') {
-          reviewerTab.style.display = 'none';
-        }
-      }
-      
-      // Ensure the active tab is still visible after hiding empty tabs
-      const activeTab = experiencesSection.querySelector('.tab-button.active');
-      if (activeTab && activeTab.style.display === 'none') {
-        // Find the first visible tab
-        const visibleTabs = Array.from(experiencesSection.querySelectorAll('.tab-button')).filter(tab => 
-          tab.style.display !== 'none'
-        );
+        // Update tab buttons visibility and text
+        const paperTab = document.querySelector('#publications-section .tab-button[data-tab="paper"]');
+        const patentTab = document.querySelector('#publications-section .tab-button[data-tab="patent"]');
         
-        if (visibleTabs.length > 0) {
-          activeTab.classList.remove('active');
-          const firstVisibleTab = visibleTabs[0];
-          firstVisibleTab.classList.add('active');
-          
-          // Also activate the corresponding pane
-          const tabId = firstVisibleTab.getAttribute('data-tab');
-          experiencesSection.querySelectorAll('.tab-pane').forEach(pane => {
-            pane.classList.remove('active');
-          });
-          const targetPane = experiencesSection.querySelector(`.tab-pane#${tabId}`);
-          if (targetPane) {
-            targetPane.classList.add('active');
-          }
-          
-          // Update the stored state
-          if (typeof activeTabStates !== 'undefined') {
-            activeTabStates.experiences = tabId;
-          }
-        }
-      }
-    }
-    
-    // For publications section
-    const publicationsSection = document.getElementById('publications');
-    if (publicationsSection) {
-      // First, reset all tab buttons visibility
-      const pubTabButtons = publicationsSection.querySelectorAll('.tab-button');
-      pubTabButtons.forEach(button => {
-        button.style.display = '';
-      });
-      
-      // Restore the previously active tab instead of resetting to default
-      if (pubTabButtons.length > 0) {
-        // Remove active class from all tab buttons and panes
-        pubTabButtons.forEach(btn => btn.classList.remove('active'));
-        publicationsSection.querySelectorAll('.tab-pane').forEach(pane => {
-          pane.classList.remove('active');
-        });
+        if (paperTab) paperTab.textContent = this.getText('academicPapers', {}, lang);
         
-        // Get the previously active tab ID from stored state
-        const activeTabId = activeTabStates?.publications || 'academic-papers';
-        
-        // Find the tab button with the stored ID
-        const activeTabButton = Array.from(pubTabButtons).find(btn => 
-          btn.getAttribute('data-tab') === activeTabId
-        );
-        
-        // If found, make it active, otherwise make the first tab active
-        const tabToActivate = activeTabButton || pubTabButtons[0];
-        tabToActivate.classList.add('active');
-        
-        const tabId = tabToActivate.getAttribute('data-tab');
-        const tabPane = publicationsSection.querySelector(`.tab-pane#${tabId}`);
-        if (tabPane) {
-          tabPane.classList.add('active');
-        }
-        
-        // Update the stored state
-        if (typeof activeTabStates !== 'undefined') {
-          activeTabStates.publications = tabId;
-        }
-      }
-      
-      // After setting active tab, check if we need to hide patents tab due to cache overload
-      const lang = getCurrentLanguage();
-      const patentsData = getPreloadedContent('patents', lang);
-      if (!patentsData || (Array.isArray(patentsData) && patentsData.length === 0) || 
-          (patentsData && patentsData.patents && Array.isArray(patentsData.patents) && patentsData.patents.length === 0)) {
-        const patentsTab = publicationsSection.querySelector('.tab-button[data-tab="patents"]');
-        if (patentsTab && patentsTab.style.display !== 'none') {
-          patentsTab.style.display = 'none';
-        }
-      }
-      
-      // Ensure the active tab is still visible after hiding empty tabs
-      const activeTab = publicationsSection.querySelector('.tab-button.active');
-      if (activeTab && activeTab.style.display === 'none') {
-        // Find the first visible tab
-        const visibleTabs = Array.from(publicationsSection.querySelectorAll('.tab-button')).filter(tab => 
-          tab.style.display !== 'none'
-        );
-        
-        if (visibleTabs.length > 0) {
-          activeTab.classList.remove('active');
-          const firstVisibleTab = visibleTabs[0];
-          firstVisibleTab.classList.add('active');
-          
-          // Also activate the corresponding pane
-          const tabId = firstVisibleTab.getAttribute('data-tab');
-          publicationsSection.querySelectorAll('.tab-pane').forEach(pane => {
-            pane.classList.remove('active');
-          });
-          const targetPane = publicationsSection.querySelector(`.tab-pane#${tabId}`);
-          if (targetPane) {
-            targetPane.classList.add('active');
-          }
-          
-          // Update the stored state
-          if (typeof activeTabStates !== 'undefined') {
-            activeTabStates.publications = tabId;
-          }
-        }
-      }
-    }
-  }, 500); // Wait a bit for content to load
-}
-
-// Function to create language switch button
-async function createLanguageSwitch() {
-    // Check if single language mode is enabled
-    try {
-        const response = await fetch('configs/config.json');
-        const config = await response.json();
-        
-        // Don't create language switch button in single language mode
-        if (config.singleLanguageMode) {
-            // Remove any existing language switch buttons
-            const existingLangSwitches = document.querySelectorAll('.language-switch');
-            existingLangSwitches.forEach(btn => btn.remove());
-            return;
-        }
-    } catch (error) {
-        console.warn('Could not load config.json, assuming multi-language mode');
-    }
-
-    // Remove any existing language switch buttons to prevent duplicates
-    const existingLangSwitches = document.querySelectorAll('.language-switch');
-    existingLangSwitches.forEach(btn => btn.remove());
-
-    // Create language switch button
-    const langSwitch = document.createElement('button');
-    langSwitch.className = 'language-switch';
-    langSwitch.textContent = getText('language');
-    
-    // Add click event to toggle language
-    langSwitch.addEventListener('click', toggleLanguage);
-    
-    // Add to navigation bar
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        // Check if switch buttons container already exists
-        let switchContainer = document.querySelector('.switch-buttons-container');
-        
-        if (!switchContainer) {
-            // Create a container for both switches
-            switchContainer = document.createElement('div');
-            switchContainer.className = 'switch-buttons-container';
-            
-            // For mobile view, place container between logo and nav links
-            if (window.innerWidth <= 768) {
-                const logo = navbar.querySelector('.logo');
-                const navLinks = navbar.querySelector('.nav-links');
-                
-                if (logo && navLinks) {
-                    // Insert container between logo and nav links
-                    navbar.insertBefore(switchContainer, navLinks);
-                } else {
-                    // Fallback: append to navbar
-                    navbar.appendChild(switchContainer);
-                }
+        // Handle patent tab | 处理专利标签页
+        if (patentTab) {
+            if (patentData && patentData.length > 0) {
+                patentTab.style.display = '';
+                patentTab.textContent = this.getText('patents', {}, lang);
             } else {
-                // For desktop view, add container to nav links
-                const navLinks = navbar.querySelector('.nav-links');
-                if (navLinks) {
-                    navLinks.appendChild(switchContainer);
-                } else {
-                    // Fallback: append to navbar
-                    navbar.appendChild(switchContainer);
-                }
+                patentTab.style.display = 'none';
             }
         }
         
-        // Add language switch to the container
-        switchContainer.appendChild(langSwitch);
+        // Update publications content if publications tab is active | 如果出版物标签页处于活动状态，则更新出版物内容
+        const paperPane = document.getElementById('paper');
+        
+        if (paperPane && paperPane.classList.contains('active')) {
+            this.updatePaperContent(lang);
+        }
+        
+        // Update patents content if patents tab is active | 如果专利标签页处于活动状态，则更新专利内容
+        const patentPane = document.getElementById('patent');
+        
+        if (patentPane && patentPane.classList.contains('active')) {
+            this.updatePatentContent(lang);
+        }
+        
+        console.log('Publications content updated successfully');
+    }
+    
+    /**
+     * Update paper content with hot switching | 使用热切换更新论文内容
+     * @param {string} language - Language code | 语言代码
+     */
+    updatePaperContent(language) {
+        console.log(`Updating paper content for language: ${language}`);
+        const papersData = this.getContent('paper', language); // Changed from 'papers' to 'paper' to match load.js
+        console.log('Papers data retrieved:', papersData);
+        
+        if (!papersData) {
+            console.error(`No papers data found for language: ${language}`);
+            return;
+        }
+        
+        const paperModulesContainer = document.getElementById('paper-modules-container');
+        if (!paperModulesContainer) {
+            console.warn('Paper modules container not found');
+            return;
+        }
+        
+        // Clear existing content | 清除现有内容
+        paperModulesContainer.innerHTML = '';
+        
+        // Create paper module using the createPaperModule function from publications.js | 使用publications.js中的createPaperModule函数创建论文模块
+        if (window.createPaperModule) {
+            const paperModule = window.createPaperModule(papersData);
+            paperModulesContainer.appendChild(paperModule);
+            console.log('Paper module added to container');
+        } else {
+            console.warn('createPaperModule function not found');
+        }
+        
+        console.log('Paper content updated successfully');
+    }
+
+    /**
+     * Update patent content with hot switching | 使用热切换更新专利内容
+     * @param {string} language - Language code | 语言代码
+     */
+    updatePatentContent(language) {
+        console.log(`Updating patent content for language: ${language}`);
+        const patentData = this.getContent('patent', language); // Changed from 'patents' to 'patent' to match load.js
+        console.log('Patents data retrieved:', patentData);
+        
+        if (!patentData) {
+            console.error(`No patents data found for language: ${language}`);
+            return;
+        }
+        
+        const container = document.getElementById('patent-modules-container');
+        if (!container) {
+            console.warn('Patent modules container not found');
+            return;
+        }
+        
+        // Clear existing content
+        container.innerHTML = '';
+        
+        // Create modules using the function from publications.js
+        if (window.createPatentModule) {
+            console.log(patentData)
+            patentData.forEach(patent => {
+                const module = window.createPatentModule(patent);
+                container.appendChild(module);
+            });
+        } else {
+            console.error('createPatentModule function not available');
+        }
+        
+        console.log('Patent content updated successfully');
+    }
+    
+    /**
+     * Update personal info with hot switching | 使用热切换更新个人信息
+     * @param {string} language - Language code | 语言代码
+     */
+    updatePersonalInfo(language) {
+        console.log(`Updating personal info for language: ${language}`);
+        const infoData = this.getContent('info', language);
+        console.log('Info data retrieved:', infoData);
+        
+        if (!infoData) {
+            console.warn(`No info data found for language: ${language}`);
+            return;
+        }
+        
+        let infoContent = document.getElementById('info-content');
+        if (!infoContent) {
+            console.warn('Info content element not found, attempting to load home content structure');
+            // Try to load home content structure if element is missing | 如果元素缺失，尝试加载主页内容结构
+            if (window.loadHomeContent) {
+                window.loadHomeContent();
+                // Get the element again after loading structure | 加载结构后再次获取元素
+                infoContent = document.getElementById('info-content');
+            }
+            
+            // If still not found, return | 如果仍然找不到，则返回
+            if (!infoContent) {
+                console.warn('Info content element still not found after loading home structure');
+                return;
+            }
+        }
+        
+        const timezoneOffset = infoData.UTC ? parseInt(infoData.UTC) : 8;
+        
+        infoContent.innerHTML = `
+            <h2>${infoData.name}</h2>
+            <div class="info-item">
+                <img src="images/homepage/info icon/location.png" alt="Location" class="info-icon">
+                <span>${infoData.address}</span>
+            </div>
+            <div class="info-item">
+                <img src="images/homepage/info icon/school.png" alt="School" class="info-icon">
+                <span>${infoData.institution}</span>
+            </div>
+            <div class="info-item">
+                <img src="images/homepage/info icon/google scholar.png" alt="Google Scholar" class="info-icon">
+                <a href="${infoData.googlescholar}" target="_blank">${this.getText('googleScholar', {}, language)}</a>
+            </div>
+            <div class="info-item">
+                <img src="images/homepage/info icon/github.png" alt="GitHub" class="info-icon">
+                <a href="${infoData.github}" target="_blank">GitHub</a>
+            </div>
+            <div class="info-item">
+                <img src="images/homepage/info icon/email.png" alt="Email" class="info-icon">
+                <a href="mailto:${infoData.email}">${infoData.email}</a>
+            </div>
+            <div class="info-item">
+                <img src="images/homepage/info icon/time.png" alt="Current Time" class="info-icon">
+                <span id="current-time"></span>
+            </div>
+        `;
+        
+        // Update time | 更新时间
+        this.updateTime(timezoneOffset);
+        console.log('Personal info updated successfully');
+    }
+    
+    /**
+     * Update intro content with hot switching | 使用热切换更新介绍内容
+     * @param {string} language - Language code | 语言代码
+     */
+    updateIntroContent(language) {
+        console.log(`Updating intro content for language: ${language}`);
+        const introData = this.getContent('intro', language);
+        console.log('Intro data retrieved:', introData);
+        
+        if (!introData) {
+            console.warn(`No intro data found for language: ${language}`);
+            return;
+        }
+        
+        let introContent = document.getElementById('intro-content');
+        if (!introContent) {
+            console.warn('Intro content element not found, attempting to load home content structure');
+            // Try to load home content structure if element is missing | 如果元素缺失，尝试加载主页内容结构
+            if (window.loadHomeContent) {
+                window.loadHomeContent();
+                // Get the element again after loading structure | 加载结构后再次获取元素
+                introContent = document.getElementById('intro-content');
+            }
+            
+            // If still not found, return | 如果仍然找不到，则返回
+            if (!introContent) {
+                console.warn('Intro content element still not found after loading home structure');
+                return;
+            }
+        }
+        
+        // Convert line breaks to paragraphs | 将换行符转换为段落
+        const paragraphs = introData.split('\n').filter(p => p.trim() !== '');
+        introContent.innerHTML = paragraphs.map(p => `<p>${p}</p>`).join('');
+        console.log('Intro content updated successfully');
+    }
+    
+    /**
+     * Update news content with hot switching | 使用热切换更新新闻内容
+     * @param {string} language - Language code | 语言代码
+     */
+    updateNewsContent(language) {
+        console.log(`Updating news content for language: ${language}`);
+        const newsData = this.getContent('news', language);
+        console.log('News data retrieved:', newsData);
+        
+        if (!newsData) {
+            console.warn(`No news data found for language: ${language}`);
+            return;
+        }
+        
+        let newsContent = document.getElementById('news-content');
+        if (!newsContent) {
+            console.warn('News content element not found, attempting to load home content structure');
+            // Try to load home content structure if element is missing | 如果元素缺失，尝试加载主页内容结构
+            if (window.loadHomeContent) {
+                window.loadHomeContent();
+                // Get the element again after loading structure | 加载结构后再次获取元素
+                newsContent = document.getElementById('news-content');
+            }
+            
+            // If still not found, return | 如果仍然找不到，则返回
+            if (!newsContent) {
+                console.warn('News content element still not found after loading home structure');
+                return;
+            }
+        }
+        
+        // Sort news by date (newest first) | 按日期排序新闻（最新的在前）
+        newsData.sort((a, b) => new Date(b.time) - new Date(a.time));
+        
+        let newsHTML = '<ul class="news-list">';
+        newsData.forEach((item, index) => {
+            // Format date from YYYY-MM-DD to locale-specific format | 将日期从YYYY-MM-DD格式化为特定于地区的格式
+            const dateObj = new Date(item.time);
+            const formattedDate = this.formatDate(dateObj, language);
+            
+            // Add "Latest" label to the first (most recent) news item | 为第一个（最近的）新闻项添加"最新"标签
+            const latestLabel = index === 0 ? 
+                `<span class="latest-label">${this.getText('latest', {}, language)}</span>` : '';
+            
+            newsHTML += `
+                <li class="news-item">
+                    <div class="news-date">${formattedDate}${latestLabel}</div>
+                    <div class="news-content">${item.content}</div>
+                </li>
+            `;
+        });
+        newsHTML += '</ul>';
+        
+        newsContent.innerHTML = newsHTML;
+        console.log('News content updated successfully');
+    }
+    
+    /**
+     * Update time dynamically | 动态更新时间
+     * @param {number} timezoneOffset - Timezone offset in hours | 时区偏移量（小时）
+     */
+    updateTime(timezoneOffset) {
+        const now = new Date();
+        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const currentTime = new Date(utc + (3600000 * timezoneOffset));
+        
+        // Format time as HH:MM (UTC+08:00) - same format for both languages | 格式化时间为HH:MM (UTC+08:00) - 两种语言使用相同格式
+        const hours = currentTime.getHours().toString().padStart(2, '0');
+        const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+        const timezoneString = (timezoneOffset >= 0 ? '+' : '') + timezoneOffset.toString().padStart(2, '0');
+        const timeString = `${hours}:${minutes} (UTC${timezoneString}:00)`;
+        
+        const timeElement = document.getElementById('current-time');
+        if (timeElement) {
+            timeElement.textContent = timeString;
+        }
+    }
+    
+    /**
+     * Format date based on language | 根据语言格式化日期
+     * @param {Date} date - Date object | 日期对象
+     * @param {string} language - Language code | 语言代码
+     * @returns {string} Formatted date string | 格式化的日期字符串
+     */
+    formatDate(date, language) {
+        const locale = language === 'zh' ? 'zh-CN' : 'en-US';
+        return date.toLocaleDateString(locale, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    }
+    
+    /**
+     * Update navigation links with hot switching | 使用热切换更新导航链接
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     */
+    updateNavigationLinks(language = null) {
+        const lang = language || this.currentLanguage;
+        
+        if (!window.navElements || !window.navElements.navLinks) return;
+        
+        const navLinks = window.navElements.navLinks.querySelectorAll('a');
+        
+        // Update link texts | 更新链接文本
+        if (navLinks[0]) navLinks[0].textContent = this.getText('navHome', {}, lang);
+        if (navLinks[1]) navLinks[1].textContent = this.getText('navExperiences', {}, lang);
+        if (navLinks[2]) navLinks[2].textContent = this.getText('navPublications', {}, lang);
+    }
+    
+    /**
+     * Update footer text with hot switching | 使用热切换更新页脚文本
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     */
+    updateFooterText(language = null) {
+        const lang = language || this.currentLanguage;
+        
+        if (window.footerElement && window.footerElement.copyrightText) {
+            const currentYear = window.footerElement.currentYear;
+            const copyrightText = this.getText('copyright', { year: currentYear }, lang);
+            window.footerElement.copyrightText.innerHTML = copyrightText;
+        }
+    }
+    
+    /**
+     * Update language switch button text with hot switching | 使用热切换更新语言切换按钮文本
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     */
+    updateLanguageSwitchText(language = null) {
+        // Check if language switch button exists | 检查语言切换按钮是否存在
+        if (!window.navElements || !window.navElements.langSwitch) {
+            console.log('Language switch button not found, likely in single language mode');
+            return;
+        }
+        
+        const lang = language || this.currentLanguage;
+        
+        // Show the language to switch to | 显示要切换到的语言
+        const switchToLangText = this.staticTexts[lang] ? 
+            this.staticTexts[lang].langSwitchTo : 
+            (lang === 'en' ? '中' : 'EN');
+        
+        window.navElements.langSwitch.textContent = switchToLangText;
+        console.log(`Language switch button updated to show language to switch to: ${switchToLangText}`);
+    }
+    
+    /**
+     * Update navigation name with hot switching | 使用热切换更新导航栏名称
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     */
+    async updateNavigationName(language = null) {
+        const lang = language || this.currentLanguage;
+        
+        try {
+            // Use appropriate config file based on language | 根据语言使用适当的配置文件
+            const infoFile = lang === 'zh' ? 'info_zh.json' : 'info_en.json';
+            const infoPath = `configs/${lang}/${infoFile}`;
+            console.log(`Loading navigation name from: ${infoPath}`);
+            
+            const response = await fetch(infoPath);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const userInfo = await response.json();
+            console.log('User info loaded successfully for navigation:', userInfo);
+            
+            // Update logo section with user info | 使用用户信息更新标志部分
+            if (window.navElements && window.navElements.logo) {
+                const nameElement = window.navElements.logo.querySelector('span');
+                if (nameElement) {
+                    nameElement.textContent = userInfo.name;
+                    console.log(`Updated name in navigation to: ${userInfo.name}`);
+                } else {
+                    console.warn('Name element not found in navigation');
+                }
+            } else {
+                console.warn('Navigation elements not found');
+            }
+        } catch (error) {
+            console.error('Error updating navigation name:', error);
+        }
+    }
+    
+    /**
+     * Update mobile tab labels with hot switching | 使用热切换更新移动端标签页标签
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     */
+    updateMobileTabLabels(language = null) {
+        const lang = language || this.currentLanguage;
+        console.log(`Updating mobile tab labels for language: ${lang}`);
+        
+        // Update experiences section tabs | 更新经历部分标签页
+        const experiencesSection = document.getElementById('experiences-section');
+        if (experiencesSection) {
+            // Get the currently active tab | 获取当前活动标签页
+            const activeTabPane = experiencesSection.querySelector('.tab-pane.active');
+            let activeTabId = 'education'; // Default to education | 默认为教育
+            
+            if (activeTabPane) {
+                activeTabId = activeTabPane.id;
+            }
+            
+            // Update compact tab trigger button | 更新紧凑型标签页触发按钮
+            const compactTabTrigger = experiencesSection.querySelector('.compact-tab-button');
+            if (compactTabTrigger) {
+                // Get the appropriate text based on the active tab | 根据活动标签页获取适当的文本
+                let labelText = '';
+                switch (activeTabId) {
+                    case 'employment':
+                        labelText = this.getText('employment', {}, lang);
+                        break;
+                    case 'education':
+                        labelText = this.getText('education', {}, lang);
+                        break;
+                    case 'honors-awards':
+                        labelText = this.getText('honorsAndAwards', {}, lang);
+                        break;
+                    case 'teaching':
+                        labelText = this.getText('teaching', {}, lang);
+                        break;
+                    case 'reviewer':
+                        labelText = this.getText('reviewer', {}, lang);
+                        break;
+                    default:
+                        labelText = this.getText('education', {}, lang);
+                }
+                compactTabTrigger.textContent = labelText;
+            }
+            
+            // Update compact tab options | 更新紧凑型标签页选项
+            const compactTabOptions = experiencesSection.querySelectorAll('.compact-tab-option');
+            compactTabOptions.forEach(option => {
+                const tabId = option.getAttribute('data-tab');
+                let optionText = '';
+                switch (tabId) {
+                    case 'employment':
+                        optionText = this.getText('employment', {}, lang);
+                        break;
+                    case 'education':
+                        optionText = this.getText('education', {}, lang);
+                        break;
+                    case 'honors-awards':
+                        optionText = this.getText('honorsAndAwards', {}, lang);
+                        break;
+                    case 'teaching':
+                        optionText = this.getText('teaching', {}, lang);
+                        break;
+                    case 'reviewer':
+                        optionText = this.getText('reviewer', {}, lang);
+                        break;
+                    default:
+                        optionText = this.getText('education', {}, lang);
+                }
+                option.textContent = optionText;
+            });
+        }
+        
+        // Update publications section tabs | 更新发表物部分标签页
+        const publicationsSection = document.getElementById('publications-section');
+        if (publicationsSection) {
+            // Get the currently active tab | 获取当前活动标签页
+            const activeTabPane = publicationsSection.querySelector('.tab-pane.active');
+            let activeTabId = 'paper'; // Default to paper | 默认为论文
+            
+            if (activeTabPane) {
+                activeTabId = activeTabPane.id;
+            }
+            
+            // Update compact tab trigger button | 更新紧凑型标签页触发按钮
+            const compactTabTrigger = publicationsSection.querySelector('.compact-tab-button');
+            if (compactTabTrigger) {
+                // Get the appropriate text based on the active tab | 根据活动标签页获取适当的文本
+                let labelText = '';
+                switch (activeTabId) {
+                    case 'paper':
+                        labelText = this.getText('academicPapers', {}, lang);
+                        break;
+                    case 'patent':
+                        labelText = this.getText('patents', {}, lang);
+                        break;
+                    default:
+                        labelText = this.getText('academicPapers', {}, lang);
+                }
+                compactTabTrigger.textContent = labelText;
+            }
+            
+            // Update compact tab options | 更新紧凑型标签页选项
+            const compactTabOptions = publicationsSection.querySelectorAll('.compact-tab-option');
+            compactTabOptions.forEach(option => {
+                const tabId = option.getAttribute('data-tab');
+                let optionText = '';
+                switch (tabId) {
+                    case 'paper':
+                        optionText = this.getText('academicPapers', {}, lang);
+                        break;
+                    case 'patent':
+                        optionText = this.getText('patents', {}, lang);
+                        break;
+                    default:
+                        optionText = this.getText('academicPapers', {}, lang);
+                }
+                option.textContent = optionText;
+            });
+        }
+        
+        console.log('Mobile tab labels updated successfully');
+    }
+
+    /**
+     * Trigger language change event with hot switching | 触发热切换语言更改事件
+     * @param {string} language - Language code (optional, defaults to current) | 语言代码（可选，默认为当前语言）
+     */
+    async triggerLanguageChange(language = null) {
+        const lang = language || this.currentLanguage;
+        
+        // Update all UI elements | 更新所有UI元素
+        this.updateHomeContent(lang);
+        this.updateExperiencesContent(lang);
+        this.updatePublicationsContent(lang);
+        this.updateReviewerContent(lang);
+        this.updateNavigationLinks(lang);
+        this.updateFooterText(lang);
+        this.updateLanguageSwitchText(lang);
+        this.updateMobileTabLabels(lang);
+        
+        // Update navigation name | 更新导航栏名称
+        await this.updateNavigationName(lang);
+        
+        // Trigger custom event | 触发自定义事件
+        const event = new CustomEvent('languageChange', {
+            detail: { language: this.currentLanguage }
+        });
+        document.dispatchEvent(event);
     }
 }
 
-// Initialize language from localStorage or browser preference
-function initializeLanguage() {
-    const savedLanguage = localStorage.getItem('preferredLanguage');
-    if (savedLanguage === 'en' || savedLanguage === 'zh') {
-        currentLanguage = savedLanguage;
-    } else {
-        // Default to English regardless of browser language
-        currentLanguage = 'en';
-        // Save the default preference to localStorage
-        localStorage.setItem('preferredLanguage', 'en');
-    }
-    
-    // Set html lang attribute for CSS selectors
-    document.documentElement.lang = currentLanguage;
-}
+// Create and export language manager instance | 创建并导出语言管理器实例
+window.languageManager = new LanguageManager();
 
-// Initialize language system when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initializeLanguage();
-    updateUILanguage();
-    
-    // Wait for content to be ready before creating language switch
-    document.addEventListener('contentReady', function(event) {
-        console.log('Content is ready, creating language switch...');
-        createLanguageSwitch();
-    });
-});
+// Export for use in other modules | 导出供其他模块使用
+window.LanguageManager = LanguageManager;
 
-// Export functions for use in other modules
-window.getCurrentLanguage = getCurrentLanguage;
-window.setLanguage = setLanguage;
-window.toggleLanguage = toggleLanguage;
-window.getText = getText;
-window.getConfigPath = getConfigPath;
+// Global functions for backward compatibility | 向后兼容的全局函数
+window.getText = function(key, params = {}) {
+    return window.languageManager.getText(key, params);
+};
+
+window.getCurrentLanguage = function() {
+    return window.languageManager.getCurrentLanguage();
+};

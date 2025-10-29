@@ -1,443 +1,247 @@
-/*
- * Written by Constantine Heinrich Chen (ConsHein Chen)
- * Last Change: 2025-09-29
- */
-
-/* Light theme styles - inherits from dark theme and overrides specific properties */
+/* Light Theme Styles | 浅色主题样式 */
 body.light-theme {
-    /* Override CSS variables for light theme */
-    --primary: #3498db;
-    --secondary: #2980b9;
-    --accent: #34ccff;
-    --dark: #2c3e50;
-    --light: #ecf0f1;
-    --background: #ffffff;
-    --text: #2c3e50;
-    --card-bg: #f8f9fa;
-    --border: #dee2e6;
+    --primary: #4a90e2;
+    --secondary: #5a6c8a;
+    --accent: #34cceb;
+    --dark: #1a3a7a;
+    --light: #f8f9fa;
+    --gray: #5a708a;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f7fa;
+    --bg-tertiary: #e9ecef;
+    --border: rgba(0, 0, 0, 0.1);
+    --shadow: rgba(0, 0, 0, 0.1);
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --card-border: rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --link-color: #4a90e2;
+    --link-hover-color: #2a6bc6;
+    --link-visited-color: #6a5acd;
     
-    /* Override background and text color */
-    background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-    color: var(--text);
+    /* Module Container Variables for Light Theme | 浅色主题模块容器变量 */
+    --education-color: #3498db;
+    --publication-color: #2ecc71;
+    --experience-color: #e74c3c;
+    --employment-color: #f39c12;
+    --honor-color: #9b59b6;
+    --teaching-color: #1abc9c;
+    --reviewer-color: #34495e;
+    --patent-color: #e67e22;
+    
+    --module-card-bg: #ffffff;
+    --module-border-color: rgba(0, 0, 0, 0.1);
+    --module-text-color: #333333;
+    --module-secondary-text-color: #666666;
+    --module-tag-bg: #f0f0f0;
+    --module-tag-color: #555555;
+    --module-tag-hover-bg: #e0e0e0;
+    
+    /* Text background colors for modules | 模块文字背景颜色 */
+    --text-bg-education: rgba(52, 152, 219, 0.1);
+    --text-bg-education-hover: rgba(52, 152, 219, 0.2);
+    --text-bg-employment: rgba(243, 156, 18, 0.1);
+    --text-bg-employment-hover: rgba(243, 156, 18, 0.2);
+    --text-bg-honor: rgba(155, 89, 182, 0.1);
+    --text-bg-honor-hover: rgba(155, 89, 182, 0.2);
+    --text-bg-teaching: rgba(26, 188, 156, 0.1);
+    --text-bg-teaching-hover: rgba(26, 188, 156, 0.2);
+    --text-bg-reviewer: rgba(52, 73, 94, 0.1);
+    --text-bg-reviewer-hover: rgba(52, 73, 94, 0.2);
+    --text-bg-experience: rgba(231, 76, 60, 0.1);
+    --text-bg-experience-hover: rgba(231, 76, 60, 0.2);
+    --text-bg-publication: rgba(46, 204, 113, 0.1);
+    --text-bg-publication-hover: rgba(46, 204, 113, 0.2);
+    --text-bg-patent: rgba(230, 126, 34, 0.1);
+    --text-bg-patent-hover: rgba(230, 126, 34, 0.2);
+    
+    /* Light theme background and text color | 浅色主题背景和文字颜色 */
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: var(--text-primary);
+    padding-bottom: 50px; /* Space for fixed footer | 为固定页脚留出空间 */
+}
+
+body.light-theme header {
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 body.light-theme .navbar {
     background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 body.light-theme .logo {
-    background: rgba(255, 255, 255, 0.98) !important;
+  color: var(--dark);
 }
 
-body.light-theme .logo span {
-    color: var(--dark);
+body.light-theme .logo i {
+  color: var(--primary);
 }
 
+/* Light theme logo image | 浅色主题标志图像 */
 body.light-theme .logo img {
-    filter: invert(100%) !important;
+  filter: invert(1);
 }
 
 body.light-theme .nav-links a {
-    color: var(--dark);
+  color: var(--text-primary);
+  outline: none;
+  -webkit-outline: none;
+  -moz-outline: none;
+  -ms-outline: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
 }
 
-body.light-theme .nav-links a:hover,
+body.light-theme .nav-links a:hover {
+    color: var(--primary);
+}
+
+body.light-theme .nav-links a:focus {
+    outline: none;
+    -webkit-outline: none;
+    -moz-outline: none;
+    -ms-outline: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -ms-box-shadow: none;
+}
+
+body.light-theme .nav-links a:active {
+    outline: none;
+    -webkit-outline: none;
+    -moz-outline: none;
+    -ms-outline: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -ms-box-shadow: none;
+}
+
+/* Global link styles for light theme | 浅色主题全局超链接样式 */
+body.light-theme a:active {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+body.light-theme a:visited {
+    color: var(--link-color);
+}
+
 body.light-theme .nav-links a.active {
     color: var(--primary);
 }
 
-body.light-theme .nav-links a::after {
-    background: var(--primary);
+body.light-theme .controls button {
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--text-primary);
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-body.light-theme .nav-links a:hover::after {
-    background: var(--primary);
+body.light-theme .controls button i {
+    color: var(--primary);
 }
 
-body.light-theme .nav-links a.active::after {
-    background: var(--primary);
+body.light-theme .controls button:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--primary);
 }
 
-body.light-theme .language-switch,
-body.light-theme .theme-switch {
-    background: rgba(52, 152, 219, 0.1) !important;
-    color: var(--dark) !important;
-    border: 1px solid var(--primary) !important;
+body.light-theme .controls button:hover i {
+    color: var(--primary);
 }
 
-body.light-theme .language-switch:hover,
-body.light-theme .theme-switch:hover {
-    background: rgba(52, 152, 219, 0.2) !important;
+/* Light theme button styles | 浅色主题按钮样式 */
+body.light-theme .theme-switch, 
+body.light-theme .language-switch {
+    background: rgba(255, 255, 255, 0.8) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--accent) !important;
+    outline: none !important;
+    -webkit-outline: none !important;
+    -moz-outline: none !important;
+    -ms-outline: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -ms-box-shadow: none !important;
 }
 
-body.light-theme .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-body.light-theme .section-title h2,
-body.light-theme .intro-section h3,
-body.light-theme .news-section h3 {
-    color: var(--dark);
-}
-
-body.light-theme .language-switch-container,
-body.light-theme .theme-switch-container {
-    background: rgba(255, 255, 255, 0.9) !important;
-    border-bottom: 1px solid var(--border) !important;
-}
-
-body.light-theme .switch-buttons-container {
-    background: rgba(255, 255, 255, 0.9) !important;
-}
-
-body.light-theme .nav-links {
-    background: rgba(255, 255, 255, 0.9) !important;
-}
-
-/* Custom scrollbar for light theme */
-body.light-theme ::-webkit-scrollbar-track {
-    background: rgba(236, 240, 241, 0.5);
-}
-
-body.light-theme ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, var(--primary), var(--secondary));
-    border: 2px solid rgba(236, 240, 241, 0.5);
-}
-
-body.light-theme ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(to bottom, var(--accent), var(--primary));
-}
-
-/* For Firefox in light theme */
-body.light-theme * {
-    scrollbar-color: var(--primary) rgba(236, 240, 241, 0.5);
-}
-
-/* Footer styles for light theme - inherits from dark theme and overrides specific properties */
-body.light-theme footer {
-    color: var(--dark) !important;
-    background: var(--card-bg) !important;
-    border-top: 1px solid var(--border);
-}
-
-/* Light theme footer styles for landscape mode - inherits from dark theme and overrides specific properties */
-@media screen and (max-width: 768px) and (orientation: landscape) {
-    body.light-theme footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        z-index: 999;
-        padding: 1rem;
-        text-align: center;
-        color: var(--dark) !important;
-        background: var(--card-bg) !important;
-        border-top: 1px solid var(--border);
-        backdrop-filter: blur(10px);
-    }
-}
-
-body.light-theme #footer a {
+body.light-theme .theme-switch i, 
+body.light-theme .language-switch i {
     color: var(--primary) !important;
 }
 
-body.light-theme #footer a:hover {
-    color: var(--primary) !important;
-}
-
-body.light-theme .no-content-message {
-    color: var(--text) !important;
-}
-
-/* Home page styles for light theme */
-body.light-theme .info-section {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border) !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
-}
-
-body.light-theme .info-content h2 {
-    color: var(--primary) !important;
-}
-
-body.light-theme .info-icon {
-    filter: invert(30%) !important;
-}
-
-body.light-theme .profile-photo {
+body.light-theme .theme-switch:hover, 
+body.light-theme .language-switch:hover {
+    background: rgba(255, 255, 255, 0.9) !important;
     border-color: var(--primary) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
-body.light-theme .info-item span,
-body.light-theme .info-item a {
-    color: var(--text) !important;
+body.light-theme .theme-switch:focus, 
+body.light-theme .language-switch:focus {
+    outline: none !important;
+    -webkit-outline: none !important;
+    -moz-outline: none !important;
+    -ms-outline: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -ms-box-shadow: none !important;
 }
 
-body.light-theme .info-item a:hover {
+body.light-theme .theme-switch:active, 
+body.light-theme .language-switch:active {
+    outline: none !important;
+    -webkit-outline: none !important;
+    -moz-outline: none !important;
+    -ms-outline: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -ms-box-shadow: none !important;
+}
+
+body.light-theme .theme-switch:hover i, 
+body.light-theme .language-switch:hover i {
     color: var(--primary) !important;
 }
 
-body.light-theme .intro-section,
-body.light-theme .news-section {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border) !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+body.light-theme .content-section {
+    background: transparent;
+    border: none;
+    box-shadow: none;
 }
 
-/* News content styles for light theme */
-body.light-theme .news-content {
-    color: #d35400 !important;
+body.light-theme .section-content h2 {
+    color: var(--primary);
 }
 
-body.light-theme .news-content a {
-    color: var(--primary) !important;
+body.light-theme .section-content p {
+    color: var(--text-secondary);
 }
 
-body.light-theme .news-date {
-    color: var(--primary) !important;
+/* Light theme section title styles | 浅色主题标题样式 */
+body.light-theme .section-title h2 {
+    color: var(--primary);
 }
 
-body.light-theme .news-item:first-child {
-    border-left-color: var(--primary) !important;
-    background: rgba(52, 152, 219, 0.1) !important;
+body.light-theme .section-title h2:after {
+    background: var(--primary);
 }
 
-body.light-theme .news-item:first-child .news-date {
-    color: var(--primary) !important;
-}
-
-body.light-theme .news-item {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-body.light-theme .news-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-body.light-theme .latest-label {
-    color: var(--primary) !important;
-    background: rgba(52, 152, 219, 0.2) !important;
-}
-
-/* Module container styles for light theme */
-body.light-theme .module-container {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border) !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
-}
-
-/* Publication module specific styles for light theme */
-body.light-theme .module-container.publication {
-    border-left: 4px solid var(--primary) !important;
-}
-
-body.light-theme .module-container.publication .module-title {
-    color: var(--dark) !important;
-}
-
-body.light-theme .module-container.publication .module-content p {
-    color: var(--text) !important;
-}
-
-body.light-theme .module-container.publication .module-content p:first-child {
-    color: var(--primary) !important;
-}
-
-body.light-theme .module-container.publication .module-content p:nth-child(2) {
-    color: rgba(44, 62, 80, 0.8) !important;
-}
-
-body.light-theme .module-container.publication .module-content p:last-child {
-    color: rgba(44, 62, 80, 0.85) !important;
-}
-
-body.light-theme .module-container.publication .module-content p strong:first-of-type {
-    color: var(--primary) !important;
-}
-
-/* Education module styles for light theme */
-body.light-theme .module-container.education {
-    border-left: 4px solid var(--accent) !important;
-}
-
-/* Employment module styles for light theme */
-body.light-theme .module-container.employment {
-    border-left: 4px solid #ff5722 !important;
-}
-
-/* Honor module styles for light theme */
-body.light-theme .module-container.honor {
-    border-left: 4px solid #ff9800 !important;
-}
-
-/* Patent module styles for light theme */
-body.light-theme .module-container.patent {
-    border-left: 4px solid #f5deb3 !important;
-}
-
-body.light-theme .module-container.patent .module-content > div {
-    display: inline-block !important;
-    width: auto !important;
-}
-
-body.light-theme .module-container.patent .module-content p {
-    color: var(--text) !important;
-}
-
-body.light-theme .module-container.patent .module-content p:first-child {
-    color: var(--primary) !important;
-}
-
-body.light-theme .module-container.patent .module-content p:nth-child(2) {
-    color: rgba(44, 62, 80, 0.8) !important;
-}
-
-body.light-theme .module-container.patent .module-content p:last-child {
-    color: rgba(44, 62, 80, 0.85) !important;
-    display: inline-block !important;
-    width: auto !important;
-    border-left: 2px solid rgba(245, 222, 179, 0.3) !important;
-    background: rgba(245, 222, 179, 0.05) !important;
-}
-
-body.light-theme .module-container.patent .module-content p:last-child:hover {
-    background: rgba(245, 222, 179, 0.1) !important;
-}
-
-body.light-theme .module-container.patent .module-content strong.patent-type {
-    color: #9c27b0 !important;
-}
-
-/* Teaching module styles for light theme */
-body.light-theme .module-container.teaching {
-    border-left: 4px solid #9c27b0 !important;
-}
-
-/* Reviewer module styles for light theme */
-body.light-theme .module-container.reviewer {
-    border-left: 4px solid #607d8b !important;
-}
-
-body.light-theme .module-container.reviewer .module-content p {
-    background: rgba(96, 125, 139, 0.1) !important;
-    color: #455a64 !important;
-    border-left: 3px solid #607d8b !important;
-}
-
-body.light-theme .module-container.reviewer .module-content p:hover {
-    background: rgba(96, 125, 139, 0.2) !important;
-}
-
-/* Module title styles for light theme */
-body.light-theme .module-title {
-    color: var(--dark) !important;
-}
-
-/* Module subtitle styles for light theme */
-body.light-theme .module-subtitle {
-    color: var(--text) !important;
-}
-
-/* Module content styles for light theme */
-body.light-theme .module-content {
-    color: var(--text) !important;
-}
-
-/* Education module strong:first-child styles for light theme */
-body.light-theme .module-container.education .module-content strong:first-child {
-    color: var(--primary) !important;
-}
-
-/* Patent module patent-type styles for light theme */
-body.light-theme .module-container.patent .module-content strong.patent-type {
-    color: #8b4513 !important;
-}
-
-/* Module date styles for light theme */
-body.light-theme .module-date {
-    color: var(--primary) !important;
-}
-
-
-
-/* Employment module date styles for light theme */
-body.light-theme .module-container.employment .module-date {
-    color: #e74c3c !important;
-}
-
-/* Education module strong:first-child styles for light theme */
-body.light-theme .module-container.education .module-content strong:first-child {
-    color: #3498db !important;
-}
-
-/* Employment module strong:first-child styles for light theme */
-body.light-theme .module-container.employment .module-content strong:first-child {
-    color: #3498db !important;
-}
-
-/* Module link styles for light theme */
-body.light-theme .module-link {
-    color: var(--primary) !important;
-    background: rgba(52, 152, 219, 0.1) !important;
-    border: 1px solid rgba(52, 152, 219, 0.2) !important;
-}
-
-/* Special link type styles for light theme */
-body.light-theme .module-link.video-link {
-    background: rgba(255, 0, 0, 0.1) !important;
-    border-color: rgba(255, 0, 0, 0.2) !important;
-    color: #ff5252 !important;
-}
-
-body.light-theme .module-link.site-link {
-    background: rgba(76, 175, 80, 0.1) !important;
-    border-color: rgba(76, 175, 80, 0.2) !important;
-    color: #66bb6a !important;
-}
-
-body.light-theme .module-link.paper-link {
-    background: rgba(33, 150, 243, 0.1) !important;
-    border-color: rgba(33, 150, 243, 0.2) !important;
-    color: #42a5f5 !important;
-}
-
-body.light-theme .module-link.code-link {
-    background: rgba(156, 39, 176, 0.1) !important;
-    border-color: rgba(156, 39, 176, 0.2) !important;
-    color: #ba68c8 !important;
-}
-
-/* Module tags styles for light theme */
-body.light-theme .module-tag {
-    background: rgba(52, 152, 219, 0.2) !important;
-    color: var(--primary) !important;
-}
-
-/* Module image container styles for light theme */
-body.light-theme .module-image {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
-}
-
-body.light-theme .module-image-container:hover .module-image {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3) !important;
-}
-
-body.light-theme .module-container.publication .module-image-container:hover .module-image {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3) !important;
-}
-
-/* Tabs container styles for light theme */
+/* Light theme tab styles | 浅色主题标签页样式 */
 body.light-theme .tabs {
-    border-bottom: 2px solid rgba(52, 152, 219, 0.3);
+    border-bottom: 2px solid rgba(74, 144, 226, 0.3);
 }
 
 body.light-theme .tab-button {
-    color: rgba(44, 62, 80, 0.7);
+    color: rgba(0, 0, 0, 0.7);
 }
 
 body.light-theme .tab-button:hover {
@@ -452,36 +256,224 @@ body.light-theme .tab-button.active::after {
     background: var(--primary);
 }
 
-/* CV section styles for light theme */
-body.light-theme .cv-pdf-viewer {
-    background: #ffffff !important;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+/* Light theme footer styles | 浅色主题页脚样式 */
+body.light-theme .footer {
+  background: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
 }
 
-body.light-theme .pdf-fallback {
-    background: var(--card-bg) !important;
-    color: var(--text) !important;
+body.light-theme .copyright-text {
+  color: var(--text-secondary);
 }
 
-body.light-theme .pdf-fallback a {
-    color: var(--primary) !important;
+/* Light theme news styles | 浅色主题新闻样式 */
+body.light-theme .news-content {
+    color: rgba(220, 53, 69, 0.9); /* Red color for news content in light theme */
 }
 
-body.light-theme .pdf-error-message {
-    background: var(--card-bg) !important;
-    color: var(--text) !important;
+body.light-theme .news-item:first-child .news-content {
+    color: rgba(220, 53, 69, 0.9); /* Red color for latest news content in light theme */
 }
 
-body.light-theme .pdf-loading-indicator {
-    background: var(--card-bg) !important;
-    color: var(--text) !important;
+/* Light theme home page styles | 浅色主题主页样式 */
+body.light-theme .home-container {
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    box-shadow: none;
 }
 
-/* Year header and container styles for light theme */
-body.light-theme .year-header {
-    border-bottom: 2px solid var(--primary) !important;
+body.light-theme .info-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
 }
 
-body.light-theme .year-header h3 {
-    color: var(--primary) !important;
+body.light-theme .info-content h2 {
+    color: var(--primary);
+}
+
+body.light-theme .info-item span,
+body.light-theme .info-item a {
+    color: var(--text-secondary);
+}
+
+body.light-theme .info-item a:hover {
+    color: var(--primary);
+}
+
+body.light-theme .intro-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
+}
+
+body.light-theme .news-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
+}
+
+body.light-theme .intro-section h3,
+body.light-theme .news-section h3 {
+    color: var(--primary);
+}
+
+body.light-theme .news-date {
+    color: var(--primary);
+}
+
+body.light-theme .news-item {
+    border-bottom: 1px solid var(--border);
+}
+
+body.light-theme .news-item:first-child {
+    border-left: 3px solid var(--primary);
+    background: rgba(74, 144, 226, 0.1);
+}
+
+body.light-theme .news-item:first-child .news-date {
+    color: var(--primary);
+}
+
+body.light-theme .latest-label {
+    color: var(--primary);
+    background: rgba(74, 144, 226, 0.2);
+}
+
+/* Light theme scrollbar styles | 浅色主题滚动条样式 */
+body.light-theme ::-webkit-scrollbar {
+    width: 10px;
+}
+
+body.light-theme ::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 10px;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--primary), var(--secondary));
+    border-radius: 10px;
+    border: 2px solid var(--bg-tertiary);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, var(--accent), var(--primary));
+}
+
+/* Light theme scrollbar for Firefox | 浅色主题Firefox滚动条 */
+body.light-theme * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--bg-tertiary);
+}
+
+/* Additional light theme styles for other sections */
+body.light-theme .content-section {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+body.light-theme .section-content h2 {
+    color: #4285f4;
+}
+
+body.light-theme .section-content p {
+    color: #333;
+}
+
+/* Light theme for image modal */
+body.light-theme .image-modal {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+body.light-theme .image-modal img {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Light theme for buttons */
+body.light-theme .module-button {
+    background: #4285f4;
+    color: white;
+    border: 1px solid #4285f4;
+}
+
+body.light-theme .module-button:hover {
+    background: #3367d6;
+    border-color: #3367d6;
+}
+
+/* Light theme for lists */
+body.light-theme .module-list {
+    color: #333;
+}
+
+body.light-theme .module-list-item {
+    color: #333;
+}
+
+/* Light theme for content */
+body.light-theme .module-content {
+    color: #333;
+}
+
+/* Light theme for info icons */
+body.light-theme .info-icon {
+    filter: invert(0%);
+}
+
+/* Light theme for responsive elements */
+@media (max-width: 768px) {
+    body.light-theme .content-section {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+    }
+    
+    body.light-theme .info-section,
+    body.light-theme .intro-section,
+    body.light-theme .news-section {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(66, 133, 244, 0.2);
+    }
+}
+
+/* Light theme module container styles | 浅色主题模块容器样式 */
+body.light-theme .module-container {
+    background-color: var(--module-card-bg);
+    box-shadow: var(--card-shadow);
+}
+
+body.light-theme .module-header {
+    border-bottom: 1px solid var(--module-border-color);
+}
+
+body.light-theme .module-title {
+    color: var(--module-text-color);
+}
+
+body.light-theme .module-content {
+    color: var(--module-text-color);
+}
+
+body.light-theme .module-date,
+body.light-theme .module-tutor {
+    color: var(--module-secondary-text-color);
+}
+
+body.light-theme .module-tag {
+    background-color: var(--module-tag-bg);
+    color: var(--module-tag-color);
+}
+
+body.light-theme .module-link {
+    background: var(--link-bg-color);
+    border-color: var(--link-border-color);
+    color: var(--link-color);
+}
+
+body.light-theme .module-link:hover {
+    background: var(--link-hover-bg-color);
+    color: var(--link-hover-color);
 }

@@ -1,1180 +1,849 @@
-// Written by Constantine Heinrich Chen (ConsHein Chen)
-// Last Change: 2025-09-29
+// Written by Constantine Heinrich CHEN (ConsHein CHEN)
+// Last Updated: 2025-10-29
 
-// Module Container Component
-// This component provides a generic container for various types of content
-// such as educational experiences, academic papers, honors, etc.
+// Module Container Component - Assembly Interface | 模块容器组件 - 组装接口
+// This component provides interfaces for assembling customized containers | 此组件提供用于组装自定义容器的接口
 
-// Detect if the device is mobile
-function isMobileDevice() {
-    return (typeof window !== 'undefined' && 
-           (window.innerWidth <= 768 || 
-            'ontouchstart' in window || 
-            navigator.maxTouchPoints > 0 ||
-            navigator.msMaxTouchPoints > 0));
-}
+/*
+ * 接口示例用法 | Interface Usage Examples
+ * 
+ * 1. 创建基础模块容器 | Create Basic Module Container
+ * 
+ * // 创建一个教育类型的模块容器
+ * const educationModule = ModuleContainerFactory.createBasicContainer({
+ *     type: 'education',
+ *     className: 'my-custom-class',
+ *     borderColor: '#4285f4'
+ * });
+ * 
+ * // 将容器添加到页面
+ * document.getElementById('modules-container').appendChild(educationModule.container);
+ * 
+ * 
+ * 2. 创建模块头部 | Create Module Header
+ * 
+ * // 创建带有图标和标题的头部
+ * const header = ModuleContainerFactory.createHeader({
+ *     title: '教育经历',
+ *     iconClass: 'fas fa-graduation-cap',
+ *     iconColor: '#4285f4',
+ *     titleStyle: {
+ *         fontSize: '1.5rem',
+ *         fontWeight: 'bold'
+ *     }
+ * });
+ * 
+ * // 将头部添加到内容包装器
+ * educationModule.contentWrapper.appendChild(header);
+ * 
+ * 
+ * 3. 创建多列布局 | Create Multi-Column Layout
+ * 
+ * // 创建三列布局，比例为1:2:1
+ * const columns = ModuleContainerFactory.createColumns({
+ *     columnCount: 3,
+ *     columnWidths: [1, 2, 1],
+ *     columnClasses: ['left-column', 'middle-column', 'right-column']
+ * });
+ * 
+ * // 将列容器添加到内容包装器
+ * educationModule.contentWrapper.appendChild(columns.container);
+ * 
+ * 
+ * 4. 插入图片 | Insert Image
+ * 
+ * // 在第一列中插入可点击放大的图片
+ * const image = ModuleContainerFactory.insertImage({
+ *     imagePath: 'images/university-logo.png',
+ *     altText: '大学校徽',
+ *     size: { width: '100px', height: '100px' },
+ *     position: 'center',
+ *     container: columns.columns[0],
+ *     clickable: true
+ * });
+ * 
+ * 
+ * 5. 创建内容区域 | Create Content Section
+ * 
+ * // 在第二列中创建文本内容
+ * const content = ModuleContainerFactory.createContent({
+ *     content: '这是我的教育经历描述...',
+ *     contentType: 'text',
+ *     contentClass: 'education-description',
+ *     style: {
+ *         lineHeight: '1.6',
+ *         marginBottom: '10px'
+ *     }
+ * });
+ * 
+ * columns.columns[1].appendChild(content);
+ * 
+ * 
+ * 6. 创建列表 | Create List
+ * 
+ * // 在第二列中创建项目列表
+ * const list = ModuleContainerFactory.createList({
+ *     items: [
+ *         '计算机科学学士',
+ *         'GPA: 3.8/4.0',
+ *         '荣誉毕业生'
+ *     ],
+ *     listType: 'ul',
+ *     listClass: 'education-list',
+ *     itemClass: 'education-item'
+ * });
+ * 
+ * columns.columns[1].appendChild(list);
+ * 
+ * 
+ * 7. 创建标签 | Create Tags
+ * 
+ * // 在第三列中创建标签容器
+ * const tagsContainer = ModuleContainerFactory.createTagsContainer([
+ *     { text: '计算机科学', tagClass: 'tag-cs' },
+ *     { text: '人工智能', tagClass: 'tag-ai' },
+ *     { text: '数据科学', tagClass: 'tag-ds' }
+ * ], {
+ *     containerClass: 'education-tags',
+ *     containerStyle: {
+ *         display: 'flex',
+ *         flexWrap: 'wrap',
+ *         gap: '5px'
+ *     }
+ * });
+ * 
+ * columns.columns[2].appendChild(tagsContainer);
+ * 
+ * 
+ * 8. 创建链接 | Create Links
+ * 
+ * // 创建链接容器
+ * const linksContainer = ModuleContainerFactory.createLinksContainer([
+ *     {
+ *         url: 'https://university.edu',
+ *         text: '大学官网',
+ *         iconClass: 'fas fa-globe',
+ *         linkType: 'site'
+ *     },
+ *     {
+ *         url: 'https://github.com/student/projects',
+ *         text: '项目代码',
+ *         iconClass: 'fab fa-github',
+ *         linkType: 'code'
+ *     },
+ *     {
+ *         url: 'documents/thesis.pdf',
+ *         text: '毕业论文',
+ *         iconClass: 'fas fa-file-pdf',
+ *         linkType: 'paper'
+ *     }
+ * ], {
+ *     containerClass: 'education-links',
+ *     containerStyle: {
+ *         marginTop: '10px'
+ *     }
+ * });
+ * 
+ * columns.columns[2].appendChild(linksContainer);
+ * 
+ * 
+ * 9. 创建按钮 | Create Button
+ * 
+ * // 创建带有点击事件的按钮
+ * const button = ModuleContainerFactory.createButton({
+ *     text: '查看详情',
+ *     iconClass: 'fas fa-arrow-right',
+ *     buttonClass: 'btn-primary',
+ *     onClick: function() {
+ *         alert('查看更多教育经历详情');
+ *     },
+ *     style: {
+ *         marginTop: '15px',
+ *         padding: '8px 16px'
+ *     }
+ * });
+ * 
+ * educationModule.contentWrapper.appendChild(button);
+ * 
+ * 
+ * 10. 完整示例：创建出版物模块 | Complete Example: Create Publication Module
+ * 
+ * // 创建出版物模块容器
+ * const publicationModule = ModuleContainerFactory.createBasicContainer({
+ *     type: 'publication'
+ * });
+ * 
+ * // 创建头部
+ * const pubHeader = ModuleContainerFactory.createHeader({
+ *     title: '学术论文',
+ *     iconClass: 'fas fa-file-alt',
+ *     iconColor: '#34a853'
+ * });
+ * publicationModule.contentWrapper.appendChild(pubHeader);
+ * 
+ * // 创建两列布局
+ * const pubColumns = ModuleContainerFactory.createColumns({
+ *     columnCount: 2,
+ *     columnWidths: [1, 2]
+ * });
+ * publicationModule.contentWrapper.appendChild(pubColumns.container);
+ * 
+ * // 添加论文封面
+ * ModuleContainerFactory.insertImage({
+ *     imagePath: 'images/paper-cover.jpg',
+ *     altText: '论文封面',
+ *     size: { width: '120px', height: '160px' },
+ *     position: 'center',
+ *     container: pubColumns.columns[0],
+ *     clickable: true
+ * });
+ * 
+ * // 添加论文信息
+ * const paperInfo = ModuleContainerFactory.createContent({
+ *     content: '<h4>深度学习在自然语言处理中的应用研究</h4>' +
+ *              '<p><strong>作者：</strong>张三, 李四, 王五</p>' +
+ *              '<p><strong>期刊：</strong>计算机科学前沿</p>' +
+ *              '<p><strong>年份：</strong>2023</p>',
+ *     contentType: 'html',
+ *     style: {
+ *         lineHeight: '1.6'
+ *     }
+ * });
+ * pubColumns.columns[1].appendChild(paperInfo);
+ * 
+ * // 添加摘要
+ * const abstract = ModuleContainerFactory.createContent({
+ *     content: '本文研究了深度学习技术在自然语言处理领域的最新应用...',
+ *     contentClass: 'paper-abstract',
+ *     style: {
+ *         fontStyle: 'italic',
+ *         margin: '10px 0'
+ *     }
+ * });
+ * pubColumns.columns[1].appendChild(abstract);
+ * 
+ * // 添加关键词标签
+ * const keywords = ModuleContainerFactory.createTagsContainer([
+ *     { text: '深度学习', tagClass: 'tag-primary' },
+ *     { text: '自然语言处理', tagClass: 'tag-primary' },
+ *     { text: '神经网络', tagClass: 'tag-secondary' }
+ * ]);
+ * pubColumns.columns[1].appendChild(keywords);
+ * 
+ * // 添加相关链接
+ * const paperLinks = ModuleContainerFactory.createLinksContainer([
+ *     {
+ *         url: 'https://doi.org/10.1234/paper.2023.001',
+ *         text: 'DOI链接',
+ *         iconClass: 'fas fa-link',
+ *         linkType: 'site'
+ *     },
+ *     {
+ *         url: 'https://arxiv.org/abs/2023.12345',
+ *         text: 'ArXiv',
+ *         iconClass: 'fas fa-file-alt',
+ *         linkType: 'paper'
+ *     },
+ *     {
+ *         url: 'https://github.com/author/paper-code',
+ *         text: '代码实现',
+ *         iconClass: 'fab fa-github',
+ *         linkType: 'code'
+ *     }
+ * ]);
+ * pubColumns.columns[1].appendChild(paperLinks);
+ * 
+ * // 将出版物模块添加到页面
+ * document.getElementById('modules-container').appendChild(publicationModule.container);
+ */
 
 /**
- * Gets text in the specified language - Chinese text inherits English structure, only differs in nouns and data introduction
- * @param {string} key - The text key
- * @param {string} language - The language code (en, zh, etc.)
- * @returns {string} - The text in the specified language
+ * Module Container Factory | 模块容器工厂
+ * Provides interfaces for creating customized module containers | 提供创建自定义模块容器的接口
  */
-function getModuleText(key, language = 'en') {
-    // Check if the language.js module is available and use its getText function
-    if (typeof window !== 'undefined' && window.getText) {
-        return window.getText(key, language);
-    }
+const ModuleContainerFactory = {
     
-    // Fallback to local language texts - Chinese state inherits English structure, only differs in nouns and data introduction
-    const localLanguageTexts = {
-        en: {
-            paper: 'Paper',
-            code: 'Code',
-            video: 'Video',
-            site: 'Site',
-            abstract: 'Abstract:',
-            company: 'Company:',
-            organization: 'Organization:',
-            position: 'Position:',
-            department: 'Department:',
-            time: 'Time:',
-            viewDetails: 'View Details',
-            hideDetails: 'Hide Details',
-            tutor: 'Tutor:',
-            dissertation: 'Dissertation:',
-            project: 'Project:'
-        },
-        zh: {
-            // Chinese state inherits English structure, only differs in nouns and data introduction
-            paper: '论文',
-            code: '代码',
-            video: '视频',
-            site: '网站',
-            abstract: '摘要：',
-            company: '公司：',
-            organization: '组织：',
-            position: '职位：',
-            department: '部门：',
-            time: '时间：',
-            viewDetails: '查看详情',
-            hideDetails: '隐藏详情',
-            tutor: '导师：',
-            dissertation: '学位论文：',
-            project: '项目：'
-        }
-    };
-    
-    return localLanguageTexts[language][key] || key;
-}
-
-/**
- * Creates a module container element
- * @param {Object} data - The data object containing module information
- * @param {string} type - The type of module (education, publication, experience, honor, etc.)
- * @param {string} language - The language code (en, zh, etc.)
- * @returns {HTMLElement} - The created module container element
- */
-function createModuleContainer(data, type, language = 'en') {
-    // Create main container
-    const moduleContainer = document.createElement('div');
-    moduleContainer.className = `module-container ${type}`;
-    
-    // Create header section
-    const moduleHeader = document.createElement('div');
-    moduleHeader.className = 'module-header';
-    
-    // Create title section
-    const titleSection = document.createElement('div');
-    
-    const moduleTitle = document.createElement('h3');
-    moduleTitle.className = 'module-title';
-    
-    // Add icon based on type
-    const icon = document.createElement('i');
-    switch(type) {
-        case 'education':
-            icon.className = 'fas fa-graduation-cap';
-            break;
-        case 'publication':
-            icon.className = 'fas fa-file-alt';
-            break;
-        case 'experience':
-            icon.className = 'fas fa-briefcase';
-            break;
-        case 'employment':
-            icon.className = 'fas fa-briefcase';
-            break;
-        case 'honor':
-            icon.className = 'fas fa-trophy';
-            break;
-        case 'teaching':
-            icon.className = 'fas fa-chalkboard-teacher';
-            break;
-        case 'reviewer':
-            icon.className = 'fas fa-user-check';
-            break;
-        case 'patent':
-            icon.className = 'fas fa-award';
-            break;
-        default:
-            icon.className = 'fas fa-cube';
-    }
-    
-    moduleTitle.appendChild(icon);
-    
-    // Add title text based on type and data
-    const titleText = document.createElement('span');
-    if (type === 'education' && data.school) {
-        titleText.textContent = data.school;
-    } else if (type === 'publication' && data.title) {
-        titleText.textContent = data.title;
-    } else if (type === 'patent' && data.title) {
-        titleText.textContent = data.title;
-    } else if (type === 'experience' && data.school) {
-        titleText.textContent = data.school;
-    } else if (type === 'employment' && data.company) {
-        titleText.textContent = data.company;
-    } else if (type === 'honor' && data.title) {
-        titleText.textContent = data.title;
-    } else if (type === 'teaching' && data.title) {
-        titleText.textContent = data.title;
-    } else if (type === 'reviewer' && data.title) {
-        titleText.textContent = data.title;
-    } else {
-        titleText.textContent = data.title || data.name || 'Untitled';
-    }
-    
-    moduleTitle.appendChild(titleText);
-    titleSection.appendChild(moduleTitle);
-    moduleHeader.appendChild(titleSection);
-    
-    moduleContainer.appendChild(moduleHeader);
-    
-    // Create body section
-    const moduleBody = document.createElement('div');
-    moduleBody.className = 'module-body';
-    
-    // For reviewer type, add body content with the same style as other modules
-    if (type === 'reviewer') {
-        const moduleContent = document.createElement('div');
-        moduleContent.className = 'module-content';
+    /**
+     * Creates a basic module container with left border | 创建带有左边框的基础模块容器
+     * @param {Object} options - Configuration options | 配置选项
+     * @param {string} options.type - Module type (education, publication, etc.) | 模块类型
+     * @param {string} options.className - Additional CSS classes | 额外的CSS类
+     * @param {string} options.borderColor - Border color | 边框颜色
+     * @returns {HTMLElement} - The created module container element | 创建的模块容器元素
+     */
+    createBasicContainer: function(options = {}) {
+        const {
+            type = 'default',
+            className = '',
+            borderColor = null
+        } = options;
         
-        const reviewerInfo = document.createElement('div');
-        reviewerInfo.innerHTML = `
-            ${data.description ? `<p>${data.description}</p>` : ''}
-        `;
-        moduleContent.appendChild(reviewerInfo);
+        // Create main container | 创建主容器
+        const moduleContainer = document.createElement('div');
+        moduleContainer.className = `module-container ${type} ${className}`.trim();
         
-        moduleBody.appendChild(moduleContent);
-    } else {
-        // Add image if available
-        let imageUrl = data.image;
-        if (!imageUrl && data.logoSrc) {
-            // For education modules, use logoSrc if image is not available
-            imageUrl = `images/experience/${data.logoSrc}`;
-        } else if (imageUrl && type === 'publication') {
-            // For publication modules, prepend the publication image path
-            imageUrl = `images/publication/${imageUrl}`;
+        // Create left border | 创建左边框
+        const leftBorder = document.createElement('div');
+        leftBorder.className = 'module-left-border';
+        
+        // Set border color if provided | 如果提供了边框颜色则设置
+        if (borderColor) {
+            leftBorder.style.backgroundColor = borderColor;
         }
         
-        if (imageUrl) {
-            const moduleImageContainer = document.createElement('div');
-            moduleImageContainer.className = 'module-image-container';
+        // Create content wrapper | 创建内容包装器
+        const contentWrapper = document.createElement('div');
+        contentWrapper.className = 'module-content-wrapper';
+        
+        // Assemble basic container | 组装基础容器
+        moduleContainer.appendChild(leftBorder);
+        moduleContainer.appendChild(contentWrapper);
+        
+        return {
+            container: moduleContainer,
+            contentWrapper: contentWrapper,
+            leftBorder: leftBorder
+        };
+    },
+    
+    /**
+     * Creates a header section with title and icon | 创建带有标题和图标的头部区域
+     * @param {Object} options - Configuration options | 配置选项
+     * @param {string} options.title - Title text | 标题文本
+     * @param {string} options.iconClass - Font Awesome icon class | Font Awesome图标类
+     * @param {string} options.iconColor - Icon color | 图标颜色
+     * @param {Object} options.titleStyle - Additional title styles | 额外的标题样式
+     * @returns {HTMLElement} - The created header element | 创建的头部元素
+     */
+    createHeader: function(options = {}) {
+        const {
+            title = '',
+            iconClass = 'fas fa-cube',
+            iconColor = null,
+            titleStyle = {}
+        } = options;
+        
+        // Create header section | 创建头部区域
+        const moduleHeader = document.createElement('div');
+        moduleHeader.className = 'module-header';
+        
+        // Create title section | 创建标题区域
+        const titleSection = document.createElement('div');
+        
+        const moduleTitle = document.createElement('h3');
+        moduleTitle.className = 'module-title';
+        
+        // Add icon | 添加图标
+        const icon = document.createElement('i');
+        icon.className = iconClass;
+        
+        // Set icon color if provided | 如果提供了图标颜色则设置
+        if (iconColor) {
+            icon.style.color = iconColor;
+        }
+        
+        moduleTitle.appendChild(icon);
+        
+        // Add title text | 添加标题文本
+        if (title) {
+            const titleText = document.createElement('span');
+            titleText.textContent = title;
+            moduleTitle.appendChild(titleText);
+        }
+        
+        // Apply additional styles | 应用额外样式
+        Object.assign(moduleTitle.style, titleStyle);
+        
+        titleSection.appendChild(moduleTitle);
+        moduleHeader.appendChild(titleSection);
+        
+        return moduleHeader;
+    },
+    
+    /**
+     * Creates a column layout | 创建分栏布局
+     * @param {Object} options - Configuration options | 配置选项
+     * @param {number} options.columnCount - Number of columns (1-3) | 列数(1-3)
+     * @param {Array} options.columnWidths - Width ratios for columns (e.g., [1, 2, 1]) | 列的宽度比例
+     * @param {Array} options.columnClasses - Additional CSS classes for each column | 每列的额外CSS类
+     * @returns {Object} - Object containing columns container and individual columns | 包含列容器和各列的对象
+     */
+    createColumns: function(options = {}) {
+        const {
+            columnCount = 1,
+            columnWidths = null,
+            columnClasses = []
+        } = options;
+        
+        // Validate column count | 验证列数
+        if (columnCount < 1 || columnCount > 3) {
+            throw new Error('Column count must be between 1 and 3');
+        }
+        
+        // Create columns container | 创建列容器
+        const columnsContainer = document.createElement('div');
+        columnsContainer.className = 'module-columns';
+        
+        // Create columns | 创建列
+        const columns = [];
+        
+        for (let i = 0; i < columnCount; i++) {
+            const column = document.createElement('div');
+            column.className = `module-column column-${i + 1} ${columnClasses[i] || ''}`.trim();
             
-            const moduleImage = document.createElement('img');
-            moduleImage.className = 'module-image';
-            moduleImage.src = imageUrl;
-            moduleImage.alt = data.title || data.name || data.school || data.company || 'Module image';
+            // Set column width if specified | 如果指定了列宽度则设置
+            if (columnWidths && columnWidths[i]) {
+                column.style.flex = columnWidths[i];
+            }
             
-            // Add click event to image for zooming
-            moduleImage.style.cursor = 'pointer';
-            moduleImage.addEventListener('click', () => {
-                openImageInModal(imageUrl, data.title || data.name || data.school || data.company || 'Module image');
+            columns.push(column);
+            columnsContainer.appendChild(column);
+        }
+        
+        return {
+            container: columnsContainer,
+            columns: columns
+        };
+    },
+    
+    /**
+     * Inserts an image into a container | 向容器中插入图片
+     * @param {Object} options - Configuration options | 配置选项
+     * @param {string} options.imagePath - Path to the image | 图片路径
+     * @param {string} options.altText - Alt text for the image | 图片的alt文本
+     * @param {Object} options.size - Image size {width, height} | 图片尺寸 {宽度, 高度}
+     * @param {string} options.position - Position in container (left, right, center) | 在容器中的位置
+     * @param {string} options.container - Target container element | 目标容器元素
+     * @param {boolean} options.clickable - Whether image is clickable for zooming | 图片是否可点击放大
+     * @param {string} options.linkUrl - URL to link to if clicked | 点击时链接到的URL
+     * @param {Object} options.containerStyle - Additional container styles | 额外的容器样式
+     * @returns {HTMLElement} - The created image container element | 创建的图片容器元素
+     */
+    insertImage: function(options = {}) {
+        const {
+            imagePath = '',
+            altText = 'Image',
+            size = { width: '100%', height: 'auto' },
+            position = 'center',
+            container = null,
+            clickable = false,
+            linkUrl = null,
+            containerStyle = {}
+        } = options;
+        
+        if (!imagePath) {
+            console.warn('Image path is required');
+            return null;
+        }
+        
+        // Create image container | 创建图片容器
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'module-image-container';
+        
+        // Set container position | 设置容器位置
+        switch (position) {
+            case 'left':
+                imageContainer.style.textAlign = 'left';
+                break;
+            case 'right':
+                imageContainer.style.textAlign = 'right';
+                break;
+            default:
+                imageContainer.style.textAlign = 'center';
+        }
+        
+        // Apply additional container styles | 应用额外容器样式
+        Object.assign(imageContainer.style, containerStyle);
+        
+        // Create image element | 创建图片元素
+        const image = document.createElement('img');
+        image.className = 'module-image';
+        image.src = imagePath;
+        image.alt = altText;
+        
+        // Set image size | 设置图片尺寸
+        if (size.width) {
+            image.style.width = size.width;
+        }
+        if (size.height) {
+            image.style.height = size.height;
+        }
+        
+        // Make image clickable for zooming if specified | 如果指定则使图片可点击放大
+        if (clickable) {
+            image.style.cursor = 'pointer';
+            image.addEventListener('click', () => {
+                this.openImageInModal(imagePath, altText);
             });
-            
-            // Wrap image in a link if website is available
-            if (data.website || data.link) {
-                const imageLink = document.createElement('a');
-                imageLink.href = data.website || data.link;
-                imageLink.target = '_blank';
-                imageLink.rel = 'noopener noreferrer';
-                imageLink.appendChild(moduleImage);
-                moduleImageContainer.appendChild(imageLink);
-            } else {
-                moduleImageContainer.appendChild(moduleImage);
-            }
-            
-            moduleBody.appendChild(moduleImageContainer);
         }
         
-        const moduleContent = document.createElement('div');
-        moduleContent.className = 'module-content';
-        
-        // Add content based on type
-        if (type === 'education' && data.details) {
-            const detailsList = document.createElement('ul');
-            detailsList.style.paddingLeft = '20px';
-            
-            data.details.forEach(detail => {
-                const detailItem = document.createElement('li');
-                detailItem.style.marginBottom = '8px';
-                let detailHTML = `
-                    <strong>${detail.degree || ''}</strong> <em>${detail.major || ''}</em>${detail.college ? `, ${detail.college}` : ''}
-                `;
-                // Add tutor and dissertation information if available
-                if (detail.tutor || detail.dissertation) {
-                    let infoText = '';
-                    if (detail.tutor && detail.dissertation) {
-                        infoText = `${getModuleText('tutor', language)} ${detail.tutor}<br>${getModuleText('dissertation', language)} ${detail.dissertation}`;
-                    } else if (detail.tutor) {
-                        infoText = `${getModuleText('tutor', language)} ${detail.tutor}`;
-                    } else if (detail.dissertation) {
-                        infoText = `${getModuleText('dissertation', language)} ${detail.dissertation}`;
-                    }
-                    detailHTML += `<br><span class="module-tutor">${infoText}</span>`;
-                }
-                // Add time information at the bottom
-                if (detail.time) {
-                    detailHTML += `<br><span class="module-date">${detail.time}</span>`;
-                }
-                detailItem.innerHTML = detailHTML;
-                detailsList.appendChild(detailItem);
-            });
-            
-            moduleContent.appendChild(detailsList);
-        } else if (type === 'publication') {
-            const pubInfo = document.createElement('div');
-            // Format publication information based on type
-            let publicationInfo = '';
-            if (data.type) {
-                if (data.conference) {
-                    // Conference paper format: {type} {conference} ({abbr}), {location}, {year}
-                    publicationInfo = `<p><strong>${data.type}</strong> <em>${data.conference}`;
-                    if (data.abbr) {
-                        publicationInfo += ` (${data.abbr})`;
-                    }
-                    publicationInfo += `</em>`;
-                    if (data.location) {
-                        publicationInfo += `, ${data.location}`;
-                    }
-                    if (data.year) {
-                        publicationInfo += `, ${data.year}`;
-                    }
-                    publicationInfo += `</p>`;
-                } else if (data.journal) {
-                    // Journal paper format: {type} {journal} ({abbr}) ({volume}), {year}
-                    publicationInfo = `<p><strong>${data.type}</strong> <em>${data.journal}`;
-                    if (data.abbr) {
-                        publicationInfo += ` (${data.abbr})`;
-                    }
-                    publicationInfo += `</em>`;
-                    if (data.volume) {
-                        publicationInfo += ` (${data.volume})`;
-                    }
-                    if (data.year) {
-                        publicationInfo += `, ${data.year}`;
-                    }
-                    publicationInfo += `</p>`;
-                } else {
-                    // Fallback to original format if neither conference nor journal is specified
-                    publicationInfo = `<p><strong>${data.type}</strong> <em>${data.conference || data.journal || ''}</em>${data.year ? `, ${data.year}` : ''}</p>`;
-                }
-            }
-            
-            pubInfo.innerHTML = `
-                ${data.authors ? `<p>${data.authors}</p>` : ''}
-                ${publicationInfo}
-                ${data.abstract ? `<p><strong>${getModuleText('abstract', language)}</strong> ${data.abstract}${data.date ? `${language === 'zh' ? '，' : ', '}${data.date}` : ''}</p>` : ''}
-            `;
-            moduleContent.appendChild(pubInfo);
-        } else if (type === 'patent') {
-            const patentInfo = document.createElement('div');
-            patentInfo.innerHTML = `
-                ${data.authors ? `<p>${data.authors}</p>` : ''}
-                ${data.type ? `<p><strong class="patent-type">${data.type}</strong> ${data.number ? `(<a href="${data.link || '#'}" target="_blank" rel="noopener noreferrer">${data.number}</a>)` : ''}${data.date ? `${language === 'zh' ? '，' : ', '}${data.date}` : ''}</p>` : ''}
-                ${data.abstract ? `<p><strong>${getModuleText('abstract', language)}</strong> ${data.abstract}${data.date ? `${language === 'zh' ? '，' : ', '}${data.date}` : ''}</p>` : ''}
-            `;
-            moduleContent.appendChild(patentInfo);
-        } else if (type === 'experience') {
-            if (data.details) {
-                const detailsList = document.createElement('ul');
-                detailsList.style.paddingLeft = '20px';
-                
-                data.details.forEach(detail => {
-                    const detailItem = document.createElement('li');
-                    detailItem.style.marginBottom = '8px';
-                    detailItem.innerHTML = `
-                        <strong>${detail.position || ''}</strong> <em>${detail.department || ''}</em>
-                        ${detail.time ? `<br><span class="module-date">${detail.time}</span>` : ''}
-                    `;
-                    detailsList.appendChild(detailItem);
-                });
-                
-                moduleContent.appendChild(detailsList);
-            } else {
-                const expInfo = document.createElement('div');
-                expInfo.innerHTML = `
-                    ${data.position ? `<p><strong>${getModuleText('position', language)}</strong> ${data.position}</p>` : ''}
-                    ${data.department ? `<p><strong>${getModuleText('department', language)}</strong> ${data.department}</p>` : ''}
-                    ${data.time ? `<p><strong>${getModuleText('time', language)}</strong> ${data.time}</p>` : ''}
-                `;
-                moduleContent.appendChild(expInfo);
-            }
-        } else if (type === 'employment') {
-            if (data.details) {
-                const detailsList = document.createElement('ul');
-                detailsList.style.paddingLeft = '20px';
-                
-                data.details.forEach(detail => {
-                    const detailItem = document.createElement('li');
-                    detailItem.style.marginBottom = '8px';
-                    let detailHTML = `
-                        <strong>${detail.position || ''}</strong> <em>${detail.department || ''}</em>
-                    `;
-                    // Add project information if available
-                    if (detail.project) {
-                        detailHTML += `<br><span class="module-project">${getModuleText('project', language)} ${detail.project}</span>`;
-                    }
-                    // Add time information at the bottom
-                    if (detail.time) {
-                        detailHTML += `<br><span class="module-date">${detail.time}</span>`;
-                    }
-                    detailItem.innerHTML = detailHTML;
-                    detailsList.appendChild(detailItem);
-                });
-                
-                moduleContent.appendChild(detailsList);
-            } else {
-                const empInfo = document.createElement('div');
-                let empHTML = `
-                    ${data.position ? `<p><strong>${getModuleText('position', language)}</strong> ${data.position}</p>` : ''}
-                    ${data.department ? `<p><strong>${getModuleText('department', language)}</strong> ${data.department}</p>` : ''}
-                    ${data.time ? `<p><strong>${getModuleText('time', language)}</strong> ${data.time}</p>` : ''}
-                `;
-                // Add project information if available
-                if (data.project) {
-                    empHTML += `<p><strong>${getModuleText('project', language)}</strong>: ${data.project}</p>`;
-                }
-                empInfo.innerHTML = empHTML;
-                moduleContent.appendChild(empInfo);
-            }
-        } else if (type === 'honor') {
-            const honorInfo = document.createElement('div');
-            honorInfo.innerHTML = `
-                ${data.organization ? `<p>${data.organization}${data.time ? `${language === 'zh' ? '，' : ', '}${data.time}` : ''}</p>` : ''}
-            `;
-            moduleContent.appendChild(honorInfo);
-        } else if (type === 'teaching') {
-            const teachingInfo = document.createElement('div');
-            teachingInfo.innerHTML = `
-                ${data.description ? `<p>${data.description}</p>` : ''}
-            `;
-            moduleContent.appendChild(teachingInfo);
-        } else if (type === 'reviewer') {
-            // For reviewer type, add description as a paragraph to match other modules' styles
-            const reviewerInfo = document.createElement('div');
-            reviewerInfo.innerHTML = `
-                ${data.description ? `<p>${data.description}</p>` : ''}
-            `;
-            moduleContent.appendChild(reviewerInfo);
+        // Wrap image in a link if URL is provided | 如果提供了URL则将图片包装在链接中
+        if (linkUrl) {
+            const imageLink = document.createElement('a');
+            imageLink.href = linkUrl;
+            imageLink.target = '_blank';
+            imageLink.rel = 'noopener noreferrer';
+            imageLink.appendChild(image);
+            imageContainer.appendChild(imageLink);
         } else {
-            // Generic content
-            const genericContent = document.createElement('div');
-            genericContent.textContent = data.description || data.content || '';
-            moduleContent.appendChild(genericContent);
+            imageContainer.appendChild(image);
         }
         
-        moduleBody.appendChild(moduleContent);
-        
-        // Add tags if applicable
-        if (data.tags && data.tags.length > 0) {
-            const moduleTags = document.createElement('div');
-            moduleTags.className = 'module-tags';
-            
-            data.tags.forEach(tag => {
-                const moduleTag = document.createElement('span');
-                moduleTag.className = 'module-tag';
-                moduleTag.textContent = tag;
-                moduleTags.appendChild(moduleTag);
-            });
-            
-            moduleBody.appendChild(moduleTags);
+        // Add to specified container if provided | 如果提供了指定容器则添加到其中
+        if (container) {
+            container.appendChild(imageContainer);
         }
         
-        // Create footer section with links
-        if (data.paperLink || data.codeLink || data.videoLink || data.siteLink) {
-            const moduleFooter = document.createElement('div');
-            moduleFooter.className = 'module-footer';
-            
-            const moduleLinks = document.createElement('div');
-            moduleLinks.className = 'module-links';
-            
-            if (data.paperLink) {
-                const paperLinkElement = createModuleLink(getModuleText('paper', language), data.paperLink, 'fas fa-file-pdf', language);
-                moduleLinks.appendChild(paperLinkElement);
+        return imageContainer;
+    },
+    
+    /**
+     * Creates a button with specified properties | 创建具有指定属性的按钮
+     * @param {Object} options - Configuration options | 配置选项
+     * @param {string} options.text - Button text | 按钮文本
+     * @param {string} options.iconClass - Font Awesome icon class | Font Awesome图标类
+     * @param {string} options.buttonClass - Additional CSS classes | 额外的CSS类
+     * @param {Function} options.onClick - Click event handler | 点击事件处理程序
+     * @param {Object} options.style - Additional button styles | 额外的按钮样式
+     * @param {string} options.type - Button type (button, submit, reset) | 按钮类型
+     * @returns {HTMLElement} - The created button element | 创建的按钮元素
+     */
+    createButton: function(options = {}) {
+        const {
+            text = '',
+            iconClass = '',
+            buttonClass = '',
+            onClick = null,
+            style = {},
+            type = 'button'
+        } = options;
+        
+        // Create button element | 创建按钮元素
+        const button = document.createElement('button');
+        button.type = type;
+        button.className = `module-button ${buttonClass}`.trim();
+        
+        // Add icon if specified | 如果指定了图标则添加
+        if (iconClass) {
+            const icon = document.createElement('i');
+            icon.className = iconClass;
+            button.appendChild(icon);
+        }
+        
+        // Add text if specified | 如果指定了文本则添加
+        if (text) {
+            const textNode = document.createTextNode(text);
+            button.appendChild(textNode);
+        }
+        
+        // Apply additional styles | 应用额外样式
+        Object.assign(button.style, style);
+        
+        // Add click event handler if specified | 如果指定了点击事件处理程序则添加
+        if (onClick && typeof onClick === 'function') {
+            button.addEventListener('click', onClick);
+        }
+        
+        return button;
+    },
+    
+    /**
+     * Creates a tag element | 创建标签元素
+     * @param {Object} options - Configuration options | 配置选项
+     * @param {string} options.text - Tag text | 标签文本
+     * @param {string} options.tagClass - Additional CSS classes | 额外的CSS类
+     * @param {Object} options.style - Additional tag styles | 额外的标签样式
+     * @returns {HTMLElement} - The created tag element | 创建的标签元素
+     */
+    createTag: function(options = {}) {
+        const {
+            text = '',
+            tagClass = '',
+            style = {}
+        } = options;
+        
+        // Create tag element | 创建标签元素
+        const tag = document.createElement('span');
+        tag.className = `module-tag ${tagClass}`.trim();
+        tag.textContent = text;
+        
+        // Apply additional styles | 应用额外样式
+        Object.assign(tag.style, style);
+        
+        return tag;
+    },
+    
+    /**
+     * Creates a tags container with multiple tags | 创建包含多个标签的标签容器
+     * @param {Array} tags - Array of tag objects {text, class, style} | 标签对象数组 {文本, 类, 样式}
+     * @param {Object} containerOptions - Container options | 容器选项
+     * @returns {HTMLElement} - The created tags container element | 创建的标签容器元素
+     */
+    createTagsContainer: function(tags = [], containerOptions = {}) {
+        const {
+            containerClass = '',
+            containerStyle = {}
+        } = containerOptions;
+        
+        // Create tags container | 创建标签容器
+        const tagsContainer = document.createElement('div');
+        tagsContainer.className = `module-tags ${containerClass}`.trim();
+        
+        // Apply container styles | 应用容器样式
+        Object.assign(tagsContainer.style, containerStyle);
+        
+        // Add tags | 添加标签
+        tags.forEach(tagOptions => {
+            const tag = this.createTag(tagOptions);
+            tagsContainer.appendChild(tag);
+        });
+        
+        return tagsContainer;
+    },
+    
+    /**
+     * Creates a link element | 创建链接元素
+     * @param {Object} options - Configuration options | 配置选项
+     * @param {string} options.url - Link URL | 链接URL
+     * @param {string} options.text - Link text | 链接文本
+     * @param {string} options.iconClass - Font Awesome icon class | Font Awesome图标类
+     * @param {string} options.linkClass - Additional CSS classes | 额外的CSS类
+     * @param {boolean} options.newTab - Whether to open in new tab | 是否在新标签页中打开
+     * @param {string} options.linkType - Type of link (video, site, paper, code) | 链接类型(视频, 网站, 论文, 代码)
+     * @param {Object} options.style - Additional link styles | 额外的链接样式
+     * @returns {HTMLElement} - The created link element | 创建的链接元素
+     */
+    createLink: function(options = {}) {
+        const {
+            url = '#',
+            text = '',
+            iconClass = '',
+            linkClass = '',
+            newTab = true,
+            linkType = '',
+            style = {}
+        } = options;
+        
+        // Create link element | 创建链接元素
+        const link = document.createElement('a');
+        link.href = url;
+        link.className = `module-link ${linkClass}`.trim();
+        
+        // Add link type class if specified | 如果指定了链接类型则添加相应的类
+        if (linkType) {
+            link.classList.add(`${linkType}-link`);
+        }
+        
+        // Set target for new tab if specified | 如果指定则设置新标签页目标
+        if (newTab) {
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+        }
+        
+        // Add icon if specified | 如果指定了图标则添加
+        if (iconClass) {
+            const icon = document.createElement('i');
+            icon.className = iconClass;
+            link.appendChild(icon);
+        }
+        
+        // Add text if specified | 如果指定了文本则添加
+        if (text) {
+            const textNode = document.createTextNode(text);
+            link.appendChild(textNode);
+        }
+        
+        // Apply additional styles | 应用额外样式
+        Object.assign(link.style, style);
+        
+        return link;
+    },
+    
+    /**
+     * Creates a links container with multiple links | 创建包含多个链接的链接容器
+     * @param {Array} links - Array of link objects | 链接对象数组
+     * @param {Object} containerOptions - Container options | 容器选项
+     * @returns {HTMLElement} - The created links container element | 创建的链接容器元素
+     */
+    createLinksContainer: function(links = [], containerOptions = {}) {
+        const {
+            containerClass = '',
+            containerStyle = {}
+        } = containerOptions;
+        
+        // Create links container | 创建链接容器
+        const linksContainer = document.createElement('div');
+        linksContainer.className = `module-links ${containerClass}`.trim();
+        
+        // Apply container styles | 应用容器样式
+        Object.assign(linksContainer.style, containerStyle);
+        
+        // Add links | 添加链接
+        links.forEach(linkOptions => {
+            // Map icon to linkType if not provided | 如果未提供linkType则根据图标映射
+            if (!linkOptions.linkType && linkOptions.icon) {
+                if (linkOptions.icon.includes('file-pdf') || linkOptions.icon.includes('file-alt')) {
+                    linkOptions.linkType = 'paper';
+                } else if (linkOptions.icon.includes('code') || linkOptions.icon.includes('github')) {
+                    linkOptions.linkType = 'code';
+                } else if (linkOptions.icon.includes('video') || linkOptions.icon.includes('youtube')) {
+                    linkOptions.linkType = 'video';
+                } else if (linkOptions.icon.includes('globe') || linkOptions.icon.includes('external-link')) {
+                    linkOptions.linkType = 'site';
+                }
             }
             
-            if (data.codeLink) {
-                const codeLinkElement = createModuleLink(getModuleText('code', language), data.codeLink, 'fas fa-code', language);
-                moduleLinks.appendChild(codeLinkElement);
-            }
-            
-            if (data.videoLink && data.videoLink.trim() !== '') {
-                const videoLinkElement = createModuleLink(getModuleText('video', language), data.videoLink, 'fas fa-video', language);
-                moduleLinks.appendChild(videoLinkElement);
-            }
-            
-            if (data.siteLink && data.siteLink.trim() !== '') {
-                const siteLinkElement = createModuleLink(getModuleText('site', language), data.siteLink, 'fas fa-globe', language);
-                moduleLinks.appendChild(siteLinkElement);
-            }
-            
-            moduleFooter.appendChild(moduleLinks);
-            // Don't add moduleFooter yet, wait until moduleBody is added to moduleContainer
-        }
-    }
-    
-    // Always add body to container to ensure consistent styling across all module types
-    moduleContainer.appendChild(moduleBody);
-    
-    // Now add moduleFooter to moduleContainer, ensuring it's after moduleBody
-    if (data.paperLink || data.codeLink || data.videoLink || data.siteLink) {
-        const moduleFooter = document.createElement('div');
-        moduleFooter.className = 'module-footer';
+            const link = this.createLink(linkOptions);
+            linksContainer.appendChild(link);
+        });
         
-        const moduleLinks = document.createElement('div');
-        moduleLinks.className = 'module-links';
+        return linksContainer;
+    },
+    
+    /**
+     * Creates a content section with text | 创建带有文本的内容区域
+     * @param {Object} options - Configuration options | 配置选项
+     * @param {string} options.content - Text content | 文本内容
+     * @param {string} options.contentType - Content type (text, html) | 内容类型(文本, HTML)
+     * @param {string} options.contentClass - Additional CSS classes | 额外的CSS类
+     * @param {Object} options.style - Additional content styles | 额外的内容样式
+     * @returns {HTMLElement} - The created content element | 创建的内容元素
+     */
+    createContent: function(options = {}) {
+        const {
+            content = '',
+            contentType = 'text',
+            contentClass = '',
+            style = {}
+        } = options;
         
-        if (data.paperLink) {
-            const paperLinkElement = createModuleLink(getModuleText('paper', language), data.paperLink, 'fas fa-file-pdf', language);
-            moduleLinks.appendChild(paperLinkElement);
-        }
+        // Create content element | 创建内容元素
+        const contentElement = document.createElement('div');
+        contentElement.className = `module-content ${contentClass}`.trim();
         
-        if (data.codeLink) {
-            const codeLinkElement = createModuleLink(getModuleText('code', language), data.codeLink, 'fas fa-code', language);
-            moduleLinks.appendChild(codeLinkElement);
-        }
-        
-        if (data.videoLink && data.videoLink.trim() !== '') {
-            const videoLinkElement = createModuleLink(getModuleText('video', language), data.videoLink, 'fas fa-video', language);
-            moduleLinks.appendChild(videoLinkElement);
-        }
-        
-        if (data.siteLink && data.siteLink.trim() !== '') {
-            const siteLinkElement = createModuleLink(getModuleText('site', language), data.siteLink, 'fas fa-globe', language);
-            moduleLinks.appendChild(siteLinkElement);
-        }
-        
-        moduleFooter.appendChild(moduleLinks);
-        moduleContainer.appendChild(moduleFooter); // Now add footer to module container, ensuring it's after moduleBody
-    }
-    
-    return moduleContainer;
-}
-
-/**
- * Creates a module link element
- * @param {string} text - The link text
- * @param {string} url - The link URL
- * @param {string} iconClass - The icon class
- * @param {string} language - The language code (en, zh, etc.)
- * @returns {HTMLElement} - The created link element
- */
-function createModuleLink(text, url, iconClass, language = 'en') {
-    const linkElement = document.createElement('a');
-    linkElement.className = 'module-link';
-    
-    // Get localized text for comparison
-    const videoText = getModuleText('video', language);
-    const siteText = getModuleText('site', language);
-    const paperText = getModuleText('paper', language);
-    const codeText = getModuleText('code', language);
-    
-    // Add specific class based on link type
-    if (text === videoText) {
-        linkElement.classList.add('video-link');
-    } else if (text === siteText) {
-        linkElement.classList.add('site-link');
-    } else if (text === paperText) {
-        linkElement.classList.add('paper-link');
-    } else if (text === codeText) {
-        linkElement.classList.add('code-link');
-    }
-    
-    linkElement.href = url;
-    linkElement.target = '_blank';
-    linkElement.rel = 'noopener noreferrer';
-    
-    const icon = document.createElement('i');
-    icon.className = iconClass;
-    
-    linkElement.appendChild(icon);
-    linkElement.appendChild(document.createTextNode(text));
-    
-    return linkElement;
-}
-
-/**
- * Updates an existing module container with new data
- * @param {HTMLElement} moduleContainer - The existing module container element
- * @param {Object} data - The new data object containing module information
- * @param {string} type - The type of module (education, publication, experience, honor, etc.)
- * @param {string} language - The language code (en, zh, etc.)
- */
-function updateModuleContainer(moduleContainer, data, type, language = 'en') {
-    if (!moduleContainer) return;
-    
-    // Store original dimensions to prevent layout shifts
-    const originalRect = moduleContainer.getBoundingClientRect();
-    moduleContainer.style.width = originalRect.width + 'px';
-    moduleContainer.style.height = originalRect.height + 'px';
-    
-    // Temporarily disable transitions to prevent flickering
-    moduleContainer.style.transition = 'none';
-    
-    // Update title text
-    const titleText = moduleContainer.querySelector('.module-title span');
-    if (titleText) {
-        if (type === 'education' && data.school) {
-            titleText.textContent = data.school;
-        } else if (type === 'publication' && data.title) {
-            titleText.textContent = data.title;
-        } else if (type === 'patent' && data.title) {
-            titleText.textContent = data.title;
-        } else if (type === 'experience' && data.position) {
-            titleText.textContent = data.position;
-        } else if (type === 'employment' && data.company) {
-            titleText.textContent = data.company;
-        } else if (type === 'honor' && data.title) {
-            titleText.textContent = data.title;
-        } else if (type === 'teaching' && data.title) {
-            titleText.textContent = data.title;
-        } else if (type === 'reviewer' && data.title) {
-            titleText.textContent = data.title;
+        // Set content based on type | 根据类型设置内容
+        if (contentType === 'html') {
+            contentElement.innerHTML = content;
         } else {
-            titleText.textContent = data.title || data.name || 'Untitled';
-        }
-    }
-    
-    
-    
-    // Update image if applicable
-    let imageUrl = data.image;
-    if (!imageUrl && data.logoSrc) {
-        // For education modules, use logoSrc if image is not available
-        imageUrl = `images/experience/${data.logoSrc}`;
-    } else if (imageUrl && type === 'publication') {
-        // For publication modules, prepend the publication image path
-        imageUrl = `images/publication/${imageUrl}`;
-    }
-    
-    // For reviewer type, add body content with the same style as other modules
-    if (type === 'reviewer') {
-        // For reviewer type, add body content if it doesn't exist
-        let moduleBody = moduleContainer.querySelector('.module-body');
-        if (!moduleBody) {
-            moduleBody = document.createElement('div');
-            moduleBody.className = 'module-body';
-            moduleContainer.appendChild(moduleBody);
+            contentElement.textContent = content;
         }
         
-        let moduleContent = moduleBody.querySelector('.module-content');
-        if (!moduleContent) {
-            moduleContent = document.createElement('div');
-            moduleContent.className = 'module-content';
-            moduleBody.appendChild(moduleContent);
-        }
+        // Apply additional styles | 应用额外样式
+        Object.assign(contentElement.style, style);
         
-        moduleContent.innerHTML = `
-            ${data.description ? `<p>${data.description}</p>` : ''}
-        `;
-    } else if (imageUrl) {
-            let moduleImageContainer = moduleContainer.querySelector('.module-image-container');
-            let moduleImage = moduleContainer.querySelector('.module-image');
+        return contentElement;
+    },
+    
+    /**
+     * Creates a list section | 创建列表区域
+     * @param {Object} options - Configuration options | 配置选项
+     * @param {Array} options.items - List items | 列表项
+     * @param {string} options.listType - List type (ul, ol) | 列表类型
+     * @param {string} options.listClass - Additional CSS classes for list | 列表的额外CSS类
+     * @param {string} options.itemClass - Additional CSS classes for items | 项目的额外CSS类
+     * @param {Object} options.style - Additional list styles | 额外的列表样式
+     * @returns {HTMLElement} - The created list element | 创建的列表元素
+     */
+    createList: function(options = {}) {
+        const {
+            items = [],
+            listType = 'ul',
+            listClass = '',
+            itemClass = '',
+            style = {}
+        } = options;
+        
+        // Create list element | 创建列表元素
+        const list = document.createElement(listType);
+        list.className = `module-list ${listClass}`.trim();
+        
+        // Apply additional styles | 应用额外样式
+        Object.assign(list.style, style);
+        
+        // Add items | 添加项目
+        items.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.className = `module-list-item ${itemClass}`.trim();
             
-            if (!moduleImageContainer) {
-                const moduleBody = moduleContainer.querySelector('.module-body');
-                moduleImageContainer = document.createElement('div');
-                moduleImageContainer.className = 'module-image-container';
-                
-                // Create text element instead of image for education and employment
-                if (type === 'education' && data.school) {
-                    moduleImage = document.createElement('div');
-                    moduleImage.className = 'module-image-text';
-                    moduleImage.textContent = data.school;
-                    moduleImage.style.fontSize = '1.2rem';
-                    moduleImage.style.fontWeight = 'bold';
-                    moduleImage.style.textAlign = 'center';
-                    moduleImage.style.padding = '20px';
-                    moduleImage.style.color = 'var(--text-color)';
-                } else if (type === 'employment' && data.company) {
-                    moduleImage = document.createElement('div');
-                    moduleImage.className = 'module-image-text';
-                    moduleImage.textContent = data.company;
-                    moduleImage.style.fontSize = '1.2rem';
-                    moduleImage.style.fontWeight = 'bold';
-                    moduleImage.style.textAlign = 'center';
-                    moduleImage.style.padding = '20px';
-                    moduleImage.style.color = 'var(--text-color)';
-                } else {
-                    moduleImage = document.createElement('img');
-                    moduleImage.className = 'module-image';
-                    
-                    // Add click event to image for zooming
-                    moduleImage.style.cursor = 'pointer';
-                    moduleImage.addEventListener('click', () => {
-                        openImageInModal(imageUrl, data.title || data.name || data.school || data.company || 'Module image');
-                    });
-                }
-                
-                moduleImageContainer.appendChild(moduleImage);
-                moduleBody.insertBefore(moduleImageContainer, moduleBody.firstChild);
+            if (typeof item === 'string') {
+                listItem.textContent = item;
+            } else if (item.html) {
+                listItem.innerHTML = item.html;
             } else {
-                // Store original image dimensions to prevent layout shifts
-                const imageRect = moduleImageContainer.getBoundingClientRect();
-                moduleImageContainer.style.width = imageRect.width + 'px';
-                moduleImageContainer.style.height = imageRect.height + 'px';
-                
-                // Update existing image
-                moduleImage.src = imageUrl;
-                moduleImage.alt = data.title || data.name || data.school || data.company || 'Module image';
-                
-                // Remove existing click event and add new one
-                moduleImage.style.cursor = 'pointer';
-                const newImage = moduleImage.cloneNode(true);
-                newImage.addEventListener('click', () => {
-                    openImageInModal(imageUrl, data.title || data.name || data.school || data.company || 'Module image');
-                });
-                moduleImage.parentNode.replaceChild(newImage, moduleImage);
-                
-                const existingLink = moduleImageContainer.querySelector('a');
-                if (existingLink) {
-                    moduleImageContainer.removeChild(existingLink);
-                    moduleImageContainer.appendChild(existingLink.firstChild);
-                }
-            }
-        }
-    
-    // Update content based on type
-    const moduleContent = moduleContainer.querySelector('.module-content');
-    if (moduleContent) {
-        // Store original content dimensions to prevent layout shifts
-        const contentRect = moduleContent.getBoundingClientRect();
-        moduleContent.style.width = contentRect.width + 'px';
-        moduleContent.style.minHeight = contentRect.height + 'px';
-        
-        if (type === 'education' && data.details) {
-            // Check if we need to update the details list
-            let detailsList = moduleContent.querySelector('ul');
-            if (!detailsList) {
-                detailsList = document.createElement('ul');
-                detailsList.style.paddingLeft = '20px';
-                moduleContent.appendChild(detailsList);
+                listItem.textContent = item.text || '';
             }
             
-            // Clear existing items
-            detailsList.innerHTML = '';
-            
-            // Add new items
-            data.details.forEach(detail => {
-                const detailItem = document.createElement('li');
-                detailItem.style.marginBottom = '8px';
-                let detailHTML = `
-                    <strong>${detail.degree || ''}</strong> <em>${detail.major || ''}</em>${detail.college ? `, ${detail.college}` : ''}
-                `;
-                // Add tutor and dissertation information if available
-                if (detail.tutor || detail.dissertation) {
-                    let infoText = '';
-                    if (detail.tutor && detail.dissertation) {
-                        infoText = `${getModuleText('tutor', language)} ${detail.tutor}<br>${getModuleText('dissertation', language)} ${detail.dissertation}`;
-                    } else if (detail.tutor) {
-                        infoText = `${getModuleText('tutor', language)} ${detail.tutor}`;
-                    } else if (detail.dissertation) {
-                        infoText = `${getModuleText('dissertation', language)} ${detail.dissertation}`;
-                    }
-                    detailHTML += `<br><span class="module-tutor">${infoText}</span>`;
-                }
-                // Add time information at the bottom
-                if (detail.time) {
-                    detailHTML += `<br><span class="module-date">${detail.time}</span>`;
-                }
-                detailItem.innerHTML = detailHTML;
-                detailsList.appendChild(detailItem);
-            });
-        } else if (type === 'publication') {
-            moduleContent.innerHTML = `
-                ${data.authors ? `<p>${data.authors}</p>` : ''}
-                ${data.type ? `<p><strong>${data.type}</strong> <em>${data.conference || data.journal || ''}</em>${data.year ? `, ${data.year}` : ''}</p>` : ''}
-                ${data.abstract ? `<p><strong>${getModuleText('abstract', language)}</strong> ${data.abstract}${data.date ? `${language === 'zh' ? '，' : ', '}${data.date}` : ''}</p>` : ''}
-            `;
-        } else if (type === 'patent') {
-            moduleContent.innerHTML = `
-                ${data.authors ? `<p>${data.authors}</p>` : ''}
-                ${data.type ? `<p><strong class="patent-type">${data.type}</strong> ${data.number ? `(<a href="${data.link || '#'}" target="_blank" rel="noopener noreferrer">${data.number}</a>)` : ''}${data.date ? `${language === 'zh' ? '，' : ', '}${data.date}` : ''}</p>` : ''}
-                ${data.abstract ? `<p><strong>${getModuleText('abstract', language)}</strong> ${data.abstract}${data.date ? `${language === 'zh' ? '，' : ', '}${data.date}` : ''}</p>` : ''}
-            `;
-        } else if (type === 'employment') {
-            if (data.details) {
-                // Check if we need to update the details list
-                let detailsList = moduleContent.querySelector('ul');
-                if (!detailsList) {
-                    detailsList = document.createElement('ul');
-                    detailsList.style.paddingLeft = '20px';
-                    moduleContent.appendChild(detailsList);
-                }
-                
-                // Clear existing items
-                detailsList.innerHTML = '';
-                
-                // Add new items
-                data.details.forEach(detail => {
-                    const detailItem = document.createElement('li');
-                    detailItem.style.marginBottom = '8px';
-                    let detailHTML = `
-                        <strong>${detail.position || ''}</strong> <em>${detail.department || ''}</em>
-                    `;
-                    // Add project information if available
-                    if (detail.project) {
-                        detailHTML += `<br><span class="module-project">${getModuleText('project', language)} ${detail.project}</span>`;
-                    }
-                    // Add time information at the bottom
-                    if (detail.time) {
-                        detailHTML += `<br><span class="module-date">${detail.time}</span>`;
-                    }
-                    detailItem.innerHTML = detailHTML;
-                    detailsList.appendChild(detailItem);
-                });
-            } else {
-                let empHTML = `
-                    ${data.position ? `<p><strong>${getModuleText('position', language)}</strong> ${data.position}</p>` : ''}
-                    ${data.department ? `<p><strong>${getModuleText('department', language)}</strong> ${data.department}</p>` : ''}
-                    ${data.time ? `<p><strong>${getModuleText('time', language)}</strong> ${data.time}</p>` : ''}
-                `;
-                // Add project information if available
-                if (data.project) {
-                    empHTML += `<p><strong>${getModuleText('project', language)}</strong>: ${data.project}</p>`;
-                }
-                moduleContent.innerHTML = empHTML;
-            }
-        } else if (type === 'experience') {
-            if (data.details) {
-                // Check if we need to update the details list
-                let detailsList = moduleContent.querySelector('ul');
-                if (!detailsList) {
-                    detailsList = document.createElement('ul');
-                    detailsList.style.paddingLeft = '20px';
-                    moduleContent.appendChild(detailsList);
-                }
-                
-                // Clear existing items
-                detailsList.innerHTML = '';
-                
-                // Add new items
-                data.details.forEach(detail => {
-                    const detailItem = document.createElement('li');
-                    detailItem.style.marginBottom = '8px';
-                    detailItem.innerHTML = `
-                        <strong>${detail.position || ''}</strong> <em>${detail.department || ''}</em>
-                        ${detail.time ? `<br><span class="module-date">${detail.time}</span>` : ''}
-                    `;
-                    detailsList.appendChild(detailItem);
-                });
-            } else {
-                moduleContent.innerHTML = `
-                    ${data.position ? `<p><strong>${getModuleText('position', language)}</strong> ${data.position}</p>` : ''}
-                    ${data.department ? `<p><strong>${getModuleText('department', language)}</strong> ${data.department}</p>` : ''}
-                    ${data.time ? `<p><strong>${getModuleText('time', language)}</strong> ${data.time}</p>` : ''}
-                `;
-            }
-        } else if (type === 'honor') {
-            moduleContent.innerHTML = `
-                ${data.organization ? `<p>${data.organization}${data.time ? `${language === 'zh' ? '，' : ', '}${data.time}` : ''}</p>` : ''}
-            `;
-        } else if (type === 'teaching') {
-            moduleContent.innerHTML = `
-                ${data.description ? `<p>${data.description}</p>` : ''}
-            `;
-        } else if (type === 'reviewer') {
-            moduleContent.innerHTML = `
-                ${data.description ? `<p>${data.description}</p>` : ''}
-            `;
-        } else {
-            // Generic content
-            moduleContent.textContent = data.description || data.content || '';
-        }
-    }
-    
-    // Update tags if applicable
-    if (data.tags && data.tags.length > 0 && type !== 'reviewer') {
-        let moduleTags = moduleContainer.querySelector('.module-tags');
-        if (!moduleTags) {
-            const moduleBody = moduleContainer.querySelector('.module-body');
-            moduleTags = document.createElement('div');
-            moduleTags.className = 'module-tags';
-            moduleBody.appendChild(moduleTags);
-        }
-        
-        // Clear existing tags
-        moduleTags.innerHTML = '';
-        
-        // Add new tags
-        data.tags.forEach(tag => {
-            const moduleTag = document.createElement('span');
-            moduleTag.className = 'module-tag';
-            moduleTag.textContent = tag;
-            moduleTags.appendChild(moduleTag);
+            list.appendChild(listItem);
         });
-    } else if (type === 'reviewer') {
-        // For reviewer type, keep the existing tags
-        // The tags have already been updated above
-    }
-    
-    // Update footer links if applicable
-    if ((data.paperLink || data.codeLink || data.videoLink || data.siteLink) && type !== 'reviewer') {
-        let moduleFooter = moduleContainer.querySelector('.module-footer');
-        if (!moduleFooter) {
-            moduleFooter = document.createElement('div');
-            moduleFooter.className = 'module-footer';
-            moduleContainer.appendChild(moduleFooter);
-        }
         
-        let moduleLinks = moduleFooter.querySelector('.module-links');
-        if (!moduleLinks) {
-            moduleLinks = document.createElement('div');
-            moduleLinks.className = 'module-links';
-            moduleFooter.appendChild(moduleLinks);
-        }
+        return list;
+    },
+    
+    /**
+     * Opens an image in a modal | 在模态框中打开图片
+     * @param {string} imageUrl - The URL of the image to display | 要显示的图片URL
+     * @param {string} title - The title of the image | 图片的标题
+     */
+    openImageInModal: function(imageUrl, title) {
+        // Create modal element | 创建模态框元素
+        const modal = document.createElement('div');
+        modal.className = 'image-modal';
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+        modal.style.zIndex = '1000';
         
-        // Clear existing links
-        moduleLinks.innerHTML = '';
+        // Create image element | 创建图片元素
+        const modalImage = document.createElement('img');
+        modalImage.src = imageUrl;
+        modalImage.alt = title;
+        modalImage.style.maxWidth = '90%';
+        modalImage.style.maxHeight = '90%';
+        modalImage.style.objectFit = 'contain';
+        modalImage.style.borderRadius = '8px';
+        modalImage.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.2)';
         
-        // Add paper link
-        if (data.paperLink) {
-            const paperLinkElement = createModuleLink(getModuleText('paper', language), data.paperLink, 'fas fa-file-pdf', language);
-            moduleLinks.appendChild(paperLinkElement);
-        }
+        // Create close button | 创建关闭按钮
+        const closeButton = document.createElement('button');
+        closeButton.textContent = '×';
+        closeButton.style.position = 'absolute';
+        closeButton.style.top = '20px';
+        closeButton.style.right = '20px';
+        closeButton.style.fontSize = '30px';
+        closeButton.style.color = 'white';
+        closeButton.style.backgroundColor = 'transparent';
+        closeButton.style.border = 'none';
+        closeButton.style.cursor = 'pointer';
         
-        // Add code link
-        if (data.codeLink) {
-            const codeLinkElement = createModuleLink(getModuleText('code', language), data.codeLink, 'fas fa-code', language);
-            moduleLinks.appendChild(codeLinkElement);
-        }
+        // Add event listeners | 添加事件监听器
+        closeButton.addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
         
-        // Add video link if not empty
-        if (data.videoLink && data.videoLink.trim() !== '') {
-            const videoLinkElement = createModuleLink(getModuleText('video', language), data.videoLink, 'fas fa-video', language);
-            moduleLinks.appendChild(videoLinkElement);
-        }
-        
-        // Add site link if not empty
-        if (data.siteLink && data.siteLink.trim() !== '') {
-            const siteLinkElement = createModuleLink(getModuleText('site', language), data.siteLink, 'fas fa-globe', language);
-            moduleLinks.appendChild(siteLinkElement);
-        }
-    } else if (type === 'reviewer') {
-        // For reviewer type, keep the existing footer
-        // The footer has already been updated above
-    } else {
-        // Remove footer if no links
-        const moduleFooter = moduleContainer.querySelector('.module-footer');
-        if (moduleFooter) {
-            moduleFooter.remove();
-        }
-    }
-    
-    // Restore original transitions and dimensions after a short delay
-    setTimeout(() => {
-        moduleContainer.style.transition = '';
-        moduleContainer.style.width = '';
-        moduleContainer.style.height = '';
-        
-        // Restore image container dimensions
-        const moduleImageContainer = moduleContainer.querySelector('.module-image-container');
-        if (moduleImageContainer) {
-            moduleImageContainer.style.width = '';
-            moduleImageContainer.style.height = '';
-        }
-        
-        // Restore content dimensions
-        if (moduleContent) {
-            moduleContent.style.width = '';
-            moduleContent.style.minHeight = '';
-        }
-    }, 100);
-}
-
-
-
-/**
- * Creates and appends an image modal for zooming images
- */
-function createImageModal() {
-    // Check if modal already exists
-    if (document.getElementById('image-modal')) return;
-    
-    // Create modal container
-    const modal = document.createElement('div');
-    modal.id = 'image-modal';
-    modal.style.display = 'none';
-    modal.style.position = 'fixed';
-    modal.style.zIndex = '1000';
-    modal.style.left = '0';
-    modal.style.top = '0';
-    modal.style.width = '100%';
-    modal.style.height = '100%';
-    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-    modal.style.justifyContent = 'center';
-    modal.style.alignItems = 'center';
-    modal.style.flexDirection = 'column';
-    
-    // Create close button
-    const closeButton = document.createElement('span');
-    closeButton.innerHTML = '&times;';
-    closeButton.style.position = 'absolute';
-    closeButton.style.top = '20px';
-    closeButton.style.right = '35px';
-    closeButton.style.color = '#f1f1f1';
-    closeButton.style.fontSize = '40px';
-    closeButton.style.fontWeight = 'bold';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.transition = 'color 0.3s';
-    
-    // Add hover effect to close button
-    closeButton.addEventListener('mouseover', () => {
-        closeButton.style.color = '#34cceb';
-    });
-    
-    closeButton.addEventListener('mouseout', () => {
-        closeButton.style.color = '#f1f1f1';
-    });
-    
-    // Add click event to close modal
-    closeButton.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-    
-    // Create image element for modal
-    const modalImage = document.createElement('img');
-    modalImage.id = 'modal-image';
-    modalImage.style.maxWidth = '90%';
-    modalImage.style.maxHeight = '80%';
-    modalImage.style.objectFit = 'contain';
-    modalImage.style.animation = 'zoomIn 0.3s';
-    
-    // Create image caption
-    const caption = document.createElement('div');
-    caption.id = 'image-caption';
-    caption.style.marginTop = '20px';
-    caption.style.color = '#f1f1f1';
-    caption.style.textAlign = 'center';
-    caption.style.fontSize = '18px';
-    caption.style.maxWidth = '80%';
-    
-    // Append elements to modal
-    modal.appendChild(closeButton);
-    modal.appendChild(modalImage);
-    modal.appendChild(caption);
-    
-    // Append modal to body
-    document.body.appendChild(modal);
-    
-    // Add CSS animation
-    const style = document.createElement('style');
-    style.innerHTML = `
-        @keyframes zoomIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Close modal when clicking outside the image
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-    
-    // Close modal with Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.style.display === 'flex') {
-            modal.style.display = 'none';
-        }
-    });
-}
-
-/**
- * Opens an image in the modal
- * @param {string} src - The source URL of the image
- * @param {string} alt - The alt text for the image
- */
-function openImageInModal(src, alt) {
-    // Create modal if it doesn't exist
-    createImageModal();
-    
-    // Get modal elements
-    const modal = document.getElementById('image-modal');
-    const modalImg = document.getElementById('modal-image');
-    const caption = document.getElementById('image-caption');
-    
-    // Set image source and caption
-    modalImg.src = src;
-    caption.textContent = alt;
-    
-    // Display modal
-    modal.style.display = 'flex';
-}
-
-/**
- * Renders multiple module containers with smooth transition
- * @param {Array} dataArray - Array of data objects
- * @param {string} type - The type of modules
- * @param {string} containerId - The ID of the container element
- * @param {string} language - The language code
- * @param {boolean} [forceReflow=false] - Whether to force a reflow after rendering
- */
-function renderModuleContainers(dataArray, type, containerId, language = 'en', forceReflow = false) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    
-    // Check if this is a language update (container already has modules)
-    const existingModules = container.querySelectorAll('.module-container');
-    const isLanguageUpdate = existingModules.length > 0;
-    
-    if (isLanguageUpdate && dataArray.length === existingModules.length) {
-        // Store original container dimensions to prevent layout shifts
-        const containerRect = container.getBoundingClientRect();
-        container.style.width = containerRect.width + 'px';
-        container.style.minHeight = containerRect.height + 'px';
-        
-        // Temporarily disable transitions to prevent flickering
-        container.style.transition = 'none';
-        
-        // Update existing modules instead of recreating them
-        existingModules.forEach((module, index) => {
-            if (index < dataArray.length) {
-                // Store original module dimensions to prevent layout shifts
-                const moduleRect = module.getBoundingClientRect();
-                module.style.width = moduleRect.width + 'px';
-                module.style.height = moduleRect.height + 'px';
-                
-                // Temporarily disable transitions for the module
-                module.style.transition = 'none';
-                
-                // Add fade effect for text content
-                const textElements = module.querySelectorAll('.module-title span, .module-date, .module-content, .module-tag');
-                textElements.forEach(el => {
-                    el.style.transition = 'opacity 0.2s ease';
-                    el.style.opacity = '0.7';
-                });
-                
-                // Update the module with new data
-                setTimeout(() => {
-                    updateModuleContainer(module, dataArray[index], type, language);
-                    
-                    // Fade back in
-                    textElements.forEach(el => {
-                        el.style.opacity = '1';
-                    });
-                    
-                    // Restore module transitions and dimensions
-                    setTimeout(() => {
-                        module.style.transition = '';
-                        module.style.width = '';
-                        module.style.height = '';
-                    }, 100);
-                }, 100);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
             }
         });
         
-        // Restore container transitions and dimensions after all updates
-        setTimeout(() => {
-            container.style.transition = '';
-            container.style.width = '';
-            container.style.minHeight = '';
-            
-            // Don't force a reflow to avoid page reload
-            // if (forceReflow) {
-            //     container.style.display = 'none';
-            //     container.offsetHeight; // Trigger reflow
-            //     container.style.display = '';
-            // }
-        }, 350);
-    } else {
-        // Add fade out effect
-        container.style.opacity = '0';
-        container.style.transition = 'opacity 0.3s ease';
+        // Assemble modal | 组装模态框
+        modal.appendChild(modalImage);
+        modal.appendChild(closeButton);
         
-        // Wait for fade out to complete before updating content
-        setTimeout(() => {
-            // Clear existing content
-            container.innerHTML = '';
-            
-            // Create and append module containers
-            dataArray.forEach(data => {
-                const module = createModuleContainer(data, type, language);
-                container.appendChild(module);
-            });
-            
-            // Fade in new content
-            container.style.opacity = '1';
-            
-            // Don't force a reflow to avoid page reload
-            // if (forceReflow) {
-            //     setTimeout(() => {
-            //         container.style.display = 'none';
-            //         container.offsetHeight; // Trigger reflow
-            //         container.style.display = '';
-            //     }, 100);
-            // }
-        }, 300);
+        // Add modal to body | 将模态框添加到body
+        document.body.appendChild(modal);
     }
-}
+};
 
-/**
- * Loads education modules from the configuration file and renders them
- * @param {string} containerId - The ID of the container element
- * @param {string} language - The language code (en, zh, etc.)
- */
-function loadEducationModules(containerId, language = 'en') {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    
-    // Load education data from JSON file
-    fetch('data/education.json')
-        .then(response => response.json())
-        .then(data => {
-            renderModuleContainers(data, 'education', containerId, language);
-        })
-        .catch(error => {
-            console.error('Error loading education modules:', error);
-        });
+// Export the factory for use in other modules | 导出工厂以在其他模块中使用
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ModuleContainerFactory;
+} else {
+    window.ModuleContainerFactory = ModuleContainerFactory;
 }
-
-/**
- * Loads publication modules from the configuration file and renders them
- * @param {string} containerId - The ID of the container element
- * @param {string} language - The language code (en, zh, etc.)
- */
-function loadPublicationModules(containerId, language = 'en') {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    
-    // Load publication data from JSON file
-    fetch('data/publication.json')
-        .then(response => response.json())
-        .then(data => {
-            renderModuleContainers(data, 'publication', containerId, language);
-        })
-        .catch(error => {
-            console.error('Error loading publication modules:', error);
-        });
-}
-
-// Export functions for use in other modules
-window.createModuleContainer = createModuleContainer;
-window.renderModuleContainers = renderModuleContainers;
-window.updateModuleContainer = updateModuleContainer;
-window.loadEducationModules = loadEducationModules;
-window.loadPublicationModules = loadPublicationModules;
