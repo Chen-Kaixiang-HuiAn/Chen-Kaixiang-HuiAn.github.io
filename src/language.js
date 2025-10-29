@@ -788,7 +788,23 @@ class LanguageManager {
         
         // Update time | 更新时间
         this.updateTime(timezoneOffset);
+        
+        // Update page title | 更新页面标题
+        this.updatePageTitle(language);
+        
         console.log('Personal info updated successfully');
+    }
+    
+    /**
+     * Update page title with name | 使用姓名更新页面标题
+     * @param {string} language - Language code | 语言代码
+     */
+    updatePageTitle(language) {
+        const infoData = this.getContent('info', language);
+        if (infoData && infoData.name) {
+            document.title = infoData.name;
+            console.log(`Page title updated to: ${infoData.name}`);
+        }
     }
     
     /**
@@ -1156,6 +1172,9 @@ class LanguageManager {
         
         // Update navigation name | 更新导航栏名称
         await this.updateNavigationName(lang);
+        
+        // Update page title | 更新页面标题
+        this.updatePageTitle(lang);
         
         // Trigger custom event | 触发自定义事件
         const event = new CustomEvent('languageChange', {

@@ -92,30 +92,29 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.log('Showing home section...');
         showSection('home-section');
         
-        // Ensure home navigation link is set as active after a short delay | 确保在短暂延迟后设置home导航链接为活动状态
-        setTimeout(() => {
+        // Ensure home navigation link is set as active with multiple retries | 确保通过多次重试设置home导航链接为活动状态
+        const setActiveHomeLink = (attempt = 1) => {
             const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-            });
-            if (navLinks[0]) {
-                navLinks[0].classList.add('active');
-                console.log('Home navigation link set as active');
+            if (navLinks.length > 0) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                if (navLinks[0]) {
+                    navLinks[0].classList.add('active');
+                    console.log(`Home navigation link set as active on attempt ${attempt}`);
+                }
             } else {
-                console.warn('Navigation links not found, retrying in 100ms...');
-                // Retry if navigation links are not ready | 如果导航链接未准备好，重试
-                setTimeout(() => {
-                    const retryNavLinks = document.querySelectorAll('.nav-links a');
-                    retryNavLinks.forEach(link => {
-                        link.classList.remove('active');
-                    });
-                    if (retryNavLinks[0]) {
-                        retryNavLinks[0].classList.add('active');
-                        console.log('Home navigation link set as active on retry');
-                    }
-                }, 100);
+                console.warn(`Navigation links not found on attempt ${attempt}, retrying...`);
+                if (attempt < 5) {
+                    setTimeout(() => setActiveHomeLink(attempt + 1), 200 * attempt);
+                } else {
+                    console.error('Failed to set home navigation link as active after multiple attempts');
+                }
             }
-        }, 100);
+        };
+        
+        // Initial attempt after a longer delay to ensure navigation is fully initialized | 更长的初始延迟以确保导航完全初始化
+        setTimeout(setActiveHomeLink, 300);
         
         console.log('Home section shown successfully');
         
@@ -352,23 +351,37 @@ function showSection(sectionId) {
             targetSection.style.opacity = '1';
         }, 10);
         
-        // Update navigation active state | 更新导航活动状态
-        const navLinks = document.querySelectorAll('.nav-links a');
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-        });
+        // Update navigation active state with retry mechanism | 使用重试机制更新导航活动状态
+        const updateNavActiveState = (attempt = 1) => {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            if (navLinks.length > 0) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Set active link based on sectionId | 根据sectionId设置活动链接
+                let linkIndex = 0; // Default to home | 默认为home
+                if (sectionId === 'experiences-section') {
+                    linkIndex = 1;
+                } else if (sectionId === 'publications-section') {
+                    linkIndex = 2;
+                }
+                
+                if (navLinks[linkIndex]) {
+                    navLinks[linkIndex].classList.add('active');
+                    console.log(`Navigation active state updated for section: ${sectionId}`);
+                }
+            } else if (attempt < 3) {
+                console.warn(`Navigation links not found on attempt ${attempt}, retrying in 100ms...`);
+                setTimeout(() => updateNavActiveState(attempt + 1), 100);
+            } else {
+                console.error('Failed to update navigation active state after multiple attempts');
+            }
+        };
         
-        // Set active link based on sectionId | 根据sectionId设置活动链接
-        let linkIndex = 0; // Default to home | 默认为home
-        if (sectionId === 'experiences-section') {
-            linkIndex = 1;
-        } else if (sectionId === 'publications-section') {
-            linkIndex = 2;
-        }
-        
-        if (navLinks[linkIndex]) {
-            navLinks[linkIndex].classList.add('active');
-        }
+        // Initial attempt to update navigation state | 初始尝试更新导航状态
+        updateNavActiveState();
         
         // Load content for the section | 加载部分内容
         if (sectionId === 'home-section') {

@@ -15,7 +15,7 @@ body.light-theme {
     --shadow: rgba(0, 0, 0, 0.1);
     --card-bg: rgba(255, 255, 255, 0.9);
     --card-border: rgba(0, 0, 0, 0.1);
-    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     --link-color: #4a90e2;
     --link-hover-color: #2a6bc6;
     --link-visited-color: #6a5acd;
@@ -27,11 +27,11 @@ body.light-theme {
     --employment-color: #f39c12;
     --honor-color: #9b59b6;
     --teaching-color: #1abc9c;
-    --reviewer-color: #34495e;
-    --patent-color: #e67e22;
+    --reviewer-color: #02bd14;
+    --patent-color: #8eb446;
     
     --module-card-bg: #ffffff;
-    --module-border-color: rgba(0, 0, 0, 0.1);
+    --module-border-color: rgba(0, 0, 0, 0.15);
     --module-text-color: #333333;
     --module-secondary-text-color: #666666;
     --module-tag-bg: #f0f0f0;
@@ -57,7 +57,7 @@ body.light-theme {
     --text-bg-patent-hover: rgba(230, 126, 34, 0.2);
     
     /* Light theme background and text color | 浅色主题背景和文字颜色 */
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: linear-gradient(135deg, #e6eef8 0%, #d1dfea 100%);
     color: var(--text-primary);
     padding-bottom: 50px; /* Space for fixed footer | 为固定页脚留出空间 */
 }
@@ -256,6 +256,24 @@ body.light-theme .tab-button.active::after {
     background: var(--primary);
 }
 
+body.light-theme .tab-pane {
+    display: none;
+}
+
+body.light-theme .tab-pane.active {
+    display: flex;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    -webkit-outline: none;
+    -moz-outline: none;
+    -ms-outline: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -ms-box-shadow: none;
+}
+
 /* Light theme footer styles | 浅色主题页脚样式 */
 body.light-theme .footer {
   background: rgba(255, 255, 255, 0.95);
@@ -436,6 +454,19 @@ body.light-theme .info-icon {
     body.light-theme .news-section {
         background: rgba(255, 255, 255, 0.9);
         border: 1px solid rgba(66, 133, 244, 0.2);
+    }
+    
+    /* Override tab-pane styles for mobile | 移动端覆盖tab-pane样式 */
+    body.light-theme .tab-pane {
+        display: none;
+    }
+    
+    body.light-theme .tab-pane.active {
+        display: block;
+        background-color: var(--module-card-bg);
+        outline: initial;
+        border: 1px solid var(--module-border-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 }
 

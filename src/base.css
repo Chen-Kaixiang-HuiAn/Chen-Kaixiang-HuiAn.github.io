@@ -17,12 +17,13 @@
   /* Module Container Variables | 模块容器变量 */
   --education-color: #3498db;
   --publication-color: #2ecc71;
+  --paper-color: #4285f4;
   --experience-color: #e74c3c;
   --employment-color: #f39c12;
   --honor-color: #9b59b6;
   --teaching-color: #1abc9c;
-  --reviewer-color: #34495e;
-  --patent-color: #e67e22;
+  --reviewer-color: #02bd14;
+  --patent-color: #8eb446;
   
   --card-bg: rgba(255, 255, 255, 0.05);
   --border-color: rgba(255, 255, 255, 0.1);
@@ -575,7 +576,6 @@ body.dark-theme .copyright-text {
 .reviewer-modules-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
   width: 100%;
   max-width: 1200px;
   align-items: center;

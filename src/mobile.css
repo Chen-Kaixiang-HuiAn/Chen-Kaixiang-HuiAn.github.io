@@ -154,14 +154,23 @@
     
     /* 移动端模块容器样式 | Mobile Module Container Styles */
     .module-container {
-        width: 95% !important; /* 使用百分比宽度而非vw单位，确保在小屏幕上也能正确显示 */
-        max-width: 100% !important; /* 确保不超过屏幕宽度 */
-        margin: 0 auto 20px auto !important; /* 居中并添加底部间距 */
-        box-sizing: border-box !important; /* 确保内边距不会增加总宽度 */
-        word-wrap: break-word !important; /* 确保长文本能够换行 */
-        overflow-wrap: break-word !important; /* 现代浏览器的换行属性 */
-        hyphens: auto !important; /* 自动添加连字符 */
-        overflow: hidden !important; /* 防止内容溢出 */
+        /* 固定宽度设置，确保中英文环境下宽度一致 | Fixed width settings to ensure consistency between Chinese and English */
+        width: 320px !important; /* 设置固定宽度，适合大多数移动设备 | Set fixed width suitable for most mobile devices */
+        max-width: 90vw !important; /* 在小屏幕上限制最大宽度 | Limit maximum width on small screens */
+        min-width: 300px !important; /* 设置最小宽度 | Set minimum width */
+        margin: 0 auto 20px auto !important; /* 居中并添加底部间距 | Center and add bottom margin */
+        /* 确保左右边距完全一致 | Ensure left and right margins are completely consistent */
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        position: relative !important;
+        box-sizing: border-box !important; /* 确保内边距不会增加总宽度 | Ensure padding doesn't add to total width */
+        word-wrap: break-word !important; /* 确保长文本能够换行 | Ensure long text can wrap */
+        overflow-wrap: break-word !important; /* 现代浏览器的换行属性 | Modern browser word wrap property */
+        hyphens: auto !important; /* 自动添加连字符 | Auto hyphenation */
+        overflow: hidden !important; /* 防止内容溢出 | Prevent content overflow */
+        /* 强制固定宽度，不受内容影响 | Force fixed width, unaffected by content */
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
     }
     
     /* 移动端模块列布局 | Mobile Module Column Layout */
@@ -493,5 +502,33 @@
     /* 显示传统标签页 | Show traditional tabs */
     .tabs {
         display: flex !important;
+    }
+}
+
+/* 小屏幕移动设备样式 | Small Mobile Device Styles */
+@media (max-width: 360px) {
+    .module-container {
+        width: 280px !important; /* 更小的固定宽度，适合小屏幕设备 | Smaller fixed width for small screen devices */
+        max-width: 95vw !important; /* 在小屏幕上限制最大宽度 | Limit maximum width on small screens */
+        min-width: 260px !important; /* 设置最小宽度 | Set minimum width */
+        margin: 0 auto 20px auto !important; /* 居中并添加底部间距 | Center and add bottom margin */
+        /* 确保左右边距完全一致 | Ensure left and right margins are completely consistent */
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        position: relative !important;
+    }
+}
+
+/* 超小屏幕移动设备样式 | Extra Small Mobile Device Styles */
+@media (max-width: 320px) {
+    .module-container {
+        width: 260px !important; /* 更小的固定宽度，适合超小屏幕设备 | Even smaller fixed width for extra small screen devices */
+        max-width: 98vw !important; /* 在超小屏幕上限制最大宽度 | Limit maximum width on extra small screens */
+        min-width: 240px !important; /* 设置最小宽度 | Set minimum width */
+        margin: 0 auto 20px auto !important; /* 居中并添加底部间距 | Center and add bottom margin */
+        /* 确保左右边距完全一致 | Ensure left and right margins are completely consistent */
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        position: relative !important;
     }
 }

@@ -43,6 +43,10 @@
     background-color: var(--publication-color);
 }
 
+.module-container.paper .module-left-border {
+    background-color: var(--paper-color);
+}
+
 .module-container.experience .module-left-border {
     background-color: var(--experience-color);
 }
@@ -444,6 +448,12 @@
     color: var(--text-color);
 }
 
+.module-container.honor .module-content {
+    margin-bottom: 0;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
 .module-container.honor .module-content p {
     margin: 0.4rem 0;
     line-height: 1.6;
@@ -516,6 +526,12 @@
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
     max-width: 100% !important;
+}
+
+.module-container.teaching .module-content {
+    margin-bottom: 0;
+    line-height: 1.6;
+    color: var(--text-color);
 }
 
 .module-container.teaching .module-content p {
@@ -891,12 +907,13 @@
     /* Module Type Colors | 模块类型颜色 */
     --education-color: #3498db;
     --publication-color: #e74c3c;
+    --paper-color: #4285f4;
     --experience-color: #2ecc71;
     --employment-color: #f39c12;
     --honor-color: #9b59b6;
     --teaching-color: #1abc9c;
-    --reviewer-color: #34495e;
-    --patent-color: #e67e22;
+    --reviewer-color: #02bd14;
+    --patent-color: #8eb446;
     
     /* 文字背景特效变量 - 浅色主题 */
     --text-bg-education: rgba(52, 152, 219, 0.15);
@@ -968,12 +985,13 @@
     /* Module Type Colors | 模块类型颜色 */
     --education-color: #5dade2;
     --publication-color: #ec7063;
+    --paper-color: #5b9bd5;
     --experience-color: #58d68d;
     --employment-color: #f5b041;
     --honor-color: #af7ac5;
     --teaching-color: #48c9b0;
-    --reviewer-color: #5d6d7e;
-    --patent-color: #eb984e;
+    --reviewer-color: #02bd14;
+    --patent-color: #8eb446;
     
     /* 文字背景特效变量 - 深色主题 */
     --text-bg-education: rgba(93, 173, 226, 0.15);
