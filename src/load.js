@@ -193,143 +193,79 @@ async function loadAllLanguageContent() {
         
         allContentData = {};
         
+        // Add timestamp to prevent browser caching | 添加时间戳以防止浏览器缓存
+        const timestamp = new Date().getTime();
+        
+        // Define all content types to load | 定义要加载的所有内容类型
+        const contentTypes = [
+            'info',
+            'intro',
+            'news',
+            'education',
+            'employment',
+            'honors',
+            'teaching',
+            'reviewer',
+            'papers',
+            'patents'
+        ];
+        
+        // Create an array of all promises for all languages and content types | 为所有语言和内容类型创建一个包含所有Promise的数组
+        const allPromises = [];
+        
         for (const lang of config.availableLanguages) {
             allContentData[lang] = {};
-            console.log(`Loading content for language: ${lang}`);
+            console.log(`Preparing content for language: ${lang}`);
             
-            // Add timestamp to prevent browser caching | 添加时间戳以防止浏览器缓存
-            const timestamp = new Date().getTime();
-            
-            // Load info data | 加载信息数据
-            try {
-                const infoResponse = await fetch(`configs/${lang}/info_${lang}.json?t=${timestamp}`);
-                if (!infoResponse.ok) {
-                    throw new Error(`HTTP error! status: ${infoResponse.status}`);
+            // Create promises for each content type | 为每种内容类型创建Promise
+            for (const contentType of contentTypes) {
+                // Special handling for intro which is a text file | 对intro文本文件进行特殊处理
+                if (contentType === 'intro') {
+                    allPromises.push(
+                        fetch(`configs/${lang}/intro_${lang}.txt?t=${timestamp}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+                                return response.text();
+                            })
+                            .then(data => {
+                                allContentData[lang][contentType] = data;
+                                console.log(`Loaded ${contentType} data for ${lang}:`, data.substring(0, 50) + '...');
+                                return { lang, contentType, success: true };
+                            })
+                            .catch(error => {
+                                console.warn(`Could not load ${contentType} data for language ${lang}:`, error);
+                                return { lang, contentType, success: false, error };
+                            })
+                    );
+                } else {
+                    allPromises.push(
+                        fetch(`configs/${lang}/${contentType}_${lang}.json?t=${timestamp}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                allContentData[lang][contentType] = data;
+                                console.log(`Loaded ${contentType} data for ${lang}:`, data);
+                                return { lang, contentType, success: true };
+                            })
+                            .catch(error => {
+                                console.warn(`Could not load ${contentType} data for language ${lang}:`, error);
+                                return { lang, contentType, success: false, error };
+                            })
+                    );
                 }
-                const infoData = await infoResponse.json();
-                allContentData[lang].info = infoData;
-                console.log(`Loaded info data for ${lang}:`, infoData);
-            } catch (error) {
-                console.warn(`Could not load info data for language ${lang}:`, error);
-            }
-            
-            // Load intro data | 加载介绍数据
-            try {
-                const introResponse = await fetch(`configs/${lang}/intro_${lang}.txt?t=${timestamp}`);
-                if (!introResponse.ok) {
-                    throw new Error(`HTTP error! status: ${introResponse.status}`);
-                }
-                const introData = await introResponse.text();
-                allContentData[lang].intro = introData;
-                console.log(`Loaded intro data for ${lang}:`, introData.substring(0, 50) + '...');
-            } catch (error) {
-                console.warn(`Could not load intro data for language ${lang}:`, error);
-            }
-            
-            // Load news data | 加载新闻数据
-            try {
-                const newsResponse = await fetch(`configs/${lang}/news_${lang}.json?t=${timestamp}`);
-                if (!newsResponse.ok) {
-                    throw new Error(`HTTP error! status: ${newsResponse.status}`);
-                }
-                const newsData = await newsResponse.json();
-                allContentData[lang].news = newsData;
-                console.log(`Loaded news data for ${lang}:`, newsData);
-            } catch (error) {
-                console.warn(`Could not load news data for language ${lang}:`, error);
-            }
-
-            // Load education data | 加载教育数据
-            try {
-                const educationResponse = await fetch(`configs/${lang}/education_${lang}.json?t=${timestamp}`);
-                if (!educationResponse.ok) {
-                    throw new Error(`HTTP error! status: ${educationResponse.status}`);
-                }
-                const educationData = await educationResponse.json();
-                allContentData[lang].education = educationData;
-                console.log(`Loaded education data for ${lang}:`, educationData);
-            } catch (error) {
-                console.warn(`Could not load education data for language ${lang}:`, error);
-            }
-            
-            // Load employment data | 加载就业数据
-            try {
-                const employmentResponse = await fetch(`configs/${lang}/employment_${lang}.json?t=${timestamp}`);
-                if (!employmentResponse.ok) {
-                    throw new Error(`HTTP error! status: ${employmentResponse.status}`);
-                }
-                const employmentData = await employmentResponse.json();
-                allContentData[lang].employment = employmentData;
-                console.log(`Loaded employment data for ${lang}:`, employmentData);
-            } catch (error) {
-                console.warn(`Could not load employment data for language ${lang}:`, error);
-            }
-
-            // Load honors data | 加载荣誉数据
-            try {
-                const honorsResponse = await fetch(`configs/${lang}/honors_${lang}.json?t=${timestamp}`);
-                if (!honorsResponse.ok) {
-                    throw new Error(`HTTP error! status: ${honorsResponse.status}`);
-                }
-                const honorsData = await honorsResponse.json();
-                allContentData[lang].honors = honorsData;
-                console.log(`Loaded honors data for ${lang}:`, honorsData);
-            } catch (error) {
-                console.warn(`Could not load honors data for language ${lang}:`, error);
-            }
-
-            // Load teaching data | 加载教学数据
-            try {
-                const teachingResponse = await fetch(`configs/${lang}/teaching_${lang}.json?t=${timestamp}`);
-                if (!teachingResponse.ok) {
-                    throw new Error(`HTTP error! status: ${teachingResponse.status}`);
-                }
-                const teachingData = await teachingResponse.json();
-                allContentData[lang].teaching = teachingData;
-                console.log(`Loaded teaching data for ${lang}:`, teachingData);
-            } catch (error) {
-                console.warn(`Could not load teaching data for language ${lang}:`, error);
-            }
-            
-            // Load reviewer data | 加载审稿人数据
-            try {
-                const reviewerResponse = await fetch(`configs/${lang}/reviewer_${lang}.json?t=${timestamp}`);
-                if (!reviewerResponse.ok) {
-                    throw new Error(`HTTP error! status: ${reviewerResponse.status}`);
-                }
-                const reviewerData = await reviewerResponse.json();
-                allContentData[lang].reviewer = reviewerData;
-                console.log(`Loaded reviewer data for ${lang}:`, reviewerData);
-            } catch (error) {
-                console.warn(`Could not load reviewer data for language ${lang}:`, error);
-            }
-
-            // Load paper data | 加载论文数据
-            try {
-                const paperResponse = await fetch(`configs/${lang}/papers_${lang}.json?t=${timestamp}`);
-                if (!paperResponse.ok) {
-                    throw new Error(`HTTP error! status: ${paperResponse.status}`);
-                }
-                const paperData = await paperResponse.json();
-                allContentData[lang].paper = paperData;
-                console.log(`Loaded paper data for ${lang}:`, paperData);
-            } catch (error) {
-                console.warn(`Could not load paper data for language ${lang}:`, error);
-            }
-
-            // Load patent data | 加载专利数据
-            try {
-                const patentResponse = await fetch(`configs/${lang}/patents_${lang}.json?t=${timestamp}`);
-                if (!patentResponse.ok) {
-                    throw new Error(`HTTP error! status: ${patentResponse.status}`);
-                }
-                const patentData = await patentResponse.json();
-                allContentData[lang].patent = patentData;
-                console.log(`Loaded patent data for ${lang}:`, patentData);
-            } catch (error) {
-                console.warn(`Could not load patent data for language ${lang}:`, error);
             }
         }
+        
+        // Wait for all promises to complete | 等待所有Promise完成
+        console.log('Loading all content files in parallel...');
+        await Promise.all(allPromises);
+        console.log('All content files loaded in parallel');
         
         console.log('All language content loaded:', Object.keys(allContentData));
         console.log('Content data structure:', allContentData);

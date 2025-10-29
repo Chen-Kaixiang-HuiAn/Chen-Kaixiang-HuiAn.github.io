@@ -336,10 +336,16 @@ class LanguageManager {
         }
         
         // Update tab buttons visibility and text
+        const educationTab = document.querySelector('#experiences-section .tab-button[data-tab="education"]');
         const employmentTab = document.querySelector('#experiences-section .tab-button[data-tab="employment"]');
         const honorsTab = document.querySelector('#experiences-section .tab-button[data-tab="honors-awards"]');
         const teachingTab = document.querySelector('#experiences-section .tab-button[data-tab="teaching"]');
         const reviewerTab = document.querySelector('#experiences-section .tab-button[data-tab="reviewer"]');
+        
+        // Handle education tab | 处理教育标签页
+        if (educationTab) {
+            educationTab.textContent = this.getText('education', {}, lang);
+        }
         
         // Handle employment tab | 处理就业标签页
         if (employmentTab) {
@@ -606,7 +612,7 @@ class LanguageManager {
         console.log(`Updating publications content for language: ${lang}`);
         
         // Get data for each tab to check if they should be hidden | 获取每个标签页的数据以检查是否应该隐藏
-        const patentData = this.getContent('patent', lang);
+        const patentsData = this.getContent('patents', lang); // Use 'patents' to match load.js
         
         // Update section title
         const sectionTitle = document.querySelector('#publications-section .section-title h2');
@@ -622,7 +628,7 @@ class LanguageManager {
         
         // Handle patent tab | 处理专利标签页
         if (patentTab) {
-            if (patentData && patentData.length > 0) {
+            if (patentsData && patentsData.length > 0) {
                 patentTab.style.display = '';
                 patentTab.textContent = this.getText('patents', {}, lang);
             } else {
@@ -653,7 +659,7 @@ class LanguageManager {
      */
     updatePaperContent(language) {
         console.log(`Updating paper content for language: ${language}`);
-        const papersData = this.getContent('paper', language); // Changed from 'papers' to 'paper' to match load.js
+        const papersData = this.getContent('papers', language); // Use 'papers' to match load.js
         console.log('Papers data retrieved:', papersData);
         
         if (!papersData) {
@@ -688,7 +694,7 @@ class LanguageManager {
      */
     updatePatentContent(language) {
         console.log(`Updating patent content for language: ${language}`);
-        const patentData = this.getContent('patent', language); // Changed from 'patents' to 'patent' to match load.js
+        const patentData = this.getContent('patents', language); // Use 'patents' to match load.js
         console.log('Patents data retrieved:', patentData);
         
         if (!patentData) {

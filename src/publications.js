@@ -9,7 +9,7 @@ function loadPublicationsContent() {
     const currentLang = getCurrentLanguage();
     
     // Get data for each tab to check if they should be hidden | 获取每个标签页的数据以检查是否应该隐藏
-    const patentData = window.languageManager ? window.languageManager.getContent('patent', currentLang) : [];
+    const patentData = window.languageManager ? window.languageManager.getContent('patents', currentLang) : [];
     
     // Create a container for the modules with tabs | 为带有标签页的模块创建容器
     let content = `
