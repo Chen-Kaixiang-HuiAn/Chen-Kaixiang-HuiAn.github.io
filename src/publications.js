@@ -347,7 +347,7 @@ function createPatentModule(patentData) {
     // Add patent information | 添加专利信息
     const patentInfo = ModuleContainerFactory.createContent({
         content: `<p>${patentData.authors}</p>` + 
-        `<p><strong>${patentData.type}</strong>, ${patentData.number}, ${patentData.date}</p>`,
+        `<p><strong>${patentData.type}</strong>, <a href="${patentData.link}" target="_blank">${patentData.number}</a>, ${patentData.date}</p>`,
         contentType: 'html',
         contentClass: 'patent-info',
         style: {
