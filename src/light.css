@@ -80,8 +80,8 @@ body.light-theme .logo i {
 }
 
 /* Light theme logo image | 浅色主题标志图像 */
-body.light-theme .logo img {
-  filter: invert(1);
+body.light-theme .navbar .logo img {
+  filter: invert(1) !important;
 }
 
 body.light-theme .nav-links a {

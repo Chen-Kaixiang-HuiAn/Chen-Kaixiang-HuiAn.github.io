@@ -58,7 +58,7 @@ function createNavigation() {
             
             // Create logo element | 创建标志元素
             const logoElement = document.createElement('img');
-            logoElement.src = 'images/homepage/favicon/favicon.ico';
+            logoElement.src = 'https://api.iconify.design/material-symbols/school.svg?color=%23000000';
             logoElement.alt = 'Logo';
             logoElement.style.height = '32px';
             logoElement.style.marginRight = '10px';
@@ -178,7 +178,7 @@ function createNavigationFallback() {
     
     // Create logo element | 创建标志元素
     const logoElement = document.createElement('img');
-    logoElement.src = 'images/homepage/favicon/favicon.ico';
+    logoElement.src = 'https://api.iconify.design/material-symbols/school.svg?color=%23000000';
     logoElement.alt = 'Logo';
     logoElement.style.height = '32px';
     logoElement.style.marginRight = '10px';
@@ -427,6 +427,22 @@ function initNavigation() {
     });
 }
 
+// Update logo color based on theme | 根据主题更新logo颜色
+function updateLogoColor() {
+    if (!window.navElements || !window.navElements.logo) return;
+    
+    const logoImg = window.navElements.logo.querySelector('img');
+    if (!logoImg) return;
+    
+    if (document.body.classList.contains('dark-theme')) {
+        // Dark theme - use black logo | 深色主题 - 使用黑色logo
+        logoImg.src = 'https://api.iconify.design/material-symbols/school.svg?color=%23000000';
+    } else {
+        // Light theme - use white logo | 浅色主题 - 使用白色logo
+        logoImg.src = 'https://api.iconify.design/material-symbols/school.svg?color=%23ffffff';
+    }
+}
+
 // Initialize theme toggle | 初始化主题切换
 function initThemeToggle() {
     if (!window.navElements || !window.navElements.themeSwitch) return;
@@ -447,6 +463,9 @@ function initThemeToggle() {
         themeToggle.innerHTML = '<i class="fas fa-sun"></i>'; // Show sun to switch to light theme | 显示太阳图标以切换到浅色主题
     }
     
+    // Update logo color based on initial theme | 根据初始主题更新logo颜色
+    updateLogoColor();
+    
     // Add click event to theme toggle button | 向主题切换按钮添加点击事件
     themeToggle.addEventListener('click', function() {
         // Toggle the theme classes | 切换主题类
@@ -461,6 +480,9 @@ function initThemeToggle() {
             themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             localStorage.setItem('theme', 'dark');
         }
+        
+        // Update logo color after theme change | 主题更改后更新logo颜色
+        updateLogoColor();
     });
 }
 
