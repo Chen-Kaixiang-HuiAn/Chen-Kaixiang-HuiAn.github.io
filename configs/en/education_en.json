@@ -5,18 +5,18 @@
     "details": 
     [
       {
-        "degree": "Intra-school Exchange",
-        "major": "Intelligent Manufacturing", 
-        "college": "National Elite Institute of Engineering (NEIE)",
-        "time": "2022.9 - 2023.6"
-      },
-      {
         "degree": "Bachelor of Engineering",
         "major": "Mechatronics", 
         "college": "College of Mechanical and Vehicle Engineering (MVE)",
         "time": "2019.9 - 2023.6",
         "tutor": "Prof. Xiao Guijian",
         "dissertation": "Optimization of Laser Cutting Process Parameters Based on Vision Inspection"
+      },
+      {
+        "degree": "Intra-school Exchange",
+        "major": "Intelligent Manufacturing", 
+        "college": "National Elite Institute of Engineering (NEIE)",
+        "time": "2022.9 - 2023.6"
       }
     ]
   }
